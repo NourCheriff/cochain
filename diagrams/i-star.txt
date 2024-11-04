@@ -1,0 +1,118 @@
+{
+  "actors": [
+    {
+      "id": "3bc8430b-fffb-4b82-948f-044bd9a4ec99",
+      "text": "Trasportatore",
+      "type": "istar.Actor",
+      "x": 716,
+      "y": 83,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "e392c055-5c02-4a20-979b-6763bbea2314",
+      "text": "Azienda agricola",
+      "type": "istar.Actor",
+      "x": 95,
+      "y": 80,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "84aff818-e070-4408-bf68-03c181bef0c3",
+      "text": "Azienda ittica",
+      "type": "istar.Actor",
+      "x": 100,
+      "y": 270,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "8d54087b-b0bd-4cb0-9843-3e61086f18dd",
+      "text": "Azienda di trasformazione",
+      "type": "istar.Actor",
+      "x": 415,
+      "y": 284,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "304ed70a-cfaf-4c17-bada-8ffe5986cd5f",
+      "text": "Grossista",
+      "type": "istar.Actor",
+      "x": 420,
+      "y": 484,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "78aeeced-8cb1-45bc-aca3-6092a479d02b",
+      "text": "Rivenditore al dettaglio",
+      "type": "istar.Actor",
+      "x": 412,
+      "y": 83,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "f4202e0c-a812-41db-a12a-c981be3249ac",
+      "text": "Cliente finale",
+      "type": "istar.Actor",
+      "x": 730,
+      "y": 286,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "37ed8076-1adc-4d75-bccd-3e1118a17517",
+      "text": "Azienda smaltimento rifiuti",
+      "type": "istar.Actor",
+      "x": 95,
+      "y": 478,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "29e45b54-268d-4702-a10f-91ab9aafbeb8",
+      "text": "Azienda di stoccaggio",
+      "type": "istar.Actor",
+      "x": 734,
+      "y": 488,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    }
+  ],
+  "orphans": [],
+  "dependencies": [],
+  "links": [],
+  "display": {},
+  "tool": "pistar.2.1.0",
+  "istar": "2.0",
+  "saveDate": "Thu, 31 Oct 2024 17:04:52 GMT",
+  "diagram": {
+    "width": 1000,
+    "height": 700,
+    "name": "Cochain",
+    "customProperties": {
+      "Description": ""
+    }
+  }
+}
