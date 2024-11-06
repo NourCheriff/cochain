@@ -4,48 +4,98 @@
       "id": "3bc8430b-fffb-4b82-948f-044bd9a4ec99",
       "text": "Trasportatore",
       "type": "istar.Actor",
-      "x": 1263,
-      "y": 600,
+      "x": 2642,
+      "y": 1106,
       "customProperties": {
         "Description": ""
       },
       "nodes": [
         {
-          "id": "7e542b46-c714-4836-adbf-ee04d5367455",
-          "text": "Trasporto prodotti",
+          "id": "92529a0d-acef-4532-a8f7-11658eb84ccd",
+          "text": "Conservazione dei prodotti",
           "type": "istar.Goal",
-          "x": 1316,
-          "y": 646,
+          "x": 2980,
+          "y": 1116,
           "customProperties": {
             "Description": ""
           }
         },
         {
-          "id": "3883c3d6-34cb-4b6e-926a-5923577dfc28",
-          "text": "Trasporto sicuro dei prodotti",
+          "id": "440b3663-68b8-4876-a9d0-fefbbd66ebc1",
+          "text": "Gestione inventario",
+          "type": "istar.Goal",
+          "x": 3453,
+          "y": 1116,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "72315992-3919-477a-9379-cead7d668fef",
+          "text": "Riduzione deterioramento prodotti",
           "type": "istar.Quality",
-          "x": 1487,
-          "y": 604,
+          "x": 3206,
+          "y": 1115,
           "customProperties": {
             "Description": ""
           }
         },
         {
-          "id": "13427632-7a39-48f8-bdd1-7b3373d33db8",
-          "text": "Documento di trasporto",
-          "type": "istar.Resource",
-          "x": 1502,
-          "y": 825,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "e7a4950a-ea9c-41ee-a4fe-a36e6b5d8f8d",
-          "text": "Tracciamento dei prodotti",
+          "id": "f2eef6a8-95e5-445b-bcf6-aa6c9b775223",
+          "text": "Monitoraggio temperatura e umidità nei magazzini",
           "type": "istar.Task",
-          "x": 1483,
-          "y": 727,
+          "x": 2642,
+          "y": 1315,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "fd445704-5097-4ca0-9aa5-2686595c296c",
+          "text": "Effettuazione ispezioni periodiche sui prodotti",
+          "type": "istar.Task",
+          "x": 3072,
+          "y": 1379,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "0860a154-797b-4047-953e-fbdc7f119274",
+          "text": "Registrazione e monitoraggio delle date di scadenza",
+          "type": "istar.Task",
+          "x": 3318,
+          "y": 1271,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "37c36659-50db-4809-a619-2c8b213688e8",
+          "text": "Tracciamento movimenti interni",
+          "type": "istar.Task",
+          "x": 3430,
+          "y": 1395,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "16a21247-c941-48bf-aa5d-9698962fe00e",
+          "text": "Monitoraggio scorte minime",
+          "type": "istar.Task",
+          "x": 3647,
+          "y": 1377,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "8aa544d6-0886-4cff-9cc9-705d8c6ce1bf",
+          "text": "Controllo dei sistemi di refrigerazione",
+          "type": "istar.Task",
+          "x": 2847,
+          "y": 1444,
           "customProperties": {
             "Description": ""
           }
@@ -53,121 +103,61 @@
       ]
     },
     {
-      "id": "e392c055-5c02-4a20-979b-6763bbea2314",
-      "text": "Azienda agricola",
+      "id": "37ed8076-1adc-4d75-bccd-3e1118a17517",
+      "text": "Azienda smaltimento rifiuti",
       "type": "istar.Actor",
-      "x": 171,
-      "y": 95,
+      "x": 722,
+      "y": 1872,
       "customProperties": {
         "Description": ""
       },
       "nodes": [
         {
-          "id": "c0b1bad0-5140-4c44-86d8-e4f3082e3665",
-          "text": "Vendita materie prime",
-          "type": "istar.Goal",
-          "x": 436,
-          "y": 95,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "a60cfcb3-6d88-446b-95fe-95ac9f7670e3",
-          "text": "Produzione materie prime vegetali e animali",
-          "type": "istar.Goal",
-          "x": 410,
-          "y": 235,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "332d35f9-406a-4c73-aae1-65c488475c7d",
-          "text": "Raccolta",
-          "type": "istar.Task",
-          "x": 465,
-          "y": 392,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "a7cd0f80-d2ff-4303-a892-785d65b3a2cf",
-          "text": "Inizializzazione",
-          "type": "istar.Task",
-          "x": 171,
-          "y": 389,
-          "customProperties": {
-            "Description": "Esecuzione delle attività preliminari e necessarie per poter produrre la materia prima (esempio: lavorazione del terreno, semina, costruzione recinti per animali....)"
-          }
-        },
-        {
-          "id": "f0f4cc48-0650-4e84-bd72-1f7bb5933358",
-          "text": "Trattamento e monitoraggio",
-          "type": "istar.Task",
-          "x": 311,
-          "y": 389,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "6d455901-4279-4ff5-88be-8dc34f89db0c",
-          "text": "Stipula del contratto",
-          "type": "istar.Task",
-          "x": 196,
-          "y": 239,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "c2c6ec93-b3af-4580-a581-ac38418a0f04",
-          "text": "Registrazione dati su fertilizzanti e pesticidi",
-          "type": "istar.Task",
-          "x": 623,
-          "y": 385,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "f423d730-2aa9-402b-b1fe-46ee3df63032",
-          "text": "Consegna in sede",
-          "type": "istar.Task",
-          "x": 859,
-          "y": 206,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "aca959ef-7e83-4fa4-98ce-89eceaf32ac8",
-          "text": "Consegna materie prime",
-          "type": "istar.Task",
-          "x": 614,
-          "y": 240,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "9de22ea0-16ad-4cf2-b451-08be730f296e",
-          "text": "Spedizione",
-          "type": "istar.Task",
-          "x": 850,
-          "y": 301,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "bf619f47-a1a4-472e-94c2-0cef98ae6ff6",
+          "id": "3ea24399-124b-4d20-b74b-abe043f1650f",
           "text": "Rispetto delle normative ambientali",
           "type": "istar.Goal",
-          "x": 656,
-          "y": 121,
+          "x": 722,
+          "y": 1952,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "f0f5434f-bb8d-4985-92d2-866eb40029cd",
+          "text": "Monitoraggio delle emissioni",
+          "type": "istar.Task",
+          "x": 1494,
+          "y": 2037,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "1d70ff45-a6b6-4754-b074-cd3b55890ad8",
+          "text": "Gestione rifiuti",
+          "type": "istar.Goal",
+          "x": 1210,
+          "y": 1896,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "35904185-bc8a-45ef-beb8-3cf6d122fc94",
+          "text": "Ritiro",
+          "type": "istar.Task",
+          "x": 952,
+          "y": 2035,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "3fc95ef0-5900-4625-8961-41f759a83dcf",
+          "text": "Smaltimento",
+          "type": "istar.Task",
+          "x": 1211,
+          "y": 2045,
           "customProperties": {
             "Description": ""
           }
@@ -175,111 +165,64 @@
       ]
     },
     {
-      "id": "84aff818-e070-4408-bf68-03c181bef0c3",
-      "text": "Azienda ittica",
+      "id": "f4202e0c-a812-41db-a12a-c981be3249ac",
+      "text": "Cliente finale",
       "type": "istar.Actor",
-      "x": 172,
-      "y": 536,
+      "x": 2069,
+      "y": 1790,
       "customProperties": {
         "Description": ""
       },
       "nodes": [
         {
-          "id": "b925d984-67ee-44ba-8ba2-dbc94dc86dc4",
-          "text": "Rispetto delle normative ambientali",
+          "id": "c667deef-cf43-4ebd-8481-94ad8e288f59",
+          "text": "Acquisto prodotti di qualità",
+          "type": "istar.Quality",
+          "x": 2185,
+          "y": 1837,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "5cb02b29-6110-43b3-bfbe-2dcd7d44d490",
+          "text": "Verifica della provenienza delle materie prime",
+          "type": "istar.Task",
+          "x": 2069,
+          "y": 2073,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "78aeeced-8cb1-45bc-aca3-6092a479d02b",
+      "text": "Rivenditore al dettaglio",
+      "type": "istar.Actor",
+      "x": 1588,
+      "y": 2281,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": []
+    },
+    {
+      "id": "304ed70a-cfaf-4c17-bada-8ffe5986cd5f",
+      "text": "Grossista",
+      "type": "istar.Actor",
+      "x": 1146,
+      "y": 2266,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "5cb62788-8cc9-400d-b86e-2e975e08d12c",
+          "text": "Reperimento prodotti",
           "type": "istar.Goal",
-          "x": 672,
-          "y": 557,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "89bf9477-829a-4031-a5f7-e8adb9884d64",
-          "text": "Vendita prodotti ittici",
-          "type": "istar.Goal",
-          "x": 349,
-          "y": 545,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "7a909a6d-c087-4d62-86ad-42416fb2cea8",
-          "text": "Trattamento",
-          "type": "istar.Task",
-          "x": 276,
-          "y": 783,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "4c625708-0c2e-4c72-a2e2-792c489b0ceb",
-          "text": "Stipula del contratto",
-          "type": "istar.Task",
-          "x": 172,
-          "y": 666,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "b0dfb61f-c3c5-483c-b0d8-ca5868610e7c",
-          "text": "Monitoraggio della qualità dell'acqua",
-          "type": "istar.Task",
-          "x": 442,
-          "y": 787,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "c3a69776-0553-48cb-9c83-8f38b287154d",
-          "text": "Pesca",
-          "type": "istar.Task",
-          "x": 565,
-          "y": 684,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "15187953-cb7e-4809-bad1-da500d2f5fb4",
-          "text": "Consegna prodotti ittici",
-          "type": "istar.Task",
-          "x": 743,
-          "y": 680,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "e1b8c264-53c9-4d19-a34e-9260f877bd5a",
-          "text": "Consegna in sede",
-          "type": "istar.Task",
-          "x": 685,
-          "y": 788,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "f093760c-f82e-4180-befb-97f5be0aa556",
-          "text": "Spedizione",
-          "type": "istar.Task",
-          "x": 851,
-          "y": 787,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "0d30b76c-f2bc-497a-9ee0-6db2779e7728",
-          "text": "Allevamento e riproduzione di pesce",
-          "type": "istar.Task",
-          "x": 358,
-          "y": 674,
+          "x": 1265,
+          "y": 2266,
           "customProperties": {
             "Description": ""
           }
@@ -290,38 +233,28 @@
       "id": "8d54087b-b0bd-4cb0-9843-3e61086f18dd",
       "text": "Azienda di trasformazione",
       "type": "istar.Actor",
-      "x": 231,
-      "y": 932,
+      "x": 927,
+      "y": 1057,
       "customProperties": {
         "Description": ""
       },
       "nodes": [
         {
           "id": "57cca391-c8f7-42d5-8460-d9cf115460ae",
-          "text": "Conversione del prodotto agricolo/ittico in prodotto finito di qualità",
+          "text": "Conversione delle materie prime  in prodotto finito",
           "type": "istar.Goal",
-          "x": 364,
-          "y": 936,
+          "x": 1535,
+          "y": 1072,
           "customProperties": {
             "Description": ""
           }
         },
         {
           "id": "c743c7b5-51bd-4a32-bbfa-56b12bc212ad",
-          "text": "Massimizzare l’uso delle materie prime, minimizzando scarti e perdite",
+          "text": "Minimizzazione scarti e perdite",
           "type": "istar.Quality",
-          "x": 737,
-          "y": 944,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "fc6543e5-8675-4f04-9745-b27c384c009e",
-          "text": "Controllo qualità dei prodotti trasformati",
-          "type": "istar.Task",
-          "x": 363,
-          "y": 1041,
+          "x": 1923,
+          "y": 1355,
           "customProperties": {
             "Description": ""
           }
@@ -330,8 +263,8 @@
           "id": "5bbbc483-91a4-4fa4-93b3-9c080ee4c507",
           "text": "Confezionamento prodotti finiti ",
           "type": "istar.Task",
-          "x": 493,
-          "y": 1045,
+          "x": 1527,
+          "y": 1283,
           "customProperties": {
             "Description": ""
           }
@@ -340,8 +273,8 @@
           "id": "48b4c3f8-f515-4979-b8bd-cdb033e144e7",
           "text": "Lavorazione materie prime",
           "type": "istar.Task",
-          "x": 251,
-          "y": 1048,
+          "x": 1404,
+          "y": 1204,
           "customProperties": {
             "Description": ""
           }
@@ -350,8 +283,8 @@
           "id": "e22f09f4-bbf0-48f8-99d1-d2abc1da2ddf",
           "text": "Gestione scarti di lavorazione",
           "type": "istar.Task",
-          "x": 629,
-          "y": 1052,
+          "x": 1736,
+          "y": 1222,
           "customProperties": {
             "Description": ""
           }
@@ -360,8 +293,88 @@
           "id": "6aff70bd-e761-4484-9fa1-c674943b5687",
           "text": "Conservazione prodotti finiti",
           "type": "istar.Goal",
-          "x": 595,
-          "y": 948,
+          "x": 2056,
+          "y": 1085,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "fe280f49-d4c5-4069-8368-764a4599ac2f",
+          "text": "Massimizzazione uso delle materie prime",
+          "type": "istar.Task",
+          "x": 1878,
+          "y": 1505,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "a9257a6e-1a07-4556-8024-31659f90e97a",
+          "text": "Tracciamento e certificazione prodotto trasformato",
+          "type": "istar.Goal",
+          "x": 1207,
+          "y": 1221,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "117168ad-9a27-4b69-bd07-875cdab8a0b5",
+          "text": "Registro scadenza dei prodotti",
+          "type": "istar.Resource",
+          "x": 1386,
+          "y": 1469,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "7515da64-c98a-4766-aed3-fb448d1b21d7",
+          "text": "Tracciamento provenienza delle materie prime",
+          "type": "istar.Task",
+          "x": 927,
+          "y": 1356,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "bffa9614-7b20-4bfc-a0bc-2b7c5b2a61a6",
+          "text": "Tracciamento data di scadenza prodotto trasformato",
+          "type": "istar.Task",
+          "x": 1335,
+          "y": 1353,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "19dd2c23-4d1c-4aed-afe4-526d63c6cc30",
+          "text": "Trasformazione di qualità dei prodotti",
+          "type": "istar.Quality",
+          "x": 1166,
+          "y": 1083,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "d0d26749-95b4-4212-9498-bcce77e6236d",
+          "text": "Stoccaggio in sede",
+          "type": "istar.Task",
+          "x": 1972,
+          "y": 1220,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "c9a21419-05d2-48ab-a4b6-f38615a80e1f",
+          "text": "Stoccaggio in magazzino esterno",
+          "type": "istar.Task",
+          "x": 2194,
+          "y": 1220,
           "customProperties": {
             "Description": ""
           }
@@ -369,64 +382,223 @@
       ]
     },
     {
-      "id": "304ed70a-cfaf-4c17-bada-8ffe5986cd5f",
-      "text": "Grossista",
+      "id": "84aff818-e070-4408-bf68-03c181bef0c3",
+      "text": "Azienda ittica",
       "type": "istar.Actor",
-      "x": 224,
-      "y": 1234,
-      "customProperties": {
-        "Description": ""
-      },
-      "nodes": []
-    },
-    {
-      "id": "78aeeced-8cb1-45bc-aca3-6092a479d02b",
-      "text": "Rivenditore al dettaglio",
-      "type": "istar.Actor",
-      "x": 478,
-      "y": 1242,
-      "customProperties": {
-        "Description": ""
-      },
-      "nodes": []
-    },
-    {
-      "id": "f4202e0c-a812-41db-a12a-c981be3249ac",
-      "text": "Cliente finale",
-      "type": "istar.Actor",
-      "x": 704,
-      "y": 1244,
-      "customProperties": {
-        "Description": ""
-      },
-      "nodes": []
-    },
-    {
-      "id": "37ed8076-1adc-4d75-bccd-3e1118a17517",
-      "text": "Azienda smaltimento rifiuti",
-      "type": "istar.Actor",
-      "x": 1084,
-      "y": 1233,
+      "x": 757,
+      "y": 540,
       "customProperties": {
         "Description": ""
       },
       "nodes": [
         {
-          "id": "3ea24399-124b-4d20-b74b-abe043f1650f",
+          "id": "b925d984-67ee-44ba-8ba2-dbc94dc86dc4",
           "text": "Rispetto delle normative ambientali",
           "type": "istar.Goal",
-          "x": 1347,
-          "y": 1253,
+          "x": 757,
+          "y": 650,
           "customProperties": {
             "Description": ""
           }
         },
         {
-          "id": "74911419-54b0-411e-98c4-7bb6eacd0cb2",
-          "text": "Gestione del ritiro e smaltimento degli scarti di lavorazione",
+          "id": "89bf9477-829a-4031-a5f7-e8adb9884d64",
+          "text": "Vendita prodotti ittici",
           "type": "istar.Goal",
-          "x": 1182,
-          "y": 1247,
+          "x": 1229,
+          "y": 549,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "7a909a6d-c087-4d62-86ad-42416fb2cea8",
+          "text": "Trattamento",
+          "type": "istar.Task",
+          "x": 1065,
+          "y": 915,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "4c625708-0c2e-4c72-a2e2-792c489b0ceb",
+          "text": "Stipula del contratto",
+          "type": "istar.Task",
+          "x": 1024,
+          "y": 691,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "b0dfb61f-c3c5-483c-b0d8-ca5868610e7c",
+          "text": "Monitoraggio della qualità dell'acqua",
+          "type": "istar.Task",
+          "x": 1327,
+          "y": 917,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "c3a69776-0553-48cb-9c83-8f38b287154d",
+          "text": "Pesca",
+          "type": "istar.Task",
+          "x": 1445,
+          "y": 688,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "15187953-cb7e-4809-bad1-da500d2f5fb4",
+          "text": "Consegna prodotti ittici",
+          "type": "istar.Task",
+          "x": 1667,
+          "y": 676,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "e1b8c264-53c9-4d19-a34e-9260f877bd5a",
+          "text": "Ritiro in sede",
+          "type": "istar.Task",
+          "x": 1565,
+          "y": 792,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "f093760c-f82e-4180-befb-97f5be0aa556",
+          "text": "Spedizione",
+          "type": "istar.Task",
+          "x": 1771,
+          "y": 791,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "0d30b76c-f2bc-497a-9ee0-6db2779e7728",
+          "text": "Allevamento e riproduzione di pesce",
+          "type": "istar.Task",
+          "x": 1170,
+          "y": 751,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "5e7310bd-848d-49f6-8a63-d201904cf83a",
+          "text": "Certificare la provenienza dei prodotti ittici",
+          "type": "istar.Goal",
+          "x": 967,
+          "y": 781,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "8d54087b-b0bd-4cb0-9843-3e61086f18dd",
+      "text": "Azienda di trasformazione",
+      "type": "istar.Actor",
+      "x": 656,
+      "y": 39,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "57cca391-c8f7-42d5-8460-d9cf115460ae",
+          "text": "Conversione del prodotto agricolo/ittico in prodotto finito di qualità",
+          "type": "istar.Goal",
+          "x": 1261,
+          "y": 39,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "a60cfcb3-6d88-446b-95fe-95ac9f7670e3",
+          "text": "Produzione materie prime vegetali e animali",
+          "type": "istar.Goal",
+          "x": 1235,
+          "y": 179,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "fc6543e5-8675-4f04-9745-b27c384c009e",
+          "text": "Controllo qualità dei prodotti trasformati",
+          "type": "istar.Task",
+          "x": 1279,
+          "y": 354,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "5bbbc483-91a4-4fa4-93b3-9c080ee4c507",
+          "text": "Confezionamento prodotti finiti ",
+          "type": "istar.Task",
+          "x": 922,
+          "y": 380,
+          "customProperties": {
+            "Description": "Esecuzione delle attività preliminari e necessarie per poter produrre la materia prima (esempio: lavorazione del terreno, semina, costruzione recinti per animali ecc...)"
+          }
+        },
+        {
+          "id": "48b4c3f8-f515-4979-b8bd-cdb033e144e7",
+          "text": "Lavorazione materie prime",
+          "type": "istar.Task",
+          "x": 1126,
+          "y": 387,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "e22f09f4-bbf0-48f8-99d1-d2abc1da2ddf",
+          "text": "Gestione scarti di lavorazione",
+          "type": "istar.Task",
+          "x": 1021,
+          "y": 183,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "c2c6ec93-b3af-4580-a581-ac38418a0f04",
+          "text": "Registrazione dati su fertilizzanti e pesticidi",
+          "type": "istar.Task",
+          "x": 1448,
+          "y": 329,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "f423d730-2aa9-402b-b1fe-46ee3df63032",
+          "text": "Ritiro in sede",
+          "type": "istar.Task",
+          "x": 1797,
+          "y": 152,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "aca959ef-7e83-4fa4-98ce-89eceaf32ac8",
+          "text": "Consegna materie prime",
+          "type": "istar.Task",
+          "x": 1439,
+          "y": 184,
           "customProperties": {
             "Description": ""
           }
@@ -435,18 +607,28 @@
           "id": "f0f5434f-bb8d-4985-92d2-866eb40029cd",
           "text": "Monitoraggio delle emissioni",
           "type": "istar.Task",
-          "x": 1111,
-          "y": 1344,
+          "x": 1789,
+          "y": 245,
           "customProperties": {
             "Description": ""
           }
         },
         {
-          "id": "c6ecf7d5-470d-4f11-a669-04cbefbe1358",
-          "text": "Ispezione e manutenzione degli impianti di trattamento",
-          "type": "istar.Task",
-          "x": 1248,
-          "y": 1327,
+          "id": "bf619f47-a1a4-472e-94c2-0cef98ae6ff6",
+          "text": "Rispetto delle normative ambientali",
+          "type": "istar.Goal",
+          "x": 656,
+          "y": 279,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "9a806273-eb50-436c-aa1f-39688e96520a",
+          "text": "Certificare la provenienza delle materie prime vegetali e animali",
+          "type": "istar.Goal",
+          "x": 683,
+          "y": 139,
           "customProperties": {
             "Description": ""
           }
@@ -457,8 +639,8 @@
       "id": "29e45b54-268d-4702-a10f-91ab9aafbeb8",
       "text": "Azienda di stoccaggio",
       "type": "istar.Actor",
-      "x": 1115,
-      "y": 934,
+      "x": 2216,
+      "y": 368,
       "customProperties": {
         "Description": ""
       },
@@ -467,8 +649,8 @@
           "id": "92529a0d-acef-4532-a8f7-11658eb84ccd",
           "text": "Conservazione dei prodotti",
           "type": "istar.Goal",
-          "x": 1237,
-          "y": 944,
+          "x": 2267,
+          "y": 415,
           "customProperties": {
             "Description": ""
           }
@@ -487,18 +669,18 @@
           "id": "72315992-3919-477a-9379-cead7d668fef",
           "text": "Riduzione scarti e deterioramento prodotti",
           "type": "istar.Quality",
-          "x": 1463,
-          "y": 943,
+          "x": 2635,
+          "y": 369,
           "customProperties": {
             "Description": ""
           }
         },
         {
-          "id": "f2eef6a8-95e5-445b-bcf6-aa6c9b775223",
-          "text": "Monitoraggio temperatura e umidità nei magazzini",
-          "type": "istar.Task",
-          "x": 1123,
-          "y": 1054,
+          "id": "13427632-7a39-48f8-bdd1-7b3373d33db8",
+          "text": "Documento di trasporto",
+          "type": "istar.Resource",
+          "x": 2650,
+          "y": 615,
           "customProperties": {
             "Description": ""
           }
@@ -507,48 +689,30 @@
           "id": "fd445704-5097-4ca0-9aa5-2686595c296c",
           "text": "Effettuazione ispezioni periodiche sui prodotti",
           "type": "istar.Task",
-          "x": 1382,
-          "y": 1051,
+          "x": 2632,
+          "y": 495,
           "customProperties": {
             "Description": ""
           }
-        },
+        }
+      ]
+    },
+    {
+      "id": "3bdc7e5c-c970-4c9c-b869-57573e98c784",
+      "text": "Controllo qualità",
+      "type": "istar.Actor",
+      "x": 218,
+      "y": 663,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
         {
-          "id": "0860a154-797b-4047-953e-fbdc7f119274",
-          "text": "Registrazione e monitoraggio delle date di scadenza",
-          "type": "istar.Task",
-          "x": 1527,
-          "y": 1056,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "37c36659-50db-4809-a619-2c8b213688e8",
-          "text": "Tracciamento movimenti interni",
-          "type": "istar.Task",
-          "x": 1665,
-          "y": 1075,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "16a21247-c941-48bf-aa5d-9698962fe00e",
-          "text": "Monitoraggio scorte minime",
-          "type": "istar.Task",
-          "x": 1795,
-          "y": 1074,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "8aa544d6-0886-4cff-9cc9-705d8c6ce1bf",
-          "text": "Controllo dei sistemi di refrigerazione",
-          "type": "istar.Task",
-          "x": 1254,
-          "y": 1056,
+          "id": "dbeaa6b7-7980-4ba7-ad52-162ad1753516",
+          "text": "Certificazione della qualità",
+          "type": "istar.Goal",
+          "x": 288,
+          "y": 702,
           "customProperties": {
             "Description": ""
           }
@@ -559,23 +723,11 @@
   "orphans": [],
   "dependencies": [
     {
-      "id": "f3f211c7-995c-41f9-8e6b-e8867ea602a9",
-      "text": "Trasporto materie prime",
-      "type": "istar.Task",
-      "x": 1209,
-      "y": 383,
-      "customProperties": {
-        "Description": ""
-      },
-      "source": "9de22ea0-16ad-4cf2-b451-08be730f296e",
-      "target": "7e542b46-c714-4836-adbf-ee04d5367455"
-    },
-    {
-      "id": "dc934011-0c4a-4eb7-8994-467504127fff",
+      "id": "c82e6477-2a3d-4e9a-9129-92ea2b83fcc0",
       "text": "Trasporto prodotti ittici",
       "type": "istar.Task",
-      "x": 1086,
-      "y": 791,
+      "x": 2164,
+      "y": 764,
       "customProperties": {
         "Description": ""
       },
@@ -583,273 +735,632 @@
       "target": "7e542b46-c714-4836-adbf-ee04d5367455"
     },
     {
-      "id": "7efe90b4-f306-4ace-bdbb-c5b028c60552",
-      "text": "Smaltimento scarti di lavorazione",
+      "id": "853f9eee-8c5b-4eca-939e-72f14ca6db4e",
+      "text": "Trasporto materie prime",
       "type": "istar.Task",
-      "x": 942,
-      "y": 1142,
-      "customProperties": {
-        "Description": "Chi trasporta gli scarti all'azienda di smaltimento?"
-      },
-      "source": "e22f09f4-bbf0-48f8-99d1-d2abc1da2ddf",
-      "target": "74911419-54b0-411e-98c4-7bb6eacd0cb2"
-    },
-    {
-      "id": "948cb628-9141-44e4-a07c-6bb0ad4bbb38",
-      "text": "Stoccaggio prodotti finiti",
-      "type": "istar.Task",
-      "x": 878,
-      "y": 878,
+      "x": 2152,
+      "y": 246,
       "customProperties": {
         "Description": ""
       },
-      "source": "6aff70bd-e761-4484-9fa1-c674943b5687",
+      "source": "9de22ea0-16ad-4cf2-b451-08be730f296e",
+      "target": "7e542b46-c714-4836-adbf-ee04d5367455"
+    },
+    {
+      "id": "863e64f2-e1de-4f58-ac4b-fda840efb086",
+      "text": "Certificato di provenienza",
+      "type": "istar.Resource",
+      "x": 565,
+      "y": 1026,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "7515da64-c98a-4766-aed3-fb448d1b21d7",
+      "target": "5e7310bd-848d-49f6-8a63-d201904cf83a"
+    },
+    {
+      "id": "e6a24562-ea7c-4232-bf0a-90f903d916d3",
+      "text": "Certificato di provenienza",
+      "type": "istar.Resource",
+      "x": 40,
+      "y": 843,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "7515da64-c98a-4766-aed3-fb448d1b21d7",
+      "target": "9a806273-eb50-436c-aa1f-39688e96520a"
+    },
+    {
+      "id": "599e85a6-ecd6-4db5-beec-08546f721251",
+      "text": "Certificato di qualità",
+      "type": "istar.Resource",
+      "x": 516,
+      "y": 484.5,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "bf619f47-a1a4-472e-94c2-0cef98ae6ff6",
+      "target": "dbeaa6b7-7980-4ba7-ad52-162ad1753516"
+    },
+    {
+      "id": "1af74384-82b8-4d6b-b561-2606e88f47d0",
+      "text": "Certificato di qualità",
+      "type": "istar.Resource",
+      "x": 567,
+      "y": 815,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "b925d984-67ee-44ba-8ba2-dbc94dc86dc4",
+      "target": "dbeaa6b7-7980-4ba7-ad52-162ad1753516"
+    },
+    {
+      "id": "804a8f0c-321b-4ffd-b9b6-96b64cd06e46",
+      "text": "Trasporto prodotti trasformati",
+      "type": "istar.Task",
+      "x": 2296,
+      "y": 862,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "c9a21419-05d2-48ab-a4b6-f38615a80e1f",
+      "target": "7e542b46-c714-4836-adbf-ee04d5367455"
+    },
+    {
+      "id": "2be53d3e-b9c4-4150-a713-ee86f6b188b4",
+      "text": "Stoccaggio",
+      "type": "istar.Task",
+      "x": 2513,
+      "y": 988,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "c9a21419-05d2-48ab-a4b6-f38615a80e1f",
       "target": "92529a0d-acef-4532-a8f7-11658eb84ccd"
+    },
+    {
+      "id": "f9526b88-4c3d-4be3-a595-9d9d20f82e2c",
+      "text": "Smaltimento scarti di lavorazione",
+      "type": "istar.Task",
+      "x": 1443,
+      "y": 1623,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "e22f09f4-bbf0-48f8-99d1-d2abc1da2ddf",
+      "target": "1d70ff45-a6b6-4754-b074-cd3b55890ad8"
+    },
+    {
+      "id": "7284b8e6-f659-4dd0-bdf2-8a0f40bf241e",
+      "text": "Certificato di qualità",
+      "type": "istar.Resource",
+      "x": 402,
+      "y": 1239,
+      "customProperties": {
+        "Description": ""
+      },
+      "source": "3ea24399-124b-4d20-b74b-abe043f1650f",
+      "target": "dbeaa6b7-7980-4ba7-ad52-162ad1753516"
     }
   ],
   "links": [
     {
-      "id": "958dbbd1-d84e-4b53-b7cb-4e3676b11585",
+      "id": "c9a8c3ea-9029-4eaa-9ff0-06d19cece972",
       "type": "istar.DependencyLink",
-      "source": "948cb628-9141-44e4-a07c-6bb0ad4bbb38",
+      "source": "7284b8e6-f659-4dd0-bdf2-8a0f40bf241e",
+      "target": "dbeaa6b7-7980-4ba7-ad52-162ad1753516"
+    },
+    {
+      "id": "becc7d32-723d-40a9-95d9-0e2ef34852c4",
+      "type": "istar.DependencyLink",
+      "source": "3ea24399-124b-4d20-b74b-abe043f1650f",
+      "target": "7284b8e6-f659-4dd0-bdf2-8a0f40bf241e"
+    },
+    {
+      "id": "0f027f7f-7f0f-4d8a-abc1-9cdfc8ea2d12",
+      "type": "istar.DependencyLink",
+      "source": "f9526b88-4c3d-4be3-a595-9d9d20f82e2c",
+      "target": "1d70ff45-a6b6-4754-b074-cd3b55890ad8"
+    },
+    {
+      "id": "cfd83993-0c54-43df-ab42-952aa08ea81f",
+      "type": "istar.DependencyLink",
+      "source": "e22f09f4-bbf0-48f8-99d1-d2abc1da2ddf",
+      "target": "f9526b88-4c3d-4be3-a595-9d9d20f82e2c"
+    },
+    {
+      "id": "47db5a5b-a831-40ed-8d81-8162d2cc8d40",
+      "type": "istar.DependencyLink",
+      "source": "2be53d3e-b9c4-4150-a713-ee86f6b188b4",
       "target": "92529a0d-acef-4532-a8f7-11658eb84ccd"
     },
     {
-      "id": "9e514410-2a71-43db-81c0-55ce82f32325",
+      "id": "78f3194e-9f2d-42b6-9c6b-ffefe5f57abf",
       "type": "istar.DependencyLink",
-      "source": "6aff70bd-e761-4484-9fa1-c674943b5687",
-      "target": "948cb628-9141-44e4-a07c-6bb0ad4bbb38"
+      "source": "c9a21419-05d2-48ab-a4b6-f38615a80e1f",
+      "target": "2be53d3e-b9c4-4150-a713-ee86f6b188b4"
     },
     {
-      "id": "1fac49ae-1279-4b28-9fae-3f571a49b154",
+      "id": "2f0c350a-deb2-41d1-90ba-57472e9aac94",
       "type": "istar.DependencyLink",
-      "source": "7efe90b4-f306-4ace-bdbb-c5b028c60552",
-      "target": "74911419-54b0-411e-98c4-7bb6eacd0cb2"
-    },
-    {
-      "id": "7759d024-467e-4ba2-b751-5e6c740c3523",
-      "type": "istar.DependencyLink",
-      "source": "e22f09f4-bbf0-48f8-99d1-d2abc1da2ddf",
-      "target": "7efe90b4-f306-4ace-bdbb-c5b028c60552"
-    },
-    {
-      "id": "e3900d4c-e2e0-4382-b922-caa783ef4ef1",
-      "type": "istar.DependencyLink",
-      "source": "dc934011-0c4a-4eb7-8994-467504127fff",
+      "source": "804a8f0c-321b-4ffd-b9b6-96b64cd06e46",
       "target": "7e542b46-c714-4836-adbf-ee04d5367455"
     },
     {
-      "id": "86cb6810-a93b-4fd1-81a8-508689bb5d5d",
+      "id": "d8e65adb-7921-4c5b-a774-a30abac03c24",
       "type": "istar.DependencyLink",
-      "source": "f093760c-f82e-4180-befb-97f5be0aa556",
-      "target": "dc934011-0c4a-4eb7-8994-467504127fff"
+      "source": "c9a21419-05d2-48ab-a4b6-f38615a80e1f",
+      "target": "804a8f0c-321b-4ffd-b9b6-96b64cd06e46"
     },
     {
-      "id": "6e622c4d-b8d6-4587-b46f-cc2fbf1343ac",
+      "id": "2e18091b-3845-44b6-b6ac-4c6a9ce2608d",
       "type": "istar.DependencyLink",
-      "source": "f3f211c7-995c-41f9-8e6b-e8867ea602a9",
+      "source": "1af74384-82b8-4d6b-b561-2606e88f47d0",
+      "target": "dbeaa6b7-7980-4ba7-ad52-162ad1753516"
+    },
+    {
+      "id": "b80245f2-f770-4dee-91de-27403cb308cd",
+      "type": "istar.DependencyLink",
+      "source": "b925d984-67ee-44ba-8ba2-dbc94dc86dc4",
+      "target": "1af74384-82b8-4d6b-b561-2606e88f47d0"
+    },
+    {
+      "id": "97e6d14c-630d-4c5c-b45f-f0f1c5217e36",
+      "type": "istar.DependencyLink",
+      "source": "599e85a6-ecd6-4db5-beec-08546f721251",
+      "target": "dbeaa6b7-7980-4ba7-ad52-162ad1753516"
+    },
+    {
+      "id": "b18af04e-1ab9-4891-8fa5-d1ef96cdb859",
+      "type": "istar.DependencyLink",
+      "source": "bf619f47-a1a4-472e-94c2-0cef98ae6ff6",
+      "target": "599e85a6-ecd6-4db5-beec-08546f721251"
+    },
+    {
+      "id": "d89ac90f-4022-4dd4-ae43-f7cc30a23519",
+      "type": "istar.DependencyLink",
+      "source": "e6a24562-ea7c-4232-bf0a-90f903d916d3",
+      "target": "9a806273-eb50-436c-aa1f-39688e96520a"
+    },
+    {
+      "id": "6a8a82fa-5115-4dd5-969a-57f4fcc50061",
+      "type": "istar.DependencyLink",
+      "source": "7515da64-c98a-4766-aed3-fb448d1b21d7",
+      "target": "e6a24562-ea7c-4232-bf0a-90f903d916d3"
+    },
+    {
+      "id": "26314c82-4292-4896-8977-0c82ada60e07",
+      "type": "istar.DependencyLink",
+      "source": "863e64f2-e1de-4f58-ac4b-fda840efb086",
+      "target": "5e7310bd-848d-49f6-8a63-d201904cf83a"
+    },
+    {
+      "id": "b447be72-8ee2-4135-8959-f0eb4b32a0af",
+      "type": "istar.DependencyLink",
+      "source": "7515da64-c98a-4766-aed3-fb448d1b21d7",
+      "target": "863e64f2-e1de-4f58-ac4b-fda840efb086"
+    },
+    {
+      "id": "14be8892-1c3c-41e8-8599-18257d6bae84",
+      "type": "istar.DependencyLink",
+      "source": "853f9eee-8c5b-4eca-939e-72f14ca6db4e",
       "target": "7e542b46-c714-4836-adbf-ee04d5367455"
     },
     {
-      "id": "128db494-5320-4df9-b762-8ec21cb81c96",
+      "id": "c12d17f8-3048-4c43-90f6-bbf74033edd3",
       "type": "istar.DependencyLink",
       "source": "9de22ea0-16ad-4cf2-b451-08be730f296e",
-      "target": "f3f211c7-995c-41f9-8e6b-e8867ea602a9"
+      "target": "853f9eee-8c5b-4eca-939e-72f14ca6db4e"
     },
     {
-      "id": "32b39d96-f504-476d-8e2a-14eb914d3e79",
+      "id": "0a577130-4129-480a-9a25-99aeb0d5e5bf",
+      "type": "istar.DependencyLink",
+      "source": "c82e6477-2a3d-4e9a-9129-92ea2b83fcc0",
+      "target": "7e542b46-c714-4836-adbf-ee04d5367455"
+    },
+    {
+      "id": "db56e069-17a6-4b0f-a8a7-4cd5e864b23e",
+      "type": "istar.DependencyLink",
+      "source": "f093760c-f82e-4180-befb-97f5be0aa556",
+      "target": "c82e6477-2a3d-4e9a-9129-92ea2b83fcc0"
+    },
+    {
+      "id": "aab77945-6480-437c-8abc-4f153ff6abd1",
       "type": "istar.AndRefinementLink",
       "source": "a7cd0f80-d2ff-4303-a892-785d65b3a2cf",
       "target": "a60cfcb3-6d88-446b-95fe-95ac9f7670e3"
     },
     {
-      "id": "26b0095c-e9d9-4783-85db-edbeb4a5b19f",
+      "id": "86aeea35-8bbb-424b-9fa9-33c85c923e2d",
       "type": "istar.AndRefinementLink",
       "source": "f0f4cc48-0650-4e84-bd72-1f7bb5933358",
       "target": "a60cfcb3-6d88-446b-95fe-95ac9f7670e3"
     },
     {
-      "id": "c4a652c0-efc1-4966-aa98-1bd9b657b181",
+      "id": "2a92d720-e764-4906-8983-625edd952c70",
       "type": "istar.AndRefinementLink",
       "source": "332d35f9-406a-4c73-aae1-65c488475c7d",
       "target": "a60cfcb3-6d88-446b-95fe-95ac9f7670e3"
     },
     {
-      "id": "b691d6f5-c148-4b07-b394-d1d30812d2b2",
+      "id": "ea156383-042c-4808-b26a-4540ab629471",
       "type": "istar.AndRefinementLink",
       "source": "6d455901-4279-4ff5-88be-8dc34f89db0c",
       "target": "c0b1bad0-5140-4c44-86d8-e4f3082e3665"
     },
     {
-      "id": "390761f4-f7cb-4348-91ed-7d3390fe5dc7",
+      "id": "8f1b2f0b-984b-4926-a14d-5eb14f3ac6e1",
       "type": "istar.AndRefinementLink",
       "source": "a60cfcb3-6d88-446b-95fe-95ac9f7670e3",
       "target": "c0b1bad0-5140-4c44-86d8-e4f3082e3665"
     },
     {
-      "id": "d2b7e96a-c5fd-4f90-ac1f-d2f8721f9811",
+      "id": "a132172e-779d-4c12-8957-0b8abbb3b44b",
       "type": "istar.AndRefinementLink",
       "source": "c2c6ec93-b3af-4580-a581-ac38418a0f04",
       "target": "a60cfcb3-6d88-446b-95fe-95ac9f7670e3"
     },
     {
-      "id": "cf5ef7e2-dac0-43db-b12e-96f878c99089",
+      "id": "49598c59-3e00-45ba-839f-b668d985188c",
       "type": "istar.AndRefinementLink",
       "source": "aca959ef-7e83-4fa4-98ce-89eceaf32ac8",
       "target": "c0b1bad0-5140-4c44-86d8-e4f3082e3665"
     },
     {
-      "id": "5f4ab4dd-bfa8-4188-a9bd-1d4ac6c207f3",
+      "id": "87f099c8-0efe-4d25-b34e-1a5ad64e19ec",
       "type": "istar.OrRefinementLink",
       "source": "f423d730-2aa9-402b-b1fe-46ee3df63032",
       "target": "aca959ef-7e83-4fa4-98ce-89eceaf32ac8"
     },
     {
-      "id": "b23f82de-44d1-4afc-98a7-d10ee64899e0",
+      "id": "6ebe4d9d-d613-4071-aada-0af0085c8826",
       "type": "istar.OrRefinementLink",
       "source": "9de22ea0-16ad-4cf2-b451-08be730f296e",
       "target": "aca959ef-7e83-4fa4-98ce-89eceaf32ac8"
     },
     {
-      "id": "848db6fa-3ca7-4fc9-9238-8b7a92bc1bae",
+      "id": "ee5a52b1-724b-4067-9490-2667b5522a55",
       "type": "istar.AndRefinementLink",
       "source": "4c625708-0c2e-4c72-a2e2-792c489b0ceb",
       "target": "89bf9477-829a-4031-a5f7-e8adb9884d64"
     },
     {
-      "id": "8488b68d-a3d3-441f-be25-4e9220f81c3e",
+      "id": "f0d9e143-714b-4517-9ce0-e02751681b32",
       "type": "istar.AndRefinementLink",
       "source": "c3a69776-0553-48cb-9c83-8f38b287154d",
       "target": "89bf9477-829a-4031-a5f7-e8adb9884d64"
     },
     {
-      "id": "f92d1347-03c5-4cf2-b4f7-78a0853e253d",
+      "id": "e5dfb74d-53f8-4f4f-9713-756be51bc7a0",
       "type": "istar.AndRefinementLink",
       "source": "15187953-cb7e-4809-bad1-da500d2f5fb4",
       "target": "89bf9477-829a-4031-a5f7-e8adb9884d64"
     },
     {
-      "id": "986fadcf-21d8-4130-bcb9-261a16c34f3a",
+      "id": "7dcf8c56-5fb2-4821-8406-317dd37b1641",
       "type": "istar.OrRefinementLink",
       "source": "e1b8c264-53c9-4d19-a34e-9260f877bd5a",
       "target": "15187953-cb7e-4809-bad1-da500d2f5fb4"
     },
     {
-      "id": "c3fd53f4-07b9-4acd-8c61-f1c3f3b555d8",
+      "id": "9d02408a-0fd6-4dbc-92fe-c0806be9fa35",
       "type": "istar.OrRefinementLink",
       "source": "f093760c-f82e-4180-befb-97f5be0aa556",
       "target": "15187953-cb7e-4809-bad1-da500d2f5fb4"
     },
     {
-      "id": "bc590197-0ef5-4445-8b62-f5080e83ff2b",
+      "id": "9c9d4bcb-6795-4451-87f5-9b8bb0352b92",
       "type": "istar.AndRefinementLink",
       "source": "0d30b76c-f2bc-497a-9ee0-6db2779e7728",
       "target": "89bf9477-829a-4031-a5f7-e8adb9884d64"
     },
     {
-      "id": "dd425e39-6bd2-4228-b6c4-86745c334ec2",
+      "id": "89ab03c3-a4eb-4f0c-9855-4f2cd7d38244",
       "type": "istar.AndRefinementLink",
       "source": "7a909a6d-c087-4d62-86ad-42416fb2cea8",
       "target": "0d30b76c-f2bc-497a-9ee0-6db2779e7728"
     },
     {
-      "id": "228aa883-52e2-4102-9d71-3fe4b09ad45a",
+      "id": "b607d58b-5ac6-4954-aaea-5743f8672792",
       "type": "istar.AndRefinementLink",
       "source": "b0dfb61f-c3c5-483c-b0d8-ca5868610e7c",
       "target": "0d30b76c-f2bc-497a-9ee0-6db2779e7728"
     },
     {
-      "id": "f48e4b2c-2d95-4aee-b757-99da9cc1fe09",
+      "id": "6cef3cf8-fe32-4963-9562-39a9b46ba86a",
       "type": "istar.ContributionLink",
       "source": "e7a4950a-ea9c-41ee-a4fe-a36e6b5d8f8d",
       "target": "3883c3d6-34cb-4b6e-926a-5923577dfc28",
       "label": "help"
     },
     {
-      "id": "67b0748f-2a27-4ce3-b759-034fa939740c",
+      "id": "b637eb55-2c3a-4275-9b2b-375649b26d63",
       "type": "istar.NeededByLink",
       "source": "13427632-7a39-48f8-bdd1-7b3373d33db8",
       "target": "e7a4950a-ea9c-41ee-a4fe-a36e6b5d8f8d"
     },
     {
-      "id": "5687d56d-7eff-4b08-b19a-a9171312ef60",
+      "id": "881e2ba3-c74a-497a-92e7-3d2b223d15a9",
       "type": "istar.ContributionLink",
       "source": "fd445704-5097-4ca0-9aa5-2686595c296c",
       "target": "72315992-3919-477a-9379-cead7d668fef",
       "label": "make"
     },
     {
-      "id": "8b7e9752-3dca-4554-a841-ed4f8acb263d",
+      "id": "dbaf0b3f-4baf-453a-8c60-1b0cb1845dd0",
       "type": "istar.ContributionLink",
       "source": "0860a154-797b-4047-953e-fbdc7f119274",
       "target": "72315992-3919-477a-9379-cead7d668fef",
       "label": "help"
     },
     {
-      "id": "3711a0b5-eb64-49e9-8b8d-c20e0030aa81",
+      "id": "2cb07c25-857f-4345-9fb2-6c55a814d297",
       "type": "istar.AndRefinementLink",
       "source": "37c36659-50db-4809-a619-2c8b213688e8",
       "target": "440b3663-68b8-4876-a9d0-fefbbd66ebc1"
     },
     {
-      "id": "2148c79e-e55a-4a74-bb51-849d2d2a8c18",
+      "id": "9ba0006c-2af0-426f-9a54-70cd59c758bd",
       "type": "istar.AndRefinementLink",
       "source": "16a21247-c941-48bf-aa5d-9698962fe00e",
       "target": "440b3663-68b8-4876-a9d0-fefbbd66ebc1"
     },
     {
-      "id": "d0115394-3de2-4d61-85cb-16ebba901c18",
+      "id": "c6e7e87c-531f-4740-9815-4ae45b668ebf",
       "type": "istar.AndRefinementLink",
       "source": "0860a154-797b-4047-953e-fbdc7f119274",
       "target": "440b3663-68b8-4876-a9d0-fefbbd66ebc1"
     },
     {
-      "id": "989b7f0a-3b76-43f3-af81-addd782a4aac",
+      "id": "f8249eb2-94bb-43b1-90df-73a7ec40b3c8",
       "type": "istar.AndRefinementLink",
       "source": "fd445704-5097-4ca0-9aa5-2686595c296c",
       "target": "92529a0d-acef-4532-a8f7-11658eb84ccd"
     },
     {
-      "id": "ac9afb7f-0c38-484e-9b39-77ae85a590a4",
+      "id": "c27bd13e-cb5f-486a-9907-1a4a197ab2ae",
       "type": "istar.AndRefinementLink",
       "source": "8aa544d6-0886-4cff-9cc9-705d8c6ce1bf",
       "target": "92529a0d-acef-4532-a8f7-11658eb84ccd"
     },
     {
-      "id": "c0ba4fda-d5c1-4973-bb65-8ec0fe7dea68",
+      "id": "92b66ed3-b133-449c-866e-ff2a42898e52",
       "type": "istar.AndRefinementLink",
       "source": "f2eef6a8-95e5-445b-bcf6-aa6c9b775223",
       "target": "92529a0d-acef-4532-a8f7-11658eb84ccd"
     },
     {
-      "id": "d41a6f3d-6f22-4f44-9bfb-b6fe80c5a9ec",
-      "type": "istar.AndRefinementLink",
-      "source": "f0f5434f-bb8d-4985-92d2-866eb40029cd",
-      "target": "74911419-54b0-411e-98c4-7bb6eacd0cb2"
-    },
-    {
-      "id": "6d0a39f1-d540-4673-8d8e-cca0c389d1b6",
-      "type": "istar.AndRefinementLink",
-      "source": "c6ecf7d5-470d-4f11-a669-04cbefbe1358",
-      "target": "74911419-54b0-411e-98c4-7bb6eacd0cb2"
-    },
-    {
-      "id": "028989e8-78f1-41b7-9438-0fa66c9c9e17",
-      "type": "istar.AndRefinementLink",
-      "source": "fc6543e5-8675-4f04-9745-b27c384c009e",
-      "target": "57cca391-c8f7-42d5-8460-d9cf115460ae"
-    },
-    {
-      "id": "d08140f2-d78d-4e1b-9251-76df9c82ccab",
+      "id": "3d84a81f-c1ca-417d-b263-71b8427de4f5",
       "type": "istar.AndRefinementLink",
       "source": "48b4c3f8-f515-4979-b8bd-cdb033e144e7",
       "target": "57cca391-c8f7-42d5-8460-d9cf115460ae"
     },
     {
-      "id": "4d0dcf3e-39f5-41aa-af33-50ec74313a95",
+      "id": "eae18b6e-fd21-4279-bea6-1000cdf19fb3",
       "type": "istar.AndRefinementLink",
       "source": "5bbbc483-91a4-4fa4-93b3-9c080ee4c507",
       "target": "57cca391-c8f7-42d5-8460-d9cf115460ae"
+    },
+    {
+      "id": "6e61973a-c599-4528-882f-1aceff07217f",
+      "type": "istar.AndRefinementLink",
+      "source": "e22f09f4-bbf0-48f8-99d1-d2abc1da2ddf",
+      "target": "57cca391-c8f7-42d5-8460-d9cf115460ae"
+    },
+    {
+      "id": "f120014a-e91a-4974-a0b3-00cc94e6b987",
+      "type": "istar.ContributionLink",
+      "source": "fe280f49-d4c5-4069-8368-764a4599ac2f",
+      "target": "c743c7b5-51bd-4a32-bbfa-56b12bc212ad",
+      "label": "help"
+    },
+    {
+      "id": "6f5aedad-c21b-4485-bb56-054b702fe838",
+      "type": "istar.AndRefinementLink",
+      "source": "7515da64-c98a-4766-aed3-fb448d1b21d7",
+      "target": "a9257a6e-1a07-4556-8024-31659f90e97a"
+    },
+    {
+      "id": "3469bb18-10af-44d3-9120-6a86949c76a9",
+      "type": "istar.AndRefinementLink",
+      "source": "bffa9614-7b20-4bfc-a0bc-2b7c5b2a61a6",
+      "target": "a9257a6e-1a07-4556-8024-31659f90e97a"
+    },
+    {
+      "id": "a836ad75-6332-425c-a087-9599d91493c4",
+      "type": "istar.NeededByLink",
+      "source": "117168ad-9a27-4b69-bd07-875cdab8a0b5",
+      "target": "bffa9614-7b20-4bfc-a0bc-2b7c5b2a61a6"
+    },
+    {
+      "id": "7b96d353-3187-4bd6-a3af-1c90543c4f18",
+      "type": "istar.ContributionLink",
+      "source": "a9257a6e-1a07-4556-8024-31659f90e97a",
+      "target": "19dd2c23-4d1c-4aed-afe4-526d63c6cc30",
+      "label": "help"
+    },
+    {
+      "id": "df7f391a-8d7f-4fed-b68f-eafc057feda6",
+      "type": "istar.OrRefinementLink",
+      "source": "d0d26749-95b4-4212-9498-bcce77e6236d",
+      "target": "6aff70bd-e761-4484-9fa1-c674943b5687"
+    },
+    {
+      "id": "93f49633-593f-4234-98bf-b84faed5ae15",
+      "type": "istar.OrRefinementLink",
+      "source": "c9a21419-05d2-48ab-a4b6-f38615a80e1f",
+      "target": "6aff70bd-e761-4484-9fa1-c674943b5687"
+    },
+    {
+      "id": "a7d67729-afef-4e23-b8ca-d97604cf9d5b",
+      "type": "istar.AndRefinementLink",
+      "source": "35904185-bc8a-45ef-beb8-3cf6d122fc94",
+      "target": "1d70ff45-a6b6-4754-b074-cd3b55890ad8"
+    },
+    {
+      "id": "ed5f870b-6295-49ac-bca2-f9e82ff44af0",
+      "type": "istar.AndRefinementLink",
+      "source": "f0f5434f-bb8d-4985-92d2-866eb40029cd",
+      "target": "1d70ff45-a6b6-4754-b074-cd3b55890ad8"
+    },
+    {
+      "id": "4aee3ad6-1bc0-430f-a1e7-1628f4a58c66",
+      "type": "istar.AndRefinementLink",
+      "source": "3fc95ef0-5900-4625-8961-41f759a83dcf",
+      "target": "1d70ff45-a6b6-4754-b074-cd3b55890ad8"
+    },
+    {
+      "id": "d8e244a1-3690-4994-972d-903cb8ffe998",
+      "type": "istar.ContributionLink",
+      "source": "5cb02b29-6110-43b3-bfbe-2dcd7d44d490",
+      "target": "c667deef-cf43-4ebd-8481-94ad8e288f59",
+      "label": "help"
+    }
+  ],
+  "display": {
+    "92529a0d-acef-4532-a8f7-11658eb84ccd": {
+      "width": 161.97915649414062,
+      "height": 34.666664123535156
+    },
+    "440b3663-68b8-4876-a9d0-fefbbd66ebc1": {
+      "width": 153.97915649414062,
+      "height": 33.666664123535156
+    },
+    "72315992-3919-477a-9379-cead7d668fef": {
+      "width": 155.02590942382812,
+      "height": 55.672401428222656
+    },
+    "f2eef6a8-95e5-445b-bcf6-aa6c9b775223": {
+      "width": 302.9791564941406,
+      "height": 43.666664123535156
+    },
+    "fd445704-5097-4ca0-9aa5-2686595c296c": {
+      "width": 325.9791564941406,
+      "height": 38.666664123535156
+    },
+    "0860a154-797b-4047-953e-fbdc7f119274": {
+      "width": 149.92300415039062,
+      "height": 51.666664123535156
+    },
+    "37c36659-50db-4809-a619-2c8b213688e8": {
+      "width": 192.97915649414062,
+      "height": 42.666664123535156
+    },
+    "16a21247-c941-48bf-aa5d-9698962fe00e": {
+      "width": 208.97915649414062,
+      "height": 48.666664123535156
+    },
+    "8aa544d6-0886-4cff-9cc9-705d8c6ce1bf": {
+      "width": 302.9791564941406,
+      "height": 49.666664123535156
+    },
+    "3ea24399-124b-4d20-b74b-abe043f1650f": {
+      "width": 280.2169189453125,
+      "height": 41.08088684082031
+    },
+    "f0f5434f-bb8d-4985-92d2-866eb40029cd": {
+      "width": 251.2169189453125,
+      "height": 41.08088684082031
+    },
+    "1d70ff45-a6b6-4754-b074-cd3b55890ad8": {
+      "width": 215.2169189453125,
+      "height": 36.58088684082031
+    },
+    "35904185-bc8a-45ef-beb8-3cf6d122fc94": {
+      "width": 228.97915649414062,
+      "height": 33.666664123535156
+    },
+    "3fc95ef0-5900-4625-8961-41f759a83dcf": {
+      "width": 211.47915649414062,
+      "height": 35.666664123535156
+    },
+    "c667deef-cf43-4ebd-8481-94ad8e288f59": {
+      "width": 188.03579711914062,
+      "height": 58.672767639160156
+    },
+    "5cb02b29-6110-43b3-bfbe-2dcd7d44d490": {
+      "width": 324.9791564941406,
+      "height": 38.666664123535156
+    },
+    "5cb62788-8cc9-400d-b86e-2e975e08d12c": {
+      "width": 238.97915649414062,
+      "height": 63.666664123535156
+    },
+    "57cca391-c8f7-42d5-8460-d9cf115460ae": {
+      "width": 340.9791564941406,
+      "height": 49.666664123535156
+    },
+    "c743c7b5-51bd-4a32-bbfa-56b12bc212ad": {
+      "width": 185.26388549804688,
+      "height": 61.7563591003418
+    },
+    "5bbbc483-91a4-4fa4-93b3-9c080ee4c507": {
+      "width": 249.97915649414062,
+      "height": 34.666664123535156
+    },
+    "48b4c3f8-f515-4979-b8bd-cdb033e144e7": {
+      "width": 206.97915649414062,
+      "height": 34.666664123535156
+    },
+    "e22f09f4-bbf0-48f8-99d1-d2abc1da2ddf": {
+      "width": 211.97915649414062,
+      "height": 27.666664123535156
+    },
+    "6aff70bd-e761-4484-9fa1-c674943b5687": {
+      "width": 234.97915649414062,
+      "height": 37.666664123535156
+    },
+    "fe280f49-d4c5-4069-8368-764a4599ac2f": {
+      "width": 262.9791564941406,
+      "height": 41.666664123535156
+    },
+    "a9257a6e-1a07-4556-8024-31659f90e97a": {
+      "width": 180.97915649414062,
+      "height": 67.66666412353516
+    },
+    "117168ad-9a27-4b69-bd07-875cdab8a0b5": {
+      "width": 252.97915649414062,
+      "height": 42.666664123535156
+    },
+    "7515da64-c98a-4766-aed3-fb448d1b21d7": {
+      "width": 361.9791564941406,
+      "height": 37.666664123535156
+    },
+    "bffa9614-7b20-4bfc-a0bc-2b7c5b2a61a6": {
+      "width": 358.96875,
+      "height": 40.25
+    },
+    "19dd2c23-4d1c-4aed-afe4-526d63c6cc30": {
+      "width": 284.0647888183594,
+      "height": 50.671913146972656
+    },
+    "d0d26749-95b4-4212-9498-bcce77e6236d": {
+      "width": 178.97915649414062,
+      "height": 32.666664123535156
+    },
+    "c9a21419-05d2-48ab-a4b6-f38615a80e1f": {
+      "width": 252.97915649414062,
+      "height": 34.666664123535156
+    },
+    "b925d984-67ee-44ba-8ba2-dbc94dc86dc4": {
+      "width": 230.97915649414062,
+      "height": 46.666664123535156
+    },
+    "89bf9477-829a-4031-a5f7-e8adb9884d64": {
+      "width": 144.9666748046875,
+      "height": 62.80000305175781
+    },
+    "7a909a6d-c087-4d62-86ad-42416fb2cea8": {
+      "width": 176.97915649414062,
+      "height": 26.666664123535156
+    },
+    "4c625708-0c2e-4c72-a2e2-792c489b0ceb": {
+      "width": 143.9666748046875,
+      "height": 53.80000305175781
+    },
+    "b0dfb61f-c3c5-483c-b0d8-ca5868610e7c": {
+      "width": 313.9791564941406,
+      "height": 28.666664123535156
     },
     {
       "id": "a1f77443-53ea-4951-95e6-f9c8e13693b7",
@@ -871,9 +1382,13 @@
       "width": 141.9666748046875,
       "height": 50.30000305175781
     },
-    "e7a4950a-ea9c-41ee-a4fe-a36e6b5d8f8d": {
-      "width": 169.9666748046875,
-      "height": 50.80000305175781
+    "0d30b76c-f2bc-497a-9ee0-6db2779e7728": {
+      "width": 247.97915649414062,
+      "height": 35.666664123535156
+    },
+    "5e7310bd-848d-49f6-8a63-d201904cf83a": {
+      "width": 162.45413208007812,
+      "height": 80.16666412353516
     },
     "c0b1bad0-5140-4c44-86d8-e4f3082e3665": {
       "width": 146.9666748046875,
@@ -892,16 +1407,16 @@
       "height": 49.80000305175781
     },
     "f0f4cc48-0650-4e84-bd72-1f7bb5933358": {
-      "width": 138.9666748046875,
-      "height": 49.80000305175781
+      "width": 109.97915649414062,
+      "height": 90.66666412353516
     },
     "6d455901-4279-4ff5-88be-8dc34f89db0c": {
       "width": 162.9666748046875,
       "height": 42.80000305175781
     },
     "c2c6ec93-b3af-4580-a581-ac38418a0f04": {
-      "width": 196.9666748046875,
-      "height": 55.80000305175781
+      "width": 285.9791564941406,
+      "height": 73.66666412353516
     },
     "f423d730-2aa9-402b-b1fe-46ee3df63032": {
       "width": 134.4666748046875,
@@ -916,200 +1431,260 @@
       "height": 54.80000305175781
     },
     "bf619f47-a1a4-472e-94c2-0cef98ae6ff6": {
+      "width": 293.9791564941406,
+      "height": 36.666664123535156
+    },
+    "9a806273-eb50-436c-aa1f-39688e96520a": {
+      "width": 297.8854064941406,
+      "height": 49.666664123535156
+    },
+    "7e542b46-c714-4836-adbf-ee04d5367455": {
+      "width": 151.9666748046875,
+      "height": 58.30000305175781
+    },
+    "3883c3d6-34cb-4b6e-926a-5923577dfc28": {
+      "width": 152.0128173828125,
+      "height": 60.80628967285156
+    },
+    "13427632-7a39-48f8-bdd1-7b3373d33db8": {
+      "width": 141.9666748046875,
+      "height": 50.30000305175781
+    },
+    "e7a4950a-ea9c-41ee-a4fe-a36e6b5d8f8d": {
       "width": 169.9666748046875,
-      "height": 56.30000305175781
-    },
-    "b925d984-67ee-44ba-8ba2-dbc94dc86dc4": {
-      "width": 168.9666748046875,
-      "height": 61.80000305175781
-    },
-    "89bf9477-829a-4031-a5f7-e8adb9884d64": {
-      "width": 144.9666748046875,
-      "height": 62.80000305175781
-    },
-    "7a909a6d-c087-4d62-86ad-42416fb2cea8": {
-      "width": 136.9666748046875,
-      "height": 55.80000305175781
-    },
-    "4c625708-0c2e-4c72-a2e2-792c489b0ceb": {
-      "width": 143.9666748046875,
-      "height": 53.80000305175781
-    },
-    "b0dfb61f-c3c5-483c-b0d8-ca5868610e7c": {
-      "width": 192.9666748046875,
-      "height": 57.80000305175781
-    },
-    "c3a69776-0553-48cb-9c83-8f38b287154d": {
-      "width": 128.9666748046875,
-      "height": 47.80000305175781
-    },
-    "15187953-cb7e-4809-bad1-da500d2f5fb4": {
-      "width": 164.9666748046875,
-      "height": 53.80000305175781
-    },
-    "e1b8c264-53c9-4d19-a34e-9260f877bd5a": {
-      "width": 140.9666748046875,
-      "height": 44.80000305175781
-    },
-    "f093760c-f82e-4180-befb-97f5be0aa556": {
-      "width": 154.9666748046875,
-      "height": 42.80000305175781
-    },
-    "0d30b76c-f2bc-497a-9ee0-6db2779e7728": {
-      "width": 163.4666748046875,
-      "height": 53.80000305175781
-    },
-    "57cca391-c8f7-42d5-8460-d9cf115460ae": {
-      "width": 172.20834350585938,
-      "height": 53.7500114440918
-    },
-    "c743c7b5-51bd-4a32-bbfa-56b12bc212ad": {
-      "width": 185.26388549804688,
-      "height": 61.7563591003418
-    },
-    "fc6543e5-8675-4f04-9745-b27c384c009e": {
-      "width": 122.20834350585938,
-      "height": 49.750009536743164
-    },
-    "5bbbc483-91a4-4fa4-93b3-9c080ee4c507": {
-      "width": 121.20834350585938,
-      "height": 43.7500114440918
-    },
-    "e22f09f4-bbf0-48f8-99d1-d2abc1da2ddf": {
-      "width": 128.98611450195312,
-      "height": 33.8610954284668
-    },
-    "6aff70bd-e761-4484-9fa1-c674943b5687": {
-      "width": 101.43055725097656,
-      "height": 44.02778625488281
-    },
-    "3ea24399-124b-4d20-b74b-abe043f1650f": {
-      "width": 133.20834350585938,
-      "height": 40.750009536743164
-    },
-    "74911419-54b0-411e-98c4-7bb6eacd0cb2": {
-      "width": 134.20834350585938,
-      "height": 51.250009536743164
-    },
-    "f0f5434f-bb8d-4985-92d2-866eb40029cd": {
-      "width": 108.20834350585938,
-      "height": 42.750009536743164
-    },
-    "c6ecf7d5-470d-4f11-a669-04cbefbe1358": {
-      "width": 137.70834350585938,
-      "height": 59.750009536743164
-    },
-    "f2eef6a8-95e5-445b-bcf6-aa6c9b775223": {
-      "width": 119.375,
-      "height": 55.750009536743164
-    },
-    "fd445704-5097-4ca0-9aa5-2686595c296c": {
-      "width": 123.875,
-      "height": 61.750009536743164
-    },
-    "0860a154-797b-4047-953e-fbdc7f119274": {
-      "width": 125.98611450195312,
-      "height": 52.750009536743164
-    },
-    "8aa544d6-0886-4cff-9cc9-705d8c6ce1bf": {
-      "width": 101.98611450195312,
-      "height": 48.75001525878906
-    },
-    "f3f211c7-995c-41f9-8e6b-e8867ea602a9": {
-      "width": 161.9666748046875,
       "height": 50.80000305175781
     },
-    "dc934011-0c4a-4eb7-8994-467504127fff": {
-      "width": 152.4666748046875,
-      "height": 49.80000305175781
+    "dbeaa6b7-7980-4ba7-ad52-162ad1753516": {
+      "width": 220.97915649414062,
+      "height": 37.666664123535156
     },
-    "7efe90b4-f306-4ace-bdbb-c5b028c60552": {
-      "width": 131.3194580078125,
-      "height": 43.861093521118164
+    "c82e6477-2a3d-4e9a-9129-92ea2b83fcc0": {
+      "width": 152.97915649414062,
+      "height": 37.666664123535156
     },
-    "958dbbd1-d84e-4b53-b7cb-4e3676b11585": {
+    "853f9eee-8c5b-4eca-939e-72f14ca6db4e": {
+      "width": 189.97915649414062,
+      "height": 38.666664123535156
+    },
+    "863e64f2-e1de-4f58-ac4b-fda840efb086": {
+      "width": 191.96875,
+      "height": 56.25
+    },
+    "804a8f0c-321b-4ffd-b9b6-96b64cd06e46": {
+      "width": 256.9791564941406,
+      "height": 32.666664123535156
+    },
+    "2be53d3e-b9c4-4150-a713-ee86f6b188b4": {
+      "width": 210.97915649414062,
+      "height": 34.666664123535156
+    },
+    "f9526b88-4c3d-4be3-a595-9d9d20f82e2c": {
+      "width": 240.2169189453125,
+      "height": 42.08088684082031
+    },
+    "7284b8e6-f659-4dd0-bdf2-8a0f40bf241e": {
+      "width": 136.96875,
+      "height": 53.25
+    },
+    "c9a8c3ea-9029-4eaa-9ff0-06d19cece972": {
       "vertices": [
         {
-          "x": 1135,
-          "y": 891
+          "x": 397,
+          "y": 878
+        }
+      ]
+    },
+    "becc7d32-723d-40a9-95d9-0e2ef34852c4": {
+      "vertices": [
+        {
+          "x": 606,
+          "y": 1982
         },
         {
-          "x": 1193,
-          "y": 891
+          "x": 609,
+          "y": 1588
+        }
+      ]
+    },
+    "0f027f7f-7f0f-4d8a-abc1-9cdfc8ea2d12": {
+      "vertices": [
+        {
+          "x": 1535,
+          "y": 1772
         },
         {
-          "x": 1247,
-          "y": 900
+          "x": 1403,
+          "y": 1786
         }
       ]
     },
-    "9e514410-2a71-43db-81c0-55ce82f32325": {
+    "cfd83993-0c54-43df-ab42-952aa08ea81f": {
       "vertices": [
         {
-          "x": 756,
-          "y": 898
+          "x": 1811,
+          "y": 1497
         }
       ]
     },
-    "1fac49ae-1279-4b28-9fae-3f571a49b154": {
+    "47db5a5b-a831-40ed-8d81-8162d2cc8d40": {
       "vertices": [
         {
-          "x": 1201,
-          "y": 1195
+          "x": 2832,
+          "y": 1010
         }
       ]
     },
-    "e3900d4c-e2e0-4382-b922-caa783ef4ef1": {
+    "78f3194e-9f2d-42b6-9c6b-ffefe5f57abf": {
       "vertices": [
         {
-          "x": 1343,
-          "y": 805
+          "x": 2449,
+          "y": 1033
+        }
+      ]
+    },
+    "2f0c350a-deb2-41d1-90ba-57472e9aac94": {
+      "vertices": [
+        {
+          "x": 2468,
+          "y": 655
+        }
+      ]
+    },
+    "2e18091b-3845-44b6-b6ac-4c6a9ce2608d": {
+      "vertices": [
+        {
+          "x": 496,
+          "y": 806
+        }
+      ]
+    },
+    "b80245f2-f770-4dee-91de-27403cb308cd": {
+      "vertices": [
+        {
+          "x": 805,
+          "y": 821
+        }
+      ]
+    },
+    "97e6d14c-630d-4c5c-b45f-f0f1c5217e36": {
+      "vertices": [
+        {
+          "x": 481,
+          "y": 601
+        }
+      ]
+    },
+    "b18af04e-1ab9-4891-8fa5-d1ef96cdb859": {
+      "vertices": [
+        {
+          "x": 725,
+          "y": 440
+        }
+      ]
+    },
+    "d89ac90f-4022-4dd4-ae43-f7cc30a23519": {
+      "vertices": [
+        {
+          "x": 165,
+          "y": 570
         },
         {
-          "x": 1368,
-          "y": 771
+          "x": 229,
+          "y": 512
+        },
+        {
+          "x": 385,
+          "y": 386
+        },
+        {
+          "x": 591,
+          "y": 294
         }
       ]
     },
-    "86cb6810-a93b-4fd1-81a8-508689bb5d5d": {
+    "6a8a82fa-5115-4dd5-969a-57f4fcc50061": {
       "vertices": [
         {
-          "x": 1062,
-          "y": 825
+          "x": 779,
+          "y": 1578
+        },
+        {
+          "x": 323,
+          "y": 1450
+        },
+        {
+          "x": 263,
+          "y": 1264
+        },
+        {
+          "x": 311,
+          "y": 1118
         }
       ]
     },
-    "6e622c4d-b8d6-4587-b46f-cc2fbf1343ac": {
+    "26314c82-4292-4896-8977-0c82ada60e07": {
       "vertices": [
         {
-          "x": 1359,
-          "y": 534
+          "x": 853,
+          "y": 908
         }
       ]
     },
-    "128db494-5320-4df9-b762-8ec21cb81c96": {
+    "b447be72-8ee2-4135-8959-f0eb4b32a0af": {
       "vertices": [
         {
-          "x": 1159,
-          "y": 351
+          "x": 786,
+          "y": 1232
         }
       ]
     },
-    "a1f77443-53ea-4951-95e6-f9c8e13693b7": {
+    "14be8892-1c3c-41e8-8599-18257d6bae84": {
       "vertices": [
         {
-          "x": 614,
-          "y": 1016
+          "x": 2396,
+          "y": 340
+        }
+      ]
+    },
+    "c12d17f8-3048-4c43-90f6-bbf74033edd3": {
+      "vertices": [
+        {
+          "x": 2080,
+          "y": 222
+        }
+      ]
+    },
+    "0a577130-4129-480a-9a25-99aeb0d5e5bf": {
+      "vertices": [
+        {
+          "x": 2403,
+          "y": 663
+        }
+      ]
+    },
+    "db56e069-17a6-4b0f-a8a7-4cd5e864b23e": {
+      "vertices": [
+        {
+          "x": 2111,
+          "y": 865
+        }
+      ]
+    },
+    "6e61973a-c599-4528-882f-1aceff07217f": {
+      "vertices": [
+        {
+          "x": 1798,
+          "y": 1141
         }
       ]
     }
   },
   "tool": "pistar.2.1.0",
   "istar": "2.0",
-  "saveDate": "Wed, 06 Nov 2024 10:00:16 GMT",
+  "saveDate": "Wed, 06 Nov 2024 14:29:16 GMT",
   "diagram": {
-    "width": 2034,
-    "height": 1465,
+    "width": 3902,
+    "height": 2445,
     "name": "Cochain",
     "customProperties": {
       "Description": ""
