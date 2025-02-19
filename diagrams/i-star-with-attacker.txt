@@ -1352,7 +1352,7 @@
     },
     {
       "id": "6c5d65f5-375a-44c1-8256-364a7c20bb96",
-      "text": "Assenza di resilienza",
+      "text": "Violazione della resilienza del sistema",
       "type": "istar.Goal",
       "x": 5703,
       "y": 1850,
@@ -1364,7 +1364,7 @@
     },
     {
       "id": "7458b1a4-1760-480c-8831-533d7ab0242d",
-      "text": "Inaffidibilità",
+      "text": "Violazione dell'affidabilità del sistema",
       "type": "istar.Goal",
       "x": 5988,
       "y": 1916,
