@@ -4,8 +4,8 @@
       "id": "2efafd3f-a206-421e-8b05-4b5b00afac3e",
       "text": "Attaccante",
       "type": "istar.Actor",
-      "x": 4536,
-      "y": 1185,
+      "x": 27,
+      "y": 106,
       "customProperties": {
         "Description": ""
       },
@@ -14,118 +14,158 @@
           "id": "f2474ba6-40b1-488e-95ce-20f96d8df72d",
           "text": "Violazione dell'autenticità",
           "type": "istar.Goal",
-          "x": 5113,
-          "y": 1185,
+          "x": 825,
+          "y": 106,
           "customProperties": {
             "Description": ""
           }
         },
         {
-          "id": "3de5d1ea-1392-4dd7-a2fe-b0f61a01187d",
-          "text": "Privilege abuse",
-          "type": "istar.Task",
-          "x": 4828,
-          "y": 1333,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "9b0d8736-8fbd-4ba3-a57c-d7b3479e6317",
-          "text": "Using Malicious Files",
-          "type": "istar.Task",
-          "x": 4667,
-          "y": 1439,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "036e44b0-33ab-44d2-8862-2823ab79b34e",
-          "text": "Accessing Functionality Not Properly Constrained by ACLs",
-          "type": "istar.Task",
-          "x": 4878,
-          "y": 1429,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "b308d0c4-52d0-48d6-b053-4e965d5c71cf",
-          "text": "Adversary in the Middle (AiTM)",
-          "type": "istar.Task",
-          "x": 5115,
-          "y": 1354,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "b2c70983-fb46-4a16-837c-3cfcc6491c27",
-          "text": "Browser in the Middle (BiTM)",
-          "type": "istar.Task",
-          "x": 5221,
-          "y": 1519,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "f2102749-12db-4dbb-9b80-89591279cb3f",
-          "text": "Adversary in the Browser (AiTB)",
-          "type": "istar.Task",
-          "x": 5005,
-          "y": 1505,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "ca5cd5d8-8e28-4ff6-a3ce-1c9a25eafa38",
-          "text": "Exploitation of Trusted Identifiers",
-          "type": "istar.Task",
-          "x": 5502,
-          "y": 1356,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "a650eef8-013c-4317-b52a-402f15466167",
-          "text": "Session Credential Falsification through Forging",
-          "type": "istar.Task",
-          "x": 5609,
-          "y": 1489,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "d03e94f2-7b77-4f1e-8113-1e1090258f81",
-          "text": "Cross Site Request Forgery",
-          "type": "istar.Task",
-          "x": 5419,
-          "y": 1492,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "e3f68fc3-0757-43da-9444-93e0e6e9809e",
-          "text": "DNS Cache Poisoning",
-          "type": "istar.Task",
-          "x": 5737,
-          "y": 1317,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "db6f52f8-7094-40ee-929d-b3dc6fc95f86",
+          "id": "79dae325-e23b-429a-a3e2-e77cbc0440f4",
           "text": "Manipulating State",
-          "type": "istar.Task",
-          "x": 4536,
-          "y": 1280,
+          "type": "istar.Goal",
+          "x": 180,
+          "y": 376,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "1abc5664-cd29-4ef4-bea7-2c8c325f45af",
+          "text": "Using Malicious Files",
+          "type": "istar.Goal",
+          "x": 134,
+          "y": 582,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "0dd22e95-e2a8-4713-94dc-4b0764e78cfb",
+          "text": "Accessing Functionality Not Properly Constrained by ACLs",
+          "type": "istar.Goal",
+          "x": 330,
+          "y": 586,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "54b9cba0-9a40-4b38-9361-49173f6fda23",
+          "text": "Privilege abuse",
+          "type": "istar.Goal",
+          "x": 257,
+          "y": 459,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "258ed9e4-059c-41e5-83c0-00c77f338ce6",
+          "text": "Adversary in the Browser (AiTB)",
+          "type": "istar.Goal",
+          "x": 515,
+          "y": 455,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "2607c9e0-cbf3-4504-b575-4bb0e7e04f8b",
+          "text": "Browser in the Middle (BiTM)",
+          "type": "istar.Goal",
+          "x": 746,
+          "y": 451,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "c075a520-ad61-419b-b0ec-40354f09a228",
+          "text": "Adversary in the Middle (AiTM)",
+          "type": "istar.Goal",
+          "x": 644,
+          "y": 322,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "8eb04026-81f6-474c-ba6e-adfa6d8c67ed",
+          "text": "DNS Cache Poisoning",
+          "type": "istar.Goal",
+          "x": 62,
+          "y": 269,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "d7af7543-f5db-407c-ab6a-1e9d0c3608e2",
+          "text": "Session Credential Falsification through Forging",
+          "type": "istar.Goal",
+          "x": 1110,
+          "y": 455,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "a94588ac-2c66-490f-b993-366cb92f9ca0",
+          "text": "Cross Site Request Forgery",
+          "type": "istar.Goal",
+          "x": 923,
+          "y": 466,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "0407d8d2-2318-40f3-9236-562939080332",
+          "text": "Exploitation of Trusted Identifiers",
+          "type": "istar.Goal",
+          "x": 1002,
+          "y": 326,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "ea622112-0414-41b2-ad30-e0930d6a19d4",
+          "text": "Password Brute Forcing",
+          "type": "istar.Goal",
+          "x": 1557,
+          "y": 327,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "60d6bb39-cc38-44a2-b155-e9efa255c4e2",
+          "text": "Dictionary-based Password Attack",
+          "type": "istar.Goal",
+          "x": 1331,
+          "y": 466,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "e8b9db50-8f63-4c1a-8541-6a686ebd6660",
+          "text": "Rainbow Table Password Cracking",
+          "type": "istar.Goal",
+          "x": 1551,
+          "y": 469,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "a84a6695-4914-4faf-a415-4bdf3aae43c6",
+          "text": "Try Common or Default Usernames and Passwords",
+          "type": "istar.Goal",
+          "x": 1777,
+          "y": 459,
           "customProperties": {
             "Description": ""
           }
@@ -137,69 +177,93 @@
   "dependencies": [],
   "links": [
     {
-      "id": "912bddf1-5eab-4480-b0b7-2e903d5d90bf",
+      "id": "6098e5ce-b7e8-43e3-b91e-b446ebfaba0b",
       "type": "istar.OrRefinementLink",
-      "source": "3de5d1ea-1392-4dd7-a2fe-b0f61a01187d",
+      "source": "79dae325-e23b-429a-a3e2-e77cbc0440f4",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "be617b78-b5a1-4966-aebc-cbf204e30f26",
+      "id": "e8ec9a2c-95ad-4e02-88eb-9abb893f226e",
       "type": "istar.OrRefinementLink",
-      "source": "9b0d8736-8fbd-4ba3-a57c-d7b3479e6317",
-      "target": "3de5d1ea-1392-4dd7-a2fe-b0f61a01187d"
-    },
-    {
-      "id": "b50e88fa-1515-4307-9886-1ae81921b681",
-      "type": "istar.OrRefinementLink",
-      "source": "036e44b0-33ab-44d2-8862-2823ab79b34e",
-      "target": "3de5d1ea-1392-4dd7-a2fe-b0f61a01187d"
-    },
-    {
-      "id": "d61eeb04-7eb3-449e-a9d3-4d053136e5d1",
-      "type": "istar.OrRefinementLink",
-      "source": "b308d0c4-52d0-48d6-b053-4e965d5c71cf",
+      "source": "54b9cba0-9a40-4b38-9361-49173f6fda23",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "09d656ed-0f87-4f88-a450-95a4703f0be2",
+      "id": "9019d3c5-63ae-4b8d-80d4-b876a186ce9b",
       "type": "istar.OrRefinementLink",
-      "source": "b2c70983-fb46-4a16-837c-3cfcc6491c27",
-      "target": "b308d0c4-52d0-48d6-b053-4e965d5c71cf"
+      "source": "1abc5664-cd29-4ef4-bea7-2c8c325f45af",
+      "target": "54b9cba0-9a40-4b38-9361-49173f6fda23"
     },
     {
-      "id": "9fefd900-42d4-4bec-9a84-7b50df926d9f",
+      "id": "5a301e03-cf5e-4aec-815e-d541866b3edc",
       "type": "istar.OrRefinementLink",
-      "source": "f2102749-12db-4dbb-9b80-89591279cb3f",
-      "target": "b308d0c4-52d0-48d6-b053-4e965d5c71cf"
+      "source": "0dd22e95-e2a8-4713-94dc-4b0764e78cfb",
+      "target": "54b9cba0-9a40-4b38-9361-49173f6fda23"
     },
     {
-      "id": "e3ed1d29-5bc5-4be7-bca1-e47ebe5135de",
+      "id": "f999196e-374d-4724-a647-290e466ac723",
       "type": "istar.OrRefinementLink",
-      "source": "ca5cd5d8-8e28-4ff6-a3ce-1c9a25eafa38",
+      "source": "c075a520-ad61-419b-b0ec-40354f09a228",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "72e53f3c-6747-4e28-a5c3-cedce344b12c",
+      "id": "92798f0f-9fb7-4e8a-bf4a-b8371d3ef2c7",
       "type": "istar.OrRefinementLink",
-      "source": "d03e94f2-7b77-4f1e-8113-1e1090258f81",
-      "target": "ca5cd5d8-8e28-4ff6-a3ce-1c9a25eafa38"
+      "source": "258ed9e4-059c-41e5-83c0-00c77f338ce6",
+      "target": "c075a520-ad61-419b-b0ec-40354f09a228"
     },
     {
-      "id": "e1ea5026-7d17-4424-af2f-11e8f8d0ec5a",
+      "id": "eb6e5e30-833a-41f3-99e3-2267e872d39e",
       "type": "istar.OrRefinementLink",
-      "source": "a650eef8-013c-4317-b52a-402f15466167",
-      "target": "ca5cd5d8-8e28-4ff6-a3ce-1c9a25eafa38"
+      "source": "2607c9e0-cbf3-4504-b575-4bb0e7e04f8b",
+      "target": "c075a520-ad61-419b-b0ec-40354f09a228"
     },
     {
-      "id": "3f5b732d-787d-4f9a-9aec-07e05d0f1d9f",
+      "id": "49a2377c-b59f-4614-b601-3c80a37b5a54",
       "type": "istar.OrRefinementLink",
-      "source": "e3f68fc3-0757-43da-9444-93e0e6e9809e",
+      "source": "a94588ac-2c66-490f-b993-366cb92f9ca0",
+      "target": "0407d8d2-2318-40f3-9236-562939080332"
+    },
+    {
+      "id": "2833950e-5b35-45a3-889f-60d1ea022201",
+      "type": "istar.OrRefinementLink",
+      "source": "d7af7543-f5db-407c-ab6a-1e9d0c3608e2",
+      "target": "0407d8d2-2318-40f3-9236-562939080332"
+    },
+    {
+      "id": "01503b77-5415-483d-b3de-4998b80b28b1",
+      "type": "istar.OrRefinementLink",
+      "source": "0407d8d2-2318-40f3-9236-562939080332",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "dccc6a49-86e9-4174-aeb7-010d41f4b335",
+      "id": "f23a0171-e57c-46f5-b0e0-6c2b8267ff78",
       "type": "istar.OrRefinementLink",
-      "source": "db6f52f8-7094-40ee-929d-b3dc6fc95f86",
+      "source": "ea622112-0414-41b2-ad30-e0930d6a19d4",
+      "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
+    },
+    {
+      "id": "e402a012-72a9-4e93-90a1-96371926c1ec",
+      "type": "istar.OrRefinementLink",
+      "source": "60d6bb39-cc38-44a2-b155-e9efa255c4e2",
+      "target": "ea622112-0414-41b2-ad30-e0930d6a19d4"
+    },
+    {
+      "id": "8d600051-79a5-40bd-aca3-aa1fc7d3fa9c",
+      "type": "istar.OrRefinementLink",
+      "source": "e8b9db50-8f63-4c1a-8541-6a686ebd6660",
+      "target": "ea622112-0414-41b2-ad30-e0930d6a19d4"
+    },
+    {
+      "id": "807b51b8-5209-43eb-a8d7-83f935e6e0b3",
+      "type": "istar.OrRefinementLink",
+      "source": "a84a6695-4914-4faf-a415-4bdf3aae43c6",
+      "target": "ea622112-0414-41b2-ad30-e0930d6a19d4"
+    },
+    {
+      "id": "51966941-de6c-4f71-a264-3f6b7a6b92e5",
+      "type": "istar.OrRefinementLink",
+      "source": "8eb04026-81f6-474c-ba6e-adfa6d8c67ed",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     }
   ],
@@ -211,54 +275,70 @@
       "width": 173.95001220703125,
       "height": 60.30000305175781
     },
-    "3de5d1ea-1392-4dd7-a2fe-b0f61a01187d": {
-      "width": 137.95001220703125,
-      "height": 50.80000305175781
+    "79dae325-e23b-429a-a3e2-e77cbc0440f4": {
+      "width": 172.95001220703125,
+      "height": 64.30000305175781
     },
-    "9b0d8736-8fbd-4ba3-a57c-d7b3479e6317": {
-      "width": 150.95001220703125,
-      "height": 51.80000305175781
+    "1abc5664-cd29-4ef4-bea7-2c8c325f45af": {
+      "width": 168.95001220703125,
+      "height": 69.80000305175781
     },
-    "036e44b0-33ab-44d2-8862-2823ab79b34e": {
-      "width": 193.45001220703125,
-      "height": 61.80000305175781
+    "0dd22e95-e2a8-4713-94dc-4b0764e78cfb": {
+      "width": 248.95001220703125,
+      "height": 71.80000305175781
     },
-    "b308d0c4-52d0-48d6-b053-4e965d5c71cf": {
-      "width": 176.45001220703125,
-      "height": 51.80000305175781
+    "54b9cba0-9a40-4b38-9361-49173f6fda23": {
+      "width": 193.95001220703125,
+      "height": 54.80000305175781
     },
-    "b2c70983-fb46-4a16-837c-3cfcc6491c27": {
-      "width": 179.45001220703125,
-      "height": 50.80000305175781
+    "258ed9e4-059c-41e5-83c0-00c77f338ce6": {
+      "width": 196.95001220703125,
+      "height": 69.30000305175781
     },
-    "f2102749-12db-4dbb-9b80-89591279cb3f": {
-      "width": 189.95001220703125,
-      "height": 58.80000305175781
+    "2607c9e0-cbf3-4504-b575-4bb0e7e04f8b": {
+      "width": 170.95001220703125,
+      "height": 69.80000305175781
     },
-    "ca5cd5d8-8e28-4ff6-a3ce-1c9a25eafa38": {
+    "c075a520-ad61-419b-b0ec-40354f09a228": {
+      "width": 191.95001220703125,
+      "height": 63.80000305175781
+    },
+    "8eb04026-81f6-474c-ba6e-adfa6d8c67ed": {
+      "width": 172.95001220703125,
+      "height": 54.30000305175781
+    },
+    "d7af7543-f5db-407c-ab6a-1e9d0c3608e2": {
+      "width": 206.95001220703125,
+      "height": 69.80000305175781
+    },
+    "a94588ac-2c66-490f-b993-366cb92f9ca0": {
+      "width": 157.95001220703125,
+      "height": 64.80000305175781
+    },
+    "0407d8d2-2318-40f3-9236-562939080332": {
+      "width": 178.95001220703125,
+      "height": 69.80000305175781
+    },
+    "ea622112-0414-41b2-ad30-e0930d6a19d4": {
+      "width": 164.95001220703125,
+      "height": 59.30000305175781
+    },
+    "60d6bb39-cc38-44a2-b155-e9efa255c4e2": {
+      "width": 192.95001220703125,
+      "height": 57.80000305175781
+    },
+    "e8b9db50-8f63-4c1a-8541-6a686ebd6660": {
+      "width": 208.95001220703125,
+      "height": 59.80000305175781
+    },
+    "a84a6695-4914-4faf-a415-4bdf3aae43c6": {
       "width": 186.95001220703125,
-      "height": 53.80000305175781
-    },
-    "a650eef8-013c-4317-b52a-402f15466167": {
-      "width": 186.45001220703125,
-      "height": 52.80000305175781
-    },
-    "d03e94f2-7b77-4f1e-8113-1e1090258f81": {
-      "width": 172.45001220703125,
-      "height": 52.80000305175781
-    },
-    "e3f68fc3-0757-43da-9444-93e0e6e9809e": {
-      "width": 176.45001220703125,
-      "height": 52.80000305175781
-    },
-    "db6f52f8-7094-40ee-929d-b3dc6fc95f86": {
-      "width": 190.45001220703125,
-      "height": 55.80000305175781
+      "height": 68.30000305175781
     }
   },
   "tool": "pistar.2.1.0",
   "istar": "2.0",
-  "saveDate": "Wed, 19 Feb 2025 11:10:29 GMT",
+  "saveDate": "Wed, 19 Feb 2025 14:11:40 GMT",
   "diagram": {
     "width": 7726,
     "height": 5036,
