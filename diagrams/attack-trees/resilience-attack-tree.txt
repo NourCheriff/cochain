@@ -1,0 +1,129 @@
+{
+  "actors": [
+    {
+      "id": "ace8e78f-5b29-4a5a-a3a0-9f695f136a07",
+      "text": "Attaccante",
+      "type": "istar.Actor",
+      "x": 174,
+      "y": 201,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "8bd31bd9-3af1-4b59-abec-706f4b8d4020",
+          "text": "Malicious Software Update",
+          "type": "istar.Goal",
+          "x": 326,
+          "y": 305,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "901f86aa-3bcd-4bfd-8fa3-a9adb9142cc5",
+          "text": "Malicious Manual Software Update",
+          "type": "istar.Goal",
+          "x": 174,
+          "y": 402,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "7766ef72-78b7-47b8-9530-c1c47a61bc27",
+          "text": "Malicious Automated Software Update via Redirection",
+          "type": "istar.Goal",
+          "x": 435,
+          "y": 400,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "033db0d0-6f47-4a43-98bb-b38f035157b6",
+          "text": "Violazione della resilienza del sistema",
+          "type": "istar.Goal",
+          "x": 512,
+          "y": 213,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "04df0884-3183-4817-9bc0-3047e83aee90",
+          "text": "Install Malicious Extension",
+          "type": "istar.Goal",
+          "x": 728,
+          "y": 308,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    }
+  ],
+  "orphans": [],
+  "dependencies": [],
+  "links": [
+    {
+      "id": "83c4f608-8e3b-40a1-9fef-14341378b461",
+      "type": "istar.OrRefinementLink",
+      "source": "901f86aa-3bcd-4bfd-8fa3-a9adb9142cc5",
+      "target": "8bd31bd9-3af1-4b59-abec-706f4b8d4020"
+    },
+    {
+      "id": "423cf118-2de5-4667-8f52-1da7e3f05a62",
+      "type": "istar.OrRefinementLink",
+      "source": "7766ef72-78b7-47b8-9530-c1c47a61bc27",
+      "target": "8bd31bd9-3af1-4b59-abec-706f4b8d4020"
+    },
+    {
+      "id": "c37f65b2-9f01-4091-a4e0-2f83a45b1965",
+      "type": "istar.OrRefinementLink",
+      "source": "8bd31bd9-3af1-4b59-abec-706f4b8d4020",
+      "target": "033db0d0-6f47-4a43-98bb-b38f035157b6"
+    },
+    {
+      "id": "d79fb532-d560-43be-aca0-819209924b5b",
+      "type": "istar.OrRefinementLink",
+      "source": "04df0884-3183-4817-9bc0-3047e83aee90",
+      "target": "033db0d0-6f47-4a43-98bb-b38f035157b6"
+    }
+  ],
+  "display": {
+    "ace8e78f-5b29-4a5a-a3a0-9f695f136a07": {
+      "backgroundColor": "#FABB5B"
+    },
+    "8bd31bd9-3af1-4b59-abec-706f4b8d4020": {
+      "width": 215.29165649414062,
+      "height": 33.666664123535156
+    },
+    "901f86aa-3bcd-4bfd-8fa3-a9adb9142cc5": {
+      "width": 221.29165649414062,
+      "height": 33.666664123535156
+    },
+    "7766ef72-78b7-47b8-9530-c1c47a61bc27": {
+      "width": 253.29165649414062,
+      "height": 42.666664123535156
+    },
+    "033db0d0-6f47-4a43-98bb-b38f035157b6": {
+      "width": 269.2916564941406,
+      "height": 35.166664123535156
+    },
+    "04df0884-3183-4817-9bc0-3047e83aee90": {
+      "width": 221.29165649414062,
+      "height": 34.166664123535156
+    }
+  },
+  "tool": "pistar.2.1.0",
+  "istar": "2.0",
+  "saveDate": "Wed, 19 Feb 2025 20:13:05 GMT",
+  "diagram": {
+    "width": 1000,
+    "height": 700,
+    "customProperties": {
+      "Description": ""
+    }
+  }
+}
