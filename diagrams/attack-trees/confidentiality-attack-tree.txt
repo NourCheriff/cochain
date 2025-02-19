@@ -5,7 +5,7 @@
       "text": "Attaccante",
       "type": "istar.Actor",
       "x": 152,
-      "y": 53,
+      "y": 52,
       "customProperties": {
         "Description": ""
       },
@@ -15,7 +15,7 @@
           "text": "Violazione della confidenzialità",
           "type": "istar.Goal",
           "x": 725,
-          "y": 53,
+          "y": 52,
           "customProperties": {
             "Description": ""
           }
@@ -24,8 +24,8 @@
           "id": "f70c5ccb-432b-4cf4-bee1-ef206cd16d3c",
           "text": "Interception",
           "type": "istar.Goal",
-          "x": 489,
-          "y": 177,
+          "x": 491,
+          "y": 175,
           "customProperties": {
             "Description": ""
           }
@@ -35,7 +35,7 @@
           "text": "Footprinting",
           "type": "istar.Goal",
           "x": 692,
-          "y": 187,
+          "y": 186,
           "customProperties": {
             "Description": ""
           }
@@ -45,7 +45,7 @@
           "text": "Sniffing Attacks",
           "type": "istar.Goal",
           "x": 487,
-          "y": 258,
+          "y": 257,
           "customProperties": {
             "Description": ""
           }
@@ -55,7 +55,7 @@
           "text": "Local Execution of Code",
           "type": "istar.Goal",
           "x": 278,
-          "y": 149,
+          "y": 148,
           "customProperties": {
             "Description": ""
           }
@@ -65,7 +65,7 @@
           "text": "Targeted Malware",
           "type": "istar.Goal",
           "x": 274,
-          "y": 238,
+          "y": 237,
           "customProperties": {
             "Description": ""
           }
@@ -74,8 +74,8 @@
           "id": "6309d51e-2c00-4084-a947-c309d71ec97e",
           "text": "Install Malicious Extension",
           "type": "istar.Goal",
-          "x": 152,
-          "y": 312,
+          "x": 181,
+          "y": 311,
           "customProperties": {
             "Description": ""
           }
@@ -85,7 +85,7 @@
           "text": "Run Software at Logon",
           "type": "istar.Goal",
           "x": 317,
-          "y": 320,
+          "y": 319,
           "customProperties": {
             "Description": ""
           }
@@ -95,7 +95,7 @@
           "text": "Accessing/Intercepting/Modifying HTTP Cookies",
           "type": "istar.Goal",
           "x": 420,
-          "y": 343,
+          "y": 342,
           "customProperties": {
             "Description": ""
           }
@@ -105,7 +105,7 @@
           "text": "Sniffing Network Traffic",
           "type": "istar.Goal",
           "x": 535,
-          "y": 354,
+          "y": 353,
           "customProperties": {
             "Description": ""
           }
@@ -115,7 +115,7 @@
           "text": "Host Discovery",
           "type": "istar.Goal",
           "x": 634,
-          "y": 277,
+          "y": 276,
           "customProperties": {
             "Description": ""
           }
@@ -125,7 +125,7 @@
           "text": "Port Scanning",
           "type": "istar.Goal",
           "x": 736,
-          "y": 277,
+          "y": 276,
           "customProperties": {
             "Description": ""
           }
@@ -135,7 +135,7 @@
           "text": "Exploitation of Trusted Identifiers",
           "type": "istar.Goal",
           "x": 885,
-          "y": 163,
+          "y": 162,
           "customProperties": {
             "Description": ""
           }
@@ -144,8 +144,8 @@
           "id": "19176f26-b88a-4a85-a022-ea211138650e",
           "text": " Session Credential Falsification through Forging",
           "type": "istar.Goal",
-          "x": 940,
-          "y": 270,
+          "x": 939,
+          "y": 267,
           "customProperties": {
             "Description": ""
           }
@@ -155,7 +155,7 @@
           "text": "Session Hijacking",
           "type": "istar.Goal",
           "x": 841,
-          "y": 245,
+          "y": 244,
           "customProperties": {
             "Description": ""
           }
@@ -165,7 +165,7 @@
           "text": "Input Data Manipulation",
           "type": "istar.Goal",
           "x": 1207,
-          "y": 165,
+          "y": 164,
           "customProperties": {
             "Description": ""
           }
@@ -174,8 +174,8 @@
           "id": "1cc0696d-0e71-4bdb-9e4c-50928c29b0bc",
           "text": "Path Traversal",
           "type": "istar.Goal",
-          "x": 1270,
-          "y": 248,
+          "x": 1306,
+          "y": 246,
           "customProperties": {
             "Description": ""
           }
@@ -185,7 +185,57 @@
           "text": "Leverage Alternate Encoding",
           "type": "istar.Goal",
           "x": 1142,
-          "y": 244,
+          "y": 243,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "750540c4-b975-4647-be4e-742ce12c1826",
+          "text": "TCP ACK Scan",
+          "type": "istar.Goal",
+          "x": 770,
+          "y": 345,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "4b2688cf-1a7b-45d0-9e9e-771a5c37af45",
+          "text": "TCP FIN Scan",
+          "type": "istar.Goal",
+          "x": 669,
+          "y": 346,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "53006b51-ef65-49de-820a-05dcd21f18d6",
+          "text": "TCP SYN Scan",
+          "type": "istar.Goal",
+          "x": 869,
+          "y": 348,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "62a8bee5-0958-45dd-8ef2-841bf2de2572",
+          "text": "Relative Path Traversal",
+          "type": "istar.Goal",
+          "x": 1236,
+          "y": 303,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "d99c7411-9f87-4063-93ff-8c8b7acfce32",
+          "text": "Manipulating Web Input to File System Calls",
+          "type": "istar.Goal",
+          "x": 1345,
+          "y": 303,
           "customProperties": {
             "Description": ""
           }
@@ -297,6 +347,36 @@
       "type": "istar.OrRefinementLink",
       "source": "1cc0696d-0e71-4bdb-9e4c-50928c29b0bc",
       "target": "9611bb6a-61c6-4a61-bb40-5b44cc96d52e"
+    },
+    {
+      "id": "40d19637-1120-4906-820c-6234d439e72a",
+      "type": "istar.OrRefinementLink",
+      "source": "62a8bee5-0958-45dd-8ef2-841bf2de2572",
+      "target": "1cc0696d-0e71-4bdb-9e4c-50928c29b0bc"
+    },
+    {
+      "id": "720a74b8-fe19-4e8a-8872-996edffa9bb3",
+      "type": "istar.OrRefinementLink",
+      "source": "d99c7411-9f87-4063-93ff-8c8b7acfce32",
+      "target": "1cc0696d-0e71-4bdb-9e4c-50928c29b0bc"
+    },
+    {
+      "id": "d78b39cd-f5bc-4a33-a095-ea81a1b0eec9",
+      "type": "istar.OrRefinementLink",
+      "source": "4b2688cf-1a7b-45d0-9e9e-771a5c37af45",
+      "target": "a5710398-8b5f-4cd5-9d6d-039b89eeabd3"
+    },
+    {
+      "id": "abf038cf-163c-42e3-966a-26c786b3d14a",
+      "type": "istar.OrRefinementLink",
+      "source": "750540c4-b975-4647-be4e-742ce12c1826",
+      "target": "a5710398-8b5f-4cd5-9d6d-039b89eeabd3"
+    },
+    {
+      "id": "c43b9d3e-8806-439c-a6e6-bb5f82784463",
+      "type": "istar.OrRefinementLink",
+      "source": "53006b51-ef65-49de-820a-05dcd21f18d6",
+      "target": "a5710398-8b5f-4cd5-9d6d-039b89eeabd3"
     }
   ],
   "display": {
@@ -330,13 +410,17 @@
     "f6b463d8-1918-4e8c-a8a2-6fb06d14c67b": {
       "width": 109.609375,
       "height": 37.943756103515625
+    },
+    "d99c7411-9f87-4063-93ff-8c8b7acfce32": {
+      "width": 150.609375,
+      "height": 38.84375
     }
   },
   "tool": "pistar.2.1.0",
   "istar": "2.0",
-  "saveDate": "Wed, 19 Feb 2025 14:41:50 GMT",
+  "saveDate": "Wed, 19 Feb 2025 16:30:47 GMT",
   "diagram": {
-    "width": 1442,
+    "width": 1511,
     "height": 765,
     "customProperties": {
       "Description": ""
