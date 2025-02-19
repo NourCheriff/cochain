@@ -4,7 +4,7 @@
       "id": "1e186106-d8ce-4298-bf13-9c1be9d2649d",
       "text": "Attaccante",
       "type": "istar.Actor",
-      "x": 152,
+      "x": 60,
       "y": 52,
       "customProperties": {
         "Description": ""
@@ -14,7 +14,7 @@
           "id": "039f49d9-4cfc-40f7-8381-77c3d162633a",
           "text": "Violazione della confidenzialità",
           "type": "istar.Goal",
-          "x": 725,
+          "x": 778,
           "y": 52,
           "customProperties": {
             "Description": ""
@@ -24,8 +24,8 @@
           "id": "f70c5ccb-432b-4cf4-bee1-ef206cd16d3c",
           "text": "Interception",
           "type": "istar.Goal",
-          "x": 491,
-          "y": 175,
+          "x": 524,
+          "y": 275,
           "customProperties": {
             "Description": ""
           }
@@ -34,8 +34,8 @@
           "id": "6055e6c8-b4a9-4487-9a65-9199487ab993",
           "text": "Footprinting",
           "type": "istar.Goal",
-          "x": 692,
-          "y": 186,
+          "x": 737,
+          "y": 288,
           "customProperties": {
             "Description": ""
           }
@@ -44,8 +44,8 @@
           "id": "f1d8e244-5159-4c49-9809-0d157481122a",
           "text": "Sniffing Attacks",
           "type": "istar.Goal",
-          "x": 487,
-          "y": 257,
+          "x": 472,
+          "y": 485,
           "customProperties": {
             "Description": ""
           }
@@ -54,8 +54,8 @@
           "id": "ea1e9af8-c0c9-4027-940c-c4df296933db",
           "text": "Local Execution of Code",
           "type": "istar.Goal",
-          "x": 278,
-          "y": 148,
+          "x": 203,
+          "y": 156,
           "customProperties": {
             "Description": ""
           }
@@ -64,8 +64,8 @@
           "id": "e7a0f767-e442-4dbb-a612-81f853f92329",
           "text": "Targeted Malware",
           "type": "istar.Goal",
-          "x": 274,
-          "y": 237,
+          "x": 211,
+          "y": 247,
           "customProperties": {
             "Description": ""
           }
@@ -74,8 +74,8 @@
           "id": "6309d51e-2c00-4084-a947-c309d71ec97e",
           "text": "Install Malicious Extension",
           "type": "istar.Goal",
-          "x": 181,
-          "y": 311,
+          "x": 60,
+          "y": 353,
           "customProperties": {
             "Description": ""
           }
@@ -84,8 +84,8 @@
           "id": "cb83a8ca-5291-4a0f-8508-c377d096f7c1",
           "text": "Run Software at Logon",
           "type": "istar.Goal",
-          "x": 317,
-          "y": 319,
+          "x": 284,
+          "y": 357,
           "customProperties": {
             "Description": ""
           }
@@ -94,8 +94,8 @@
           "id": "91eefb64-de39-4167-992d-0bf8c14dc294",
           "text": "Accessing/Intercepting/Modifying HTTP Cookies",
           "type": "istar.Goal",
-          "x": 420,
-          "y": 342,
+          "x": 243,
+          "y": 612,
           "customProperties": {
             "Description": ""
           }
@@ -104,8 +104,8 @@
           "id": "dd23f701-18ae-4a5b-a4ab-2a2591436aaa",
           "text": "Sniffing Network Traffic",
           "type": "istar.Goal",
-          "x": 535,
-          "y": 353,
+          "x": 602,
+          "y": 619,
           "customProperties": {
             "Description": ""
           }
@@ -114,8 +114,8 @@
           "id": "37b61434-c342-4a27-bb7a-9886c84ebe1b",
           "text": "Host Discovery",
           "type": "istar.Goal",
-          "x": 634,
-          "y": 276,
+          "x": 637,
+          "y": 392,
           "customProperties": {
             "Description": ""
           }
@@ -124,8 +124,8 @@
           "id": "a5710398-8b5f-4cd5-9d6d-039b89eeabd3",
           "text": "Port Scanning",
           "type": "istar.Goal",
-          "x": 736,
-          "y": 276,
+          "x": 821,
+          "y": 392,
           "customProperties": {
             "Description": ""
           }
@@ -134,8 +134,8 @@
           "id": "41a8ded9-f734-4ddc-b397-d9c9ea647b73",
           "text": "Exploitation of Trusted Identifiers",
           "type": "istar.Goal",
-          "x": 885,
-          "y": 162,
+          "x": 1084,
+          "y": 220,
           "customProperties": {
             "Description": ""
           }
@@ -144,8 +144,8 @@
           "id": "19176f26-b88a-4a85-a022-ea211138650e",
           "text": " Session Credential Falsification through Forging",
           "type": "istar.Goal",
-          "x": 939,
-          "y": 267,
+          "x": 1210,
+          "y": 397,
           "customProperties": {
             "Description": ""
           }
@@ -154,8 +154,8 @@
           "id": "2d3f5b73-20f4-44d8-aa1d-be3d7f5cda18",
           "text": "Session Hijacking",
           "type": "istar.Goal",
-          "x": 841,
-          "y": 244,
+          "x": 1010,
+          "y": 396,
           "customProperties": {
             "Description": ""
           }
@@ -164,8 +164,8 @@
           "id": "9611bb6a-61c6-4a61-bb40-5b44cc96d52e",
           "text": "Input Data Manipulation",
           "type": "istar.Goal",
-          "x": 1207,
-          "y": 164,
+          "x": 1622,
+          "y": 178,
           "customProperties": {
             "Description": ""
           }
@@ -174,8 +174,8 @@
           "id": "1cc0696d-0e71-4bdb-9e4c-50928c29b0bc",
           "text": "Path Traversal",
           "type": "istar.Goal",
-          "x": 1306,
-          "y": 246,
+          "x": 1695,
+          "y": 304,
           "customProperties": {
             "Description": ""
           }
@@ -184,8 +184,8 @@
           "id": "f6b463d8-1918-4e8c-a8a2-6fb06d14c67b",
           "text": "Leverage Alternate Encoding",
           "type": "istar.Goal",
-          "x": 1142,
-          "y": 243,
+          "x": 1417,
+          "y": 299,
           "customProperties": {
             "Description": ""
           }
@@ -194,8 +194,8 @@
           "id": "750540c4-b975-4647-be4e-742ce12c1826",
           "text": "TCP ACK Scan",
           "type": "istar.Goal",
-          "x": 770,
-          "y": 345,
+          "x": 975,
+          "y": 593,
           "customProperties": {
             "Description": ""
           }
@@ -204,8 +204,8 @@
           "id": "4b2688cf-1a7b-45d0-9e9e-771a5c37af45",
           "text": "TCP FIN Scan",
           "type": "istar.Goal",
-          "x": 669,
-          "y": 346,
+          "x": 848,
+          "y": 594,
           "customProperties": {
             "Description": ""
           }
@@ -214,8 +214,8 @@
           "id": "53006b51-ef65-49de-820a-05dcd21f18d6",
           "text": "TCP SYN Scan",
           "type": "istar.Goal",
-          "x": 869,
-          "y": 348,
+          "x": 1090,
+          "y": 594,
           "customProperties": {
             "Description": ""
           }
@@ -224,8 +224,8 @@
           "id": "62a8bee5-0958-45dd-8ef2-841bf2de2572",
           "text": "Relative Path Traversal",
           "type": "istar.Goal",
-          "x": 1236,
-          "y": 303,
+          "x": 1549,
+          "y": 459,
           "customProperties": {
             "Description": ""
           }
@@ -234,8 +234,8 @@
           "id": "d99c7411-9f87-4063-93ff-8c8b7acfce32",
           "text": "Manipulating Web Input to File System Calls",
           "type": "istar.Goal",
-          "x": 1345,
-          "y": 303,
+          "x": 1786,
+          "y": 451,
           "customProperties": {
             "Description": ""
           }
@@ -247,136 +247,136 @@
   "dependencies": [],
   "links": [
     {
-      "id": "b5fa2a0e-9334-4bad-9ff9-d9edc1774923",
+      "id": "df7b42ce-d308-4022-8d52-0938f313c5ca",
       "type": "istar.OrRefinementLink",
       "source": "f70c5ccb-432b-4cf4-bee1-ef206cd16d3c",
       "target": "039f49d9-4cfc-40f7-8381-77c3d162633a"
     },
     {
-      "id": "a2bd9312-773f-47f1-845c-2ea688328a50",
-      "type": "istar.OrRefinementLink",
-      "source": "f1d8e244-5159-4c49-9809-0d157481122a",
-      "target": "f70c5ccb-432b-4cf4-bee1-ef206cd16d3c"
-    },
-    {
-      "id": "c258e8c4-e6ad-4b2f-a9c8-838969e32a66",
+      "id": "fba8eab9-5018-4885-a70a-5ce3a693fd12",
       "type": "istar.OrRefinementLink",
       "source": "ea1e9af8-c0c9-4027-940c-c4df296933db",
       "target": "039f49d9-4cfc-40f7-8381-77c3d162633a"
     },
     {
-      "id": "0a55fd7b-db85-42f4-a72c-620f9cea9827",
-      "type": "istar.OrRefinementLink",
-      "source": "e7a0f767-e442-4dbb-a612-81f853f92329",
-      "target": "ea1e9af8-c0c9-4027-940c-c4df296933db"
-    },
-    {
-      "id": "f844d60d-c540-49a9-886d-26ff17fe92b0",
+      "id": "3b8a725f-3949-490a-844d-53a9b6682d5f",
       "type": "istar.OrRefinementLink",
       "source": "6309d51e-2c00-4084-a947-c309d71ec97e",
       "target": "e7a0f767-e442-4dbb-a612-81f853f92329"
     },
     {
-      "id": "25c90cbb-5c69-4a8c-8003-327bf9450976",
+      "id": "1bfa7f6c-a2fc-4b8f-a137-091e32484fd5",
       "type": "istar.OrRefinementLink",
       "source": "cb83a8ca-5291-4a0f-8508-c377d096f7c1",
       "target": "e7a0f767-e442-4dbb-a612-81f853f92329"
     },
     {
-      "id": "ae0847a1-826e-43c0-95eb-899ced538585",
+      "id": "eab175d9-7ad2-4bf2-b76f-bb3ffb7c3429",
       "type": "istar.OrRefinementLink",
       "source": "37b61434-c342-4a27-bb7a-9886c84ebe1b",
       "target": "6055e6c8-b4a9-4487-9a65-9199487ab993"
     },
     {
-      "id": "b818cac8-b2c3-46ca-b961-64f29c253b86",
+      "id": "3ceca220-2e11-4bb8-96d3-1d853dd44a8e",
       "type": "istar.OrRefinementLink",
       "source": "a5710398-8b5f-4cd5-9d6d-039b89eeabd3",
       "target": "6055e6c8-b4a9-4487-9a65-9199487ab993"
     },
     {
-      "id": "48fd048e-dedd-4515-9f63-57b6a7b23caf",
+      "id": "9a9a3680-b2cc-4b85-9e3a-cc27bfb64e22",
       "type": "istar.OrRefinementLink",
       "source": "91eefb64-de39-4167-992d-0bf8c14dc294",
       "target": "f1d8e244-5159-4c49-9809-0d157481122a"
     },
     {
-      "id": "e589297b-63d7-4fb3-b8d3-1484c9a22306",
+      "id": "7273e9fa-5cb4-4506-b781-83464af7df86",
       "type": "istar.OrRefinementLink",
       "source": "dd23f701-18ae-4a5b-a4ab-2a2591436aaa",
       "target": "f1d8e244-5159-4c49-9809-0d157481122a"
     },
     {
-      "id": "a7a80306-84a0-4da3-9c3f-b1e9089236ba",
+      "id": "62c22bc4-07ef-4b11-b89c-3ee65916233b",
       "type": "istar.OrRefinementLink",
       "source": "2d3f5b73-20f4-44d8-aa1d-be3d7f5cda18",
       "target": "41a8ded9-f734-4ddc-b397-d9c9ea647b73"
     },
     {
-      "id": "4c9fac68-7f0e-43aa-b926-a454a9efc6f0",
+      "id": "376ce7e8-6012-46f4-9414-6ca5a03fe482",
       "type": "istar.OrRefinementLink",
       "source": "19176f26-b88a-4a85-a022-ea211138650e",
       "target": "41a8ded9-f734-4ddc-b397-d9c9ea647b73"
     },
     {
-      "id": "19b3f895-bf2b-47f7-bb9d-a91ab21f875c",
+      "id": "e5c10faf-2333-43ff-91d6-14dd469bd2df",
       "type": "istar.OrRefinementLink",
       "source": "6055e6c8-b4a9-4487-9a65-9199487ab993",
       "target": "039f49d9-4cfc-40f7-8381-77c3d162633a"
     },
     {
-      "id": "3b8f3f22-3c1f-48af-b4fe-a94350d0b857",
+      "id": "69ceaaba-9c2c-484b-9643-80d01ba50de3",
       "type": "istar.OrRefinementLink",
       "source": "41a8ded9-f734-4ddc-b397-d9c9ea647b73",
       "target": "039f49d9-4cfc-40f7-8381-77c3d162633a"
     },
     {
-      "id": "b2fb99b8-6112-4be6-874a-c1cb65434012",
+      "id": "f8210164-5dc4-4935-9776-6b19bfdbc243",
       "type": "istar.OrRefinementLink",
       "source": "9611bb6a-61c6-4a61-bb40-5b44cc96d52e",
       "target": "039f49d9-4cfc-40f7-8381-77c3d162633a"
     },
     {
-      "id": "45a96df5-7785-4c18-b087-301037cbf04a",
+      "id": "eac6b840-ea47-4527-ac0b-c855b04c0c51",
       "type": "istar.OrRefinementLink",
       "source": "f6b463d8-1918-4e8c-a8a2-6fb06d14c67b",
       "target": "9611bb6a-61c6-4a61-bb40-5b44cc96d52e"
     },
     {
-      "id": "56e62d1a-e509-4a01-83dd-bf53dbc39ce3",
+      "id": "a116b0fa-530f-4df2-9360-be88eca1cf86",
       "type": "istar.OrRefinementLink",
       "source": "1cc0696d-0e71-4bdb-9e4c-50928c29b0bc",
       "target": "9611bb6a-61c6-4a61-bb40-5b44cc96d52e"
     },
     {
-      "id": "40d19637-1120-4906-820c-6234d439e72a",
+      "id": "89cc5a04-5097-4528-9bfc-3551486022d6",
       "type": "istar.OrRefinementLink",
       "source": "62a8bee5-0958-45dd-8ef2-841bf2de2572",
       "target": "1cc0696d-0e71-4bdb-9e4c-50928c29b0bc"
     },
     {
-      "id": "720a74b8-fe19-4e8a-8872-996edffa9bb3",
+      "id": "a6020ce2-66bd-49fc-a54a-4c4d96cbaf18",
       "type": "istar.OrRefinementLink",
       "source": "d99c7411-9f87-4063-93ff-8c8b7acfce32",
       "target": "1cc0696d-0e71-4bdb-9e4c-50928c29b0bc"
     },
     {
-      "id": "d78b39cd-f5bc-4a33-a095-ea81a1b0eec9",
+      "id": "538df02c-23b2-405c-b33b-1cfbb82c81be",
       "type": "istar.OrRefinementLink",
       "source": "4b2688cf-1a7b-45d0-9e9e-771a5c37af45",
       "target": "a5710398-8b5f-4cd5-9d6d-039b89eeabd3"
     },
     {
-      "id": "abf038cf-163c-42e3-966a-26c786b3d14a",
+      "id": "13a76d74-3285-46e9-8289-b611719eec6b",
       "type": "istar.OrRefinementLink",
       "source": "750540c4-b975-4647-be4e-742ce12c1826",
       "target": "a5710398-8b5f-4cd5-9d6d-039b89eeabd3"
     },
     {
-      "id": "c43b9d3e-8806-439c-a6e6-bb5f82784463",
+      "id": "44bd71bd-77a2-4db8-94f3-8e9dd94adfb7",
       "type": "istar.OrRefinementLink",
       "source": "53006b51-ef65-49de-820a-05dcd21f18d6",
       "target": "a5710398-8b5f-4cd5-9d6d-039b89eeabd3"
+    },
+    {
+      "id": "4ee7cacb-a6bb-4c5c-945e-952c90b5c875",
+      "type": "istar.AndRefinementLink",
+      "source": "e7a0f767-e442-4dbb-a612-81f853f92329",
+      "target": "ea1e9af8-c0c9-4027-940c-c4df296933db"
+    },
+    {
+      "id": "d6b9765d-1ffc-4c3f-b23f-01f8c73b5826",
+      "type": "istar.AndRefinementLink",
+      "source": "f1d8e244-5159-4c49-9809-0d157481122a",
+      "target": "f70c5ccb-432b-4cf4-bee1-ef206cd16d3c"
     }
   ],
   "display": {
@@ -384,43 +384,81 @@
       "backgroundColor": "#FABB5B"
     },
     "039f49d9-4cfc-40f7-8381-77c3d162633a": {
-      "width": 137.8499755859375,
-      "height": 51.04999542236328
+      "width": 270.9375,
+      "height": 38
+    },
+    "6055e6c8-b4a9-4487-9a65-9199487ab993": {
+      "width": 160.9375,
+      "height": 34.25
+    },
+    "f1d8e244-5159-4c49-9809-0d157481122a": {
+      "width": 191.9375,
+      "height": 35.25
+    },
+    "ea1e9af8-c0c9-4027-940c-c4df296933db": {
+      "width": 191.9375,
+      "height": 30
+    },
+    "e7a0f767-e442-4dbb-a612-81f853f92329": {
+      "width": 171.9375,
+      "height": 35.25
     },
     "6309d51e-2c00-4084-a947-c309d71ec97e": {
-      "width": 100.8499755859375,
-      "height": 46.54999542236328
+      "width": 202.9375,
+      "height": 37.25
+    },
+    "cb83a8ca-5291-4a0f-8508-c377d096f7c1": {
+      "width": 194.9375,
+      "height": 33.25
     },
     "91eefb64-de39-4167-992d-0bf8c14dc294": {
-      "width": 101.8499755859375,
-      "height": 55.54999542236328
+      "width": 304.9375,
+      "height": 48.25
     },
     "dd23f701-18ae-4a5b-a4ab-2a2591436aaa": {
-      "width": 106.8499755859375,
-      "height": 45.54999542236328
+      "width": 199.9375,
+      "height": 39.25
+    },
+    "37b61434-c342-4a27-bb7a-9886c84ebe1b": {
+      "width": 164.9375,
+      "height": 34.25
+    },
+    "a5710398-8b5f-4cd5-9d6d-039b89eeabd3": {
+      "width": 160.9375,
+      "height": 34.25
     },
     "41a8ded9-f734-4ddc-b397-d9c9ea647b73": {
-      "width": 133.8499755859375,
-      "height": 44.54999542236328
+      "width": 242.9375,
+      "height": 44.25
     },
     "19176f26-b88a-4a85-a022-ea211138650e": {
-      "width": 187.8499755859375,
-      "height": 50.54999542236328
+      "width": 304.9375,
+      "height": 41.25
+    },
+    "2d3f5b73-20f4-44d8-aa1d-be3d7f5cda18": {
+      "width": 166.9375,
+      "height": 36.25
+    },
+    "1cc0696d-0e71-4bdb-9e4c-50928c29b0bc": {
+      "width": 151.9375,
+      "height": 36
     },
     "f6b463d8-1918-4e8c-a8a2-6fb06d14c67b": {
-      "width": 109.609375,
-      "height": 37.943756103515625
+      "width": 223.9375
+    },
+    "62a8bee5-0958-45dd-8ef2-841bf2de2572": {
+      "width": 195.9375
     },
     "d99c7411-9f87-4063-93ff-8c8b7acfce32": {
-      "width": 150.609375,
-      "height": 38.84375
+      "width": 306.9375,
+      "height": 43
     }
   },
   "tool": "pistar.2.1.0",
   "istar": "2.0",
-  "saveDate": "Wed, 19 Feb 2025 16:30:47 GMT",
+  "saveDate": "Wed, 19 Feb 2025 20:36:19 GMT",
   "diagram": {
-    "width": 1511,
+    "width": 2133,
     "height": 765,
     "customProperties": {
       "Description": ""

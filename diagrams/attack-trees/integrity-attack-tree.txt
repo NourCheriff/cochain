@@ -4,7 +4,7 @@
       "id": "2efafd3f-a206-421e-8b05-4b5b00afac3e",
       "text": "Attaccante",
       "type": "istar.Actor",
-      "x": 106,
+      "x": 38,
       "y": 109,
       "customProperties": {
         "Description": ""
@@ -14,8 +14,8 @@
           "id": "f2474ba6-40b1-488e-95ce-20f96d8df72d",
           "text": "Violazione dell'integrità",
           "type": "istar.Goal",
-          "x": 789,
-          "y": 109,
+          "x": 863,
+          "y": 123,
           "customProperties": {
             "Description": ""
           }
@@ -24,8 +24,8 @@
           "id": "344c5d5c-02ca-4581-a7d6-0d8a5970af61",
           "text": "Install Malicious Extension",
           "type": "istar.Goal",
-          "x": 277,
-          "y": 324,
+          "x": 237,
+          "y": 304,
           "customProperties": {
             "Description": ""
           }
@@ -34,8 +34,8 @@
           "id": "771f8263-67e7-465f-b7a3-358f0059db54",
           "text": "Content Spoofing",
           "type": "istar.Goal",
-          "x": 817,
-          "y": 377,
+          "x": 773,
+          "y": 417,
           "customProperties": {
             "Description": ""
           }
@@ -45,7 +45,7 @@
           "text": "Code Injection",
           "type": "istar.Goal",
           "x": 996,
-          "y": 445,
+          "y": 423,
           "customProperties": {
             "Description": ""
           }
@@ -54,7 +54,7 @@
           "id": "4fb1085a-6086-4a12-b37d-19bc4a35ee4b",
           "text": "File Content Injection",
           "type": "istar.Goal",
-          "x": 825,
+          "x": 767,
           "y": 589,
           "customProperties": {
             "Description": ""
@@ -64,8 +64,8 @@
           "id": "c3aea17c-c9ea-435f-8f1b-21d95d20c085",
           "text": "Cross-Site Scripting (XSS)",
           "type": "istar.Goal",
-          "x": 1161,
-          "y": 574,
+          "x": 1155,
+          "y": 584,
           "customProperties": {
             "Description": ""
           }
@@ -84,8 +84,8 @@
           "id": "631d1cc0-56bb-4e01-b34c-6362e2a82576",
           "text": "Log Injection-Tampering-Forging",
           "type": "istar.Goal",
-          "x": 1274,
-          "y": 500,
+          "x": 1214,
+          "y": 486,
           "customProperties": {
             "Description": ""
           }
@@ -94,8 +94,8 @@
           "id": "ee59ab55-fe7e-4652-a0e4-f9161ceedb34",
           "text": "Web Server Logs Tampering",
           "type": "istar.Goal",
-          "x": 1487,
-          "y": 508,
+          "x": 1473,
+          "y": 484,
           "customProperties": {
             "Description": ""
           }
@@ -104,8 +104,8 @@
           "id": "2c276a41-e699-488c-8b48-888d67d6ddb9",
           "text": "Adversary in the Middle (AiTM)",
           "type": "istar.Goal",
-          "x": 1092,
-          "y": 337,
+          "x": 1056,
+          "y": 339,
           "customProperties": {
             "Description": ""
           }
@@ -114,8 +114,8 @@
           "id": "699077c8-aa00-439c-adaa-a5c9c9316bb2",
           "text": "Privilege Abuse",
           "type": "istar.Goal",
-          "x": 638,
-          "y": 368,
+          "x": 530,
+          "y": 608,
           "customProperties": {
             "Description": ""
           }
@@ -124,8 +124,8 @@
           "id": "ea208804-8560-4217-9f4d-7cb8d203e243",
           "text": "Using Malicious Files",
           "type": "istar.Goal",
-          "x": 539,
-          "y": 505,
+          "x": 375,
+          "y": 761,
           "customProperties": {
             "Description": ""
           }
@@ -154,8 +154,8 @@
           "id": "0ba1e8c8-bf7e-4c67-9486-41277b49af86",
           "text": "SQL Injection",
           "type": "istar.Goal",
-          "x": 200,
-          "y": 504,
+          "x": 174,
+          "y": 494,
           "customProperties": {
             "Description": ""
           }
@@ -164,8 +164,8 @@
           "id": "269a4e18-79ec-4dd4-8357-3cb73c0410cd",
           "text": "NoSQL Injection",
           "type": "istar.Goal",
-          "x": 382,
-          "y": 499,
+          "x": 374,
+          "y": 495,
           "customProperties": {
             "Description": ""
           }
@@ -174,8 +174,8 @@
           "id": "d17ec50a-aef5-42e8-b985-2e5c66c98e31",
           "text": "Exploiting Trust in Client",
           "type": "istar.Goal",
-          "x": 1686,
-          "y": 276,
+          "x": 1742,
+          "y": 270,
           "customProperties": {
             "Description": ""
           }
@@ -184,8 +184,8 @@
           "id": "24caf960-5d77-4a61-8438-5e33eacee07d",
           "text": "Removing Important Client Functionality",
           "type": "istar.Goal",
-          "x": 1590,
-          "y": 403,
+          "x": 1622,
+          "y": 405,
           "customProperties": {
             "Description": ""
           }
@@ -194,8 +194,8 @@
           "id": "ee479ac8-9667-4a95-8008-da7d93f4b1ba",
           "text": "Manipulating User-Controlled Variables",
           "type": "istar.Goal",
-          "x": 1779,
-          "y": 398,
+          "x": 1837,
+          "y": 408,
           "customProperties": {
             "Description": ""
           }
@@ -204,7 +204,7 @@
           "id": "36b77ff4-1176-40f7-aac6-a12c87f51967",
           "text": "Traffic Injection",
           "type": "istar.Goal",
-          "x": 129,
+          "x": 73,
           "y": 274,
           "customProperties": {
             "Description": ""
@@ -224,7 +224,7 @@
           "id": "e8d75406-eabd-4742-82bf-22ff8c125f48",
           "text": "Blind SQL Injection",
           "type": "istar.Goal",
-          "x": 106,
+          "x": 38,
           "y": 606,
           "customProperties": {
             "Description": ""
@@ -235,7 +235,7 @@
           "text": "Object Relational Mapping Injection",
           "type": "istar.Goal",
           "x": 249,
-          "y": 608,
+          "y": 606,
           "customProperties": {
             "Description": ""
           }
@@ -244,8 +244,8 @@
           "id": "59fffa86-7dfc-489c-8b4b-b0f8a6bf6f4b",
           "text": "Exploiting Incorrectly Configured Access Control Security Levels",
           "type": "istar.Goal",
-          "x": 699,
-          "y": 501,
+          "x": 605,
+          "y": 761,
           "customProperties": {
             "Description": ""
           }
@@ -254,8 +254,8 @@
           "id": "022b874f-8e66-400c-9915-0cae08986c06",
           "text": "Embedding Scripts within Scripts",
           "type": "istar.Goal",
-          "x": 987,
-          "y": 615,
+          "x": 925,
+          "y": 669,
           "customProperties": {
             "Description": ""
           }
@@ -267,145 +267,145 @@
   "dependencies": [],
   "links": [
     {
-      "id": "4874721f-a054-4d9d-be25-a01f3d2bbf89",
+      "id": "96464df3-6360-476b-9b9a-1470f6c989c6",
       "type": "istar.OrRefinementLink",
       "source": "344c5d5c-02ca-4581-a7d6-0d8a5970af61",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "7cf7df4c-6c62-4e36-ac0a-84437e56374e",
+      "id": "2dcdf11f-924e-4b46-b69d-6585f7e9a625",
       "type": "istar.OrRefinementLink",
       "source": "771f8263-67e7-465f-b7a3-358f0059db54",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "ed8f4126-a677-473e-a7b4-5825c045cac9",
+      "id": "09eb4f4a-a9b9-4da5-960c-a1074b1ca635",
       "type": "istar.OrRefinementLink",
       "source": "4daa54c8-31e5-4fbf-849d-75d08d83c744",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "86b3e487-2f54-49df-b78e-56fcac3009e9",
+      "id": "51352360-b00c-4cc8-a474-9659b3ad58dc",
       "type": "istar.OrRefinementLink",
       "source": "4fb1085a-6086-4a12-b37d-19bc4a35ee4b",
       "target": "4daa54c8-31e5-4fbf-849d-75d08d83c744"
     },
     {
-      "id": "40e69e23-4809-4500-9123-91ac97fae80a",
+      "id": "7d0d2bd7-5090-4e45-908b-661ee8f1af4e",
       "type": "istar.OrRefinementLink",
       "source": "c3aea17c-c9ea-435f-8f1b-21d95d20c085",
       "target": "4daa54c8-31e5-4fbf-849d-75d08d83c744"
     },
     {
-      "id": "4a89f4c6-fb5f-4fa0-9c05-22ce8a808299",
+      "id": "49afb838-41f6-4d7e-b839-0cdb7fe907cd",
       "type": "istar.OrRefinementLink",
       "source": "631d1cc0-56bb-4e01-b34c-6362e2a82576",
       "target": "75f77a32-d06d-43bc-986f-b3d0bc0c45fd"
     },
     {
-      "id": "13ddebae-6d4a-4cf0-9043-dfcd715a0ec9",
+      "id": "f5382e90-73d2-4823-8c95-c5496bc7b716",
       "type": "istar.OrRefinementLink",
       "source": "ee59ab55-fe7e-4652-a0e4-f9161ceedb34",
       "target": "75f77a32-d06d-43bc-986f-b3d0bc0c45fd"
     },
     {
-      "id": "f8749245-fd3a-436c-b176-09ecf37a8b89",
+      "id": "41c367e3-a04f-49de-9bac-a5dd1c02cbd0",
       "type": "istar.OrRefinementLink",
       "source": "75f77a32-d06d-43bc-986f-b3d0bc0c45fd",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "9d8d56e6-8e3f-4f12-9a09-9df07a5a8ff6",
+      "id": "77bb76a3-bc19-4216-92c0-f8128fa0fb28",
       "type": "istar.OrRefinementLink",
       "source": "2c276a41-e699-488c-8b48-888d67d6ddb9",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "e2b44d30-5114-4a11-b324-cdc9dc49d81b",
+      "id": "399df04d-5dd5-4c88-9b16-71dc522037b6",
       "type": "istar.OrRefinementLink",
       "source": "ea208804-8560-4217-9f4d-7cb8d203e243",
       "target": "699077c8-aa00-439c-adaa-a5c9c9316bb2"
     },
     {
-      "id": "3cbbcdf6-9be6-464a-bc5d-a44ddae611e6",
+      "id": "6e754ff1-b9d8-4fc5-8987-e9391ce8d02b",
       "type": "istar.OrRefinementLink",
       "source": "699077c8-aa00-439c-adaa-a5c9c9316bb2",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "258a2254-c095-4398-8193-bf4bb944123b",
+      "id": "823c90d8-3fb2-4207-b160-9b664dff2647",
       "type": "istar.OrRefinementLink",
       "source": "259f0c17-c29f-4390-be94-df8bb566b481",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "7675e977-1532-4e53-b312-f632b4935b58",
+      "id": "a268eadd-7d21-4f8d-b917-c6354474a72d",
       "type": "istar.OrRefinementLink",
       "source": "0ebfda2e-6511-41fc-b438-ec5155c9c3c2",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "205dda6e-63a5-40e4-9bba-3ff6975b02f3",
+      "id": "57305520-8b91-4115-bf5d-269fa5cc66ed",
       "type": "istar.OrRefinementLink",
       "source": "0ba1e8c8-bf7e-4c67-9486-41277b49af86",
       "target": "0ebfda2e-6511-41fc-b438-ec5155c9c3c2"
     },
     {
-      "id": "bcdc5378-9ecc-4a53-b60f-b3055d3d41a2",
+      "id": "263d35ae-6f45-4deb-ab5d-852b48b3178a",
       "type": "istar.OrRefinementLink",
       "source": "269a4e18-79ec-4dd4-8357-3cb73c0410cd",
       "target": "0ebfda2e-6511-41fc-b438-ec5155c9c3c2"
     },
     {
-      "id": "d37b7482-aaf0-40f2-9eef-16ef25527cd2",
+      "id": "c94845a9-8824-497f-ab5c-b4bb6fb15e9f",
       "type": "istar.OrRefinementLink",
       "source": "24caf960-5d77-4a61-8438-5e33eacee07d",
       "target": "d17ec50a-aef5-42e8-b985-2e5c66c98e31"
     },
     {
-      "id": "470a3532-7526-418f-aea9-4eef13fd3409",
+      "id": "3da0d331-5b17-4d44-95fb-65954d8fad26",
       "type": "istar.OrRefinementLink",
       "source": "ee479ac8-9667-4a95-8008-da7d93f4b1ba",
       "target": "d17ec50a-aef5-42e8-b985-2e5c66c98e31"
     },
     {
-      "id": "d5f740de-b294-4368-909a-eba5cd79f090",
+      "id": "34212a13-d6c9-442e-ac1c-f5b7a65aad38",
       "type": "istar.OrRefinementLink",
       "source": "d17ec50a-aef5-42e8-b985-2e5c66c98e31",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "15fd1be9-54d8-4516-b7a1-9d2ac9e889fc",
+      "id": "41cc24ae-c128-485a-a98a-b682479b7a16",
       "type": "istar.OrRefinementLink",
       "source": "36b77ff4-1176-40f7-aac6-a12c87f51967",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "4aebdcbe-f628-4c1c-a154-ac6d8e47aa86",
+      "id": "8807b37c-7df8-4e1a-ae00-2472df43821b",
       "type": "istar.OrRefinementLink",
       "source": "7afaef89-0ea4-4636-8bc3-ecf1c56bc826",
       "target": "f2474ba6-40b1-488e-95ce-20f96d8df72d"
     },
     {
-      "id": "a89513a2-2b10-4929-a824-f2ab7a847507",
+      "id": "32479293-677d-443e-a79d-d14c669c8871",
       "type": "istar.OrRefinementLink",
       "source": "e8d75406-eabd-4742-82bf-22ff8c125f48",
       "target": "0ba1e8c8-bf7e-4c67-9486-41277b49af86"
     },
     {
-      "id": "122bd170-274f-433c-8e1a-08b7c6c84880",
+      "id": "f11391dd-7af0-41a3-a47e-9be2be28f58f",
       "type": "istar.OrRefinementLink",
       "source": "872f0c99-b1fa-43e1-944a-f6914c2687f2",
       "target": "0ba1e8c8-bf7e-4c67-9486-41277b49af86"
     },
     {
-      "id": "fdea6d28-0b89-4520-861b-caab9f29c49e",
+      "id": "cc5a859d-212f-4d30-801f-ecf4bbbb6c31",
       "type": "istar.OrRefinementLink",
       "source": "59fffa86-7dfc-489c-8b4b-b0f8a6bf6f4b",
       "target": "699077c8-aa00-439c-adaa-a5c9c9316bb2"
     },
     {
-      "id": "1a2d071d-453c-4e3a-a0eb-c51445e5827c",
+      "id": "719ce5c6-d187-4a30-823c-c95a6c92a74a",
       "type": "istar.OrRefinementLink",
       "source": "022b874f-8e66-400c-9915-0cae08986c06",
       "target": "4daa54c8-31e5-4fbf-849d-75d08d83c744"
@@ -424,44 +424,43 @@
       "height": 50.80000305175781
     },
     "771f8263-67e7-465f-b7a3-358f0059db54": {
-      "width": 140.16668701171875,
-      "height": 51.30000305175781
+      "width": 168.9375
     },
     "4daa54c8-31e5-4fbf-849d-75d08d83c744": {
       "width": 131.16668701171875,
       "height": 51.30000305175781
     },
     "4fb1085a-6086-4a12-b37d-19bc4a35ee4b": {
-      "width": 145.16668701171875,
-      "height": 54.80000305175781
+      "width": 178.9375,
+      "height": 39
     },
     "c3aea17c-c9ea-435f-8f1b-21d95d20c085": {
-      "width": 153.16668701171875,
-      "height": 52.30000305175781
+      "width": 224.9375,
+      "height": 44
     },
     "75f77a32-d06d-43bc-986f-b3d0bc0c45fd": {
       "width": 158.16668701171875,
       "height": 53.80000305175781
     },
     "631d1cc0-56bb-4e01-b34c-6362e2a82576": {
-      "width": 167.16668701171875,
-      "height": 56.80000305175781
+      "width": 227.9375,
+      "height": 44
     },
     "ee59ab55-fe7e-4652-a0e4-f9161ceedb34": {
-      "width": 166.16668701171875,
-      "height": 55.80000305175781
+      "width": 202.9375,
+      "height": 44
     },
     "2c276a41-e699-488c-8b48-888d67d6ddb9": {
-      "width": 174.16668701171875,
-      "height": 51.80000305175781
+      "width": 213.9375,
+      "height": 43
     },
     "699077c8-aa00-439c-adaa-a5c9c9316bb2": {
-      "width": 153.16668701171875,
-      "height": 50.80000305175781
+      "width": 195.9375,
+      "height": 40
     },
     "ea208804-8560-4217-9f4d-7cb8d203e243": {
-      "width": 146.16668701171875,
-      "height": 52.30000305175781
+      "width": 176.9375,
+      "height": 39
     },
     "259f0c17-c29f-4390-be94-df8bb566b481": {
       "width": 131.16668701171875,
@@ -476,8 +475,8 @@
       "height": 45.600006103515625
     },
     "269a4e18-79ec-4dd4-8357-3cb73c0410cd": {
-      "width": 137.36666870117188,
-      "height": 50.600006103515625
+      "width": 165.9375,
+      "height": 37
     },
     "d17ec50a-aef5-42e8-b985-2e5c66c98e31": {
       "width": 164.16668701171875,
@@ -488,8 +487,8 @@
       "height": 54.80000305175781
     },
     "ee479ac8-9667-4a95-8008-da7d93f4b1ba": {
-      "width": 174.16668701171875,
-      "height": 59.80000305175781
+      "width": 266.9375,
+      "height": 52
     },
     "36b77ff4-1176-40f7-aac6-a12c87f51967": {
       "width": 146.1666717529297,
@@ -500,22 +499,22 @@
       "height": 48.80000305175781
     },
     "e8d75406-eabd-4742-82bf-22ff8c125f48": {
-      "width": 124.36666870117188,
-      "height": 45.80000305175781
+      "width": 171.9375,
+      "height": 44
     },
     "872f0c99-b1fa-43e1-944a-f6914c2687f2": {
-      "width": 148.36666870117188,
-      "height": 49.30000305175781
+      "width": 226.9375,
+      "height": 42
     },
     "59fffa86-7dfc-489c-8b4b-b0f8a6bf6f4b": {
-      "width": 169.36666870117188,
-      "height": 60.80000305175781
+      "width": 398.9375,
+      "height": 43
     },
     "022b874f-8e66-400c-9915-0cae08986c06": {
-      "width": 171.36666870117188,
-      "height": 52.30000305175781
+      "width": 282.9375,
+      "height": 39
     },
-    "4874721f-a054-4d9d-be25-a01f3d2bbf89": {
+    "96464df3-6360-476b-9b9a-1470f6c989c6": {
       "vertices": [
         {
           "x": 472,
@@ -523,7 +522,7 @@
         }
       ]
     },
-    "f8749245-fd3a-436c-b176-09ecf37a8b89": {
+    "41c367e3-a04f-49de-9bac-a5dd1c02cbd0": {
       "vertices": [
         {
           "x": 1253,
@@ -531,7 +530,7 @@
         }
       ]
     },
-    "d5f740de-b294-4368-909a-eba5cd79f090": {
+    "34212a13-d6c9-442e-ac1c-f5b7a65aad38": {
       "vertices": [
         {
           "x": 1435,
@@ -539,7 +538,7 @@
         }
       ]
     },
-    "15fd1be9-54d8-4516-b7a1-9d2ac9e889fc": {
+    "41cc24ae-c128-485a-a98a-b682479b7a16": {
       "vertices": [
         {
           "x": 317,
@@ -550,7 +549,7 @@
   },
   "tool": "pistar.2.1.0",
   "istar": "2.0",
-  "saveDate": "Wed, 19 Feb 2025 17:33:52 GMT",
+  "saveDate": "Wed, 19 Feb 2025 20:29:55 GMT",
   "diagram": {
     "width": 8439,
     "height": 5123,
