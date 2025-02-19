@@ -24,7 +24,7 @@
           "id": "296774ee-eeb6-451b-a3c4-33dfef823f1d",
           "text": "Exploiting Trust in Client",
           "type": "istar.Goal",
-          "x": 362,
+          "x": 364,
           "y": 330,
           "customProperties": {
             "Description": ""
@@ -34,7 +34,7 @@
           "id": "8153c67d-7a56-49ab-bde9-162b43cd1421",
           "text": "Removing Important Client Functionality",
           "type": "istar.Goal",
-          "x": 215,
+          "x": 216,
           "y": 416,
           "customProperties": {
             "Description": ""
@@ -190,7 +190,7 @@
   },
   "tool": "pistar.2.1.0",
   "istar": "2.0",
-  "saveDate": "Wed, 19 Feb 2025 14:28:32 GMT",
+  "saveDate": "Wed, 19 Feb 2025 16:30:50 GMT",
   "diagram": {
     "width": 1248,
     "height": 765,
