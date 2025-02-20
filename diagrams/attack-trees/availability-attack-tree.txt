@@ -1,0 +1,289 @@
+{
+  "actors": [
+    {
+      "id": "716c31e3-7823-4dce-b5de-0d0a6e1b9643",
+      "text": "Attaccante",
+      "type": "istar.Actor",
+      "x": 231,
+      "y": 141,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "f743dfd3-7da5-43c1-9827-af57b76f29ec",
+          "text": "Violazione della disponibilità",
+          "type": "istar.Goal",
+          "x": 987,
+          "y": 141,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "2abc5a80-4102-4440-90fa-c016e9436a70",
+          "text": "Embedding Scripts within Scripts",
+          "type": "istar.Goal",
+          "x": 1151,
+          "y": 397,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "096951af-924b-44ea-89f6-bef7e41c8818",
+          "text": "File Content Injection",
+          "type": "istar.Goal",
+          "x": 969,
+          "y": 445,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "cff8eac6-3840-41f8-a865-7a196d87b6bf",
+          "text": "Code Injection",
+          "type": "istar.Goal",
+          "x": 979,
+          "y": 303,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "3e321d54-ceed-4518-8c26-3bc71dcb06c4",
+          "text": "Malicious Automated Software Update via Redirection",
+          "type": "istar.Goal",
+          "x": 499,
+          "y": 471,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "0ba4481d-ee9c-4555-8180-100075647a4c",
+          "text": "Malicious Manual Software Update",
+          "type": "istar.Goal",
+          "x": 231,
+          "y": 475,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "1819c465-b613-47af-a05b-a43915d1e7ea",
+          "text": "Malicious Software Update",
+          "type": "istar.Goal",
+          "x": 453,
+          "y": 327,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "0022e942-bca4-4803-a2a7-780fff3fcabd",
+          "text": "Cross-Site Scripting (XSS)",
+          "type": "istar.Goal",
+          "x": 813,
+          "y": 397,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "49b81453-dc8f-41a8-add2-bf134b199541",
+          "text": "Privilege abuse",
+          "type": "istar.Goal",
+          "x": 1473,
+          "y": 289,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "8cb0d8d2-0d14-4207-94b4-f6987f862f3a",
+          "text": "Accessing Functionality Not Properly Constrained by ACLs",
+          "type": "istar.Goal",
+          "x": 1563,
+          "y": 513,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "4f41e8af-9bc2-4aa6-8678-98d3a544114f",
+          "text": "Using Malicious Files",
+          "type": "istar.Goal",
+          "x": 1315,
+          "y": 515,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "334d030e-ac22-48b2-92c5-286c42cbf8de",
+          "text": "Traffic Injection",
+          "type": "istar.Goal",
+          "x": 1841,
+          "y": 273,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "5b49a18c-74d8-4654-8536-06dc68df1df2",
+          "text": "HTTP Flood",
+          "type": "istar.Goal",
+          "x": 273,
+          "y": 249,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    }
+  ],
+  "orphans": [],
+  "dependencies": [],
+  "links": [
+    {
+      "id": "8612b132-a355-436d-a246-2b8e2eac8229",
+      "type": "istar.OrRefinementLink",
+      "source": "0ba4481d-ee9c-4555-8180-100075647a4c",
+      "target": "1819c465-b613-47af-a05b-a43915d1e7ea"
+    },
+    {
+      "id": "58cb18b3-fd01-4021-8071-497ba3230455",
+      "type": "istar.OrRefinementLink",
+      "source": "3e321d54-ceed-4518-8c26-3bc71dcb06c4",
+      "target": "1819c465-b613-47af-a05b-a43915d1e7ea"
+    },
+    {
+      "id": "f999b3d4-8864-4426-a400-62ed97951d12",
+      "type": "istar.OrRefinementLink",
+      "source": "1819c465-b613-47af-a05b-a43915d1e7ea",
+      "target": "f743dfd3-7da5-43c1-9827-af57b76f29ec"
+    },
+    {
+      "id": "02c34b7e-31e9-4660-8e34-0338f1a82ea1",
+      "type": "istar.OrRefinementLink",
+      "source": "cff8eac6-3840-41f8-a865-7a196d87b6bf",
+      "target": "f743dfd3-7da5-43c1-9827-af57b76f29ec"
+    },
+    {
+      "id": "486e16b6-b989-47f9-b7e8-c329494907ff",
+      "type": "istar.OrRefinementLink",
+      "source": "0022e942-bca4-4803-a2a7-780fff3fcabd",
+      "target": "cff8eac6-3840-41f8-a865-7a196d87b6bf"
+    },
+    {
+      "id": "ad6b27f7-ecd0-4046-9491-20dd9b214753",
+      "type": "istar.OrRefinementLink",
+      "source": "096951af-924b-44ea-89f6-bef7e41c8818",
+      "target": "cff8eac6-3840-41f8-a865-7a196d87b6bf"
+    },
+    {
+      "id": "79d33a38-dd9d-4d79-a348-58dce89df8b7",
+      "type": "istar.OrRefinementLink",
+      "source": "2abc5a80-4102-4440-90fa-c016e9436a70",
+      "target": "cff8eac6-3840-41f8-a865-7a196d87b6bf"
+    },
+    {
+      "id": "69862b57-812c-4ed9-a9ba-99233ae76704",
+      "type": "istar.OrRefinementLink",
+      "source": "49b81453-dc8f-41a8-add2-bf134b199541",
+      "target": "f743dfd3-7da5-43c1-9827-af57b76f29ec"
+    },
+    {
+      "id": "6a20c4e5-1d90-4f6c-b31f-375e925eda10",
+      "type": "istar.OrRefinementLink",
+      "source": "4f41e8af-9bc2-4aa6-8678-98d3a544114f",
+      "target": "49b81453-dc8f-41a8-add2-bf134b199541"
+    },
+    {
+      "id": "a0a46b9c-7fe4-4d8e-b053-c242502cace3",
+      "type": "istar.OrRefinementLink",
+      "source": "8cb0d8d2-0d14-4207-94b4-f6987f862f3a",
+      "target": "49b81453-dc8f-41a8-add2-bf134b199541"
+    },
+    {
+      "id": "6d448e3b-ff2c-43e5-b46b-593d8e949767",
+      "type": "istar.OrRefinementLink",
+      "source": "334d030e-ac22-48b2-92c5-286c42cbf8de",
+      "target": "f743dfd3-7da5-43c1-9827-af57b76f29ec"
+    },
+    {
+      "id": "9a57c19f-901a-4881-a07f-1954e3e975f3",
+      "type": "istar.OrRefinementLink",
+      "source": "5b49a18c-74d8-4654-8536-06dc68df1df2",
+      "target": "f743dfd3-7da5-43c1-9827-af57b76f29ec"
+    }
+  ],
+  "display": {
+    "716c31e3-7823-4dce-b5de-0d0a6e1b9643": {
+      "backgroundColor": "#FABB5B"
+    },
+    "f743dfd3-7da5-43c1-9827-af57b76f29ec": {
+      "width": 186.9375,
+      "height": 39.25
+    },
+    "2abc5a80-4102-4440-90fa-c016e9436a70": {
+      "width": 228.9375,
+      "height": 39.25
+    },
+    "096951af-924b-44ea-89f6-bef7e41c8818": {
+      "width": 184.9375,
+      "height": 37.25
+    },
+    "cff8eac6-3840-41f8-a865-7a196d87b6bf": {
+      "width": 172.9375,
+      "height": 35.25
+    },
+    "3e321d54-ceed-4518-8c26-3bc71dcb06c4": {
+      "width": 348.9375,
+      "height": 39.25
+    },
+    "0ba4481d-ee9c-4555-8180-100075647a4c": {
+      "width": 236.9375,
+      "height": 33.25
+    },
+    "1819c465-b613-47af-a05b-a43915d1e7ea": {
+      "width": 214.9375,
+      "height": 33.25
+    },
+    "0022e942-bca4-4803-a2a7-780fff3fcabd": {
+      "width": 166.9375,
+      "height": 33.25
+    },
+    "49b81453-dc8f-41a8-add2-bf134b199541": {
+      "width": 184.9375,
+      "height": 37.25
+    },
+    "8cb0d8d2-0d14-4207-94b4-f6987f862f3a": {
+      "width": 418.9375,
+      "height": 47.25
+    },
+    "4f41e8af-9bc2-4aa6-8678-98d3a544114f": {
+      "width": 228.9375,
+      "height": 41.25
+    },
+    "334d030e-ac22-48b2-92c5-286c42cbf8de": {
+      "width": 164.9375,
+      "height": 35.25
+    },
+    "5b49a18c-74d8-4654-8536-06dc68df1df2": {
+      "width": 162.9375,
+      "height": 37.25
+    }
+  },
+  "tool": "pistar.2.1.0",
+  "istar": "2.0",
+  "saveDate": "Thu, 20 Feb 2025 08:41:50 GMT",
+  "diagram": {
+    "width": 2223,
+    "height": 700,
+    "customProperties": {
+      "Description": ""
+    }
+  }
+}
