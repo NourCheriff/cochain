@@ -1,0 +1,169 @@
+{
+  "actors": [
+    {
+      "id": "8a5cccc0-16ba-4b33-9782-a4c0d34f78ce",
+      "text": "Utente maldestro",
+      "type": "istar.Actor",
+      "x": 618,
+      "y": 227,
+      "customProperties": {
+        "Description": ""
+      },
+      "nodes": [
+        {
+          "id": "a2b7e1f8-f00d-473c-9059-97cdb8cea149",
+          "text": "Violazione dell'integrità",
+          "type": "istar.Goal",
+          "x": 729,
+          "y": 239,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "3bd3e60a-e9bd-4ba7-ac97-64e2c6fb76c9",
+          "text": "Violazione dell'autorizzazione",
+          "type": "istar.Goal",
+          "x": 1054,
+          "y": 241,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "5303e907-4af6-4b20-8f06-e980ab06ffaf",
+          "text": "Violazione della confidenzialità",
+          "type": "istar.Goal",
+          "x": 895,
+          "y": 236,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "f408534c-6f65-4df6-b68e-1da0e3346c20",
+          "text": "Violazione della disponibilità",
+          "type": "istar.Goal",
+          "x": 1249,
+          "y": 243,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "e9d37ade-9f19-43ef-a1ac-0140df37b482",
+          "text": "Flooding",
+          "type": "istar.Goal",
+          "x": 1444,
+          "y": 251,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "85a89ac3-c013-4798-8157-0ef36bfac27d",
+          "text": "Input Data Manipulation",
+          "type": "istar.Goal",
+          "x": 759,
+          "y": 350,
+          "customProperties": {
+            "Description": ""
+          }
+        },
+        {
+          "id": "42316f96-0f01-4093-8543-3eb05d954696",
+          "text": "File Manipulation",
+          "type": "istar.Goal",
+          "x": 1129,
+          "y": 355,
+          "customProperties": {
+            "Description": ""
+          }
+        }
+      ]
+    }
+  ],
+  "orphans": [],
+  "dependencies": [],
+  "links": [
+    {
+      "id": "fffde7e9-da72-4325-80ea-d803356ba24e",
+      "type": "istar.OrRefinementLink",
+      "source": "85a89ac3-c013-4798-8157-0ef36bfac27d",
+      "target": "a2b7e1f8-f00d-473c-9059-97cdb8cea149"
+    },
+    {
+      "id": "228ccb40-f0d4-44e0-b604-97464815addc",
+      "type": "istar.OrRefinementLink",
+      "source": "85a89ac3-c013-4798-8157-0ef36bfac27d",
+      "target": "5303e907-4af6-4b20-8f06-e980ab06ffaf"
+    },
+    {
+      "id": "383bcf4e-eaa3-44d7-b36b-7bd64652c04b",
+      "type": "istar.OrRefinementLink",
+      "source": "85a89ac3-c013-4798-8157-0ef36bfac27d",
+      "target": "f408534c-6f65-4df6-b68e-1da0e3346c20"
+    },
+    {
+      "id": "84e99a68-96a7-4a8e-b0be-a8a4c367215b",
+      "type": "istar.OrRefinementLink",
+      "source": "42316f96-0f01-4093-8543-3eb05d954696",
+      "target": "a2b7e1f8-f00d-473c-9059-97cdb8cea149"
+    },
+    {
+      "id": "cab241f1-c3d2-4ead-91aa-2049b4a77e9d",
+      "type": "istar.OrRefinementLink",
+      "source": "42316f96-0f01-4093-8543-3eb05d954696",
+      "target": "5303e907-4af6-4b20-8f06-e980ab06ffaf"
+    },
+    {
+      "id": "d588020e-168d-4b7e-939d-115b9a278123",
+      "type": "istar.OrRefinementLink",
+      "source": "42316f96-0f01-4093-8543-3eb05d954696",
+      "target": "f408534c-6f65-4df6-b68e-1da0e3346c20"
+    },
+    {
+      "id": "506a5c94-f39b-46b9-895d-308d4b94b25e",
+      "type": "istar.OrRefinementLink",
+      "source": "42316f96-0f01-4093-8543-3eb05d954696",
+      "target": "3bd3e60a-e9bd-4ba7-ac97-64e2c6fb76c9"
+    },
+    {
+      "id": "9eac27d4-8304-4328-934a-cc891ba461fe",
+      "type": "istar.OrRefinementLink",
+      "source": "e9d37ade-9f19-43ef-a1ac-0140df37b482",
+      "target": "f408534c-6f65-4df6-b68e-1da0e3346c20"
+    }
+  ],
+  "display": {
+    "8a5cccc0-16ba-4b33-9782-a4c0d34f78ce": {
+      "backgroundColor": "#FA4926"
+    },
+    "a2b7e1f8-f00d-473c-9059-97cdb8cea149": {
+      "width": 121.93124389648438,
+      "height": 40.08124542236328
+    },
+    "3bd3e60a-e9bd-4ba7-ac97-64e2c6fb76c9": {
+      "width": 141.93124389648438,
+      "height": 41.08124542236328
+    },
+    "5303e907-4af6-4b20-8f06-e980ab06ffaf": {
+      "width": 121.93124389648438,
+      "height": 44.58124542236328
+    },
+    "f408534c-6f65-4df6-b68e-1da0e3346c20": {
+      "width": 126.93124389648438,
+      "height": 40.58124542236328
+    }
+  },
+  "tool": "pistar.2.1.0",
+  "istar": "2.0",
+  "saveDate": "Fri, 21 Feb 2025 15:31:06 GMT",
+  "diagram": {
+    "width": 2223,
+    "height": 700,
+    "customProperties": {
+      "Description": ""
+    }
+  }
+}
