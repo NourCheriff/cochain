@@ -24,18 +24,8 @@
           "id": "3bd3e60a-e9bd-4ba7-ac97-64e2c6fb76c9",
           "text": "Violazione dell'autorizzazione",
           "type": "istar.Goal",
-          "x": 1232,
+          "x": 1104,
           "y": 241,
-          "customProperties": {
-            "Description": ""
-          }
-        },
-        {
-          "id": "5303e907-4af6-4b20-8f06-e980ab06ffaf",
-          "text": "Violazione della confidenzialità",
-          "type": "istar.Goal",
-          "x": 969,
-          "y": 240,
           "customProperties": {
             "Description": ""
           }
@@ -135,10 +125,6 @@
       "width": 245.9375,
       "height": 41
     },
-    "5303e907-4af6-4b20-8f06-e980ab06ffaf": {
-      "width": 210.9375,
-      "height": 42
-    },
     "f408534c-6f65-4df6-b68e-1da0e3346c20": {
       "width": 238.9375,
       "height": 43
@@ -158,7 +144,7 @@
   },
   "tool": "pistar.2.1.0",
   "istar": "2.0",
-  "saveDate": "Fri, 21 Feb 2025 21:27:34 GMT",
+  "saveDate": "Sat, 22 Feb 2025 09:58:48 GMT",
   "diagram": {
     "width": 2223,
     "height": 700,
