@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CochainAPI", "CochainAPI\CochainAPI.csproj", "{F23EA9B0-7E1B-4256-866C-7E8349B77DDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CochainAPI.Model", "CochainAPI.Model\CochainAPI.Model.csproj", "{34CBAA74-6CCA-4392-90AA-1E8DE0012796}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CochainAPI.Data", "CochainAPI.Data\CochainAPI.Data.csproj", "{D99B7D40-4EEA-4BAB-871E-6FC7F8123FF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CochainAPI.Data.Sql", "CochainAPI.Data.Sql\CochainAPI.Data.Sql.csproj", "{D3E90E28-CC11-4D00-BF44-CCE535204044}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F23EA9B0-7E1B-4256-866C-7E8349B77DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F23EA9B0-7E1B-4256-866C-7E8349B77DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F23EA9B0-7E1B-4256-866C-7E8349B77DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F23EA9B0-7E1B-4256-866C-7E8349B77DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34CBAA74-6CCA-4392-90AA-1E8DE0012796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34CBAA74-6CCA-4392-90AA-1E8DE0012796}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34CBAA74-6CCA-4392-90AA-1E8DE0012796}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34CBAA74-6CCA-4392-90AA-1E8DE0012796}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D99B7D40-4EEA-4BAB-871E-6FC7F8123FF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D99B7D40-4EEA-4BAB-871E-6FC7F8123FF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D99B7D40-4EEA-4BAB-871E-6FC7F8123FF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D99B7D40-4EEA-4BAB-871E-6FC7F8123FF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3E90E28-CC11-4D00-BF44-CCE535204044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3E90E28-CC11-4D00-BF44-CCE535204044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3E90E28-CC11-4D00-BF44-CCE535204044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3E90E28-CC11-4D00-BF44-CCE535204044}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {88187367-E790-4030-B388-F6E606295329}
+	EndGlobalSection
+EndGlobal
