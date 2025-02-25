@@ -37,7 +37,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthorizationBuilder();
 
 
-builder.Services.AddDbContext<CochainDBContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
+builder.Services.AddDbContext<CochainDBContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Scoped);
 builder.Services.AddHttpClient();
 
 

@@ -78,7 +78,7 @@ namespace CochainAPI.Data.Services
 
         public async Task<User?> Authenticate(AuthenticateRequest model)
         {
-            var userValid = await db.UserTemporaryPassword.SingleOrDefaultAsync(x => x.UserId == model.UserId && x.Password == model.Password && x.ExpirationDate >= DateTime.Now && !x.IsUsed);
+            var userValid = await db.UserTemporaryPassword.SingleOrDefaultAsync(x => x.UserId == model.UserId && x.Password == model.Password && x.ExpirationDate >= DateTime.UtcNow && !x.IsUsed);
             if (userValid != null)
             {
                 userValid.IsUsed = true;

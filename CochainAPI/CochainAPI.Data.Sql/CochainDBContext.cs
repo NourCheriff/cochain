@@ -32,7 +32,8 @@ namespace CochainAPI.Data.Sql
                 {
                     Id = "ID1",
                     FirstName = "System",
-                    LastName = "",
+                    LastName = "System",
+                    Email = "System",
                     UserName = "System",
                     Password = "System",
                 }

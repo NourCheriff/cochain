@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RentaloAPI.Model.Authentication;
-using RentaloAPI.Data.Services.Interfaces;
-using RentaloAPI.Helpers;
-using RentaloAPI.SocialAuthentication;
-using RentaloAPI.SocialAuthentication.Interfaces;
+using CochainAPI.Model.Authentication;
+using CochainAPI.Data.Services.Interfaces;
+using CochainAPI.Helpers;
+using CochainAPI.Authentication;
+using CochainAPI.Authentication.Interfaces;
 
 namespace RentaloAPI.Controllers
 {
