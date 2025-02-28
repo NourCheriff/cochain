@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CochainAPI.Data.Sql.Migrations
 {
     [DbContext(typeof(CochainDBContext))]
-    [Migration("20250225182131_InitClasses")]
+    [Migration("20250228210632_InitClasses")]
     partial class InitClasses
     {
         /// <inheritdoc />
@@ -61,9 +61,6 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("text");
-
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
@@ -94,14 +91,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "ID1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ba366333-6869-4397-b6df-a608b404a5c3",
+                            ConcurrencyStamp = "f4c1da91-ee76-46e1-af53-31e0fa660100",
+                            Email = "System",
                             EmailConfirmed = false,
                             FirstName = "System",
-                            LastName = "",
+                            LastName = "System",
                             LockoutEnabled = false,
-                            Password = "System",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "460d3194-795f-4bc2-86ff-765f9156af64",
+                            SecurityStamp = "1e8453fc-9050-48c5-9fe6-c86882d7b5a4",
                             TwoFactorEnabled = false,
                             UserName = "System",
                             isActive = false
@@ -130,7 +127,19 @@ namespace CochainAPI.Data.Sql.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserTemporaryPassword");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e029a7f9-46a4-41c6-bb85-d837c4908be5"),
+                            ExpirationDate = new DateTime(2027, 2, 28, 21, 6, 30, 989, DateTimeKind.Utc).AddTicks(4524),
+                            IsUsed = false,
+                            Password = "System",
+                            UserId = "ID1"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -247,6 +256,22 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasKey("Value", "UserId");
 
                     b.ToTable("UserTokens");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Authentication.UserTemporaryPassword", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Authentication.User", "User")
+                        .WithMany("TemporaryPasswords")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Authentication.User", b =>
+                {
+                    b.Navigation("TemporaryPasswords");
                 });
 #pragma warning restore 612, 618
         }

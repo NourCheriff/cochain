@@ -64,13 +64,13 @@ namespace CochainAPI.Data.Services
                 var randomPassword = $"{randomNumber}";
                 var temporaryPassword = new UserTemporaryPassword()
                 {
-                    UserId = model.UserId,
+                    User = user,
                     Password = randomPassword,
                     ExpirationDate = DateTime.UtcNow.AddHours(2),
                     IsUsed = false
                 };
                 await db.UserTemporaryPassword.AddAsync(temporaryPassword);
-                _emailService.EmailPasswordTemporanea(user.Email, randomPassword);
+                _emailService.EmailPasswordTemporanea(user.UserName!, randomPassword);
                 return true;
             }
             return false;
@@ -78,11 +78,12 @@ namespace CochainAPI.Data.Services
 
         public async Task<User?> Authenticate(AuthenticateRequest model)
         {
-            var userValid = await db.UserTemporaryPassword.SingleOrDefaultAsync(x => x.UserId == model.UserId && x.Password == model.Password && x.ExpirationDate >= DateTime.UtcNow && !x.IsUsed);
+            var userValid = await db.UserTemporaryPassword.SingleOrDefaultAsync(x => x.User.UserName == model.UserId && x.Password == model.Password && x.ExpirationDate >= DateTime.UtcNow && !x.IsUsed);
             if (userValid != null)
             {
                 userValid.IsUsed = true;
                 db.UserTemporaryPassword.Update(userValid);
+                await db.SaveChangesAsync();
                 var user = await db.Users.FirstOrDefaultAsync(x => x.UserName == model.UserId);
                 return user;
             }

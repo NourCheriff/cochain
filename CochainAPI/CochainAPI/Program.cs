@@ -27,10 +27,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
                     ValidIssuer = builder.Configuration.GetSection("Jwt")["ValidIssuer"],
                     ValidAudience = builder.Configuration.GetSection("Jwt")["ValidAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("Jwt")["Secret"])),
-                    RequireSignedTokens = true
+                    RequireSignedTokens = true                    
                 };
             });
 builder.Services.AddAuthorization();

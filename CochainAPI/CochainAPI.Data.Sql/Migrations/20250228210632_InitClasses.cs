@@ -48,7 +48,6 @@ namespace CochainAPI.Data.Sql.Migrations
                     Id = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: true),
-                    Password = table.Column<string>(type: "text", nullable: true),
                     isActive = table.Column<bool>(type: "boolean", nullable: false),
                     UserName = table.Column<string>(type: "text", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "text", nullable: true),
@@ -112,21 +111,6 @@ namespace CochainAPI.Data.Sql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTemporaryPassword",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsUsed = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserTemporaryPassword", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserTokens",
                 columns: table => new
                 {
@@ -140,10 +124,41 @@ namespace CochainAPI.Data.Sql.Migrations
                     table.PrimaryKey("PK_UserTokens", x => new { x.Value, x.UserId });
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserTemporaryPassword",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsUsed = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTemporaryPassword", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserTemporaryPassword_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "isActive" },
-                values: new object[] { "ID1", 0, "ba366333-6869-4397-b6df-a608b404a5c3", null, false, "System", "", false, null, null, null, "System", null, null, false, "460d3194-795f-4bc2-86ff-765f9156af64", false, "System", false });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "isActive" },
+                values: new object[] { "ID1", 0, "f4c1da91-ee76-46e1-af53-31e0fa660100", "System", false, "System", "System", false, null, null, null, null, null, false, "1e8453fc-9050-48c5-9fe6-c86882d7b5a4", false, "System", false });
+
+            migrationBuilder.InsertData(
+                table: "UserTemporaryPassword",
+                columns: new[] { "Id", "ExpirationDate", "IsUsed", "Password", "UserId" },
+                values: new object[] { new Guid("e029a7f9-46a4-41c6-bb85-d837c4908be5"), new DateTime(2027, 2, 28, 21, 6, 30, 989, DateTimeKind.Utc).AddTicks(4524), false, "System", "ID1" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTemporaryPassword_UserId",
+                table: "UserTemporaryPassword",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -154,9 +169,6 @@ namespace CochainAPI.Data.Sql.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "User");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
@@ -172,6 +184,9 @@ namespace CochainAPI.Data.Sql.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

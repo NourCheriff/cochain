@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.Text.Json.Serialization;
 
 namespace CochainAPI.Model.Authentication
 {
@@ -7,9 +6,8 @@ namespace CochainAPI.Model.Authentication
     {
         public required string FirstName { get; set; }
         public string? LastName { get; set; }
-
-        [JsonIgnore]
-        public string? Password { get; set; }
         public bool isActive { get; set; }
+        public List<UserTemporaryPassword>? TemporaryPasswords { get; set; }
+
     }
 }

@@ -8,6 +8,7 @@ namespace CochainAPI.Model.Authentication
     {
         public Guid Id { get; set; }
         public string UserId { get; set; }
+        public User User { get; set; }
         public string Password { get; set; }
         public DateTime ExpirationDate { get; set; }
         public bool IsUsed { get; set; }
