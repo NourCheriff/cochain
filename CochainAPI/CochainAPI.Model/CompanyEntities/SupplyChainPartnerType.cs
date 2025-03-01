@@ -1,5 +1,5 @@
 
-namespace CochainAPI.Model.SupplyChainPartner
+namespace CochainAPI.Model.CompanyEntities
 {
     public class SupplyChainPartnerType : Base
     {

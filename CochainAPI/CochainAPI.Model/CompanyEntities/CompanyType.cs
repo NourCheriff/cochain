@@ -1,4 +1,4 @@
-namespace CochainAPI.Model.Company
+namespace CochainAPI.Model.CompanyEntities
 {
     public class CompanyType : Base
     {

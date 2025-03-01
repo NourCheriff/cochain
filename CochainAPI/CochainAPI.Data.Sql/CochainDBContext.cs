@@ -2,7 +2,8 @@
 using CochainAPI.Model.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using CochainAPI.Model.Company;
+using CochainAPI.Model.CompanyEntities;
+using CochainAPI.Model.Product;
 
 namespace CochainAPI.Data.Sql
 {
@@ -31,6 +32,8 @@ namespace CochainAPI.Data.Sql
 
             modelBuilder.Entity<User>().HasMany(x => x.TemporaryPasswords).WithOne(x => x.User).HasForeignKey(x => x.UserId);
             modelBuilder.Entity<Company>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
+
+            modelBuilder.Entity<ProductInfo>().HasMany(x => x.Ingredients).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
 
             modelBuilder.Entity<User>().HasMany(x => x.UserRoles).WithOne().HasForeignKey(x => x.UserId);
             modelBuilder.Entity<User>().HasMany(x => x.UserClaims).WithOne().HasForeignKey(x => x.UserId);
