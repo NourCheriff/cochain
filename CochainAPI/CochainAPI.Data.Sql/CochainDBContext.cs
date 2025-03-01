@@ -2,6 +2,7 @@
 using CochainAPI.Model.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using CochainAPI.Model;
 
 namespace CochainAPI.Data.Sql
 {
@@ -11,6 +12,8 @@ namespace CochainAPI.Data.Sql
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserTemporaryPassword> UserTemporaryPassword { get; set; }
+        public DbSet<Company> Company { get; set; }
+        public DbSet<CompanyType> CompanyType { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserLogin<string>>(entity =>
@@ -77,6 +80,25 @@ namespace CochainAPI.Data.Sql
                     Password = "System",
                     ExpirationDate = DateTime.UtcNow.AddYears(2),
                     IsUsed = false
+                }
+            );
+
+            modelBuilder.Entity<Company>().HasData(
+                new CompanyType
+                {
+                    Id = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"),
+                    Type = "SCP"
+                }
+            );
+
+            modelBuilder.Entity<UserTemporaryPassword>().HasData(
+                new Company
+                {
+                    Id = Guid.NewGuid(),
+                    CompanyName = "Prova company",
+                    Email = "company@prova.com",
+                    Phone = "33309090909",
+                    CompanyTypeId = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4")
                 }
             );
         }
