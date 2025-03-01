@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using CochainAPI.Data.Sql;
+using CochainAPI.Data.Sql.Repositories.Interfaces;
+using CochainAPI.Data.Sql.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -34,7 +36,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     RequireSignedTokens = true                    
                 };
             });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("ReadDocuments", policy => policy.RequireRole("Admin", "User"));
+    options.AddPolicy("WriteDocuments", policy => policy.RequireRole("Admin"));
+});
 builder.Services.AddAuthorizationBuilder();
 
 
@@ -49,6 +54,8 @@ builder.Services.AddIdentityCore<User>()
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 //builder.Services.AddTransient<IOurHeroService, OurHeroService>();

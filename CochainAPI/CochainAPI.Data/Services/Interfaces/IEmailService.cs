@@ -2,6 +2,6 @@
 {
     public interface IEmailService
     {
-        void EmailPasswordTemporanea(string email, string tempPassword);
+        Task EmailPasswordTemporanea(string email, string tempPassword);
     }
 }

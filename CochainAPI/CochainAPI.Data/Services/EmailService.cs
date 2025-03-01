@@ -51,7 +51,7 @@ namespace CochainAPI.Data.Services
             }
             return 1;
         }
-        public async void EmailPasswordTemporanea(string email, string tempPassword)
+        public async Task EmailPasswordTemporanea(string email, string tempPassword)
         {
             string oggetto = "La tua password temporanea";
             string testo = "<html><body style=\"max-width: 605px;\"><table><tr><td style=\"text-align: center;\">";

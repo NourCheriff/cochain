@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CochainAPI.Data.Sql\CochainAPI.Data.Sql.csproj" />
     <ProjectReference Include="..\CochainAPI.Model\CochainAPI.Model.csproj" />
   </ItemGroup>

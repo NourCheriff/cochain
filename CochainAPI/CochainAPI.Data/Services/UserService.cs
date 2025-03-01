@@ -1,53 +1,50 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using CochainAPI.Data.Services.Interfaces;
-using CochainAPI.Data.Sql;
 using CochainAPI.Model.Authentication;
-using CochainAPI.Model.DTOs;
+using CochainAPI.Data.Sql.Repositories.Interfaces;
 
 namespace CochainAPI.Data.Services
 {
     public class UserService : IUserService
     {
         private readonly AppSettings _appSettings;
-        private readonly CochainDBContext db;
         private readonly IEmailService _emailService;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(IOptions<AppSettings> appSettings, CochainDBContext _db, IEmailService emailService)
+        public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository)
         {
             _appSettings = appSettings.Value;
-            db = _db;
             _emailService = emailService;
+            _userRepository = userRepository;
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<User>> GetAllActive()
         {
-            return await db.Users.Where(x => x.isActive == true).ToListAsync();
+            return await _userRepository.GetAllActive();
         }
 
         public async Task<User?> GetById(string id)
         {
-            return await db.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await _userRepository.GetById(id);
         }
         public async Task<User?> AddAndUpdateUser(User userObj)
         {
             bool isSuccess = false;
             if (!string.IsNullOrEmpty(userObj.Id))
             {
-                var obj = await db.Users.FirstOrDefaultAsync(c => c.Id == userObj.Id);
+                var obj = await _userRepository.GetById(userObj.Id);
                 if (obj != null)
                 {
-                    // obj.Address = userObj.Address;
                     obj.FirstName = userObj.FirstName;
                     obj.LastName = userObj.LastName;
-                    db.Users.Update(obj);
-                    isSuccess = await db.SaveChangesAsync() > 0;
+                    isSuccess = await _userRepository.UpdateUser(obj);                   
                 }
             }
             else
             {
-                await db.Users.AddAsync(userObj);
-                isSuccess = await db.SaveChangesAsync() > 0;
+                var newUser = await _userRepository.AddUser(userObj);
+                isSuccess = newUser != null;
+                userObj = newUser ?? userObj;
             }
 
             return isSuccess ? userObj : null;
@@ -56,7 +53,7 @@ namespace CochainAPI.Data.Services
 
         public async Task<bool> GenerateTemporaryPassword(AuthenticateRequest model)
         {
-            var user = await db.Users.FirstOrDefaultAsync(x => x.UserName == model.Username);
+            var user = await _userRepository.GetByUserName(model.Username);
             if (user?.Id != null)
             {
                 Random random = new Random();
@@ -69,8 +66,8 @@ namespace CochainAPI.Data.Services
                     ExpirationDate = DateTime.UtcNow.AddHours(2),
                     IsUsed = false
                 };
-                await db.UserTemporaryPassword.AddAsync(temporaryPassword);
-                _emailService.EmailPasswordTemporanea(user.UserName!, randomPassword);
+                await _userRepository.AddTemporaryPassword(temporaryPassword);
+                await _emailService.EmailPasswordTemporanea(user.UserName!, randomPassword);
                 return true;
             }
             return false;
@@ -78,14 +75,12 @@ namespace CochainAPI.Data.Services
 
         public async Task<User?> Authenticate(AuthenticateRequest model)
         {
-            var userValid = await db.UserTemporaryPassword.SingleOrDefaultAsync(x => x.User.UserName == model.UserId && x.Password == model.Password && x.ExpirationDate >= DateTime.UtcNow && !x.IsUsed);
+            var userValid = await _userRepository.GetUserWithCredentials(model);
             if (userValid != null)
             {
                 userValid.IsUsed = true;
-                db.UserTemporaryPassword.Update(userValid);
-                await db.SaveChangesAsync();
-                var user = await db.Users.FirstOrDefaultAsync(x => x.UserName == model.UserId);
-                return user;
+                await _userRepository.UpdateTemporaryPassword(userValid);
+                return userValid.User;
             }
             return null;
         }

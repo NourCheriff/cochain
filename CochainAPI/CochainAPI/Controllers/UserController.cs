@@ -2,7 +2,6 @@
 using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Helpers;
-using CochainAPI.Authentication;
 using CochainAPI.Authentication.Interfaces;
 
 namespace RentaloAPI.Controllers
@@ -25,7 +24,7 @@ namespace RentaloAPI.Controllers
         [Authorize]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _userService.GetAll());
+            return Ok(await _userService.GetAllActive());
         }
 
         [HttpPost]
@@ -45,8 +44,19 @@ namespace RentaloAPI.Controllers
             return Ok(await _userService.AddAndUpdateUser(userObj));
         }
 
+        [HttpPost("requestpassword")]
+        public async Task<IActionResult> RequestPassword(AuthenticateRequest model)
+        {
+            var response = await _authService.GenerateTemporaryCredentials(model);
+
+            if (!response)
+                return BadRequest(new { message = "Username is incorrect" });
+
+            return Ok(response);
+        }
+
         [HttpPost("login")]
-        public async Task<IActionResult> login(AuthenticateRequest model)
+        public async Task<IActionResult> Login(AuthenticateRequest model)
         {
             var response = await _authService.SignInWithCredentials(model);
 

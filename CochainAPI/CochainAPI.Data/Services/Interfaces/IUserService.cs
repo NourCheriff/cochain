@@ -6,7 +6,7 @@ namespace CochainAPI.Data.Services.Interfaces
     {
         Task<bool> GenerateTemporaryPassword(AuthenticateRequest model);
         Task<User?> Authenticate(AuthenticateRequest model);
-        Task<IEnumerable<User>> GetAll();
+        Task<IEnumerable<User>> GetAllActive();
         Task<User?> GetById(string id);
         Task<User?> AddAndUpdateUser(User userObj);
     }
