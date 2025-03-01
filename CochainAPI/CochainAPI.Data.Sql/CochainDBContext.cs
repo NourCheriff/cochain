@@ -76,7 +76,7 @@ namespace CochainAPI.Data.Sql
                 new UserTemporaryPassword
                 {
                     Id = Guid.NewGuid(),
-                    UserId = "ID1",
+                    UserId = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd").ToString(),
                     Password = "System",
                     ExpirationDate = DateTime.UtcNow.AddYears(2),
                     IsUsed = false
