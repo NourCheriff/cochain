@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql
 {
-    public class CochainDBContext: IdentityDbContext<User>
+    public class CochainDBContext : IdentityDbContext<User>
     {
         public CochainDBContext(DbContextOptions<CochainDBContext> options) : base(options) { }
 
@@ -28,10 +28,16 @@ namespace CochainAPI.Data.Sql
 
             modelBuilder.Entity<User>().HasMany(x => x.TemporaryPasswords).WithOne(x => x.User).HasForeignKey(x => x.UserId);
 
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+
+                });
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = "ID1",
+                    Id = Guid.NewGuid(),
                     FirstName = "System",
                     LastName = "System",
                     Email = "System",

@@ -2,7 +2,7 @@
 
 namespace CochainAPI.Model.Authentication
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<Guid>
     {
         public required string FirstName { get; set; }
         public string? LastName { get; set; }
