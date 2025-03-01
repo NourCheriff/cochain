@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CochainAPI.Model.Product
 {
-    internal class Product
+    public class Product
     {
+
     }
 }

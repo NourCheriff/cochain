@@ -2,7 +2,7 @@
 using CochainAPI.Model.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using CochainAPI.Model;
+using CochainAPI.Model.Company;
 
 namespace CochainAPI.Data.Sql
 {
@@ -30,8 +30,10 @@ namespace CochainAPI.Data.Sql
             });
 
             modelBuilder.Entity<User>().HasMany(x => x.TemporaryPasswords).WithOne(x => x.User).HasForeignKey(x => x.UserId);
-            modelBuilder.Entity<User>().HasMany(x => x.UserRoles);
-            modelBuilder.Entity<User>().HasMany(x => x.UserClaims);
+            modelBuilder.Entity<Company>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
+
+            modelBuilder.Entity<User>().HasMany(x => x.UserRoles).WithOne().HasForeignKey(x => x.UserId);
+            modelBuilder.Entity<User>().HasMany(x => x.UserClaims).WithOne().HasForeignKey(x => x.UserId);
 
 
             modelBuilder.Entity<IdentityRole<Guid>>().HasData(
@@ -87,7 +89,7 @@ namespace CochainAPI.Data.Sql
                 new CompanyType
                 {
                     Id = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"),
-                    Type = "SCP"
+                    Name = "SCP"
                 }
             );
 
@@ -95,7 +97,7 @@ namespace CochainAPI.Data.Sql
                 new Company
                 {
                     Id = Guid.NewGuid(),
-                    CompanyName = "Prova company",
+                    Name = "Prova company",
                     Email = "company@prova.com",
                     Phone = "33309090909",
                     CompanyTypeId = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4")
