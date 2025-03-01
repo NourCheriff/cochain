@@ -27,23 +27,47 @@ namespace CochainAPI.Data.Sql
             });
 
             modelBuilder.Entity<User>().HasMany(x => x.TemporaryPasswords).WithOne(x => x.User).HasForeignKey(x => x.UserId);
+            modelBuilder.Entity<User>().HasMany(x => x.UserRoles);
+            modelBuilder.Entity<User>().HasMany(x => x.UserClaims);
 
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole
+
+            modelBuilder.Entity<IdentityRole<Guid>>().HasData(
+                new IdentityRole<Guid>
                 {
-
+                    Id = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a"),
+                    Name = "Admin",
+                    NormalizedName = "Admin"
+                }, 
+                new IdentityRole<Guid>
+                {
+                    Id = Guid.Parse("cb5b1ae5-43db-4096-9bd6-2afb90fb20c5"),
+                    Name = "SupplyChainPartner",
+                    NormalizedName = "SupplyChainPartner"
+                },
+                new IdentityRole<Guid>
+                {
+                    Id = Guid.Parse("f6e7ea1d-a99e-4a5c-9a23-2274ba2c62ea"),
+                    Name = "Certifier",
+                    NormalizedName = "Certifier"
                 });
 
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString(),
                     FirstName = "System",
                     LastName = "System",
                     Email = "System",
                     UserName = "System"
                 }
             );
+
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(
+                new IdentityUserRole<Guid>
+                {
+                    UserId = Guid.NewGuid(),
+                    RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a")
+                });
 
             modelBuilder.Entity<UserTemporaryPassword>().HasData(
                 new UserTemporaryPassword
