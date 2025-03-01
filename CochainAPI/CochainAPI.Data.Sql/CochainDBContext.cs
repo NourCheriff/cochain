@@ -57,7 +57,7 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd").ToString(),
                     FirstName = "System",
                     LastName = "System",
                     Email = "System",
@@ -68,7 +68,7 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(
                 new IdentityUserRole<Guid>
                 {
-                    UserId = Guid.NewGuid(),
+                    UserId = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd"),
                     RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a")
                 });
 
@@ -83,7 +83,7 @@ namespace CochainAPI.Data.Sql
                 }
             );
 
-            modelBuilder.Entity<Company>().HasData(
+            modelBuilder.Entity<CompanyType>().HasData(
                 new CompanyType
                 {
                     Id = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"),
@@ -91,7 +91,7 @@ namespace CochainAPI.Data.Sql
                 }
             );
 
-            modelBuilder.Entity<UserTemporaryPassword>().HasData(
+            modelBuilder.Entity<Company>().HasData(
                 new Company
                 {
                     Id = Guid.NewGuid(),
