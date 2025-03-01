@@ -1,4 +1,4 @@
-using CochainAPI.Model.Authentication
+using CochainAPI.Model.Authentication;
 
 namespace CochainAPI.Model.Utils
 {
