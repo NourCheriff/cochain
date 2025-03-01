@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CochainAPI.Model.Product
+﻿namespace CochainAPI.Model.Product
 {
-    public class Product
+    public class Product: Base
     {
-
+        public string? Description { get; set; }
+        public Guid CategoryId { get; set; }
+        public ProductCategory? Category { get; set; }
     }
 }
