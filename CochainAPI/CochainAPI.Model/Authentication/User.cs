@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CochainAPI.Model.CompanyEntities;
+using Microsoft.AspNetCore.Identity;
 
 namespace CochainAPI.Model.Authentication
 {

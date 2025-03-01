@@ -13,8 +13,15 @@ namespace CochainAPI.Data.Sql
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserTemporaryPassword> UserTemporaryPassword { get; set; }
-        public DbSet<Company> Company { get; set; }
+        public DbSet<CertificationAuthority> CertificationAuthority { get; set; }
         public DbSet<CompanyType> CompanyType { get; set; }
+        public DbSet<SupplyChainPartner> SupplyChainPartner { get; set; }
+        public DbSet<SupplyChainPartnerType> SupplyChainPartnerType { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductCategory> ProductCategory { get; set; }
+        public DbSet<ProductInfo> ProductInfo { get; set; }
+        public DbSet<ProductIngredient> ProductIngredient { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserLogin<string>>(entity =>
@@ -31,13 +38,23 @@ namespace CochainAPI.Data.Sql
             });
 
             modelBuilder.Entity<User>().HasMany(x => x.TemporaryPasswords).WithOne(x => x.User).HasForeignKey(x => x.UserId);
-            modelBuilder.Entity<Company>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
-
-            modelBuilder.Entity<ProductInfo>().HasMany(x => x.Ingredients).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
-
             modelBuilder.Entity<User>().HasMany(x => x.UserRoles).WithOne().HasForeignKey(x => x.UserId);
             modelBuilder.Entity<User>().HasMany(x => x.UserClaims).WithOne().HasForeignKey(x => x.UserId);
 
+            modelBuilder.Entity<CertificationAuthority>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
+            modelBuilder.Entity<SupplyChainPartner>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
+            modelBuilder.Entity<SupplyChainPartner>().HasOne(x => x.SupplyChainPartnerType).WithMany().HasForeignKey(x => x.SupplyChainPartnerTypeId);
+
+            modelBuilder.Entity<Product>().HasOne(x => x.Category).WithMany().HasForeignKey(x => x.CategoryId);
+            modelBuilder.Entity<ProductInfo>().HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
+            modelBuilder.Entity<ProductInfo>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
+            modelBuilder.Entity<ProductInfo>().HasMany(x => x.Ingredients).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
+            modelBuilder.Entity<ProductIngredient>(entity => 
+            {
+                entity.HasKey(r => new { r.ProductInfoId, r.IngredientId });
+                entity.HasOne(x => x.ProductInfo).WithMany().HasForeignKey(x => x.ProductInfoId);
+                entity.HasOne(x => x.Ingredient).WithMany().HasForeignKey(x => x.IngredientId);
+            });          
 
             modelBuilder.Entity<IdentityRole<Guid>>().HasData(
                 new IdentityRole<Guid>

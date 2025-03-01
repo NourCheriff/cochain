@@ -1,7 +1,7 @@
 
 namespace CochainAPI.Model.CompanyEntities
 {
-    public class SupplyChainPartner : Base
+    public class SupplyChainPartner : Company
     {
         public float Credits { get; set; }
         public string SupplyChainPartnerTypeId { get; set; }
