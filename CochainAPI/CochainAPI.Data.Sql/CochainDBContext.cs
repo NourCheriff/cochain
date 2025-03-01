@@ -11,7 +11,7 @@ namespace CochainAPI.Data.Sql
     {
         public CochainDBContext(DbContextOptions<CochainDBContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
+        public override DbSet<User> Users { get; set; }
         public DbSet<UserTemporaryPassword> UserTemporaryPassword { get; set; }
         public DbSet<CertificationAuthority> CertificationAuthority { get; set; }
         public DbSet<CompanyType> CompanyType { get; set; }
@@ -113,14 +113,24 @@ namespace CochainAPI.Data.Sql
                 }
             );
 
-            modelBuilder.Entity<Company>().HasData(
-                new Company
+            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                new SupplyChainPartnerType
+                {
+                    Id = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                    Name = "Trasporto"
+                }
+            );
+
+            modelBuilder.Entity<SupplyChainPartner>().HasData(
+                new SupplyChainPartner
                 {
                     Id = Guid.NewGuid(),
                     Name = "Prova company",
                     Email = "company@prova.com",
                     Phone = "33309090909",
-                    CompanyTypeId = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4")
+                    CompanyTypeId = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"),
+                    Credits = 0,
+                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87")
                 }
             );
         }
