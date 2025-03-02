@@ -14,7 +14,7 @@ namespace CochainAPI.Data.Sql
     {
         public CochainDBContext(DbContextOptions<CochainDBContext> options) : base(options) { }
 
-        public override DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<UserTemporaryPassword> UserTemporaryPassword { get; set; }
         public DbSet<CertificationAuthority> CertificationAuthority { get; set; }
         public DbSet<CompanyType> CompanyType { get; set; }
@@ -48,10 +48,18 @@ namespace CochainAPI.Data.Sql
                 entity.HasKey(r => new { r.Value, r.UserId });
             });
 
+            modelBuilder.Entity<User>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
+            modelBuilder.Entity<User>().HasOne(x => x.CertificationAuthority).WithMany().HasForeignKey(x => x.CertificationAuthorityId);
             modelBuilder.Entity<User>().HasMany(x => x.TemporaryPasswords).WithOne(x => x.User).HasForeignKey(x => x.UserId);
             modelBuilder.Entity<User>().HasMany(x => x.UserRoles).WithOne().HasForeignKey(x => x.UserId);
             modelBuilder.Entity<User>().HasMany(x => x.UserClaims).WithOne().HasForeignKey(x => x.UserId);
             modelBuilder.Entity<User>().HasMany(x => x.Logs).WithOne(x => x.User).HasForeignKey(x => x.UserId);
+            modelBuilder.Entity<User>().ToTable(tb =>
+            {
+                tb.HasCheckConstraint(
+                    "CK_User_PartnerOrAuthority",
+                    @"""SupplyChainPartnerId"" IS NOT NULL OR ""CertificationAuthorityId"" IS NOT NULL");
+            });
 
             modelBuilder.Entity<CertificationAuthority>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
             modelBuilder.Entity<SupplyChainPartner>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
@@ -67,7 +75,6 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<ProductIngredient>(entity =>
             {
                 entity.HasKey(r => new { r.ProductInfoId, r.IngredientId });
-                entity.HasOne(x => x.ProductInfo).WithMany().HasForeignKey(x => x.ProductInfoId);
                 entity.HasOne(x => x.Ingredient).WithMany().HasForeignKey(x => x.IngredientId);
             });
 
@@ -125,22 +132,11 @@ namespace CochainAPI.Data.Sql
                     NormalizedName = "Certifier"
                 });
 
-            modelBuilder.Entity<User>().HasData(
-                new User
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
                 {
-                    Id = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd").ToString(),
-                    FirstName = "System",
-                    LastName = "System",
-                    Email = "System",
-                    UserName = "System"
-                }
-            );
-
-            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(
-                new IdentityUserRole<Guid>
-                {
-                    UserId = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd"),
-                    RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a")
+                    UserId = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd").ToString(),
+                    RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a").ToString()
                 });
 
             modelBuilder.Entity<UserTemporaryPassword>().HasData(
@@ -166,20 +162,34 @@ namespace CochainAPI.Data.Sql
                 new SupplyChainPartnerType
                 {
                     Id = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
-                    Name = "Trasporto"
+                    Name = "Trasporto",
+                    Baseline = 1000.0f
                 }
             );
 
             modelBuilder.Entity<SupplyChainPartner>().HasData(
                 new SupplyChainPartner
                 {
-                    Id = Guid.NewGuid(),
+                    Id = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                     Name = "Prova company",
                     Email = "company@prova.com",
                     Phone = "33309090909",
                     CompanyTypeId = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"),
                     Credits = 0,
                     SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87")
+                }
+            );
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd").ToString(),
+                    FirstName = "System",
+                    LastName = "System",
+                    Email = "System",
+                    UserName = "System",
+                    SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                    IsActive = true
                 }
             );
         }

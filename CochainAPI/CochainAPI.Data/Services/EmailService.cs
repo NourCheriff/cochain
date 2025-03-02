@@ -17,14 +17,12 @@ namespace CochainAPI.Data.Services
             {
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");//gmailSmtpClient
-                SmtpServer.Port = 465; //- 465 gmail -587
-
+                SmtpServer.Port = 465; //- 465 ssl gmail -587
+                SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
 
                 SmtpServer.EnableSsl = true;
                 SmtpServer.UseDefaultCredentials = false;
-                //porta smtp gmail con ssl SmtpServer.Port = 465;
                 SmtpServer.Credentials = new System.Net.NetworkCredential("cochain2025@gmail.com", _config["Email:InAppPassword"]);
-                SmtpServer.UseDefaultCredentials = false;
 
                 mail.Sender = new MailAddress("info@cochain.eu");
                 mail.From = new MailAddress("info@cochain.eu");
@@ -43,9 +41,6 @@ namespace CochainAPI.Data.Services
                 mail.To.Add("info@cochain.eu");
                 mail.Subject = oggetto;
                 mail.IsBodyHtml = true;
-                SmtpServer.EnableSsl = false;
-
-
                 mail.Body = testo;
 
                 SmtpServer.SendAsync(mail, null);

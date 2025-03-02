@@ -8,7 +8,7 @@ namespace CochainAPI.Model.Documents
         public string Path { get; set; }
         public string Type { get; set; }
         public string UserEmitterId { get; set; }
-        public string SupplyChainPartnerReceiverId { get; set; }
+        public Guid SupplyChainPartnerReceiverId { get; set; }
         public User UserEmitter { get; set; }
         public SupplyChainPartner SupplyChainPartnerReceiver { get; set; }
     }

@@ -8,13 +8,15 @@ namespace CochainAPI.Model.Authentication
     public class User : IdentityUser
     {
         public required string FirstName { get; set; }
-        public string? LastName { get; set; }
-        public string Phone { get; set; }
+        public string LastName { get; set; }
+        public string? Phone { get; set; }
         public bool IsActive { get; set; }
-        public string Role { get; set; }
-        public string WalletId { get; set; }
-        public string CompanyId { get; set; }
-        public Company Company { get; set; }
+        public string? Role { get; set; }
+        public string? WalletId { get; set; }
+        public Guid? CertificationAuthorityId { get; set; }
+        public CertificationAuthority? CertificationAuthority { get; set; }
+        public Guid? SupplyChainPartnerId { get; set; }
+        public SupplyChainPartner? SupplyChainPartner { get; set; }
         public List<Contract> EmittedContract { get; set; }
         public List<ProductDocument> EmittedProductDocument { get; set; }
         public List<ProductLifeCycleDocument> EmittedProductLifeCycleDocument { get; set; }
