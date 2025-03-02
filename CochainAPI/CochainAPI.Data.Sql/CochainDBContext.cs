@@ -56,6 +56,9 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<ProductInfo>().HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
             modelBuilder.Entity<ProductInfo>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
             modelBuilder.Entity<ProductInfo>().HasMany(x => x.Ingredients).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
+            modelBuilder.Entity<ProductInfo>().HasMany(x => x.ProductLifeCycle).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
+            modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.ProductLifeCycleCategory).WithMany().HasForeignKey(x => x.ProductLifeCycleCategoryId);
+            modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
             modelBuilder.Entity<ProductIngredient>(entity =>
             {
                 entity.HasKey(r => new { r.ProductInfoId, r.IngredientId });

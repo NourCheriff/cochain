@@ -10,5 +10,6 @@ namespace CochainAPI.Model.Product
         public Guid SupplyChainPartnerId { get; set; }
         public SupplyChainPartner? SupplyChainPartner { get; set; }
         public List<ProductIngredient>? Ingredients { get; set; }
+        public List<ProductLifeCycle>? ProductLifeCycle { get; set; }
     }
 }
