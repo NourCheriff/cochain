@@ -13,7 +13,6 @@ namespace RentaloAPI.Controllers
         private IUserService _userService;
         private IAuthService _authService;
 
-
         public UsersController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
@@ -67,7 +66,7 @@ namespace RentaloAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login(AuthenticateRequest model)
         {
             var response = await _authService.SignInWithCredentials(model);
@@ -77,6 +76,5 @@ namespace RentaloAPI.Controllers
 
             return Ok(response);
         }
-
     }
 }
