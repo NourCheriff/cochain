@@ -41,7 +41,10 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<UserTemporaryPassword?> GetUserWithCredentials(AuthenticateRequest model)
         {
-            return await dbContext.UserTemporaryPassword.SingleOrDefaultAsync(x => x.User.UserName == model.UserId && x.Password == model.Password && x.ExpirationDate >= DateTime.UtcNow && !x.IsUsed);
+            return await dbContext.UserTemporaryPassword.Include(x => x.User).Where(x => x.User.UserName!.ToLower().Equals(model.Username.ToLower()) &&
+                x.Password == model.Password &&
+                x.ExpirationDate >= DateTime.UtcNow &&
+                !x.IsUsed).FirstOrDefaultAsync();
         }
 
         public async Task<bool> UpdateTemporaryPassword(UserTemporaryPassword temporaryPassword)

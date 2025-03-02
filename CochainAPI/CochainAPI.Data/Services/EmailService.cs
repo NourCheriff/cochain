@@ -69,7 +69,7 @@ namespace CochainAPI.Data.Services
             testo += "<tr><td><p>Gentile utente,</p></td></tr>";
             testo += "<tr><td><p>Di seguito è riportata la tua password temporanea per accedere al nostro sistema:</p></td></tr>";
             testo += "<tr><td><h2 style=\"text-align: center;\">" + tempPassword + "</h2></td></tr>";
-            testo += "<tr><td><br></td></tr><tr><td>Cordiali saluti,</td></tr><tr><td>Il Team di Rentalo</td></tr></table></body></html>";
+            testo += "<tr><td><br></td></tr><tr><td>Cordiali saluti,</td></tr><tr><td>Il Team di Cochain</td></tr></table></body></html>";
 
             SendEmail(testo, email, oggetto);
         }
