@@ -24,27 +24,39 @@ namespace RentaloAPI.Controllers
         [Authorize]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _userService.GetAllActive());
+            var response = await _userService.GetAllActive();
+            if (response == null)
+            {
+                return BadRequest(new { message = "Users not found" });
+            }
+            return Ok(response);
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetById(string id)
+        {
+            var response = await _userService.GetById(id);
+            if (response == null)
+            {
+                return BadRequest(new { message = "User not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("UpdateUser")]
         [Authorize]
         public async Task<IActionResult> Post([FromBody] User userObj)
         {
-            userObj.Id = "0";
-            return Ok(await _userService.AddAndUpdateUser(userObj));
+            var response = await _userService.AddAndUpdateUser(userObj);
+            if (response == null)
+            {
+                return BadRequest(new { message = "User not found" });
+            }
+            return Ok(response);
         }
 
-        // PUT api/<CustomerController>/5
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> Put(string id, [FromBody] User userObj)
-        {
-            userObj.Id = id;
-            return Ok(await _userService.AddAndUpdateUser(userObj));
-        }
-
-        [HttpPost("requestpassword")]
+        [HttpPost("RequestPassword")]
         public async Task<IActionResult> RequestPassword(AuthenticateRequest model)
         {
             var response = await _authService.GenerateTemporaryCredentials(model);
