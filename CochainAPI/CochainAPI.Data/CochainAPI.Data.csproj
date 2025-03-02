@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.69.0" />
+    <PackageReference Include="Google.Apis.Gmail.v1" Version="1.68.0.3427" />
+    <PackageReference Include="MimeKit" Version="4.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CochainAPI.Data.Sql\CochainAPI.Data.Sql.csproj" />
     <ProjectReference Include="..\CochainAPI.Model\CochainAPI.Model.csproj" />
   </ItemGroup>

@@ -14,6 +14,9 @@ using System.Text;
 using CochainAPI.Data.Sql;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Data.Sql.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Google.Apis.Auth.OAuth2.Web;
+using Google.Apis.Auth.AspNetCore3;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -21,27 +24,27 @@ string connectionString = builder.Configuration.GetConnectionString("CochainDB")
 
 builder.Services.Configure<Jwt>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration.GetSection("Jwt")["ValidIssuer"],
-                    ValidAudience = builder.Configuration.GetSection("Jwt")["ValidAudience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("Jwt")["Secret"])),
-                    RequireSignedTokens = true                    
-                };
-            });
+builder.Services.AddAuthentication()
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
+        ValidAudience = builder.Configuration["Jwt:ValidAudience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Secret"])),
+        RequireSignedTokens = true
+    };
+})
+.AddCookie();
+
 builder.Services.AddAuthorization(options => {
     options.AddPolicy("ReadDocuments", policy => policy.RequireRole("Admin", "User"));
     options.AddPolicy("WriteDocuments", policy => policy.RequireRole("Admin"));
 });
-builder.Services.AddAuthorizationBuilder();
-
 
 builder.Services.AddDbContext<CochainDBContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Scoped);
 builder.Services.AddHttpClient();
@@ -52,25 +55,19 @@ builder.Services.AddIdentityCore<User>()
                 .AddApiEndpoints();
 
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-
-//builder.Services.AddTransient<IOurHeroService, OurHeroService>();
-//builder.Services.AddScoped<IOurHeroService, OurHeroService>();
-
 builder.Services.AddSwaggerGen(swagger =>
 {
-    //This is to generate the Default UI of Swagger Documentation  
     swagger.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
         Title = "JWT Token Authentication API",
         Description = ".NET 8 Web API"
     });
-    // To Enable authorization using Swagger (JWT)  
     swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
@@ -92,7 +89,6 @@ builder.Services.AddSwaggerGen(swagger =>
                                 }
                             },
                             new string[] {}
-
                     }
                 });
 });

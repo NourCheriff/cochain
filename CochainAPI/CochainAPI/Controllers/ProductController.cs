@@ -8,12 +8,12 @@ namespace RentaloAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class ProductController : ControllerBase
     {
         private IUserService _userService;
         private IAuthService _authService;
 
-        public UsersController(IUserService userService, IAuthService authService)
+        public ProductController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
             _authService = authService;

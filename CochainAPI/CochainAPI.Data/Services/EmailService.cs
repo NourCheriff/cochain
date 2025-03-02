@@ -1,6 +1,16 @@
 ﻿using CochainAPI.Data.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Net.Mail;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Gmail.v1;
+using Google.Apis.Services;
+using MimeKit;
+using GmailMessage = Google.Apis.Gmail.v1.Data.Message;
+using System.Text;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Util.Store;
+using Google.Apis.Auth.AspNetCore3;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CochainAPI.Data.Services
 {
@@ -11,13 +21,14 @@ namespace CochainAPI.Data.Services
         {
             _config = config;
         }
+
         public void SendEmail(string testo, string email, string oggetto)
         {
             try
             {
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");//gmailSmtpClient
-                SmtpServer.Port = 465; //- 465 ssl gmail -587
+                SmtpServer.Port = 587; //- 465 ssl gmail -587
                 SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
 
                 SmtpServer.EnableSsl = true;
@@ -43,7 +54,7 @@ namespace CochainAPI.Data.Services
                 mail.IsBodyHtml = true;
                 mail.Body = testo;
 
-                SmtpServer.SendAsync(mail, null);
+                SmtpServer.Send(mail);
             }
             catch (Exception ex)
             {
