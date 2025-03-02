@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Product;
+using CochainAPI.Model.CarbonOffset;
+using CochainAPI.Model.Documents;
+using CochainAPI.Model.Utils;
+using System.Security.Cryptography;
 
 namespace CochainAPI.Data.Sql
 {
@@ -49,12 +53,19 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<ProductInfo>().HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
             modelBuilder.Entity<ProductInfo>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
             modelBuilder.Entity<ProductInfo>().HasMany(x => x.Ingredients).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
-            modelBuilder.Entity<ProductIngredient>(entity => 
+            modelBuilder.Entity<ProductIngredient>(entity =>
             {
                 entity.HasKey(r => new { r.ProductInfoId, r.IngredientId });
                 entity.HasOne(x => x.ProductInfo).WithMany().HasForeignKey(x => x.ProductInfoId);
                 entity.HasOne(x => x.Ingredient).WithMany().HasForeignKey(x => x.IngredientId);
-            });          
+            });
+
+            modelBuilder.Entity<Document>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasOne(d => d.UserEmitter).WithMany(u => u.EmittedDocuments).HasForeignKey(d => d.UserEmitterId);
+                entity.HasOne(d => d.UserReceiver).WithMany(u => u.ReceivedDocuments).HasForeignKey(d => d.UserReceiverId);
+            });
 
             modelBuilder.Entity<IdentityRole<Guid>>().HasData(
                 new IdentityRole<Guid>
@@ -62,7 +73,7 @@ namespace CochainAPI.Data.Sql
                     Id = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a"),
                     Name = "Admin",
                     NormalizedName = "Admin"
-                }, 
+                },
                 new IdentityRole<Guid>
                 {
                     Id = Guid.Parse("cb5b1ae5-43db-4096-9bd6-2afb90fb20c5"),
