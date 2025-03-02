@@ -6,7 +6,7 @@ using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Product;
 using CochainAPI.Model.CarbonOffset;
 using CochainAPI.Model.Documents;
-using System.Security.Cryptography;
+using CochainAPI.Model.Utils;
 
 namespace CochainAPI.Data.Sql
 {
@@ -25,9 +25,13 @@ namespace CochainAPI.Data.Sql
         public DbSet<ProductInfo> ProductInfo { get; set; }
         public DbSet<ProductIngredient> ProductIngredient { get; set; }
         public DbSet<ProductLifeCycleCategory> ProductLifeCycleCategory { get; set; }
-        public DbSet<ProductLifeCycle> ProductLifeCycle { get; set; }
+        public DbSet<ProductLifeCycle> ProductLifeCycle { get; set; }        
+        public DbSet<CarbonOffsettingAction> CarbonOffsettingAction { get; set; }
+        public DbSet<Contract> Contract { get; set; }
+        public DbSet<ProductDocument> ProductDocument { get; set; }
         public DbSet<ProductLifeCycleDocument> ProductLifeCycleDocument { get; set; }
-        
+        public DbSet<SupplyChainPartnerCertificate> SupplyChainPartnerCertificate { get; set; }
+        public DbSet<Log> Log { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +51,7 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<User>().HasMany(x => x.TemporaryPasswords).WithOne(x => x.User).HasForeignKey(x => x.UserId);
             modelBuilder.Entity<User>().HasMany(x => x.UserRoles).WithOne().HasForeignKey(x => x.UserId);
             modelBuilder.Entity<User>().HasMany(x => x.UserClaims).WithOne().HasForeignKey(x => x.UserId);
+            modelBuilder.Entity<User>().HasMany(x => x.Logs).WithOne(x => x.User).HasForeignKey(x => x.UserId);
 
             modelBuilder.Entity<CertificationAuthority>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
             modelBuilder.Entity<SupplyChainPartner>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
@@ -64,13 +69,6 @@ namespace CochainAPI.Data.Sql
                 entity.HasKey(r => new { r.ProductInfoId, r.IngredientId });
                 entity.HasOne(x => x.ProductInfo).WithMany().HasForeignKey(x => x.ProductInfoId);
                 entity.HasOne(x => x.Ingredient).WithMany().HasForeignKey(x => x.IngredientId);
-            });
-
-            modelBuilder.Entity<Document>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-                entity.HasOne(d => d.UserEmitter).WithMany(u => u.EmittedDocuments).HasForeignKey(d => d.UserEmitterId);
-                entity.HasOne(d => d.SupplyChainPartnerReceiver).WithMany(u => u.ReceivedDocuments).HasForeignKey(d => d.SupplyChainPartnerReceiverId);
             });
 
             modelBuilder.Entity<Contract>(entity =>
@@ -105,6 +103,7 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<ProductDocument>().HasOne(x => x.ProductInfo).WithMany(x => x.ProductDocuments).HasForeignKey(x => x.ProductInfoId);
             modelBuilder.Entity<ProductLifeCycleDocument>().HasOne(x => x.ProductLifeCycle).WithMany(x => x.ProductLifeCycleDocuments).HasForeignKey(x => x.ProductLifeCycleId);
 
+            modelBuilder.Entity<CarbonOffsettingAction>().HasOne(x => x.SupplyChainPartner).WithMany(x => x.CarbonOffsettingActions).HasForeignKey(x => x.SupplyChainPartnerId);
 
             modelBuilder.Entity<IdentityRole<Guid>>().HasData(
                 new IdentityRole<Guid>
