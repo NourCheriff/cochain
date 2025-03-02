@@ -2,9 +2,9 @@ using CochainAPI.Model.Product;
 
 namespace CochainAPI.Model.Documents
 {
-    public class ProductDocument : Document
+    public class ProductDocument : BaseDocument
     {
-        public Guid DocumentId { get; set; }
+        public Guid ProductInfoId { get; set; }
         public ProductInfo ProductInfo { get; set; }
     }
 }

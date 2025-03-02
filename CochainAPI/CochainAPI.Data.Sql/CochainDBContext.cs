@@ -6,7 +6,6 @@ using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Product;
 using CochainAPI.Model.CarbonOffset;
 using CochainAPI.Model.Documents;
-using CochainAPI.Model.Utils;
 using System.Security.Cryptography;
 
 namespace CochainAPI.Data.Sql
@@ -25,6 +24,10 @@ namespace CochainAPI.Data.Sql
         public DbSet<ProductCategory> ProductCategory { get; set; }
         public DbSet<ProductInfo> ProductInfo { get; set; }
         public DbSet<ProductIngredient> ProductIngredient { get; set; }
+        public DbSet<ProductLifeCycleCategory> ProductLifeCycleCategory { get; set; }
+        public DbSet<ProductLifeCycle> ProductLifeCycle { get; set; }
+        public DbSet<ProductLifeCycleDocument> ProductLifeCycleDocument { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -65,6 +68,34 @@ namespace CochainAPI.Data.Sql
                 entity.HasKey(x => x.Id);
                 entity.HasOne(d => d.UserEmitter).WithMany(u => u.EmittedDocuments).HasForeignKey(d => d.UserEmitterId);
                 entity.HasOne(d => d.UserReceiver).WithMany(u => u.ReceivedDocuments).HasForeignKey(d => d.UserReceiverId);
+            });
+
+            modelBuilder.Entity<Contract>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasOne(d => d.UserEmitter).WithMany(u => u.EmittedContract).HasForeignKey(d => d.UserEmitterId);
+                entity.HasOne(d => d.UserReceiver).WithMany(u => u.ReceivedContract).HasForeignKey(d => d.UserReceiverId);
+            });
+
+            modelBuilder.Entity<ProductDocument>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasOne(d => d.UserEmitter).WithMany(u => u.EmittedProductDocument).HasForeignKey(d => d.UserEmitterId);
+                entity.HasOne(d => d.UserReceiver).WithMany(u => u.ReceivedProductDocument).HasForeignKey(d => d.UserReceiverId);
+            });
+
+            modelBuilder.Entity<ProductLifeCycleDocument>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasOne(d => d.UserEmitter).WithMany(u => u.EmittedProductLifeCycleDocument).HasForeignKey(d => d.UserEmitterId);
+                entity.HasOne(d => d.UserReceiver).WithMany(u => u.ReceivedProductLifeCycleDocument).HasForeignKey(d => d.UserReceiverId);
+            });
+
+            modelBuilder.Entity<SupplyChainPartnerCertificate>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasOne(d => d.UserEmitter).WithMany(u => u.EmittedSupplyChainPartnerCertificate).HasForeignKey(d => d.UserEmitterId);
+                entity.HasOne(d => d.UserReceiver).WithMany(u => u.ReceivedSupplyChainPartnerCertificate).HasForeignKey(d => d.UserReceiverId);
             });
 
             modelBuilder.Entity<IdentityRole<Guid>>().HasData(
