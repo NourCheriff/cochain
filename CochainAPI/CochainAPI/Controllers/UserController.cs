@@ -4,7 +4,7 @@ using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Helpers;
 using CochainAPI.Authentication.Interfaces;
 
-namespace RentaloAPI.Controllers
+namespace CochainAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -31,7 +31,7 @@ namespace RentaloAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [Authorize]
         public async Task<IActionResult> GetById(string id)
         {
