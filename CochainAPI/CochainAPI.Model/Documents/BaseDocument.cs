@@ -1,4 +1,5 @@
 ﻿using CochainAPI.Model.Authentication;
+using CochainAPI.Model.CompanyEntities;
 
 namespace CochainAPI.Model.Documents
 {
@@ -7,8 +8,8 @@ namespace CochainAPI.Model.Documents
         public string Path { get; set; }
         public string Type { get; set; }
         public string UserEmitterId { get; set; }
-        public string UserReceiverId { get; set; }
+        public string SupplyChainPartnerReceiverId { get; set; }
         public User UserEmitter { get; set; }
-        public User UserReceiver { get; set; }
+        public SupplyChainPartner SupplyChainPartnerReceiver { get; set; }
     }
 }
