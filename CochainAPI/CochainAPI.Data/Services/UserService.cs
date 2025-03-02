@@ -2,6 +2,7 @@
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
+using System.Net.Mail;
 
 namespace CochainAPI.Data.Services
 {
@@ -56,6 +57,10 @@ namespace CochainAPI.Data.Services
             var user = await _userRepository.GetByUserName(model.Username);
             if (user?.Id != null)
             {
+                if (!IsValidEmail(user.UserName))
+                {
+                    return false;
+                }
                 Random random = new Random();
                 int randomNumber = random.Next(100000, 1000000);
                 var randomPassword = $"{randomNumber}";
@@ -67,7 +72,7 @@ namespace CochainAPI.Data.Services
                     IsUsed = false
                 };
                 await _userRepository.AddTemporaryPassword(temporaryPassword);
-                await _emailService.EmailPasswordTemporanea(user.UserName!, randomPassword);
+                _emailService.EmailPasswordTemporanea(user.UserName!, randomPassword);
                 return true;
             }
             return false;
@@ -83,6 +88,11 @@ namespace CochainAPI.Data.Services
                 return userValid.User;
             }
             return null;
+        }
+
+        public bool IsValidEmail(string email)
+        {
+            return MailAddress.TryCreate(email, out MailAddress addr);
         }
     }
 }
