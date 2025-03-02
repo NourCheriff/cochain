@@ -1,5 +1,6 @@
 
 using CochainAPI.Model.CompanyEntities;
+using CochainAPI.Model.Documents;
 
 namespace CochainAPI.Model.Product
 {
@@ -13,5 +14,6 @@ namespace CochainAPI.Model.Product
         public SupplyChainPartner SupplyChainPartner { get; set; }
         public Guid ProductInfoId { get; set; }
         public ProductInfo ProductInfo { get; set; }
+        public List<ProductLifeCycleDocument>? ProductLifeCycleDocuments { get; set; }
     }
 }

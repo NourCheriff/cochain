@@ -4,7 +4,7 @@ namespace CochainAPI.Model.Documents
 {
     public class ProductLifeCycleDocument : BaseDocument
     {
-        public Guid ProductInfoId { get; set; }
-        public ProductInfo ProductInfo { get; set; }
+        public Guid ProductLifeCycleId { get; set; }
+        public ProductLifeCycle ProductLifeCycle { get; set; }
     }
 }
