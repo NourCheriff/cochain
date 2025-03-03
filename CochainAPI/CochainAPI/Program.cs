@@ -41,7 +41,8 @@ builder.Services.AddAuthentication()
 })
 .AddCookie();
 
-builder.Services.AddAuthorization(options => {
+builder.Services.AddAuthorization(options =>
+{
     options.AddPolicy("ReadDocuments", policy => policy.RequireRole("Admin", "User"));
     options.AddPolicy("WriteDocuments", policy => policy.RequireRole("Admin"));
 });
@@ -56,10 +57,12 @@ builder.Services.AddIdentityCore<User>()
 
 builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISupplyChainPartnerService, SupplychainPartnerService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDocumentService, DocumentService>();
 
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<ISupplyChainPartnerRepository, SupplyChainPartnerRepository>();
 builder.Services.AddSingleton<IContractRepository, ContractRepository>();
 builder.Services.AddSingleton<IProductLifeCycleDocumentRepository, ProductLifeCycleDocumentRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerCertificateRepository, SupplyChainPartnerCertificateRepository>();

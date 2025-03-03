@@ -19,29 +19,23 @@ namespace CochainAPI.Data.Services
         }
         public async Task<BaseDocument?> AddDocument(BaseDocument documentObj)
         {
-            switch (documentObj)
+            return documentObj switch
             {
-                case Contract contract:
-                    return await _contractRepository.AddDocument(contract);
-                case SupplyChainPartnerCertificate scpCertificate:
-                    return await _supplyChainPartnerCertificate.AddDocument(scpCertificate);
-                case ProductLifeCycleDocument productDocument:
-                    return await _productLifeCycleRepository.AddDocument(productDocument);
-            }
-            return null;
+                Contract contract => await _contractRepository.AddDocument(contract),
+                SupplyChainPartnerCertificate scpCertificate => await _supplyChainPartnerCertificate.AddDocument(scpCertificate),
+                ProductLifeCycleDocument productDocument => await _productLifeCycleRepository.AddDocument(productDocument),
+                _ => null,
+            };
         }
         public async Task<BaseDocument?> GetById(string id, string Type)
         {
-            switch (Type)
+            return Type switch
             {
-                case "Contract":
-                    return await _contractRepository.GetById(id);
-                case "SCPCertificate":
-                    return await _supplyChainPartnerCertificate.GetById(id);
-                case "ProductDocument":
-                    return await _productLifeCycleRepository.GetById(id);
-            }
-            return null;
+                "Contract" => await _contractRepository.GetById(id),
+                "SCPCertificate" => await _supplyChainPartnerCertificate.GetById(id),
+                "ProductDocument" => await _productLifeCycleRepository.GetById(id),
+                _ => null,
+            };
         }
     }
 }

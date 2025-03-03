@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Helpers;
-using CochainAPI.Authentication.Interfaces;
 using CochainAPI.Model.Documents;
 
 namespace CochainAPI.Controllers
@@ -11,12 +10,10 @@ namespace CochainAPI.Controllers
     public class DocumentController : ControllerBase
     {
         private IDocumentService _documentService;
-        private IAuthService _authService;
 
-        public DocumentController(IDocumentService documentService, IAuthService authService)
+        public DocumentController(IDocumentService documentService)
         {
             _documentService = documentService;
-            _authService = authService;
         }
 
         [HttpPost("UpdateDocument")]
@@ -31,11 +28,11 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}/{type}")]
         [Authorize]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetById(string id, string type)
         {
-            var response = await _documentService.GetById(id);
+            var response = await _documentService.GetById(id, type);
             if (response == null)
             {
                 return BadRequest(new { message = "Document not found" });
