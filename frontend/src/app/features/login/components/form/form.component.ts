@@ -20,10 +20,17 @@ export class LoginFormComponent {
 
   requestOtp() {
     console.log(`Hi, ${this.loginForm.value.email}`); /** inject and call auth service */
-    this.openDialog();
+    if (!this.dialog.openDialogs || !this.dialog.openDialogs.length)
+      this._openDialog();
   }
 
-  openDialog() {
-    this.dialog.open(LoginDialogComponent);
+  private _openDialog() {
+    const config = {
+      restoreFocus: false,
+      disableClose: true,
+      data: { email: this.loginForm.value.email },
+    };
+    const ref = this.dialog.open(LoginDialogComponent, config);
+    ref.componentInstance.resendOtpEvent.subscribe(this.requestOtp.bind(this));
   }
 }
