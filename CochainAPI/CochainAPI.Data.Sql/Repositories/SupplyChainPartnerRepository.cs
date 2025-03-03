@@ -13,7 +13,7 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<List<SupplyChainPartnerType?>> GetTypes()
         {
-            return await dbContext.SupplyChainPartnerType.ToListAsync();
+            return await dbContext.SupplyChainPartnerType.ToListAsync<SupplyChainPartnerType?>();
         }
     }
 }

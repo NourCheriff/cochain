@@ -60,9 +60,13 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISupplyChainPartnerService, SupplychainPartnerService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDocumentService, DocumentService>();
+builder.Services.AddSingleton<IProductService, ProductService>();
+builder.Services.AddSingleton<IProductLifeCycleService, ProductLifeCycleService>();
 
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerRepository, SupplyChainPartnerRepository>();
+builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<IProductLifeCycleRepository, ProductLifeCycleRepository>();
 builder.Services.AddSingleton<IContractRepository, ContractRepository>();
 builder.Services.AddSingleton<IProductLifeCycleDocumentRepository, ProductLifeCycleDocumentRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerCertificateRepository, SupplyChainPartnerCertificateRepository>();

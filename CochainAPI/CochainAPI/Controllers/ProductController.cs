@@ -15,7 +15,7 @@ namespace CochainAPI.Controllers
             _productService = productService;
         }
 
-        [HttpPost("UpdateUser")]
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetCategories()
         {

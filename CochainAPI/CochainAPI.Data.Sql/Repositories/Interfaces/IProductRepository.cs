@@ -1,5 +1,3 @@
-
-using CochainAPI.Model.Documents;
 using CochainAPI.Model.Product;
 
 namespace CochainAPI.Data.Sql.Repositories.Interfaces
