@@ -20,6 +20,8 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<BaseDocument?> GetById(string id)
         {
+            //esmpio
+            //dbContext.ProductLifeCycle.Where(x => x.Name.Equals("Pippo")).Include(x => x.ProductLifeCycleDocuments).Include(x => x.SupplyChainPartner).Include(x => x.ProductLifeCycleCategory);
             return await dbContext.Contract.FirstOrDefaultAsync(c => c.Id.ToString() == id);
         }
     }
