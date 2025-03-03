@@ -46,7 +46,7 @@ builder.Services.AddAuthorization(options => {
     options.AddPolicy("WriteDocuments", policy => policy.RequireRole("Admin"));
 });
 
-builder.Services.AddDbContext<CochainDBContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Scoped);
+builder.Services.AddDbContext<CochainDBContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Singleton);
 builder.Services.AddHttpClient();
 
 
@@ -54,11 +54,16 @@ builder.Services.AddIdentityCore<User>()
                 .AddEntityFrameworkStores<CochainDBContext>()
                 .AddApiEndpoints();
 
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IDocumentService, DocumentService>();
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<IContractRepository, ContractRepository>();
+builder.Services.AddSingleton<IProductLifeCycleDocumentRepository, ProductLifeCycleDocumentRepository>();
+builder.Services.AddSingleton<ISupplyChainPartnerCertificateRepository, SupplyChainPartnerCertificateRepository>();
+
 
 builder.Services.AddSwaggerGen(swagger =>
 {

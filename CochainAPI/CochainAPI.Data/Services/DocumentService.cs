@@ -7,32 +7,41 @@ namespace CochainAPI.Data.Services
 {
     public class DocumentService : IDocumentService
     {
-        private readonly IDocumentService _documentService;
-        private readonly IBaseDocumentRepository _documentRepository;
         private readonly IContractRepository _contractRepository;
         private readonly ISupplyChainPartnerCertificateRepository _supplyChainPartnerCertificate;
         private readonly IProductLifeCycleDocumentRepository _productLifeCycleRepository;
 
-        public DocumentService(IDocumentService documentService, IBaseDocumentRepository documentRepository)
+        public DocumentService(IContractRepository contractRepository, ISupplyChainPartnerCertificateRepository supplyChainPartnerCertificateRepository, IProductLifeCycleDocumentRepository productLifeCycleDocumentRepository)
         {
-            _documentService = documentService;
-            _documentRepository = documentRepository;
+            _contractRepository = contractRepository;
+            _productLifeCycleRepository = productLifeCycleDocumentRepository;
+            _supplyChainPartnerCertificate = supplyChainPartnerCertificateRepository;
         }
         public async Task<BaseDocument?> AddDocument(BaseDocument documentObj)
         {
-            switch (documentObj.Type)
+            switch (documentObj)
+            {
+                case Contract contract:
+                    return await _contractRepository.AddDocument(contract);
+                case SupplyChainPartnerCertificate scpCertificate:
+                    return await _supplyChainPartnerCertificate.AddDocument(scpCertificate);
+                case ProductLifeCycleDocument productDocument:
+                    return await _productLifeCycleRepository.AddDocument(productDocument);
+            }
+            return null;
+        }
+        public async Task<BaseDocument?> GetById(string id, string Type)
+        {
+            switch (Type)
             {
                 case "Contract":
-                    return await _contractRepository.AddDocument(documentObj);
+                    return await _contractRepository.GetById(id);
                 case "SCPCertificate":
-                    return await _supplyChainPartnerCertificate.AddDocument(documentObj);
+                    return await _supplyChainPartnerCertificate.GetById(id);
                 case "ProductDocument":
-                    return await _productLifeCycleRepository.AddDocument(documentObj);
+                    return await _productLifeCycleRepository.GetById(id);
             }
-        }
-        public async Task<BaseDocument?> GetById(string id)
-        {
-            return await _documentRepository.GetById(id);
+            return null;
         }
     }
 }
