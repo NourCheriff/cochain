@@ -1,1 +1,23 @@
-<p>navbar works!</p>
+<div class="navbar">
+  <div class="logo-container">
+     <img src="logo.png" alt="logo">
+  </div>
+  <div class="options">
+    <div class="nav-link">
+      <a routerLink="/home" class="nav-item">Wallet</a>
+      <a routerLink="/products"  class="nav-item active">Products</a>
+      <a routerLink="/certificates"  class="nav-item">Certificates</a>
+      <a routerLink="/contracts" class="nav-item">Contracts</a>
+    </div>
+    <div class="buttons">
+        <button class="button" mat-button appearance="outline">
+            <mat-icon>person</mat-icon>
+            Account
+        </button>
+        <button class="btn-primary" mat-button>
+            <mat-icon>logout</mat-icon>
+            Logout
+        </button>
+    </div>
+  </div>
+</div>

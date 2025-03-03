@@ -1,0 +1,86 @@
+.navbar{
+  height: 15vh;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.options{
+  display: flex;
+  justify-content: space-evenly;
+  width: 60%;
+}
+
+img{
+  width: 115px;
+  height: 90px;
+}
+
+.logo-container{
+  object-fit: contain;
+  margin-left: 40px;
+}
+
+.buttons{
+  width: 27%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  background-color: transparent !important;
+  border: 1px solid black;
+  color: inherit !important;
+  padding: 23px 16px !important;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.button mat-icon {
+  color: inherit;
+}
+
+
+
+.nav-link {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.nav-item {
+  cursor: pointer;
+  padding: 10px 15px;
+  font-size: 18px;
+  text-decoration: none;
+  color: var(--nav-link);
+  position: relative;
+  padding-bottom: 5px;
+  display: inline-block;
+  text-align: center;
+}
+
+.nav-item.active::after {
+  content: "";
+    display: inline-block;
+    width: 50%;
+    height: 2px;
+    background-color: var(--nav-link);
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+  width: 50%;
+}
+
+.nav-item::after {
+  width: 0;
+  transition: width 0.3s ease;
+  left: 50%;
+}
+
