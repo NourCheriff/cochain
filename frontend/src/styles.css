@@ -26,6 +26,11 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.bg {
+  background: var(--linear-gradient);
+  height: 100vh;
+}
+
 .btn-primary {
   padding: 24px !important;
   background-color: var(--btn-primary) !important;
