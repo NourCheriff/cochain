@@ -1,0 +1,20 @@
+.welcome-section {
+  background: var(--linear-gradient);
+  padding: 25px;
+  height: 100%;
+}
+
+h1, p {
+  font-family: "Cairo", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  color: white;
+}
+
+h1 {
+  font-size: 42px;
+}
+
+p {
+  font-size: 18px;
+}

@@ -1,1 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --primary: #60B45A;
+  --secondary: #205072;
+  --btn-primary: #60B45A;
+  --btn-secondary: #205072;
+  --btn-ternary: #329D9C;
+  --btn-text: #FFF;
+  --href-primary: #205072;
+  --href-secondary: #329D9C;
+  --nav-link: #329D9C;
+  --breadcrumb-link: #CFF4D2;
+  --linear-gradient: linear-gradient(135deg, var(--secondary), var(--primary) 68%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.btn-primary {
+  padding: 24px !important;
+  background-color: var(--btn-primary) !important;
+  color: #FFF !important;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+}

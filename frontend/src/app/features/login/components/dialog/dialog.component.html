@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>OTP</h2>
+<mat-dialog-content>
+  <p>Enter the OTP sent to your email address.</p>
+  <mat-form-field appearance="outline">
+    <mat-label>OTP</mat-label>
+    <input matInput [formControl]="otp" tabindex="-1" />
+  </mat-form-field>
+  <p>
+    Didn't receive the OTP?
+    <b class="resend" (click)="resendOtp()">RESEND</b>
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button tabindex="-1" [disabled]="!otp.valid || isLoginRequestSent" (click)="login()">Send</button>
+</mat-dialog-actions>
