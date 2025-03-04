@@ -1,27 +1,34 @@
-<div class="navbar">
-  <div class="logo-container">
-    <a routerLink="home">
-      <img src="logo.png" alt="logo">
-    </a>
-  </div>
-  <div class="options">
-    <nav class="nav-link">
-      <ul>
-        <li><a routerLink="home" routerLinkActive="active" class="nav-item">Wallet</a></li>
-        <li><a routerLink="products" routerLinkActive="active" class="nav-item">Products</a></li>
-        <li><a routerLink="certificates" routerLinkActive="active" class="nav-item">Certificates</a></li>
-        <li><a routerLink="contracts" routerLinkActive="active" class="nav-item">Contracts</a></li>
-      </ul>
-    </nav>
-    <div class="btn-container">
-        <button class="button" mat-button appearance="outline">
-            <mat-icon>person</mat-icon>
-            Account
-        </button>
-        <button class="btn-primary" mat-flat-button>
-            <mat-icon>logout</mat-icon>
-            Logout
-        </button>
+<main>
+  <div class="navbar">
+    <div class="logo-container">
+      <a routerLink="home">
+        <img src="logo.png" alt="logo">
+      </a>
+    </div>
+    <div class="options">
+      <nav class="nav-link">
+        <ul>
+          <li><a routerLink="home" routerLinkActive="active" class="nav-item">Wallet</a></li>
+          <li><a routerLink="products" routerLinkActive="active" class="nav-item">Products</a></li>
+          <li><a routerLink="certificates" routerLinkActive="active" class="nav-item">Certificates</a></li>
+          <li><a routerLink="contracts" routerLinkActive="active" class="nav-item">Contracts</a></li>
+        </ul>
+      </nav>
+      <div class="btn-container">
+          <button class="button" mat-button disabled appearance="outline">
+              <mat-icon>person</mat-icon>
+              Ciao, cochain
+          </button>
+          <button class="btn-primary" mat-flat-button>
+              <mat-icon>logout</mat-icon>
+              Logout
+          </button>
+      </div>
     </div>
   </div>
-</div>
+  <div class="breadcrumb">
+    <app-breadcrumb></app-breadcrumb>
+  </div>
+</main>
+
+

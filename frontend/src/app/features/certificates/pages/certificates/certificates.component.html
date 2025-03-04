@@ -5,7 +5,7 @@
       <div class="options">
         <mat-form-field appearance="outline">
           <mat-label>Search</mat-label>
-          <input matInput placeholder="Search...">
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search...">
           <button mat-icon-button matSuffix aria-label="Search">
             <mat-icon>search</mat-icon>
           </button>
@@ -55,11 +55,11 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-
+    </div>
       <mat-paginator [pageSizeOptions]="[5, 10, 15]"
                     showFirstLastButtons
                     aria-label="Select page of periodic elements">
       </mat-paginator>
-    </div>
+
   </div>
 </main>

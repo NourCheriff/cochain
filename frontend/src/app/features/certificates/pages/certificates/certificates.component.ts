@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 })
 
 export class CertificatesComponent implements AfterViewInit {
-  displayedColumns: string[] = ['emitter', 'receiver', 'type', 'product'];
+  displayedColumns: string[] = ['emitter', 'receiver', 'type', 'product','actions'];
   dataSource = new MatTableDataSource<Certificate>(certificates);
 
   selected = 'all_certificates';
@@ -23,6 +23,11 @@ export class CertificatesComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   updateTable() {
@@ -86,5 +91,41 @@ const certificates: Certificate[] = [
     receiver: "Emily Davis",
     type: "Quality",
     product: "P1",
+  },
+  {
+    emitter: "Institute B",
+    receiver: "Jane Smith",
+    type: "Sustainability",
+    product: "P3",
+  },
+  {
+    emitter: "University C",
+    receiver: "Carlos Ruiz",
+    type: "Sustainability",
+    product: "P2",
+  },
+  {
+    emitter: "Institute B",
+    receiver: "Jane Smith",
+    type: "Sustainability",
+    product: "P3",
+  },
+  {
+    emitter: "University C",
+    receiver: "Carlos Ruiz",
+    type: "Sustainability",
+    product: "P2",
+  },
+  {
+    emitter: "Institute B",
+    receiver: "Jane Smith",
+    type: "Sustainability",
+    product: "P3",
+  },
+  {
+    emitter: "University C",
+    receiver: "Carlos Ruiz",
+    type: "Sustainability",
+    product: "P2",
   },
 ];

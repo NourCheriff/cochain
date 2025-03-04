@@ -4,6 +4,12 @@ table {
   background-color: white;
 }
 
+.mat-elevation-z8{
+  width: 100%;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
 mat-paginator{
   background-color: white;
 }
