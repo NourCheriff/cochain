@@ -2,12 +2,18 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './features/login/pages/login/login.component';
 import { ContractsComponent } from './features/contracts/pages/contracts/contracts.component';
 import { CertificatesComponent } from './features/certificates/pages/certificates/certificates.component';
+import { WalletComponent } from './features/wallet/pages/wallet/wallet.component';
 
 export const routes: Routes = [
   {
     path: 'home',
     redirectTo: '',
     pathMatch: 'full'
+  },
+  {
+    path: '',
+    title: 'Home',
+    component: WalletComponent,
   },
   {
     path: 'login',
