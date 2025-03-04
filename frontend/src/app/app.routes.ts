@@ -5,8 +5,8 @@ import { CertificatesComponent } from './features/certificates/pages/certificate
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: '/home',
+    path: 'home',
+    redirectTo: '',
     pathMatch: 'full'
   },
   {
