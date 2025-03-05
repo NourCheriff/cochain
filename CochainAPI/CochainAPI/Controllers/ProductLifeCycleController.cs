@@ -10,7 +10,7 @@ namespace CochainAPI.Controllers
     {
         private IProductLifeCycleService _productLifeCycleService;
 
-        public ProductController(IProductLifeCycleService productLifeCycleService)
+        public ProductLifeCycleController(IProductLifeCycleService productLifeCycleService)
         {
             _productLifeCycleService = productLifeCycleService;
         }
