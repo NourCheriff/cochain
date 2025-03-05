@@ -1,0 +1,69 @@
+<main class="main">
+  <div class="products">
+    <div class="header">
+      <h3 class="header_text">SCP's Products</h3>
+      <div class="options">
+        <mat-form-field appearance="outline">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search...">
+          <button mat-icon-button matSuffix aria-label="Search">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Order by</mat-label>
+          <mat-select [(value)]="selected" (selectionChange)="orderBy()">
+            <mat-option value="name">Name</mat-option>
+            <mat-option value="category">Category</mat-option>
+            <mat-option value="expirationDate">Expiration date</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef> Category </th>
+          <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expirationDate">
+          <th mat-header-cell *matHeaderCellDef> Expiration Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.expirationDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="attachments">
+          <th mat-header-cell *matHeaderCellDef class="attachment_th"> Attachments </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="attachment-container">
+              <button mat-icon-button class="attachment_button" matTooltip="Upload">
+                <mat-icon>upload</mat-icon>
+              </button>
+              <button mat-icon-button class="attachment_button download" matTooltip="Download">
+                <mat-icon>download</mat-icon>
+              </button>
+              <button mat-icon-button class="attachment_button delete" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 15]"
+                  showFirstLastButtons
+                  aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+</main>
+

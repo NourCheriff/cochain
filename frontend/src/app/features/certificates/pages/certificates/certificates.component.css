@@ -5,12 +5,6 @@
   align-items: center;
 }
 
-.mat-elevation-z8{
-  width: 100%;
-  max-height: 300px !important;
-  overflow-y: auto !important;
-}
-
 .certificates{
   width: 70%;
   border-radius: 25px !important;
@@ -18,50 +12,4 @@
   padding: 10px;
   background-color: white;
   padding-top: 20px;
-}
-
-table {
-  width: 100%;
-  background-color: white;
-}
-
-mat-paginator {
-  background-color: white;
-}
-
-.attachment_th {
-  text-align: center;
-}
-
-.attachment_button {
-  background-color: var(--btn-ternary);
-  border: none;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  display: block;
-  margin: auto;
-}
-
-.header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.options {
-  display: flex;
-  gap: 20px;
-}
-
-.header_text {
-  font-size: 24px;
-  padding-left: 20px;
-}
-
-.header_button {
-  background-color: var(--btn-secondary) !important;
 }

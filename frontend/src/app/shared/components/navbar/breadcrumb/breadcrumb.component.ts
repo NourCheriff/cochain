@@ -59,14 +59,24 @@ export class BreadcrumbComponent implements OnInit {
         url += `/${routeURL}`;
       }
 
+
       // Se il dato 'breadcrumb' è definito nella rotta, lo aggiungiamo
       const label = child.snapshot.data['breadcrumb'];
       if (label) {
-        const menuItem: MenuItem = { label: label };
-        // Se la rotta specifica routerLink nel data, usalo, altrimenti utilizza l'URL accumulato
-        menuItem.routerLink = child.snapshot.data['routerLink'] || url;
-        breadcrumbs.push(menuItem);
-      }
+        if (label === "Details") {
+          const id = child.snapshot.paramMap.get('id');
+          breadcrumbs.push(
+            { label: 'Certificates', routerLink: '/certificates' },
+            { label: `Details`, routerLink: `/details/${id}` }
+          );
+        } else {
+          // Crea un singolo menu item per altri casi
+          let menuItem: MenuItem = { label: label };
+          // Se la rotta specifica 'routerLink' nel data, usalo, altrimenti utilizza l'URL accumulato
+          menuItem.routerLink = child.snapshot.data['routerLink'] || url;
+          breadcrumbs.push(menuItem);
+        }
+    }
 
       // Continua a scorrere ricorsivamente
       return this.createBreadcrumb(child, url, breadcrumbs);

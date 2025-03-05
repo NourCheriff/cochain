@@ -27,8 +27,11 @@
     </div>
   </div>
   <div class="breadcrumb">
-    <app-breadcrumb></app-breadcrumb>
+    @if (!isWalletRoute()) {
+      <app-breadcrumb></app-breadcrumb>
+    }
   </div>
 </main>
+<div >
 
 
