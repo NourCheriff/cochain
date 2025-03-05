@@ -92,9 +92,6 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("text");
 
-                    b.Property<string>("WalletId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CertificationAuthorityId");
@@ -111,7 +108,7 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "5e4b0ca8-aa85-417a-af23-035ac1b555cd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fad005ac-253a-41f7-aa8c-0ff9ea79f433",
+                            ConcurrencyStamp = "86280c4e-30e4-478e-bc4e-d9ffe6a22b71",
                             Email = "System",
                             EmailConfirmed = false,
                             FirstName = "System",
@@ -119,7 +116,7 @@ namespace CochainAPI.Data.Sql.Migrations
                             LastName = "System",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "192518af-1e01-40b4-8ca1-87d0e760ba1f",
+                            SecurityStamp = "4da68d6c-ecdf-4f7a-9852-57f45a96057e",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "System"
@@ -155,8 +152,8 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f9e210be-2ed1-4fdc-aaeb-3543916db0da"),
-                            ExpirationDate = new DateTime(2027, 3, 2, 14, 50, 40, 222, DateTimeKind.Utc).AddTicks(6146),
+                            Id = new Guid("09f67853-ff83-440c-9ab1-c6de458c6e42"),
+                            ExpirationDate = new DateTime(2027, 3, 5, 16, 28, 57, 362, DateTimeKind.Utc).AddTicks(330),
                             IsUsed = false,
                             Password = "System",
                             UserId = "5e4b0ca8-aa85-417a-af23-035ac1b555cd"
@@ -201,6 +198,9 @@ namespace CochainAPI.Data.Sql.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WalletId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -254,6 +254,9 @@ namespace CochainAPI.Data.Sql.Migrations
 
                     b.Property<Guid>("SupplyChainPartnerTypeId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("WalletId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -337,6 +340,17 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasIndex("UserEmitterId");
 
                     b.ToTable("Contract");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c7467f1b-4739-48ea-9fcd-4762fb5090e1"),
+                            Path = "/home/contract1.pdf",
+                            ProductLifeCycleCategoryId = new Guid("7de440aa-63d8-4a97-87b1-79781f7b8349"),
+                            SupplyChainPartnerReceiverId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Type = "Contract",
+                            UserEmitterId = "5e4b0ca8-aa85-417a-af23-035ac1b555cd"
+                        });
                 });
 
             modelBuilder.Entity("CochainAPI.Model.Documents.ProductDocument", b =>
@@ -472,6 +486,14 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Product");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("fc02d0d2-1368-40e5-aed3-3389032f4de0"),
+                            CategoryId = new Guid("a895a940-cd9f-42c4-a898-34f7bb5e513e"),
+                            Description = "Prodotto di prova"
+                        });
                 });
 
             modelBuilder.Entity("CochainAPI.Model.Product.ProductCategory", b =>
@@ -489,6 +511,13 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductCategory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a895a940-cd9f-42c4-a898-34f7bb5e513e"),
+                            Description = "Categoria del prodotto di prova"
+                        });
                 });
 
             modelBuilder.Entity("CochainAPI.Model.Product.ProductInfo", b =>
@@ -516,6 +545,15 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasIndex("SupplyChainPartnerId");
 
                     b.ToTable("ProductInfo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3c06df94-1fff-4f54-b188-8326203e2a89"),
+                            ExpirationDate = new DateOnly(1, 1, 1),
+                            ProductId = new Guid("20b4dadf-3bff-428c-a026-b509e6620cc0"),
+                            SupplyChainPartnerId = new Guid("9c389eba-e008-4030-a544-010232e3bbe2")
+                        });
                 });
 
             modelBuilder.Entity("CochainAPI.Model.Product.ProductIngredient", b =>
@@ -566,6 +604,17 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasIndex("SupplyChainPartnerId");
 
                     b.ToTable("ProductLifeCycle");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7de440aa-63d8-4a97-87b1-79781f7b8349"),
+                            Emissions = 0f,
+                            ProductInfoId = new Guid("20b4dadf-3bff-428c-a026-b509e6620cc0"),
+                            ProductLifeCycleCategoryId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            SupplyChainPartnerId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Timestamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("CochainAPI.Model.Product.ProductLifeCycleCategory", b =>
@@ -584,6 +633,13 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductLifeCycleCategory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7de440aa-63d8-4a97-87b1-79781f7b8349"),
+                            Description = "Categoria attività di prova"
+                        });
                 });
 
             modelBuilder.Entity("CochainAPI.Model.Utils.Log", b =>
