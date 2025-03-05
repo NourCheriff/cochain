@@ -12,7 +12,6 @@ namespace CochainAPI.Model.Authentication
         public string? Phone { get; set; }
         public bool IsActive { get; set; }
         public string? Role { get; set; }
-        public string? WalletId { get; set; }
         public Guid? CertificationAuthorityId { get; set; }
         public CertificationAuthority? CertificationAuthority { get; set; }
         public Guid? SupplyChainPartnerId { get; set; }
