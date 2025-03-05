@@ -1,10 +1,12 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild, inject } from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { ContractDialogComponent } from '../contract-dialog/contract-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-contracts-section',
@@ -13,14 +15,29 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule]
 })
 export class ContractsSectionComponent implements AfterViewInit {
-  displayedColumns: string[] = ['emitter', 'receiver', 'workType', 'actions'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  readonly dialog = inject(MatDialog);
 
-  user = "Alpha" // qui ci va il supply chain partner, quando l'utente effettua il login
+  user: User = {
+    "supplyChainPartner": "Alpha",// qui ci va il supply chain partner, quando l'utente effettua il login
+    "role": "Admin"
+  };
+
+  displayedColumns: string[] = ['emitter', 'receiver', 'workType', 'attachment'];
+
+
+
+  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
   selected = 'all_contracts';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngOnInit() {
+    if (this.isAdmin()) {
+      this.displayedColumns.push('action');
+    }
+  }
+
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -38,11 +55,11 @@ export class ContractsSectionComponent implements AfterViewInit {
       break;
 
       case 'recieved_contracts':
-        SELECTED_DATA = BACKUP_DATA.filter(item => item.receiver == this.user);
+        SELECTED_DATA = BACKUP_DATA.filter(item => item.receiver == this.user.supplyChainPartner);
       break;
 
       case 'emitted_contracts':
-        SELECTED_DATA = BACKUP_DATA.filter(item => item.emitter == this.user);
+        SELECTED_DATA = BACKUP_DATA.filter(item => item.emitter == this.user.supplyChainPartner);
       break;
     }
 
@@ -51,6 +68,23 @@ export class ContractsSectionComponent implements AfterViewInit {
     console.log(`Hi, dolphin`); /** inject and call auth service */
   }
 
+  isAdmin(): boolean {
+    return this.user.role == "Admin";
+  }
+
+  addContract() {
+    this.openDialog();
+  }
+
+  openDialog() {
+    console.log("ciao");
+    this.dialog.open(ContractDialogComponent);
+  }
+}
+
+export interface User {
+  supplyChainPartner: string;
+  role: string;
 }
 
 export interface PeriodicElement {

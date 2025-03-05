@@ -1,23 +1,20 @@
 
 <div>
-
     <h3 class="header_text">Contracts</h3>
+      @if (!isAdmin()) {
+      <section class="header_options">
+        <mat-form-field appearance="outline">
+          <mat-label>Select an option</mat-label>
+          <mat-select [(value)]="selected" (selectionChange)="updateTable()">
+            <mat-option value="all_contracts">All contracts</mat-option>
+            <mat-option value="recieved_contracts">Recieved contracts</mat-option>
+            <mat-option value="emitted_contracts">Emitted contracts</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <section class="header_options">
-
-      <mat-form-field class="header_select">
-        <mat-label>Select an option</mat-label>
-        <mat-select [(value)]="selected" (selectionChange)="updateTable()">
-          <mat-option value="all_contracts">All contracts</mat-option>
-          <mat-option value="recieved_contracts">Received contracts</mat-option>
-          <mat-option value="emitted_contracts">Emitted contracts</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <button mat-flat-button class="header_button"><mat-icon>add</mat-icon>Add contract</button>
-
+        <button mat-flat-button class="header_button" (click)="addContract()"><mat-icon>add</mat-icon>Add contract</button>
     </section>
-
+    }
 </div>
 
 <div class="mat-elevation-z8">
@@ -42,12 +39,21 @@
     </ng-container>
 
     <!-- Button Column -->
-    <ng-container matColumnDef="actions">
+    <ng-container matColumnDef="attachment">
       <th mat-header-cell *matHeaderCellDef class="attachment_th"> Attachment </th>
       <td mat-cell *matCellDef="let row">
-        <button mat-icon-button class="attachment_button"><mat-icon>attach_file</mat-icon></button>
+        <button mat-icon-button class="attachment_button"><mat-icon>description</mat-icon></button>
       </td>
     </ng-container>
+
+    @if (isAdmin()) {
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="action_th"> Action </th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button class="action_button"><mat-icon>delete_outline</mat-icon></button>
+        </td>
+      </ng-container>
+    }
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

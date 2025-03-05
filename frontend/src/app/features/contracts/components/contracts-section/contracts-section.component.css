@@ -1,6 +1,5 @@
 
 table {
-  width: 100%;
   background-color: white;
 }
 
@@ -8,12 +7,11 @@ mat-paginator{
   background-color: white;
 }
 
-.attachment_th {
+.attachment_th, .action_th {
   text-align: center;
 }
 
-.attachment_button{
-  background-color: var(--btn-ternary);
+.attachment_button, .action_button {
   border: none;
   color: white;
   text-align: center;
@@ -23,6 +21,14 @@ mat-paginator{
   cursor: pointer;
   display: block;
   margin: auto;
+}
+
+.attachment_button {
+  background-color: var(--btn-ternary);
+}
+
+.action_button {
+  background-color: red;
 }
 
 .header_text{
@@ -39,10 +45,6 @@ mat-paginator{
   gap: 20px;
   position: relative;
 
- }
-
-.header_select{
-  height: 70px;
  }
 
 .header_button{
