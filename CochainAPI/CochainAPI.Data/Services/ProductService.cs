@@ -11,9 +11,14 @@ namespace CochainAPI.Data.Services
         {
             _productRepository = productRepository;
         }
-        public async Task<List<ProductCategory?>> GetCategories()
+        public async Task<List<ProductCategory>> GetCategories()
         {
             return await _productRepository.GetCategories();
+        }
+
+        public async Task<List<ProductInfo>> GetProductsOfSCP(Guid id)
+        {
+            return await _productRepository.GetProductsOfSCP(id);
         }
     }
 }

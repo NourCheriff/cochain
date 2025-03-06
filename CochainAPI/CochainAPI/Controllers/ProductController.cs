@@ -15,8 +15,21 @@ namespace CochainAPI.Controllers
             _productService = productService;
         }
 
+
+        [HttpGet("{id}")]
+        [Authorize(Policy = "ReadProducts")]
+        public async Task<IActionResult> GetProductsBySCP(Guid id)
+        {
+            var response = await _productService.GetProductsOfSCP(id);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Product infos not found" });
+            }
+            return Ok(response);
+        }
+
         [HttpGet]
-        [Authorize]
+        [Authorize(Policy ="ReadProducts")]
         public async Task<IActionResult> GetCategories()
         {
             var response = await _productService.GetCategories();

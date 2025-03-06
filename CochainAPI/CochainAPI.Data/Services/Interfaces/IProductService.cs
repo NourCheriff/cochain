@@ -4,6 +4,7 @@ namespace CochainAPI.Data.Services.Interfaces
 {
     public interface IProductService
     {
-        public Task<List<ProductCategory?>> GetCategories();
+        Task<List<ProductCategory>> GetCategories();
+        Task<List<ProductInfo>> GetProductsOfSCP(Guid id);
     }
 }
