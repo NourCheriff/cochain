@@ -1,0 +1,27 @@
+<div class="header">
+  <h3 class="title">Transactions</h3>
+
+  <section class="actions">
+    <!-- Order By -->
+     <!--
+    <mat-form-field class="select">
+      <mat-label>Order by</mat-label>
+      <mat-select [(value)]="selectedOrder" (selectionChange)="onOrderChange()">
+        @for (option of orderOptions; track $index) {
+          <mat-option [value]="option.value"> {{ option.displayValue }} </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    -->
+
+    <!-- Filter Transactions -->
+    <mat-form-field class="select">
+      <mat-label>Show</mat-label>
+      <mat-select [(value)]="selectedFilter" (selectionChange)="onFilterChange()">
+        @for (option of filterOptions; track $index) {
+          <mat-option [value]="option.value"> {{ option.displayValue }} </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </section>
+</div>
