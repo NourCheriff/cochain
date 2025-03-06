@@ -4,6 +4,7 @@ namespace CochainAPI.Data.Sql.Repositories.Interfaces
 {
     public interface IProductRepository
     {
+        Task<ProductInfo> AddProductInfo(ProductInfo productInfo);
         Task<List<ProductCategory>> GetCategories();
         Task<List<ProductInfo>> GetProductsOfSCP(Guid id);
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Helpers;
+using CochainAPI.Model.Product;
 
 namespace CochainAPI.Controllers
 {
@@ -29,13 +30,25 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy ="ReadProducts")]
+        [Authorize(Policy = "AddProducts, ReadProducts")]
         public async Task<IActionResult> GetCategories()
         {
             var response = await _productService.GetCategories();
             if (response == null)
             {
                 return BadRequest(new { message = "Product categories not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "AddProducts")]
+        public async Task<IActionResult> AddProductInfo(ProductInfo productInfo)
+        {
+            var response = await _productService.AddProductInfo(productInfo);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Product cannot be added" });
             }
             return Ok(response);
         }

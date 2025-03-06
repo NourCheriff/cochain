@@ -1,5 +1,4 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
-using CochainAPI.Model.Documents;
 using CochainAPI.Model.Product;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +8,14 @@ namespace CochainAPI.Data.Sql.Repositories
     {
         public ProductRepository(CochainDBContext dbContext) : base(dbContext)
         {
+        }
+
+        public async Task<ProductInfo> AddProductInfo(ProductInfo productInfo)
+        {
+            var savedProductInfo = await dbContext.ProductInfo.AddAsync(productInfo);
+            await dbContext.SaveChangesAsync();
+            productInfo.Id = savedProductInfo.Entity.Id;
+            return productInfo;
         }
 
         public async Task<List<ProductCategory>> GetCategories()

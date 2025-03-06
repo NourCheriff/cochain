@@ -11,6 +11,12 @@ namespace CochainAPI.Data.Services
         {
             _productRepository = productRepository;
         }
+
+        public async Task<ProductInfo> AddProductInfo(ProductInfo productInfo)
+        {
+            return await _productRepository.AddProductInfo(productInfo);
+        }
+
         public async Task<List<ProductCategory>> GetCategories()
         {
             return await _productRepository.GetCategories();
