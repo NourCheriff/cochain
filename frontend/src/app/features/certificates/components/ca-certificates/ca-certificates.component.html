@@ -36,7 +36,7 @@
       <th mat-header-cell *matHeaderCellDef class="attachment_th"> Attachments </th>
       <td mat-cell *matCellDef="let row">
         <div class="attachment-container">
-          <button mat-icon-button class="attachment_button" matTooltip="Upload">
+          <button mat-icon-button class="attachment_button" (click)="attachCertificate()" matTooltip="Upload">
             <mat-icon>upload</mat-icon>
           </button>
           <button mat-icon-button class="attachment_button download" matTooltip="Download">

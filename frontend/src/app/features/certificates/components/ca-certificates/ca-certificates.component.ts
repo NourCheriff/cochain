@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, inject, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
@@ -7,6 +7,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { FileInputComponent } from '../file-input/file-input.component';
 @Component({
   selector: 'app-ca-certificates',
   imports: [RouterLink, RouterLinkActive,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
@@ -16,7 +18,7 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 export class CaCertificatesComponent implements AfterViewInit {
   displayedColumns: string[] = ['receiver', 'scpType', 'attachments', 'actions'];
   dataSource = new MatTableDataSource<CaCertificate>(certificates);
-
+  readonly dialog = inject(MatDialog);
   selected = 'receiver';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -51,6 +53,10 @@ export class CaCertificatesComponent implements AfterViewInit {
 
     this.dataSource = new MatTableDataSource<CaCertificate>(SELECTED_DATA);
     this.dataSource.paginator = this.paginator;
+  }
+
+  attachCertificate() {
+    this.dialog.open(FileInputComponent);
   }
 
 }

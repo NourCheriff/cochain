@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild,inject} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
@@ -6,6 +6,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
+import { FileInputComponent } from '../../components/file-input/file-input.component';
 
 @Component({
   selector: 'app-scp-products',
@@ -14,12 +16,13 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './scp-products.component.css'
 })
 export class ScpProductsComponent implements AfterViewInit {
+
+  readonly dialog = inject(MatDialog);
   displayedColumns: string[] = ['name', 'category', 'expirationDate', 'attachments'];
   dataSource = new MatTableDataSource<SCPProducts>(scpProducts);
   certificateId: number | null = null;
 
   selected = 'name';
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
@@ -57,16 +60,17 @@ export class ScpProductsComponent implements AfterViewInit {
         const dateB = convertToDate(b.expirationDate);
 
         return dateA.getTime() - dateB.getTime(); // Ordina dalla data più vicina a quella più lontana
-    });
-    break;
-
-
+      });
+      break;
     }
 
     this.dataSource = new MatTableDataSource<SCPProducts>(SELECTED_DATA);
     this.dataSource.paginator = this.paginator;
   }
 
+  attachCertificate() {
+    this.dialog.open(FileInputComponent);
+  }
 }
 
 export interface SCPProducts {

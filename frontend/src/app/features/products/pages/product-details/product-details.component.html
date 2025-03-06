@@ -1,0 +1,112 @@
+<div class="card_container">
+  <mat-card appearance="outlined" class="card_left">
+    <mat-card-header>
+      <div class="header">
+        <h2>Product details</h2>
+        <button mat-fab extended class="btn-secondary">
+          <mat-icon>edit</mat-icon>
+          Edit product
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="content">
+      <div class="info_row">
+        <p class="label">Name</p>
+        <p>product1</p>
+      </div>
+      <div class="info_row">
+        <p class="label">Category</p>
+        <p>category1</p>
+      </div>
+      <div class="info_row">
+        <p class="label">Description</p>
+        <p class="description">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione, nobis eum.
+          Deserunt temporibus recusandae repellendus eos facere maxime praesentium itaque
+          veniam non, officiis ipsa ducimus hic ea necessitatibus perspiciatis maiores.
+        </p>
+      </div>
+      <div class="info_row">
+        <p class="label">Expiration date</p>
+        <p>22-05-2025</p>
+      </div>
+      <div class="info_row">
+        <p class="label">Quality certificate</p>
+        <div class="certificate">
+          <mat-icon class="icon download">picture_as_pdf</mat-icon>
+          <p class="file">quality.pdf</p>
+        </div>
+      </div>
+      <div class="info_row">
+        <p class="label">Origin certificate</p>
+        <div class="certificate">
+          <mat-icon class="icon download">picture_as_pdf</mat-icon>
+          <p class="file">origin.pdf</p>
+          <mat-icon class="icon delete">delete</mat-icon>
+        </div>
+      </div>
+      <div class="info_row">
+        <p class="label">Ingredients</p>
+        <mat-chip-set aria-label="Ingredient">
+          <mat-chip>Ingredient 1</mat-chip>
+          <mat-chip>Ingredient 2</mat-chip>
+          <mat-chip>Ingredient 3</mat-chip>
+          <mat-chip>Ingredient 4</mat-chip>
+        </mat-chip-set>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="card_right">
+    <mat-card-header>
+      <div class="header">
+        <h2>Product life cycle</h2>
+        <button mat-fab extended class="btn-secondary">
+          <mat-icon>add</mat-icon>
+          Add new work
+        </button>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource">
+
+          <ng-container matColumnDef="workType">
+             <th mat-header-cell *matHeaderCellDef mat-sort-header> Work Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.workType}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="emissions">
+            <th mat-header-cell *matHeaderCellDef> Emissions (T C02e) </th>
+            <td mat-cell *matCellDef="let element"> {{element.emissions}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="workDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Work Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.workDate}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="attachments">
+            <th mat-header-cell *matHeaderCellDef> Attachments </th>
+            <td mat-cell *matCellDef="let element" class="file">
+              <div class="row">
+                <mat-icon>picture_as_pdf</mat-icon>
+                {{element.attachments}}
+                <mat-icon class="icon delete">delete</mat-icon>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                      showFirstLastButtons
+                      aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

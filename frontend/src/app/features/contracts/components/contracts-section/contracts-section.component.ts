@@ -24,8 +24,6 @@ export class ContractsSectionComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['emitter', 'receiver', 'workType', 'attachment'];
 
-
-
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
   selected = 'all_contracts';
