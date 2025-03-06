@@ -18,7 +18,7 @@ namespace CochainAPI.Controllers
 
         [HttpPost("UpdateDocument")]
         [Authorize]
-        public async Task<IActionResult> Post([FromBody] BaseDocument documentObj)
+        public async Task<IActionResult> AddDocument([FromBody] BaseDocument documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
             if (response == null)
@@ -28,11 +28,23 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}/{type}")]
+        [HttpGet("{type}/{id}")]
         [Authorize]
         public async Task<IActionResult> GetById(string id, string type)
         {
             var response = await _documentService.GetById(id, type);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("{type}/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteDocumentById(string fileName, string type)
+        {
+            var response = await _documentService.DeleteById(fileName, type);
             if (response == null)
             {
                 return BadRequest(new { message = "Document not found" });

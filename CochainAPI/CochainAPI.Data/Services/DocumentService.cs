@@ -49,6 +49,20 @@ namespace CochainAPI.Data.Services
             return await _contractRepository.AddDocument(contract);
         }
 
+        public async Task<bool> DeleteContract(string fileName)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient("contracts");
+            var blobClient = containerClient.GetBlobClient(fileName);
+
+            if (!await blobClient.ExistsAsync())
+            {
+                return false;
+            }
+
+            await blobClient.DeleteAsync();
+            return true;
+        }
+
         public async Task<BaseDocument?> AddCertificate(SupplyChainPartnerCertificate scpCertificate)
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient("certificates");
@@ -63,6 +77,20 @@ namespace CochainAPI.Data.Services
 
             scpCertificate.Path = blobClient.Uri.ToString();
             return await _supplyChainPartnerCertificate.AddDocument(scpCertificate);
+        }
+
+        public async Task<bool> DeleteCertificate(string fileName)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient("certificates");
+            var blobClient = containerClient.GetBlobClient(fileName);
+
+            if (!await blobClient.ExistsAsync())
+            {
+                return false;
+            }
+
+            await blobClient.DeleteAsync();
+            return true;
         }
 
         public async Task<BaseDocument?> AddProductDocument(ProductLifeCycleDocument productDocument)
@@ -81,6 +109,20 @@ namespace CochainAPI.Data.Services
             return await _productLifeCycleRepository.AddDocument(productDocument);
         }
 
+        public async Task<bool> DeleteProductDocument(string fileName)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient("prodlifecycle");
+            var blobClient = containerClient.GetBlobClient(fileName);
+
+            if (!await blobClient.ExistsAsync())
+            {
+                return false;
+            }
+
+            await blobClient.DeleteAsync();
+            return true;
+        }
+
         public async Task<BaseDocument?> GetById(string id, string Type)
         {
             return Type switch
@@ -89,6 +131,17 @@ namespace CochainAPI.Data.Services
                 "SCPCertificate" => await _supplyChainPartnerCertificate.GetById(id),
                 "ProductDocument" => await _productLifeCycleRepository.GetById(id),
                 _ => null,
+            };
+        }
+
+        public async Task<bool> DeleteById(string fileName, string Type)
+        {
+            return Type switch
+            {
+                "Contract" => await DeleteContract(fileName),
+                "SCPCertificate" => await DeleteCertificate(fileName),
+                "ProductDocument" => await DeleteProductDocument(fileName),
+                _ => false,
             };
         }
     }

@@ -7,5 +7,6 @@ namespace CochainAPI.Data.Services.Interfaces
     {
         Task<BaseDocument?> AddDocument(BaseDocument documentObj);
         Task<BaseDocument?> GetById(string id, string Type);
+        Task<bool> DeleteById(string id, string Type);
     }
 }
