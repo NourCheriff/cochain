@@ -1,5 +1,15 @@
+main{
+  height: 15vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.breadcrumb{
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
 .navbar {
-  height: 120px;
   display: flex;
   width: 100%;
   justify-content: space-between;
