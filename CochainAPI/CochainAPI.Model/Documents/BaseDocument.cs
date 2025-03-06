@@ -1,5 +1,7 @@
 ﻿using CochainAPI.Model.Authentication;
 using CochainAPI.Model.CompanyEntities;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CochainAPI.Model.Documents
 {
@@ -11,5 +13,7 @@ namespace CochainAPI.Model.Documents
         public Guid SupplyChainPartnerReceiverId { get; set; }
         public User UserEmitter { get; set; }
         public SupplyChainPartner SupplyChainPartnerReceiver { get; set; }
+        [NotMapped]
+        public IFormFile File { get; set; }
     }
 }
