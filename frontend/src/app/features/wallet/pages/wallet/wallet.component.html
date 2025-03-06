@@ -1,11 +1,5 @@
-<section class="card-container">
-  <app-wallet-info-card></app-wallet-info-card>
-  <app-incomes-card></app-incomes-card>
-  <app-expenses-card></app-expenses-card>
-</section>
-
-<div class="table-container">
-  <section class="table">
-    <app-transactions-table></app-transactions-table>
-  </section>
-</div>
+@if (isConnected) {
+  <app-transactions></app-transactions>
+} @else {
+  <app-connect-wallet (connectWalletEvent)="connectWallet()"></app-connect-wallet>
+}

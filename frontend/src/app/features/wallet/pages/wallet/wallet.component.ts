@@ -1,15 +1,21 @@
-import { Component } from '@angular/core';
-import { TransactionsTableComponent } from "../../components/transactions-table/transactions-table.component";
-import { ExpensesCardComponent } from "../../components/expenses-card/expenses-card.component";
-import { IncomesCardComponent } from "../../components/incomes-card/incomes-card.component";
-import { WalletInfoCardComponent } from "../../components/wallet-info-card/wallet-info-card.component";
+import { Component, inject } from '@angular/core';
+import { TransactionsComponent } from '../transactions/transactions.component';
+import { ConnectWalletComponent } from '../connect-wallet/connect-wallet.component';
+import { BlockchainService } from '../../services/blockchain.service';
 
 @Component({
   selector: 'app-wallet',
-  imports: [TransactionsTableComponent, ExpensesCardComponent, IncomesCardComponent, WalletInfoCardComponent],
+  imports: [TransactionsComponent, ConnectWalletComponent],
   templateUrl: './wallet.component.html',
   styleUrl: './wallet.component.css'
 })
 export class WalletComponent {
+  isConnected: boolean = false;
+  private blockchainService = inject(BlockchainService);
 
+  connectWallet(): void {
+    // TODO: Change logic & isConnected handling (rely on connectWallet result)
+    this.blockchainService.connectWallet();
+    this.isConnected  = true;
+  }
 }
