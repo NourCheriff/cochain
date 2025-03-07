@@ -20,7 +20,7 @@
 }
 
 html, body {
-  height: 100%;
+  margin-top: 5px;
 }
 
 body {
@@ -30,7 +30,6 @@ body {
 
 .bg {
   background: var(--linear-gradient);
-  height: 100vh;
 }
 
 .btn-primary {

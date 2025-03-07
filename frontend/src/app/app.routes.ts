@@ -1,27 +1,21 @@
-import { RouterLink, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { LoginComponent } from './features/login/pages/login/login.component';
 import { ContractsComponent } from './features/contracts/pages/contracts/contracts.component';
 import { CertificatesComponent } from './features/certificates/pages/certificates/certificates.component';
 import { WalletComponent } from './features/wallet/pages/wallet/wallet.component';
 import { ScpProductsComponent } from './features/certificates/pages/scp-products/scp-products.component';
 import { ProductDetailsComponent } from './features/products/pages/product-details/product-details.component';
-import { Breadcrumb } from 'primeng/breadcrumb';
 
 export const routes: Routes = [
   {
-    path: 'home',
-    redirectTo: '',
-    pathMatch: 'full',
-  },
-  {
     path: '',
     title: 'Home',
-    component: WalletComponent,
+    component: WalletComponent
   },
   {
     path: 'login',
     title: 'Login',
-    component: LoginComponent,
+    component: LoginComponent
   },
   {
     path: 'contracts',

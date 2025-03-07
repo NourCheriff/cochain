@@ -1,7 +1,5 @@
 import { Component, inject } from '@angular/core';
 import {
-  MatDialogActions,
-  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle,
@@ -12,6 +10,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 @Component({
   selector: 'app-file-input',
   imports: [
@@ -19,16 +18,20 @@ import { CommonModule } from '@angular/common';
       MatButtonModule,
       MatDialogTitle,
       MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
       MatSelectModule,
       MatFormFieldModule,
       MatIconModule,
-      CommonModule
+      CommonModule,
+      ReactiveFormsModule
   ],
   templateUrl: './file-input.component.html',
   styleUrl: './file-input.component.css'
 })
 export class FileInputComponent {
   readonly dialogRef = inject(MatDialogRef<FileInputComponent>);
+
+  fileForm = new FormGroup({
+      file: new FormControl('',Validators.required)
+    });
+
 }

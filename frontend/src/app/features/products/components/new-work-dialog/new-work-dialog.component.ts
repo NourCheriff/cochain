@@ -1,7 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import {
-  MatDialogActions,
-  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle,
@@ -13,6 +11,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {provideNativeDateAdapter} from '@angular/material/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators,AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-new-work-dialog',
@@ -22,11 +21,10 @@ import {provideNativeDateAdapter} from '@angular/material/core';
       MatSelectModule,
       MatDialogTitle,
       MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
       MatFormFieldModule,
       MatInputModule,
-      MatDatepickerModule
+      MatDatepickerModule,
+      ReactiveFormsModule
     ],
   templateUrl: './new-work-dialog.component.html',
   providers: [provideNativeDateAdapter()],
@@ -35,19 +33,41 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 })
 export class NewWorkDialogComponent {
   readonly dialogRef = inject(MatDialogRef<NewWorkDialogComponent>);
-  myFilter = (d: Date | null): boolean => {
+  /*myFilter = (d: Date | null): boolean => {
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
     return d ? d >= oggi : false;
-  };
+  };*/
   selectedReceiver: string = '';
   selectedWorkType: string = '';
   isReceiverVisible: boolean = false;
+
+  newWorkForm = new FormGroup({
+    work: new FormControl('', Validators.required),
+    receiver: new FormControl('', this.receiverValidator()),
+    workDate: new FormControl(Date.now(),[Validators.required]),
+    file: new FormControl('',Validators.required)
+  });
 
 
   onSelectionChange(value: string) {
     this.selectedWorkType = value;
     this.isReceiverVisible = value === 'transport';
   }
+
+  private receiverValidator(): ValidatorFn {
+    return (control:AbstractControl) : ValidationErrors | null => {
+
+      const value = control.value;
+      const workValue = this.newWorkForm?.value?.work;
+
+      // If the work value is "transport", receiver must be provided
+      if (workValue === "transport" && (!value || value === '')) {
+        return { receiverRequired: true };
+      }
+
+      return null;
+  }
+}
 }
 

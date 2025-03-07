@@ -1,28 +1,28 @@
 <h2 mat-dialog-title>New Contract</h2>
-<mat-dialog-content class="dialog">
-  <br>
-  <mat-form-field appearance="outline">
-    <mat-label>Receiver</mat-label>
-    <mat-select [(value)]="selectedReceiver">
-      <mat-option value="beta">Beta</mat-option>
-      <mat-option value="delta">Delta</mat-option>
-      <mat-option value="gamma">Gamma</mat-option>
-    </mat-select>
-  </mat-form-field>
+<form [formGroup]="newContractForm">
+  <mat-dialog-content class="dialog">
+    <mat-form-field appearance="outline">
+      <mat-label>Receiver</mat-label>
+      <mat-select [(value)]="selectedReceiver" formControlName="receiver">
+        <mat-option value="beta">Beta</mat-option>
+        <mat-option value="delta">Delta</mat-option>
+        <mat-option value="gamma">Gamma</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Work Type</mat-label>
-    <mat-select [(value)]="selectedWorkType">
-      <mat-option value="transport">Transport</mat-option>
-      <mat-option value="seed">Seed</mat-option>
-      <mat-option value="packaging">Packaging</mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Work Type</mat-label>
+      <mat-select [(value)]="selectedWorkType" formControlName="work">
+        <mat-option value="transport">Transport</mat-option>
+        <mat-option value="seed">Seed</mat-option>
+        <mat-option value="packaging">Packaging</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <form>
-    <input class="file_button" type="file" id="id" name="id" />
-    <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
-    <button mat-flat-button class="dialog_button">Submit</button>
-  </form>
-
-</mat-dialog-content>
+    <div class="file">
+      <input class="file_button" type="file" formControlName="file"  />
+      <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
+      <button mat-flat-button class="dialog_button" [disabled]="!newContractForm.valid">Create new contract</button>
+    </div>
+  </mat-dialog-content>
+</form>

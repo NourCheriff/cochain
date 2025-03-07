@@ -1,37 +1,38 @@
 <h2 mat-dialog-title>New Work</h2>
 <mat-dialog-content>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Work Type</mat-label>
-    <mat-select [(value)]="selectedWorkType" (selectionChange)="onSelectionChange($event.value)">
-      <mat-option value="transport">Transport</mat-option>
-      <mat-option value="seed">Seed</mat-option>
-      <mat-option value="packaging">Packaging</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  @if(isReceiverVisible){
+  <form [formGroup]="newWorkForm">
     <mat-form-field appearance="outline">
-      <mat-label>Receiver</mat-label>
-      <mat-select [(value)]="selectedReceiver">
-        <mat-option value="alfa">Alfa</mat-option>
-        <mat-option value="delta">Delta</mat-option>
-        <mat-option value="gamma">Gamma</mat-option>
+      <mat-label>Work Type</mat-label>
+      <mat-select [(value)]="selectedWorkType" formControlName="work" (selectionChange)="onSelectionChange($event.value)">
+        <mat-option value="transport">Transport</mat-option>
+        <mat-option value="seed">Seed</mat-option>
+        <mat-option value="packaging">Packaging</mat-option>
       </mat-select>
     </mat-form-field>
-  }
 
-  <mat-form-field appearance="outline">
-    <mat-label>Choose a date</mat-label>
-    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" >
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker panelClass="custom-datepicker"></mat-datepicker>
-  </mat-form-field>
+    @if(isReceiverVisible){
+      <mat-form-field appearance="outline">
+        <mat-label>Receiver</mat-label>
+        <mat-select [(value)]="selectedReceiver" formControlName="receiver">
+          <mat-option value="alfa">Alfa</mat-option>
+          <mat-option value="delta">Delta</mat-option>
+          <mat-option value="gamma">Gamma</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
 
-  <form>
-    <input class="file_button" type="file" accept="application/pdf" />
-    <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
-    <button mat-flat-button class="dialog_button">Add work</button>
+    <mat-form-field appearance="outline" >
+      <mat-label>Choose a date</mat-label>
+      <input matInput  [matDatepicker]="picker" formControlName="workDate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker panelClass="custom-datepicker"></mat-datepicker>
+    </mat-form-field>
+
+    <div class="form file">
+      <input class="file_button" type="file" accept="application/pdf" formControlName="file" />
+      <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
+      <button mat-flat-button class="dialog_button" [disabled]="!newWorkForm.valid">Create new work</button>
+    </div>
   </form>
-
 </mat-dialog-content>
+<!-- [matDatepickerFilter]="myFilter" -->

@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>Attach certificate</h2>
 <mat-dialog-content class="dialog">
-  <form appearance="outline">
-    <input class="file_button" type="file" id="id" name="id" accept="application/pdf" />
+  <form appearance="outline" [formGroup]="fileForm">
+    <input class="file_button" formControlName="file" type="file"  accept="application/pdf" />
     <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
-    <button mat-flat-button class="dialog_button">Upload certificate</button>
+    <button mat-flat-button class="dialog_button" [disabled]="!fileForm.valid">Upload certificate</button>
   </form>
 </mat-dialog-content>
