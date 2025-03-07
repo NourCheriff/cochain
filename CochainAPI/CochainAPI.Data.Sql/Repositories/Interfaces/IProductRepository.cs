@@ -7,5 +7,6 @@ namespace CochainAPI.Data.Sql.Repositories.Interfaces
         Task<ProductInfo> AddProductInfo(ProductInfo productInfo);
         Task<List<ProductCategory>> GetCategories();
         Task<List<ProductInfo>> GetProductsOfSCP(Guid id);
+        Task<List<ProductInfo>> GetProducts(string? queryParam, int pageNumber, int pageSize);
     }
 }

@@ -23,9 +23,22 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.ProductCategory.ToListAsync();
         }
 
+        public async Task<List<ProductInfo>> GetProducts(string? queryParam, int pageNumber, int pageSize)
+        {
+            return await dbContext.ProductInfo.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam))).Skip(pageNumber*pageSize).Take(pageSize)
+                .Include(x => x.Ingredients)
+                .Include(x => x.Product)
+                .Include(x => x.ProductLifeCycles)
+                .Include(x => x.ProductDocuments).ToListAsync();
+        }
+
         public async Task<List<ProductInfo>> GetProductsOfSCP(Guid id)
         {
-            return await dbContext.ProductInfo.Where(x => x.SupplyChainPartnerId == id).Include(x => x.Ingredients).Include(x => x.Product).Include(x => x.ProductLifeCycles).Include(x => x.ProductDocuments).ToListAsync();
+            return await dbContext.ProductInfo.Where(x => x.SupplyChainPartnerId == id)
+                .Include(x => x.Ingredients)
+                .Include(x => x.Product)
+                .Include(x => x.ProductLifeCycles)
+                .Include(x => x.ProductDocuments).ToListAsync();
         }
     }
 }
