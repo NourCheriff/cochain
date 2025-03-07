@@ -1,6 +1,18 @@
+mat-form-field {
+  width: 100%;
+}
+
+mat-dialog-content{
+  padding-top: 10px !important;
+}
+
 .file_button {
   padding-bottom: 30px;
   width: 80%;
+}
+
+.receiver{
+  display: none;
 }
 
 .reset_button {
@@ -13,6 +25,15 @@
 .dialog_button {
   background-color: var(--btn-primary) !important;
   width: 100%;
+}
+
+::ng-deep .custom-datepicker{
+  background-color: var(--mat-datepicker);
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+  /* Imposta il colore di sfondo desiderato */
 }
 
 /* file upload button */

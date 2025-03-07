@@ -4,6 +4,8 @@ import { ContractsComponent } from './features/contracts/pages/contracts/contrac
 import { CertificatesComponent } from './features/certificates/pages/certificates/certificates.component';
 import { WalletComponent } from './features/wallet/pages/wallet/wallet.component';
 import { ScpProductsComponent } from './features/certificates/pages/scp-products/scp-products.component';
+import { ProductDetailsComponent } from './features/products/pages/product-details/product-details.component';
+import { Breadcrumb } from 'primeng/breadcrumb';
 
 export const routes: Routes = [
   {
@@ -38,5 +40,11 @@ export const routes: Routes = [
       title: 'Details',
       component: ScpProductsComponent,
       data: { breadcrumb: 'Details' }
+  },
+  {
+    path:'products',
+    title:'Product details',
+    component: ProductDetailsComponent,
+    data: { breadcrumb: 'Product details'}
   }
 ];
