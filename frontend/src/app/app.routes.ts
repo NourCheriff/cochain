@@ -2,6 +2,7 @@ import { RouterLink, Routes } from '@angular/router';
 import { LoginComponent } from './features/login/pages/login/login.component';
 import { ContractsComponent } from './features/contracts/pages/contracts/contracts.component';
 import { CertificatesComponent } from './features/certificates/pages/certificates/certificates.component';
+import { WalletComponent } from './features/wallet/pages/wallet/wallet.component';
 import { ScpProductsComponent } from './features/certificates/pages/scp-products/scp-products.component';
 import { ProductDetailsComponent } from './features/products/pages/product-details/product-details.component';
 import { Breadcrumb } from 'primeng/breadcrumb';
@@ -13,6 +14,11 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: '',
+    title: 'Home',
+    component: WalletComponent,
+  },
+  {
     path: 'login',
     title: 'Login',
     component: LoginComponent,
@@ -21,13 +27,13 @@ export const routes: Routes = [
     path: 'contracts',
     title: 'Contracts',
     component: ContractsComponent,
-    data: { breadcrumb: 'Contracts'}
+    data: { breadcrumb: 'Contracts' }
   },
   {
     path: 'certificates',
     title: 'Certificates',
     component: CertificatesComponent,
-    data: { breadcrumb: 'Certificates'}
+    data: { breadcrumb: 'Certificates' }
   },
   {
       path: 'certificates/details/:id',

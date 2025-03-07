@@ -1,0 +1,16 @@
+.info-container {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.icon {
+  background-color: #FFF5D9;
+  color: #FFBB38;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.btn-container {
+  margin-top: 18px;
+}
