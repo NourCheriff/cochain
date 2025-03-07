@@ -27,7 +27,7 @@ namespace CochainAPI.Data.Sql.Repositories
             if (sustainabilityCertificate != null)
             {
                 dbContext.SupplyChainPartnerCertificate.Remove(sustainabilityCertificate);
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
                 return documentId;
             }
             else
@@ -41,6 +41,7 @@ namespace CochainAPI.Data.Sql.Repositories
             if (supplyChainPartnerCertificate != null)
             {
                 dbContext.SupplyChainPartnerCertificate.Update(supplyChainPartnerCertificate);
+                await dbContext.SaveChangesAsync();
                 return await Get(documentId);
             }
             else
