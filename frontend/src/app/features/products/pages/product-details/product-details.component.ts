@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
@@ -6,6 +6,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { NewWorkDialogComponent } from '../../components/new-work-dialog/new-work-dialog.component';
+
 @Component({
   selector: 'app-product-details',
   imports: [MatTableModule, MatPaginatorModule, MatCardModule,MatButtonModule, MatDividerModule, MatIconModule,MatChipsModule],
@@ -13,13 +16,22 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
   styleUrl: './product-details.component.css',
 })
 export class ProductDetailsComponent implements AfterViewInit {
+  readonly dialog = inject(MatDialog);
   displayedColumns: string[] = ['workType', 'emissions', 'workDate', 'attachments'];
   dataSource = new MatTableDataSource<WorkElement>(workElements);
-
+  userRole: string = "SCP";
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  addWork(){
+    this.dialog.open(NewWorkDialogComponent)
+  }
+
+  isAdmin(): boolean{
+    return this.userRole === "Admin";
   }
 }
 

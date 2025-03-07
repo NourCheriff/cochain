@@ -10,27 +10,19 @@
             <mat-icon>search</mat-icon>
           </button>
         </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Order by</mat-label>
-          <mat-select [(value)]="selected" (selectionChange)="orderBy()">
-            <mat-option value="name">Name</mat-option>
-            <mat-option value="category">Category</mat-option>
-            <mat-option value="expirationDate">Expiration date</mat-option>
-          </mat-select>
-        </mat-form-field>
       </div>
     </div>
 
     <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource">
+      <table mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
           <td mat-cell *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="category">
-          <th mat-header-cell *matHeaderCellDef> Category </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
           <td mat-cell *matCellDef="let element"> {{element.category}} </td>
         </ng-container>
 
@@ -40,17 +32,17 @@
         </ng-container>
 
         <ng-container matColumnDef="attachments">
-          <th mat-header-cell *matHeaderCellDef class="attachment_th"> Attachments </th>
+          <th mat-header-cell *matHeaderCellDef class="attachment_th"> Quality certificate </th>
           <td mat-cell *matCellDef="let row">
             <div class="attachment-container">
               <button mat-icon-button class="attachment_button" (click)="attachCertificate()" matTooltip="Upload">
-                <mat-icon>upload</mat-icon>
+                <mat-icon>upload_file</mat-icon>
               </button>
               <button mat-icon-button class="attachment_button download" matTooltip="Download">
-                <mat-icon>download</mat-icon>
+                <span class="material-symbols-outlined">file_save</span>
               </button>
               <button mat-icon-button class="attachment_button delete" matTooltip="Delete">
-                <mat-icon>delete</mat-icon>
+                <span class="material-symbols-outlined">scan_delete</span>
               </button>
             </div>
           </td>

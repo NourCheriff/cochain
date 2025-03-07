@@ -22,7 +22,7 @@ export class BreadcrumbComponent implements OnInit {
       },
       routerLink: '/',
       style:{
-        'color':'white',
+        'color':'var(--breadcrumb-link)',
         'margin-right':'5px'
       }
   }
@@ -68,14 +68,14 @@ export class BreadcrumbComponent implements OnInit {
           case 'Details':
             id = child.snapshot.paramMap.get('id');
             breadcrumbs.push(
-              { label: 'Certificates', routerLink: '/certificates', style:{'color':'white'} },
+              { label: 'Certificates', routerLink: '/certificates', style:{ 'color':'var(--breadcrumb-link)',} },
               { label: `Details`, routerLink: `/details/${id}` }
             );
             break;
           case 'Product details':
             id = child.snapshot.paramMap.get('id');
             breadcrumbs.push(
-              { label: 'Product', routerLink: '/products', style:{'color':'white'} },
+              { label: 'Product', routerLink: '/products', style:{ 'color':'var(--breadcrumb-link)',} },
               { label: `Details`, routerLink: `/details/${id}` }
             );
           break;

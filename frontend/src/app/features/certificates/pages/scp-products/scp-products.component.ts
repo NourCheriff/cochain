@@ -8,10 +8,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { FileInputComponent } from '../../components/file-input/file-input.component';
+import {MatSort, MatSortModule} from '@angular/material/sort';
 
 @Component({
   selector: 'app-scp-products',
-  imports: [MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
+  imports: [MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './scp-products.component.html',
   styleUrl: './scp-products.component.css'
 })
@@ -24,48 +25,16 @@ export class ScpProductsComponent implements AfterViewInit {
 
   selected = 'name';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  orderBy() {
-    const BACKUP_DATA = scpProducts;
-
-    var SELECTED_DATA: SCPProducts[] = [];
-
-    switch (this.selected) {
-      case 'name':
-        SELECTED_DATA = [...BACKUP_DATA].sort((a, b) => a.name.localeCompare(b.name));
-        break;
-
-      case 'category':
-        SELECTED_DATA = [...BACKUP_DATA].sort((a, b) => a.category.localeCompare(b.category));
-        break;
-
-      case 'expirationDate':
-        SELECTED_DATA = [...BACKUP_DATA].sort((a, b) => {
-        // Funzione per convertire una data nel formato 'dd-mm-yyyy' in un oggetto Date
-        const convertToDate = (dateString: string): Date => {
-            const [day, month, year] = dateString.split('-').map(num => parseInt(num, 10));
-            return new Date(year, month - 1, day); // Anno, mese (0-based), giorno
-        };
-
-        const dateA = convertToDate(a.expirationDate);
-        const dateB = convertToDate(b.expirationDate);
-
-        return dateA.getTime() - dateB.getTime(); // Ordina dalla data più vicina a quella più lontana
-      });
-      break;
-    }
-
-    this.dataSource = new MatTableDataSource<SCPProducts>(SELECTED_DATA);
-    this.dataSource.paginator = this.paginator;
   }
 
   attachCertificate() {

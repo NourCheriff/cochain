@@ -9,6 +9,7 @@
   --href-secondary: #329D9C;
   --nav-link: #329D9C;
   --breadcrumb-link: #CFF4D2;
+  --mat-datepicker: white;
   --linear-gradient: linear-gradient(135deg, var(--secondary), var(--primary) 68%);
 }
 

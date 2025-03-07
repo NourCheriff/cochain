@@ -32,17 +32,19 @@
       </div>
       <div class="info_row">
         <p class="label">Quality certificate</p>
-        <div class="certificate">
+        <div class="row">
           <mat-icon class="icon download">picture_as_pdf</mat-icon>
           <p class="file">quality.pdf</p>
         </div>
       </div>
       <div class="info_row">
         <p class="label">Origin certificate</p>
-        <div class="certificate">
+        <div class="row">
           <mat-icon class="icon download">picture_as_pdf</mat-icon>
           <p class="file">origin.pdf</p>
-          <mat-icon class="icon delete">delete</mat-icon>
+          @if(isAdmin()){
+            <mat-icon class="icon delete">delete</mat-icon>
+          }
         </div>
       </div>
       <div class="info_row">
@@ -61,7 +63,7 @@
     <mat-card-header>
       <div class="header">
         <h2>Product life cycle</h2>
-        <button mat-fab extended class="btn-secondary">
+        <button mat-fab extended class="btn-secondary" (click)="addWork()">
           <mat-icon>add</mat-icon>
           Add new work
         </button>
@@ -93,7 +95,9 @@
               <div class="row">
                 <mat-icon>picture_as_pdf</mat-icon>
                 {{element.attachments}}
-                <mat-icon class="icon delete">delete</mat-icon>
+                @if(isAdmin()){
+                  <mat-icon class="icon delete">delete</mat-icon>
+                }
               </div>
             </td>
           </ng-container>
@@ -101,12 +105,12 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-
+      </div>
         <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                       showFirstLastButtons
                       aria-label="Select page of periodic elements">
         </mat-paginator>
-      </div>
+
     </mat-card-content>
   </mat-card>
 </div>
