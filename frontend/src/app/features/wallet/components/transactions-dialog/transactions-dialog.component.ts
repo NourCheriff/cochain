@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { BlockchainService } from '../../services/blockchain.service';
 
 @Component({
   selector: 'app-transactions-dialog',
@@ -36,6 +37,8 @@ export class TransactionsDialogComponent {
     amount: new FormControl(0, [Validators.required, Validators.min(0),]),
   });
 
+  private blockchainService = inject(BlockchainService);
+
   // inject and get from a service
   options: Option[] = [
     { value: 'SCP1 Address', displayValue: 'SCP1 ADDRESS - SCP Name'},
@@ -51,9 +54,15 @@ export class TransactionsDialogComponent {
     { value: 'SCP11 Address', displayValue: 'SCP11 ADDRESS - SCP Name'}
   ]
 
-  onSubmit() {
-    // call blockchain service methods
+  /*
+  async onSubmit() {
+    if (this.transactionForm.valid) {
+      let receiver = this.transactionForm.value.receiver as string;
+      let amount = this.transactionForm.value.amount as number;
+      await this.blockchainService.sendCarbonCredits(receiver, amount);
+    }
   }
+  */
 
 }
 
