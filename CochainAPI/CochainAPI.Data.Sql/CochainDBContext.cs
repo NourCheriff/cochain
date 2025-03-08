@@ -24,7 +24,7 @@ namespace CochainAPI.Data.Sql
         public DbSet<ProductInfo> ProductInfo { get; set; }
         public DbSet<ProductIngredient> ProductIngredient { get; set; }
         public DbSet<ProductLifeCycleCategory> ProductLifeCycleCategory { get; set; }
-        public DbSet<ProductLifeCycle> ProductLifeCycle { get; set; }        
+        public DbSet<ProductLifeCycle> ProductLifeCycle { get; set; }
         public DbSet<CarbonOffsettingAction> CarbonOffsettingAction { get; set; }
         public DbSet<Contract> Contract { get; set; }
         public DbSet<ProductDocument> ProductDocument { get; set; }
@@ -254,7 +254,57 @@ namespace CochainAPI.Data.Sql
                 {
                     UserId = Guid.Parse("f4242b5f-4b39-45fc-802e-391293414546").ToString(),
                     RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a").ToString()
-                });               
+                });
+
+            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                new SupplyChainPartnerType
+                {
+                    Id = new Guid("e1117db4-760e-4515-9aa0-11a3fa766e87"),
+                    Name = "Materia Prima",
+                    Baseline = 1000.0f
+                });
+
+            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                new SupplyChainPartnerType
+                {
+                    Id = new Guid("ef0e7db4-ee0e-4515-9aa0-bd189c766e87"),
+                    Name = "Trasportatore",
+                    Baseline = 1000.0f
+                });
+
+            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                new SupplyChainPartnerType
+                {
+                    Id = new Guid("ef01b3b4-760e-4515-9aa0-bdab7c766e87"),
+                    Name = "Trasformazione",
+                    Baseline = 1000.0f
+                });
+
+            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                new SupplyChainPartnerType
+                {
+                    Id = new Guid("ab2e7db4-760e-4515-9aa0-bda314266e87"),
+                    Name = "Stoccaggio",
+                    Baseline = 1000.0f
+                });
+
+
+            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                new SupplyChainPartnerType
+                {
+                    Id = new Guid("ef0e7124-744e-1115-9ba0-bda3fc766e87"),
+                    Name = "Rivenditore Dettaglio",
+                    Baseline = 1000.0f
+                });
+
+            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                new SupplyChainPartnerType
+                {
+                    Id = new Guid("eaae7124-761e-4515-9aa0-bda3fc7aee87"),
+                    Name = "Grossista",
+                    Baseline = 1000.0f
+                });
         }
+
     }
 }
