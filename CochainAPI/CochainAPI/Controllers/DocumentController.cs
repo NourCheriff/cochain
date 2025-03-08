@@ -45,7 +45,7 @@ namespace CochainAPI.Controllers
         public async Task<IActionResult> DeleteDocumentById(string fileName, string type)
         {
             var response = await _documentService.DeleteById(fileName, type);
-            if (response == null)
+            if (!response)
             {
                 return BadRequest(new { message = "Document not found" });
             }

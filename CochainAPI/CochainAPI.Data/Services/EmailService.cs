@@ -1,16 +1,6 @@
 ﻿using CochainAPI.Data.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Net.Mail;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Gmail.v1;
-using Google.Apis.Services;
-using MimeKit;
-using GmailMessage = Google.Apis.Gmail.v1.Data.Message;
-using System.Text;
-using Google.Apis.Auth.OAuth2.Flows;
-using Google.Apis.Util.Store;
-using Google.Apis.Auth.AspNetCore3;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CochainAPI.Data.Services
 {
@@ -33,7 +23,7 @@ namespace CochainAPI.Data.Services
 
                 SmtpServer.EnableSsl = true;
                 SmtpServer.UseDefaultCredentials = false;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("cochain2025@gmail.com", _config["Email:InAppPassword"]);
+                SmtpServer.Credentials = new System.Net.NetworkCredential("cochain2025@gmail.com", Environment.GetEnvironmentVariable("emailinapppassword"));
 
                 mail.Sender = new MailAddress("info@cochain.eu");
                 mail.From = new MailAddress("info@cochain.eu");
