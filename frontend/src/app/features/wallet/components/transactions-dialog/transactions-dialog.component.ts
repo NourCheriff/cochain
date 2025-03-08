@@ -54,7 +54,6 @@ export class TransactionsDialogComponent {
     { value: 'SCP11 Address', displayValue: 'SCP11 ADDRESS - SCP Name'}
   ]
 
-  /*
   async onSubmit() {
     if (this.transactionForm.valid) {
       let receiver = this.transactionForm.value.receiver as string;
@@ -62,7 +61,6 @@ export class TransactionsDialogComponent {
       await this.blockchainService.sendCarbonCredits(receiver, amount);
     }
   }
-  */
 
 }
 

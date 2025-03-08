@@ -13,6 +13,7 @@ export class BlockchainService {
   private signer: ethers.JsonRpcSigner | null = null;  // for 'write' operations
   private network: string | null = null;
   private account: string | null = null; // account address (in hex representation)
+  private transaction = new ethers.Transaction();
 
   isConnected = new EventEmitter<boolean>();
   errorEvent = new EventEmitter<string>();
@@ -36,7 +37,6 @@ export class BlockchainService {
     return true
   }
 
-  /*
   async sendCarbonCredits(receiverAddress: string, amount: number) {
     if (this.account === null) return;
     if (!ethers.isAddress(receiverAddress)) return;
@@ -50,7 +50,6 @@ export class BlockchainService {
     } catch(error) {
     }
   }
-  */
 
   private async setupAccount(): Promise<void> {
     this.provider = new ethers.BrowserProvider(window.ethereum);
