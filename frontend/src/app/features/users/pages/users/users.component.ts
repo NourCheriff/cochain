@@ -42,7 +42,7 @@ export class UsersComponent implements AfterViewInit, OnInit {
     "role": "Admin"
   };
 
-  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'phone', 'role'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'phone', 'role', 'action'];
 
   dataSource = new MatTableDataSource<PersonElement>(PERSON_DATA);
 

@@ -62,5 +62,5 @@ table {
   cursor: pointer;
   display: block;
   margin: auto;
-  background-color: var(--btn-ternary);
+  background-color: red;
 }
