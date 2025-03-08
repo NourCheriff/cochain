@@ -8,7 +8,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CompanyDialogComponent } from '../../components/company-dialog/company-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormsModule }   from '@angular/forms';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-companies',
@@ -45,7 +44,7 @@ export class CompaniesComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.scpSource.paginator = this.paginator;
-    this.caSource.paginator = this.paginator;
+    this.caSource.paginator  = this.paginator;
   }
 
   updateTable() {
@@ -62,7 +61,12 @@ export class CompaniesComponent implements AfterViewInit {
   }
 
   addCompany() {
-    this.dialog.open(CompanyDialogComponent);
+    this.dialog.open(
+      CompanyDialogComponent,
+      {data: {
+        company: this.selected,
+      }}
+    );
   }
 }
 

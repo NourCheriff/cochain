@@ -1,57 +1,63 @@
 
-<h2 mat-dialog-title>New Product</h2>
-<mat-dialog-content class="dialog">
+
+<mat-dialog-content class="dialog" [style.height]="isSupplyChainPartner() ? '90%' : '80%'">
+  <h3>{{ this.data.company === 'supply_chain_partner' ? 'Supply Chain Partner' : 'Certification Authority' }}</h3>
+  <br>
+  <form [formGroup]="companyForm" (ngSubmit)="insertCompanyAndUser()">
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Name</mat-label>
+    <input matInput type="text" formControlName="nameCompany">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Phone</mat-label>
+    <input matInput type="tel" formControlName="phoneCompany">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field_form" [style.width]="isSupplyChainPartner() ? '45%' : '95%'">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="emailCompany">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field_form" [style.display]="isSupplyChainPartner() ? 'in-line' : 'none'">
+    <mat-label>Select a supply chain partner type</mat-label>
+    <mat-select [(value)]="selected">
+      <mat-option value="retailer">Retailer</mat-option>
+      <mat-option value="supplier">Supplier</mat-option>
+      <mat-option value="distributor">Distributor</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="wallet_field" [style.display]="isSupplyChainPartner() ? 'block' : 'none'">
+    <mat-label>Wallet</mat-label>
+    <input matInput type="text" formControlName="walletCompany">
+  </mat-form-field>
+
+  <mat-divider></mat-divider>
+
   <br>
 
-  <mat-form-field appearance="outline" class="example-full-width">
-    <mat-label>Name</mat-label>
-    <input matInput>
+  <h3>First User</h3>
+  <br>
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>First Name</mat-label>
+    <input matInput type="text" formControlName="firstNameUser">
   </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Choose a date</mat-label>
-    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" >
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker panelClass="custom-datepicker"></mat-datepicker>
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Last Name</mat-label>
+    <input matInput type="text" formControlName="lastNameUser">
   </mat-form-field>
 
-  <p><mat-slide-toggle labelPosition="before" [(ngModel)]="isChecked">Has ingredients</mat-slide-toggle></p>
-  @if(isChecked){
-    <form>
-      <mat-form-field class="example-chip-list" appearance="outline">
-        <mat-label>Choose ingredients</mat-label>
-        <mat-chip-grid #chipGrid aria-label="ingredient selection">
-          @for (ingredient of ingredients(); track $index) {
-            <mat-chip-row (removed)="remove(ingredient)">
-              {{ingredient}}
-              <button matChipRemove [attr.aria-label]="'remove ' + ingredient">
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </mat-chip-row>
-          }
-        </mat-chip-grid>
-        <input
-          name="currentFruit"
-          placeholder="New ingredient..."
-          #fruitInput
-          [(ngModel)]="currentFruit"
-          [matChipInputFor]="chipGrid"
-          [matAutocomplete]="auto"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          (matChipInputTokenEnd)="add($event)"
-        />
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); fruitInput.value = ''">
-          @for (ingredient of filteredFruits(); track ingredient) {
-            <mat-option [value]="ingredient">{{ingredient}}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
-  }
-  <form>
-    <input class="file_button" type="file" id="id" name="id" />
-    <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
-    <button mat-flat-button class="dialog_button">Submit</button>
-  </form>
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="emailUser">
+  </mat-form-field>
 
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Phone</mat-label>
+    <input matInput type="tel" formControlName="phoneUser">
+  </mat-form-field>
+  <button mat-flat-button class="btn-primary" [disabled]="!companyForm.valid">Submit</button>
+</form>
 </mat-dialog-content>
