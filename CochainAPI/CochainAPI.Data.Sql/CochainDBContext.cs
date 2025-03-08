@@ -157,7 +157,7 @@ namespace CochainAPI.Data.Sql
                 },
                 new IdentityRole
                 {
-                    Id = Guid.Parse("cccf28ca-b2f8-477f-a2c1-2436cd83ec0c").ToString(),
+                    Id = Guid.Parse("f08d90db-ac61-4c92-a229-ef803b672e60").ToString(),
                     Name = "SCPTransformator",
                     NormalizedName = "Supply Chain Partner Transformator"
                 });

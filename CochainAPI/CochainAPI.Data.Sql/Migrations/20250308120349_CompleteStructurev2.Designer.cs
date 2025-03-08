@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CochainAPI.Data.Sql.Migrations
 {
     [DbContext(typeof(CochainDBContext))]
-    [Migration("20250308100534_InsertRecords")]
-    partial class InsertRecords
+    [Migration("20250308120349_CompleteStructurev2")]
+    partial class CompleteStructurev2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,7 +111,7 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "5e4b0ca8-aa85-417a-af23-035ac1b555cd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "79008f4b-c6fd-4ce7-94be-9a47b34bad19",
+                            ConcurrencyStamp = "b94e20dc-fc57-414f-81d3-78ed52bd4be5",
                             Email = "System",
                             EmailConfirmed = false,
                             FirstName = "System",
@@ -119,7 +119,7 @@ namespace CochainAPI.Data.Sql.Migrations
                             LastName = "System",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7e3e855f-7991-4fee-99e7-c0ccb41d3d4d",
+                            SecurityStamp = "fa39f5f4-9b52-4a21-8730-eab3be5fe1a7",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "System"
@@ -155,8 +155,8 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b48206b7-52c7-43bc-967c-82db2ac8e226"),
-                            ExpirationDate = new DateTime(2027, 3, 8, 10, 5, 33, 374, DateTimeKind.Utc).AddTicks(8109),
+                            Id = new Guid("1ff10a28-9a6d-41c3-a06b-627998b4f56a"),
+                            ExpirationDate = new DateTime(2027, 3, 8, 12, 3, 48, 288, DateTimeKind.Utc).AddTicks(3906),
                             IsUsed = false,
                             Password = "System",
                             UserId = "5e4b0ca8-aa85-417a-af23-035ac1b555cd"
@@ -664,45 +664,55 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IdentityRole<Guid>");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8e342ad6-78d9-4aee-abe5-245b1fae6c4a"),
-                            Name = "Admin",
-                            NormalizedName = "Admin"
+                            Id = "8e342ad6-78d9-4aee-abe5-245b1fae6c4a",
+                            Name = "SystemAdmin",
+                            NormalizedName = "System Administrator"
                         },
                         new
                         {
-                            Id = new Guid("cb5b1ae5-43db-4096-9bd6-2afb90fb20c5"),
-                            Name = "SupplyChainPartner",
-                            NormalizedName = "SupplyChainPartner"
+                            Id = "cb5b1ae5-43db-4096-9bd6-2afb90fb20c5",
+                            Name = "AdminSCP",
+                            NormalizedName = "Admin Supply Chain Partner"
                         },
                         new
                         {
-                            Id = new Guid("f6e7ea1d-a99e-4a5c-9a23-2274ba2c62ea"),
-                            Name = "Certifier",
-                            NormalizedName = "Certifier"
+                            Id = "f6e7ea1d-a99e-4a5c-9a23-2274ba2c62ea",
+                            Name = "AdminCA",
+                            NormalizedName = "Admin Certification Authority"
+                        },
+                        new
+                        {
+                            Id = "a0e8b03e-0cd8-4458-a147-1a4b88df2997",
+                            Name = "UserSCP",
+                            NormalizedName = "User Supply Chain Partner"
+                        },
+                        new
+                        {
+                            Id = "3318013d-0cdd-4749-9ab3-6fdca9b64564",
+                            Name = "UserCA",
+                            NormalizedName = "User Certification Authority"
+                        },
+                        new
+                        {
+                            Id = "916a3160-05e5-4821-88fe-9e46a43d157c",
+                            Name = "SCPTransporter",
+                            NormalizedName = "Supply Chain Partner Transporter"
+                        },
+                        new
+                        {
+                            Id = "cccf28ca-b2f8-477f-a2c1-2436cd83ec0c",
+                            Name = "SCPRawMaterial",
+                            NormalizedName = "Supply Chain Partner Raw Material"
+                        },
+                        new
+                        {
+                            Id = "f08d90db-ac61-4c92-a229-ef803b672e60",
+                            Name = "SCPTransformator",
+                            NormalizedName = "Supply Chain Partner Transformator"
                         });
                 });
 

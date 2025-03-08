@@ -13,7 +13,6 @@ namespace CochainAPI.Data.Services
         {
             _productRepository = productRepository;
             _contextAccessor = contextAccessor;
-            _contextAccessor.HttpContext.
         }
 
         public async Task<ProductInfo> AddProductInfo(ProductInfo productInfo)

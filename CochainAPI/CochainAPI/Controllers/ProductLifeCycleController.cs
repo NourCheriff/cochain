@@ -27,9 +27,9 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("documents/{id}")]
         [Authorize(Policy = "ReadProducts")]
-        public async Task<IActionResult> GetProductLifeCycleDocument()            
+        public async Task<IActionResult> GetProductLifeCycleDocument(Guid id)            
         {
             //se type fattura o ddt solo i diretti interessati e admin di sistema
             var response = await _productLifeCycleService.GetCategories();

@@ -27,20 +27,6 @@ namespace CochainAPI.Data.Sql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityRole<Guid>",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    NormalizedName = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IdentityRole<Guid>", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductCategory",
                 columns: table => new
                 {
@@ -144,6 +130,7 @@ namespace CochainAPI.Data.Sql.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
                     Phone = table.Column<string>(type: "text", nullable: true),
+                    WalletId = table.Column<string>(type: "text", nullable: true),
                     CompanyTypeId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -187,6 +174,7 @@ namespace CochainAPI.Data.Sql.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
                     Phone = table.Column<string>(type: "text", nullable: true),
+                    WalletId = table.Column<string>(type: "text", nullable: true),
                     CompanyTypeId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -263,7 +251,6 @@ namespace CochainAPI.Data.Sql.Migrations
                     Phone = table.Column<string>(type: "text", nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     Role = table.Column<string>(type: "text", nullable: true),
-                    WalletId = table.Column<string>(type: "text", nullable: true),
                     CertificationAuthorityId = table.Column<Guid>(type: "uuid", nullable: true),
                     SupplyChainPartnerId = table.Column<Guid>(type: "uuid", nullable: true),
                     UserName = table.Column<string>(type: "text", nullable: true),
@@ -583,13 +570,18 @@ namespace CochainAPI.Data.Sql.Migrations
                 values: new object[] { new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"), "SCP" });
 
             migrationBuilder.InsertData(
-                table: "IdentityRole<Guid>",
+                table: "Roles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("8e342ad6-78d9-4aee-abe5-245b1fae6c4a"), null, "Admin", "Admin" },
-                    { new Guid("cb5b1ae5-43db-4096-9bd6-2afb90fb20c5"), null, "SupplyChainPartner", "SupplyChainPartner" },
-                    { new Guid("f6e7ea1d-a99e-4a5c-9a23-2274ba2c62ea"), null, "Certifier", "Certifier" }
+                    { "3318013d-0cdd-4749-9ab3-6fdca9b64564", null, "UserCA", "User Certification Authority" },
+                    { "8e342ad6-78d9-4aee-abe5-245b1fae6c4a", null, "SystemAdmin", "System Administrator" },
+                    { "916a3160-05e5-4821-88fe-9e46a43d157c", null, "SCPTransporter", "Supply Chain Partner Transporter" },
+                    { "a0e8b03e-0cd8-4458-a147-1a4b88df2997", null, "UserSCP", "User Supply Chain Partner" },
+                    { "cb5b1ae5-43db-4096-9bd6-2afb90fb20c5", null, "AdminSCP", "Admin Supply Chain Partner" },
+                    { "cccf28ca-b2f8-477f-a2c1-2436cd83ec0c", null, "SCPRawMaterial", "Supply Chain Partner Raw Material" },
+                    { "f08d90db-ac61-4c92-a229-ef803b672e60", null, "SCPTransformator", "Supply Chain Partner Transformator" },
+                    { "f6e7ea1d-a99e-4a5c-9a23-2274ba2c62ea", null, "AdminCA", "Admin Certification Authority" }
                 });
 
             migrationBuilder.InsertData(
@@ -599,13 +591,13 @@ namespace CochainAPI.Data.Sql.Migrations
 
             migrationBuilder.InsertData(
                 table: "SupplyChainPartner",
-                columns: new[] { "Id", "CompanyTypeId", "Credits", "Email", "Name", "Phone", "SupplyChainPartnerTypeId" },
-                values: new object[] { new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"), new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"), 0f, "company@prova.com", "Prova company", "33309090909", new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87") });
+                columns: new[] { "Id", "CompanyTypeId", "Credits", "Email", "Name", "Phone", "SupplyChainPartnerTypeId", "WalletId" },
+                values: new object[] { new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"), new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"), 0f, "company@prova.com", "Prova company", "33309090909", new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"), null });
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "AccessFailedCount", "CertificationAuthorityId", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsActive", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Phone", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "SupplyChainPartnerId", "TwoFactorEnabled", "UserName", "WalletId" },
-                values: new object[] { "5e4b0ca8-aa85-417a-af23-035ac1b555cd", 0, null, "fad005ac-253a-41f7-aa8c-0ff9ea79f433", "System", false, "System", true, "System", false, null, null, null, null, null, null, false, null, "192518af-1e01-40b4-8ca1-87d0e760ba1f", new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"), false, "System", null });
+                columns: new[] { "Id", "AccessFailedCount", "CertificationAuthorityId", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsActive", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Phone", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "SupplyChainPartnerId", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "5e4b0ca8-aa85-417a-af23-035ac1b555cd", 0, null, "b94e20dc-fc57-414f-81d3-78ed52bd4be5", "System", false, "System", true, "System", false, null, null, null, null, null, null, false, null, "fa39f5f4-9b52-4a21-8730-eab3be5fe1a7", new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"), false, "System" });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
@@ -615,7 +607,7 @@ namespace CochainAPI.Data.Sql.Migrations
             migrationBuilder.InsertData(
                 table: "UserTemporaryPassword",
                 columns: new[] { "Id", "ExpirationDate", "IsUsed", "Password", "UserId" },
-                values: new object[] { new Guid("f9e210be-2ed1-4fdc-aaeb-3543916db0da"), new DateTime(2027, 3, 2, 14, 50, 40, 222, DateTimeKind.Utc).AddTicks(6146), false, "System", "5e4b0ca8-aa85-417a-af23-035ac1b555cd" });
+                values: new object[] { new Guid("1ff10a28-9a6d-41c3-a06b-627998b4f56a"), new DateTime(2027, 3, 8, 12, 3, 48, 288, DateTimeKind.Utc).AddTicks(3906), false, "System", "5e4b0ca8-aa85-417a-af23-035ac1b555cd" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CarbonOffsettingAction_SupplyChainPartnerId",
@@ -761,9 +753,6 @@ namespace CochainAPI.Data.Sql.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contract");
-
-            migrationBuilder.DropTable(
-                name: "IdentityRole<Guid>");
 
             migrationBuilder.DropTable(
                 name: "Log");
