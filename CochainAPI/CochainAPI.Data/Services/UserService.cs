@@ -19,6 +19,9 @@ namespace CochainAPI.Data.Services
         private readonly string TRANSPORT_TYPE = "Trasportatore";
         private readonly string RAWMATERIAL_TYPE = "Materia Prima";
         private readonly string TRANSFORMATION_TYPE = "Trasformazione";
+        private readonly string RESELLER_TYPE = "Rivenditore Dettaglio";
+        private readonly string STOCKIST_TYPE = "Grossista";
+        private readonly string STORAGE_TYPE = "Stoccaggio";
 
         public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository, ISupplyChainPartnerRepository supplyChainPartnerRepository, ICertificationAuthorityRepository certificationAuthorityRepository, UserManager<User> userManager)
         {
@@ -82,7 +85,7 @@ namespace CochainAPI.Data.Services
                             await AssignScpRoles(newUser, scp, roles);
                             isSuccess = true;
                         }
-                        
+
                         userObj = newUser ?? userObj;
                     }
                 }

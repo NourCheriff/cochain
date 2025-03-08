@@ -160,15 +160,6 @@ namespace CochainAPI.Data.Sql
                     NormalizedName = "Supply Chain Partner Transformator"
                 });
 
-            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
-                new SupplyChainPartnerType
-                {
-                    Id = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
-                    Name = "Trasporto",
-                    Baseline = 1000.0f
-                }
-            );
-
             modelBuilder.Entity<SupplyChainPartner>().HasData(
                 new SupplyChainPartner
                 {
@@ -267,7 +258,7 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<SupplyChainPartnerType>().HasData(
                 new SupplyChainPartnerType
                 {
-                    Id = new Guid("ef0e7db4-ee0e-4515-9aa0-bd189c766e87"),
+                    Id = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
                     Name = "Trasportatore",
                     Baseline = 1000.0f
                 });
