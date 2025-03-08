@@ -4,6 +4,7 @@ using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Data.Helpers;
 using Microsoft.AspNetCore.Identity;
+using CochainAPI.Model.CompanyEntities;
 
 namespace CochainAPI.Data.Services
 {
@@ -14,14 +15,19 @@ namespace CochainAPI.Data.Services
         private readonly IUserRepository _userRepository;
         private readonly ISupplyChainPartnerRepository _supplyChainPartnerRepository;
         private readonly ICertificationAuthorityRepository _certificationAuthorityRepository;
+        private readonly UserManager<User> _userManager;
+        private readonly string TRANSPORT_TYPE = "Trasporto";
+        private readonly string RAWMATERIAL_TYPE = "Trasporto";
+        private readonly string TRANSFORMATION_TYPE = "Trasporto";
 
-        public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository, ISupplyChainPartnerRepository supplyChainPartnerRepository, ICertificationAuthorityRepository certificationAuthorityRepository)
+        public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository, ISupplyChainPartnerRepository supplyChainPartnerRepository, ICertificationAuthorityRepository certificationAuthorityRepository, UserManager<User> userManager)
         {
             _appSettings = appSettings.Value;
             _emailService = emailService;
             _userRepository = userRepository;
             _supplyChainPartnerRepository = supplyChainPartnerRepository;
             _certificationAuthorityRepository = certificationAuthorityRepository;
+            _userManager = userManager;
         }
 
         public async Task<List<User>> GetAllActive()
@@ -43,7 +49,7 @@ namespace CochainAPI.Data.Services
                 {
                     obj.FirstName = userObj.FirstName;
                     obj.LastName = userObj.LastName;
-                    isSuccess = await _userRepository.UpdateUser(obj);                   
+                    isSuccess = await _userRepository.UpdateUser(obj);
                 }
             }
             else
@@ -54,25 +60,51 @@ namespace CochainAPI.Data.Services
                 var isSCP = !string.IsNullOrEmpty(userObj.SupplyChainPartnerId?.ToString());
                 var isCA = !string.IsNullOrEmpty(userObj.CertificationAuthorityId?.ToString());
                 if (!isSCP && !isCA)
-                    return null;                
+                    return null;
 
+                List<string> roles = new List<string>();
                 if (isSCP && Guid.TryParse(userObj.SupplyChainPartnerId.ToString(), out Guid scpId))
                 {
                     var scp = await _supplyChainPartnerRepository.GetSupplyChainPartnerById(scpId);
                     if (scp != null)
                     {
+                        if (!string.IsNullOrEmpty(userObj.Role) && userObj.Role.Equals("Admin"))
+                        {
+                            roles.Add("AdminSCP");
+                        }
+                        else
+                        {
+                            roles.Add("UserSCP");
+                        }
                         var newUser = await _userRepository.AddUser(userObj);
-                        isSuccess = newUser != null;
+                        if (newUser != null)
+                        {
+                            await AssignScpRoles(newUser, scp, roles);
+                            isSuccess = true;
+                        }
+                        
                         userObj = newUser ?? userObj;
-                    }                    
+                    }
                 }
                 else if (isCA && Guid.TryParse(userObj.CertificationAuthorityId.ToString(), out Guid caId))
                 {
                     var ca = await _certificationAuthorityRepository.GetCertificationAuthorityById(caId);
                     if (ca != null)
                     {
+                        if (!string.IsNullOrEmpty(userObj.Role) && userObj.Role.Equals("Admin"))
+                        {
+                            roles.Add("AdminCA");
+                        }
+                        else
+                        {
+                            roles.Add("UserCA");
+                        }
                         var newUser = await _userRepository.AddUser(userObj);
-                        isSuccess = newUser != null;
+                        if (newUser != null)
+                        {
+                            await AssignCaRoles(newUser, roles);
+                            isSuccess = true;
+                        }
                         userObj = newUser ?? userObj;
                     }
                 }
@@ -83,11 +115,34 @@ namespace CochainAPI.Data.Services
             return isSuccess ? userObj : null;
         }
 
+        private async Task AssignCaRoles(User user, List<string> roles)
+        {
+            await _userManager.AddToRolesAsync(user, roles);
+        }
+
+        private async Task AssignScpRoles(User user, SupplyChainPartner scp, List<string> roles)
+        {
+            if (scp.SupplyChainPartnerType != null && !string.IsNullOrEmpty(scp.SupplyChainPartnerType.Name) && scp.SupplyChainPartnerType.Name.Equals(TRANSPORT_TYPE))
+            {
+                roles.Add("SCPTransporter");
+            }
+            if (scp.SupplyChainPartnerType != null && !string.IsNullOrEmpty(scp.SupplyChainPartnerType.Name) && scp.SupplyChainPartnerType.Name.Equals(RAWMATERIAL_TYPE))
+            {
+                roles.Add("SCPRawMaterial");
+            }
+            if (scp.SupplyChainPartnerType != null && !string.IsNullOrEmpty(scp.SupplyChainPartnerType.Name) && scp.SupplyChainPartnerType.Name.Equals(TRANSFORMATION_TYPE))
+            {
+                roles.Add("SCPTransformator");
+            }
+
+            await _userManager.AddToRolesAsync(user, roles);
+        }
+
         private bool ValidateUserInput(User user)
         {
             bool emailValid = user.UserName.IsValidEmail();
             bool namesValid = !string.IsNullOrEmpty(user.FirstName) && !string.IsNullOrEmpty(user.LastName);
-            return namesValid && emailValid; 
+            return namesValid && emailValid;
         }
 
         public async Task<bool> GenerateTemporaryPassword(AuthenticateRequest model)

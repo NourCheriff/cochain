@@ -12,7 +12,7 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<SupplyChainPartner?> GetSupplyChainPartnerById(Guid id)
         {            
-            return await dbContext.SupplyChainPartner.FirstOrDefaultAsync(x => x.Id == id); ;
+            return await dbContext.SupplyChainPartner.Include(x => x.SupplyChainPartnerType).FirstOrDefaultAsync(x => x.Id == id); ;
         }
 
         public async Task<List<SupplyChainPartnerType>> GetTypes()

@@ -41,7 +41,7 @@ namespace CochainAPI.Authentication
         /// </summary>
         /// <param name="user">the user</param>
         /// <returns>System.String</returns>
-        private string CreateJwtToken(User user, List<IdentityRole> roles)
+        private string CreateJwtToken(User user, IList<string> roles)
         {
             var key = Encoding.ASCII.GetBytes(_jwt.Secret);
             var userClaims = BuildUserClaims(user, roles);
@@ -63,7 +63,7 @@ namespace CochainAPI.Authentication
         /// </summary>
         /// <param name="user">the User</param>
         /// <returns>List&lt;System.Security.Claims&gt;</returns>
-        private List<Claim> BuildUserClaims(User user, List<IdentityRole> roles)
+        private List<Claim> BuildUserClaims(User user, IList<string> roles)
         {
             var userClaims = new List<Claim>()
             {
@@ -72,7 +72,7 @@ namespace CochainAPI.Authentication
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
-            userClaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Name!)));
+            userClaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             return userClaims;
         }
@@ -84,7 +84,7 @@ namespace CochainAPI.Authentication
             {
                 return new BaseResponse<AuthenticateResponse>("Invalid Credentials") { Status = RequestExecution.Error };
             }
-            var userRoles = await _userService.GetRolesByUserId(response.Id);
+            var userRoles = await _userManager.GetRolesAsync(response);
             var token = CreateJwtToken(response, userRoles);
             var refreshToken = "";
             var data = new AuthenticateResponse(response, token, refreshToken);
