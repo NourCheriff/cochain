@@ -1,6 +1,7 @@
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.Documents;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
+using CochainAPI.Model.CompanyEntities;
 
 namespace CochainAPI.Data.Services
 {
@@ -13,7 +14,7 @@ namespace CochainAPI.Data.Services
             _certificationAuthorityRepository = certificationAuthorityRepository;
         }
 
-        public async Task<IEnumerable<SupplyChainPartnerCertificate?>> GetSustainabilityCertificate(string certificationAuthorityId)
+        public async Task<List<SupplyChainPartnerCertificate?>> GetSustainabilityCertificate(string certificationAuthorityId)
         {
             return await _certificationAuthorityRepository.GetSustainabilityCertificate(certificationAuthorityId);
         }
@@ -48,6 +49,11 @@ namespace CochainAPI.Data.Services
             {
                 return null;
             }
+        }
+
+        public Task<List<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

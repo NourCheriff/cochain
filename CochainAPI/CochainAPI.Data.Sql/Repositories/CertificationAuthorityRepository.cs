@@ -1,5 +1,5 @@
-using System.Security.Cryptography.X509Certificates;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
+using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Documents;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +13,10 @@ namespace CochainAPI.Data.Sql.Repositories
 
         private async Task<SupplyChainPartnerCertificate?> Get(Guid documentId)
         {
-            return (SupplyChainPartnerCertificate?)dbContext.SupplyChainPartnerCertificate.Where(x => x.Id == documentId);
+            return await dbContext.SupplyChainPartnerCertificate.Where(x => x.Id == documentId).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<SupplyChainPartnerCertificate?>> GetSustainabilityCertificate(string certificationAuthorityId)
+        public async Task<List<SupplyChainPartnerCertificate>> GetSustainabilityCertificate(string certificationAuthorityId)
         {
             return await dbContext.SupplyChainPartnerCertificate.Where(x => x.UserEmitterId.Equals(certificationAuthorityId)).ToListAsync();
         }
@@ -48,6 +48,22 @@ namespace CochainAPI.Data.Sql.Repositories
             {
                 return null;
             }
+        }
+
+        public async Task<List<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
+        {
+            var query = dbContext.CertificationAuthority.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)));
+
+            if (int.TryParse(pageSize?.ToString(), out int size) && int.TryParse(pageNumber?.ToString(), out int number))
+            {
+                query = query.Skip(size * number)
+                .Take(size);
+            }
+
+            var queryComplete = query.Include(x => x.CompanyType);
+
+
+            return await queryComplete.ToListAsync();
         }
     }
 }

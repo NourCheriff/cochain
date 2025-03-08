@@ -27,6 +27,18 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetCertificationAuthority(string? queryparam, int? pageNumber, int? pageSize)
+        {
+            var response = await _certificationAuthorityService.GetCertificationAuthorities(queryparam, pageNumber, pageSize);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Certificates not found" });
+            }
+            return Ok(response);
+        }
+
         [HttpGet("documents/{documentId}")]
         [Authorize]
         public async Task<IActionResult> UpdateSustainabilityCertificate(string documentId)
