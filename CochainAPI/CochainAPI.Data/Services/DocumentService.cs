@@ -49,18 +49,23 @@ namespace CochainAPI.Data.Services
             return await _contractRepository.AddDocument(contract);
         }
 
-        public async Task<bool> DeleteContract(string fileName)
+        public async Task<bool> DeleteContract(Guid id, string fileName)
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient("contracts");
-            var blobClient = containerClient.GetBlobClient(fileName);
-
-            if (!await blobClient.ExistsAsync())
+            if (Guid.TryParse(id.ToString(), out var docId))
             {
-                return false;
-            }
+                var containerClient = _blobServiceClient.GetBlobContainerClient("contracts");
+                var blobClient = containerClient.GetBlobClient(fileName);
 
-            await blobClient.DeleteAsync();
-            return true;
+                if (!await blobClient.ExistsAsync())
+                {
+                    return false;
+                }
+
+                await blobClient.DeleteAsync();
+                await _contractRepository.DeleteDocumentById(docId);
+                return true;
+            }
+            return false;
         }
 
         public async Task<BaseDocument?> AddCertificate(SupplyChainPartnerCertificate scpCertificate)
@@ -79,18 +84,22 @@ namespace CochainAPI.Data.Services
             return await _supplyChainPartnerCertificate.AddDocument(scpCertificate);
         }
 
-        public async Task<bool> DeleteCertificate(string fileName)
+        public async Task<bool> DeleteCertificate(Guid id, string fileName)
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient("certificates");
-            var blobClient = containerClient.GetBlobClient(fileName);
-
-            if (!await blobClient.ExistsAsync())
+            if (Guid.TryParse(id.ToString(), out var docId))
             {
-                return false;
-            }
+                var containerClient = _blobServiceClient.GetBlobContainerClient("certificates");
+                var blobClient = containerClient.GetBlobClient(fileName);
 
-            await blobClient.DeleteAsync();
-            return true;
+                if (!await blobClient.ExistsAsync())
+                {
+                    return false;
+                }
+
+                await blobClient.DeleteAsync();
+                return true;
+            }
+            return false;
         }
 
         public async Task<BaseDocument?> AddProductDocument(ProductLifeCycleDocument productDocument)
@@ -109,18 +118,22 @@ namespace CochainAPI.Data.Services
             return await _productLifeCycleRepository.AddDocument(productDocument);
         }
 
-        public async Task<bool> DeleteProductDocument(string fileName)
+        public async Task<bool> DeleteProductDocument(Guid id, string fileName)
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient("prodlifecycle");
-            var blobClient = containerClient.GetBlobClient(fileName);
-
-            if (!await blobClient.ExistsAsync())
+            if (Guid.TryParse(id.ToString(), out var docId))
             {
-                return false;
-            }
+                var containerClient = _blobServiceClient.GetBlobContainerClient("prodlifecycle");
+                var blobClient = containerClient.GetBlobClient(fileName);
 
-            await blobClient.DeleteAsync();
-            return true;
+                if (!await blobClient.ExistsAsync())
+                {
+                    return false;
+                }
+
+                await blobClient.DeleteAsync();
+                return true;
+            }
+            return false;
         }
 
         public async Task<BaseDocument?> GetById(string id, string Type)
@@ -134,13 +147,13 @@ namespace CochainAPI.Data.Services
             };
         }
 
-        public async Task<bool> DeleteById(string fileName, string Type)
+        public async Task<bool> DeleteById(Guid id, string filename, string Type)
         {
             return Type switch
             {
-                "Contract" => await DeleteContract(fileName),
-                "SCPCertificate" => await DeleteCertificate(fileName),
-                "ProductDocument" => await DeleteProductDocument(fileName),
+                "Contract" => await DeleteContract(id, filename),
+                "SCPCertificate" => await DeleteCertificate(id, filename),
+                "ProductDocument" => await DeleteProductDocument(id, filename),
                 _ => false,
             };
         }

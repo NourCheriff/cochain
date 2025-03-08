@@ -18,10 +18,20 @@ namespace CochainAPI.Data.Sql.Repositories
             return documentObj;
         }
 
+        public async Task<bool> DeleteDocumentById(Guid id)
+        {
+            var contract = await dbContext.Contract.FirstOrDefaultAsync(x => x.Id == id);
+            if (contract != null)
+            {
+                dbContext.Contract.Remove(contract);
+                var res = await dbContext.SaveChangesAsync();
+                return res > 0;
+            }
+            return false;
+        }
+
         public async Task<BaseDocument?> GetById(string id)
         {
-            //esmpio
-            //dbContext.ProductLifeCycle.Where(x => x.Name.Equals("Pippo")).Include(x => x.ProductLifeCycleDocuments).Include(x => x.SupplyChainPartner).Include(x => x.ProductLifeCycleCategory);
             return await dbContext.Contract.FirstOrDefaultAsync(c => c.Id.ToString() == id);
         }
     }

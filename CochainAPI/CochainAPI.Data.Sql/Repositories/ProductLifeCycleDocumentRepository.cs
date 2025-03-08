@@ -18,6 +18,18 @@ namespace CochainAPI.Data.Sql.Repositories
             return documentObj;
         }
 
+        public async Task<bool> DeleteDocumentById(Guid id)
+        {
+            var productLifeCycleDocument = await dbContext.ProductLifeCycleDocument.FirstOrDefaultAsync(x => x.Id == id);
+            if (productLifeCycleDocument != null)
+            {
+                dbContext.ProductLifeCycleDocument.Remove(productLifeCycleDocument);
+                var res = await dbContext.SaveChangesAsync();
+                return res > 0;
+            }
+            return false;
+        }
+
         public async Task<BaseDocument?> GetById(string id)
         {
             return await dbContext.ProductLifeCycleDocument.FirstOrDefaultAsync(c => c.Id.ToString() == id);

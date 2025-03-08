@@ -18,6 +18,18 @@ namespace CochainAPI.Data.Sql.Repositories
             return documentObj;
         }
 
+        public async Task<bool> DeleteDocumentById(Guid id)
+        {
+            var scpCertificate = await dbContext.SupplyChainPartnerCertificate.FirstOrDefaultAsync(x => x.Id == id);
+            if (scpCertificate != null)
+            {
+                dbContext.SupplyChainPartnerCertificate.Remove(scpCertificate);
+                var res = await dbContext.SaveChangesAsync();
+                return res > 0;
+            }
+            return false;
+        }
+
         public async Task<BaseDocument?> GetById(string id)
         {
             return await dbContext.SupplyChainPartnerCertificate.FirstOrDefaultAsync(c => c.Id.ToString() == id);

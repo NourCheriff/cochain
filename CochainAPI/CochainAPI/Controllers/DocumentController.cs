@@ -16,9 +16,57 @@ namespace CochainAPI.Controllers
             _documentService = documentService;
         }
 
-        [HttpPost("UpdateDocument")]
-        [Authorize]
-        public async Task<IActionResult> AddDocument([FromBody] BaseDocument documentObj)
+        [HttpPost("AddContractDocument")]
+        [Authorize(Policy = "WriteContracts")]
+        public async Task<IActionResult> AddContractDocument([FromBody] BaseDocument documentObj)
+        {
+            var response = await _documentService.AddDocument(documentObj);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("AddTransportDocument")]
+        [Authorize(Policy = "WriteTransportDocument")]
+        public async Task<IActionResult> AddTransportDocument([FromBody] BaseDocument documentObj)
+        {
+            var response = await _documentService.AddDocument(documentObj);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("AddCertificationDocument")]
+        [Authorize(Policy = "WriteCertificationDocument")]
+        public async Task<IActionResult> AddCertificationDocument([FromBody] BaseDocument documentObj)
+        {
+            var response = await _documentService.AddDocument(documentObj);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("AddOriginDocument")]
+        [Authorize(Policy = "WriteOriginDocument")]
+        public async Task<IActionResult> AddOriginDocument([FromBody] BaseDocument documentObj)
+        {
+            var response = await _documentService.AddDocument(documentObj);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("AddInvoicesDocument")]
+        [Authorize(Policy = "WriteInvoices")]
+        public async Task<IActionResult> AddInvoicesDocument([FromBody] BaseDocument documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
             if (response == null)
@@ -41,10 +89,22 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("{type}/{id}")]
-        [Authorize]
-        public async Task<IActionResult> DeleteDocumentById(string fileName, string type)
+        [Authorize(Policy = "RemoveDocuments")]
+        public async Task<IActionResult> DeleteDocumentById(Guid id, string fileName, string type)
         {
-            var response = await _documentService.DeleteById(fileName, type);
+            var response = await _documentService.DeleteById(id, fileName, type);
+            if (!response)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("RemoveCertificate/{id}")]
+        [Authorize(Policy = "RemoveCertificationDocument")]
+        public async Task<IActionResult> DeleteCertificateById(Guid id, string fileName, string type)
+        {
+            var response = await _documentService.DeleteById(id, fileName, type);
             if (!response)
             {
                 return BadRequest(new { message = "Document not found" });
