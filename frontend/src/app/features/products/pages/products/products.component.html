@@ -1,9 +1,9 @@
 <main class="main">
   <div class="products_div">
-    <div>
+    <div class="header">
       <h3 class="header_text">Products</h3>
-        <section class="header_options">
 
+        <section class="header_options">
           <mat-form-field appearance="outline">
             <div class="search_filter">
               <mat-icon class="search_icon">search</mat-icon>
@@ -14,7 +14,7 @@
           <p><mat-slide-toggle labelPosition="before" [(ngModel)]="isChecked" (change)="updateTable()">Show only my products</mat-slide-toggle></p>
 
           <button mat-flat-button class="header_button" (click)="addProduct()"><mat-icon>add</mat-icon>Add product</button>
-      </section>
+        </section>
     </div>
 
     <div class="mat-elevation-z8">
