@@ -58,7 +58,8 @@ namespace CochainAPI.Data.Sql
             {
                 tb.HasCheckConstraint(
                     "CK_User_PartnerOrAuthority",
-                    @"""SupplyChainPartnerId"" IS NOT NULL OR ""CertificationAuthorityId"" IS NOT NULL");
+                    @"(""SupplyChainPartnerId"" IS NOT NULL AND ""CertificationAuthorityId"" IS NULL)
+                    OR (""SupplyChainPartnerId"" IS NULL AND ""CertificationAuthorityId"" IS NOT NULL)");
             });
 
             modelBuilder.Entity<CertificationAuthority>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);

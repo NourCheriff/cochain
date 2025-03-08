@@ -10,6 +10,6 @@ namespace CochainAPI.Data.Services.Interfaces
         Task<List<User>> GetAllActive();
         Task<User?> GetById(string id);
         Task<User?> AddAndUpdateUser(User userObj);
-        Task<List<IdentityRole>> GetRolesByUserId(string userId)
+        Task<List<IdentityRole>> GetRolesByUserId(string userId);
     }
 }

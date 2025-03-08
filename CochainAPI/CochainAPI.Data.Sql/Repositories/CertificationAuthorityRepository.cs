@@ -20,7 +20,7 @@ namespace CochainAPI.Data.Sql.Repositories
         {
             return await dbContext.SupplyChainPartnerCertificate.Where(x => x.UserEmitterId.Equals(certificationAuthorityId)).ToListAsync();
         }
-        public async Task<Guid?> DeleteSustainabilityCertificate(Guid documentId)
+        public async Task<bool> DeleteSustainabilityCertificate(Guid documentId)
         {
             SupplyChainPartnerCertificate? sustainabilityCertificate = dbContext.SupplyChainPartnerCertificate.SingleOrDefault(item => item.Id == documentId);
 
@@ -28,11 +28,11 @@ namespace CochainAPI.Data.Sql.Repositories
             {
                 dbContext.SupplyChainPartnerCertificate.Remove(sustainabilityCertificate);
                 await dbContext.SaveChangesAsync();
-                return documentId;
+                return true;
             }
             else
             {
-                return null;
+                return false;
             }
         }
         public async Task<SupplyChainPartnerCertificate?> UpdateSustainabilityCertificate(Guid documentId)
@@ -64,6 +64,11 @@ namespace CochainAPI.Data.Sql.Repositories
 
 
             return await queryComplete.ToListAsync();
+        }
+
+        public async Task<CertificationAuthority?> GetCertificationAuthorityById(Guid id)
+        {            
+            return await dbContext.CertificationAuthority.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

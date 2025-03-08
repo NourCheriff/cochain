@@ -11,9 +11,9 @@ namespace CochainAPI.Data.Sql.Repositories
         {
         }
 
-        public Task<SupplyChainPartner?> GetById(Guid id)
-        {
-            throw new NotImplementedException();
+        public async Task<SupplyChainPartner?> GetSupplyChainPartnerById(Guid id)
+        {            
+            return await dbContext.SupplyChainPartner.FirstOrDefaultAsync(x => x.Id == id); ;
         }
 
         public async Task<List<SupplyChainPartnerType?>> GetTypes()

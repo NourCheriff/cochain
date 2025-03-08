@@ -13,13 +13,15 @@ namespace CochainAPI.Data.Services
         private readonly IEmailService _emailService;
         private readonly IUserRepository _userRepository;
         private readonly ISupplyChainPartnerRepository _supplyChainPartnerRepository;
+        private readonly ICertificationAuthorityRepository _certificationAuthorityRepository;
 
-        public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository, ISupplyChainPartnerRepository supplyChainPartnerRepository)
+        public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository, ISupplyChainPartnerRepository supplyChainPartnerRepository, ICertificationAuthorityRepository certificationAuthorityRepository)
         {
             _appSettings = appSettings.Value;
             _emailService = emailService;
             _userRepository = userRepository;
             _supplyChainPartnerRepository = supplyChainPartnerRepository;
+            _certificationAuthorityRepository = certificationAuthorityRepository;
         }
 
         public async Task<List<User>> GetAllActive()
@@ -46,27 +48,46 @@ namespace CochainAPI.Data.Services
             }
             else
             {
-                if (Guid.TryParse(userObj.SupplyChainPartnerId.ToString(), out Guid scpId))
+                if (!ValidateUserInput(userObj))
+                    return null;
+
+                var isSCP = !string.IsNullOrEmpty(userObj.SupplyChainPartnerId?.ToString());
+                var isCA = !string.IsNullOrEmpty(userObj.CertificationAuthorityId?.ToString());
+                if (!isSCP && !isCA)
+                    return null;                
+
+                if (isSCP && Guid.TryParse(userObj.SupplyChainPartnerId.ToString(), out Guid scpId))
                 {
-                    var scp = await _supplyChainPartnerRepository.GetById(scpId);
+                    var scp = await _supplyChainPartnerRepository.GetSupplyChainPartnerById(scpId);
                     if (scp != null)
                     {
-
+                        var newUser = await _userRepository.AddUser(userObj);
+                        isSuccess = newUser != null;
+                        userObj = newUser ?? userObj;
+                    }                    
+                }
+                else if (isCA && Guid.TryParse(userObj.CertificationAuthorityId.ToString(), out Guid caId))
+                {
+                    var ca = await _certificationAuthorityRepository.GetCertificationAuthorityById(caId);
+                    if (ca != null)
+                    {
+                        var newUser = await _userRepository.AddUser(userObj);
+                        isSuccess = newUser != null;
+                        userObj = newUser ?? userObj;
                     }
-                    var newUser = await _userRepository.AddUser(userObj);
-                    isSuccess = newUser != null;
-                    userObj = newUser ?? userObj;
-                }                
+                }
+                else
+                    return null;
             }
 
             return isSuccess ? userObj : null;
-
         }
 
         private bool ValidateUserInput(User user)
         {
-            bool emailValid = !string.IsNullOrEmpty(user.UserName) && user.UserName.IsValidEmail();
-            return emailValid; 
+            bool emailValid = user.UserName.IsValidEmail();
+            bool namesValid = !string.IsNullOrEmpty(user.FirstName) && !string.IsNullOrEmpty(user.LastName);
+            return namesValid && emailValid; 
         }
 
         public async Task<bool> GenerateTemporaryPassword(AuthenticateRequest model)

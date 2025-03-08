@@ -71,6 +71,7 @@ builder.Services.AddSingleton<IProductLifeCycleService, ProductLifeCycleService>
 
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerRepository, SupplyChainPartnerRepository>();
+builder.Services.AddSingleton<ICertificationAuthorityRepository, CertificationAuthorityRepository>();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IProductLifeCycleRepository, ProductLifeCycleRepository>();
 builder.Services.AddSingleton<IContractRepository, ContractRepository>();

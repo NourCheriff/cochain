@@ -2,6 +2,7 @@ using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.Documents;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Services
 {
@@ -14,24 +15,27 @@ namespace CochainAPI.Data.Services
             _certificationAuthorityRepository = certificationAuthorityRepository;
         }
 
-        public async Task<List<SupplyChainPartnerCertificate?>> GetSustainabilityCertificate(string certificationAuthorityId)
+        public async Task<List<SupplyChainPartnerCertificate>> GetSustainabilityCertificate(string certificationAuthorityId)
         {
             return await _certificationAuthorityRepository.GetSustainabilityCertificate(certificationAuthorityId);
         }
-        public async Task<Guid?> DeleteSustainabilityCertificate(string documentId)
+        public async Task<bool> DeleteSustainabilityCertificate(string documentId)
         {
             try
             {
-                Guid parsedDocumentId = Guid.Parse(documentId);
-                return await _certificationAuthorityRepository.DeleteSustainabilityCertificate(parsedDocumentId);
+                if (Guid.TryParse(documentId, out var parsedDocumentId))
+                {
+                    return await _certificationAuthorityRepository.DeleteSustainabilityCertificate(parsedDocumentId);
+                }
+                return false;
             }
             catch (ArgumentNullException)
             {
-                return null;
+                return false;
             }
             catch (FormatException)
             {
-                return null;
+                return false;
             }
         }
         public async Task<SupplyChainPartnerCertificate?> UpdateSustainabilityCertificate(string documentId)
@@ -51,9 +55,19 @@ namespace CochainAPI.Data.Services
             }
         }
 
-        public Task<List<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
         {
-            throw new NotImplementedException();
+
+            return await _certificationAuthorityRepository.GetCertificationAuthorities(queryParam, pageNumber, pageSize);
+        }
+
+        public async Task<CertificationAuthority?> GetCertificationAuthorityById(Guid id)
+        {
+            if (Guid.TryParse(id.ToString(), out var caId))
+            {
+                return await _certificationAuthorityRepository.GetCertificationAuthorityById(caId);
+            }
+            return null;
         }
     }
 }
