@@ -16,9 +16,9 @@ namespace CochainAPI.Data.Services
         private readonly ISupplyChainPartnerRepository _supplyChainPartnerRepository;
         private readonly ICertificationAuthorityRepository _certificationAuthorityRepository;
         private readonly UserManager<User> _userManager;
-        private readonly string TRANSPORT_TYPE = "Trasporto";
-        private readonly string RAWMATERIAL_TYPE = "Trasporto";
-        private readonly string TRANSFORMATION_TYPE = "Trasporto";
+        private readonly string TRANSPORT_TYPE = "Trasportatore";
+        private readonly string RAWMATERIAL_TYPE = "Materia Prima";
+        private readonly string TRANSFORMATION_TYPE = "Trasformazione";
 
         public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository, ISupplyChainPartnerRepository supplyChainPartnerRepository, ICertificationAuthorityRepository certificationAuthorityRepository, UserManager<User> userManager)
         {

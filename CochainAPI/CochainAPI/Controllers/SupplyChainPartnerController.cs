@@ -16,7 +16,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("categories")]
-        [Authorize]
+        [Authorize(Policy = "ReadSCP")]
         public async Task<IActionResult> GetTypes()
         {
             var response = await _supplychainPartnerService.GetTypes();
@@ -40,6 +40,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("addSCP")]
+        [Authorize(Policy = "WriteSCP")]
         public async Task<IActionResult> AddSupplyChainPartner()
         {
             var response = await _supplychainPartnerService.GetTypes();
