@@ -3,6 +3,7 @@ import { LoginComponent } from './features/login/pages/login/login.component';
 import { ContractsComponent } from './features/contracts/pages/contracts/contracts.component';
 import { CertificatesComponent } from './features/certificates/pages/certificates/certificates.component';
 import { ScpProductsComponent } from './features/certificates/pages/scp-products/scp-products.component';
+import { ProductsComponent } from './features/products/pages/products/products.component';
 
 export const routes: Routes = [
   {
@@ -32,5 +33,11 @@ export const routes: Routes = [
       title: 'Details',
       component: ScpProductsComponent,
       data: { breadcrumb: 'Details' }
-  }
+  },
+  {
+    path: 'products',
+    title: 'Products',
+    component: ProductsComponent,
+    data: { breadcrumb: 'Products' }
+}
 ];

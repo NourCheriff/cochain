@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>New Product</h2>
+<mat-dialog-content class="dialog">
+  <br>
+
+  <mat-form-field appearance="outline" class="example-full-width">
+    <mat-label>Name</mat-label>
+    <input matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepickerFilter]="myFilter" [matDatepicker]="picker" >
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker panelClass="custom-datepicker"></mat-datepicker>
+  </mat-form-field>
+
+  <p><mat-slide-toggle labelPosition="before" [(ngModel)]="isChecked">Has ingredients</mat-slide-toggle></p>
+  @if(isChecked){
+    <form>
+      <mat-form-field class="example-chip-list" appearance="outline">
+        <mat-label>Choose ingredients</mat-label>
+        <mat-chip-grid #chipGrid aria-label="ingredient selection">
+          @for (ingredient of ingredients(); track $index) {
+            <mat-chip-row (removed)="remove(ingredient)">
+              {{ingredient}}
+              <button matChipRemove [attr.aria-label]="'remove ' + ingredient">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+        </mat-chip-grid>
+        <input
+          name="currentFruit"
+          placeholder="New ingredient..."
+          #fruitInput
+          [(ngModel)]="currentFruit"
+          [matChipInputFor]="chipGrid"
+          [matAutocomplete]="auto"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)"
+        />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); fruitInput.value = ''">
+          @for (ingredient of filteredFruits(); track ingredient) {
+            <mat-option [value]="ingredient">{{ingredient}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  }
+  <form>
+    <input class="file_button" type="file" id="id" name="id" />
+    <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
+    <button mat-flat-button class="dialog_button">Submit</button>
+  </form>
+
+</mat-dialog-content>
