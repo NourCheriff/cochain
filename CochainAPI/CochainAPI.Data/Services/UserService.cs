@@ -11,12 +11,14 @@ namespace CochainAPI.Data.Services
         private readonly AppSettings _appSettings;
         private readonly IEmailService _emailService;
         private readonly IUserRepository _userRepository;
+        private readonly ISupplyChainPartnerRepository _supplyChainPartnerRepository;
 
-        public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository)
+        public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository, ISupplyChainPartnerRepository supplyChainPartnerRepository)
         {
             _appSettings = appSettings.Value;
             _emailService = emailService;
             _userRepository = userRepository;
+            _supplyChainPartnerRepository = supplyChainPartnerRepository;
         }
 
         public async Task<IEnumerable<User>> GetAllActive()
@@ -43,13 +45,39 @@ namespace CochainAPI.Data.Services
             }
             else
             {
-                var newUser = await _userRepository.AddUser(userObj);
-                isSuccess = newUser != null;
-                userObj = newUser ?? userObj;
+                if (Guid.TryParse(userObj.SupplyChainPartnerId.ToString(), out Guid scpId))
+                {
+                    var scp = await _supplyChainPartnerRepository.GetById(scpId);
+                    if (scp != null)
+                    {
+
+                    }
+                    var newUser = await _userRepository.AddUser(userObj);
+                    isSuccess = newUser != null;
+                    userObj = newUser ?? userObj;
+                }
+
+                
+                
             }
 
             return isSuccess ? userObj : null;
 
+        }
+
+        private bool ValidateUserInput(User user)
+        {
+            bool emailValid = false;
+            try
+            {
+                var addr = new MailAddress(user.UserName!);
+                emailValid = true;
+            }
+            catch
+            {
+                
+            }
+            return emailValid; 
         }
 
         public async Task<bool> GenerateTemporaryPassword(AuthenticateRequest model)
