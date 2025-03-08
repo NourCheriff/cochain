@@ -4,7 +4,7 @@ namespace CochainAPI.Data.Sql.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetAllActive();
+        Task<List<User>> GetAllActive();
         Task<User?> GetById(string id);
         Task<User?> GetByUserName(string userName);
         Task<User?> AddUser(User userObj);

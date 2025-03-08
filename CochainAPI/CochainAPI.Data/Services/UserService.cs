@@ -3,6 +3,7 @@ using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using System.Net.Mail;
+using CochainAPI.Data.Helpers;
 
 namespace CochainAPI.Data.Services
 {
@@ -21,7 +22,7 @@ namespace CochainAPI.Data.Services
             _supplyChainPartnerRepository = supplyChainPartnerRepository;
         }
 
-        public async Task<IEnumerable<User>> GetAllActive()
+        public async Task<List<User>> GetAllActive()
         {
             return await _userRepository.GetAllActive();
         }
@@ -64,16 +65,8 @@ namespace CochainAPI.Data.Services
 
         private bool ValidateUserInput(User user)
         {
-            bool emailValid = false;
-            try
-            {
-                var addr = new MailAddress(user.UserName!);
-                emailValid = true;
-            }
-            catch
-            {
-                
-            }
+            bool emailValid = !string.IsNullOrEmpty(user.UserName) && user.UserName.IsValidEmail();
+
             return emailValid; 
         }
 
@@ -82,7 +75,7 @@ namespace CochainAPI.Data.Services
             var user = await _userRepository.GetByUserName(model.Username);
             if (user?.Id != null)
             {
-                if (!IsValidEmail(user.UserName))
+                if (string.IsNullOrEmpty(user.UserName) || !user.UserName.IsValidEmail())
                 {
                     return false;
                 }
@@ -113,11 +106,6 @@ namespace CochainAPI.Data.Services
                 return userValid.User;
             }
             return null;
-        }
-
-        public bool IsValidEmail(string email)
-        {
-            return MailAddress.TryCreate(email, out MailAddress addr);
         }
     }
 }

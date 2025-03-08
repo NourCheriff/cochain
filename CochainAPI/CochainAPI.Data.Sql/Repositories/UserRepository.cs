@@ -24,7 +24,7 @@ namespace CochainAPI.Data.Sql.Repositories
             return userObj;
         }
 
-        public async Task<IEnumerable<User>> GetAllActive()
+        public async Task<List<User>> GetAllActive()
         {
             return await dbContext.Users.Where(x => x.IsActive == true).ToListAsync();
         }

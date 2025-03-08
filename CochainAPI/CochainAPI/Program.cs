@@ -14,7 +14,6 @@ using System.Text;
 using CochainAPI.Data.Sql;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Data.Sql.Repositories;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
