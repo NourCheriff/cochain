@@ -8,7 +8,19 @@ mat-dialog-content{
 
 .file_button {
   padding-bottom: 30px;
-  width: 80%;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.file{
+  display: flex;
+  flex-direction: column;
+}
+
+.fileUplabel{
+  font-size: 15px;
+  color: black;
+
 }
 
 .receiver{

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import {
   MatDialogContent,
   MatDialogRef,
@@ -10,6 +10,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 
 @Component({
   selector: 'app-contract-dialog',
@@ -28,13 +29,46 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular
 })
 export class ContractDialogComponent {
   readonly dialogRef = inject(MatDialogRef<ContractDialogComponent>);
+
   selectedReceiver = null;
   selectedWorkType = null;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   newContractForm = new FormGroup({
     work: new FormControl('', Validators.required),
     receiver: new FormControl('', Validators.required),
-    file: new FormControl('',Validators.required)
+    file: new FormControl<File | null>(null, Validators.required)
   });
+
+  constructor(private fileUploadService: FileUploadService) {}
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.fileUploadService.onFileSelected(input, this.fileInput);
+  }
+
+  createContract(): void {
+
+    //handle other input field
+
+    const file = this.newContractForm.get('file')?.value;
+    if (file) {
+     /* this.fileUploadService.uploadFile(file).subscribe({
+        next: (response) => {
+          console.log('File uploaded successfully', response);
+        },
+        error: (error) => {
+          console.error('File upload failed', error);
+        },
+      });*/
+    } else {
+      alert('Please select a file first.');
+
+    }
+  }
+
+  resetFile(): void {
+    this.fileUploadService.resetFile(this.fileInput);
+  }
 
 }

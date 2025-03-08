@@ -75,7 +75,6 @@ export class ContractsSectionComponent implements AfterViewInit {
   }
 
   openDialog() {
-    console.log("ciao");
     this.dialog.open(ContractDialogComponent);
   }
 }

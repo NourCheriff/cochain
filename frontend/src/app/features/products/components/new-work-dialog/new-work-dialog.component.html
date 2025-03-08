@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>New Work</h2>
 <mat-dialog-content>
-  <form [formGroup]="newWorkForm">
+  <form [formGroup]="newWorkForm" (ngSubmit)="createWork()">
     <mat-form-field appearance="outline">
       <mat-label>Work Type</mat-label>
       <mat-select [(value)]="selectedWorkType" formControlName="work" (selectionChange)="onSelectionChange($event.value)">
@@ -28,11 +28,18 @@
       <mat-datepicker #picker panelClass="custom-datepicker"></mat-datepicker>
     </mat-form-field>
 
-    <div class="form file">
-      <input class="file_button" type="file" accept="application/pdf" formControlName="file" />
-      <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
-      <button mat-flat-button class="dialog_button" [disabled]="!newWorkForm.valid">Create new work</button>
+    <div class="file">
+      <label for="fileUp" class="fileUplabel">
+        Upload bill
+        <span *ngIf="isReceiverVisible"> and transport documents</span>
+      </label>
+      <div class="file_button">
+        <input type="file" #fileInput id="fileUp" (change)="onFileSelected($event)" accept="application/pdf" [attr.multiple]="isReceiverVisible ? '' : null" />
+        <button mat-icon-button class="reset_button" type="button" (click)="resetFile()"><mat-icon>delete_outline</mat-icon></button>
+      </div>
     </div>
+
+    <button mat-flat-button class="dialog_button" [disabled]="!newWorkForm.valid">Create new work</button>
+
   </form>
 </mat-dialog-content>
-<!-- [matDatepickerFilter]="myFilter" -->

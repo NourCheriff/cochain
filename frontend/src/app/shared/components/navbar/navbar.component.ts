@@ -14,7 +14,6 @@ export class NavbarComponent {
   readonly router = inject(Router);
 
   isWalletRoute(): boolean {
-    console.log(this.router.url);
     return this.router.url === '/';
   }
 }
