@@ -64,9 +64,7 @@ export class CompaniesComponent implements AfterViewInit {
   addCompany() {
     this.dialog.open(
       CompanyDialogComponent,
-      {data: {
-        company: this.selected,
-      }}
+      {data: {company: this.selected,}}
     );
   }
 }
