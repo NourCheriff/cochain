@@ -31,7 +31,7 @@ namespace CochainAPI.Controllers
 
         [HttpGet]
         [Authorize(Policy = "ReadProducts")]
-        public async Task<IActionResult> GetProducts([FromQuery]string? queryParam, [FromQuery]int pageNumber, [FromQuery]int pageSize)
+        public async Task<IActionResult> GetProducts([FromQuery]string? queryParam, [FromQuery]int? pageNumber, [FromQuery]int? pageSize)
         {
             var response = await _productService.GetProducts(queryParam, pageNumber, pageSize);
             if (response == null)

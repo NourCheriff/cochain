@@ -22,7 +22,7 @@ namespace CochainAPI.Data.Services
             return await _productRepository.GetCategories();
         }
 
-        public async Task<List<ProductInfo>> GetProducts(string? queryParam, int pageNumber, int pageSize)
+        public async Task<List<ProductInfo>> GetProducts(string? queryParam, int? pageNumber, int? pageSize)
         {
             return await _productRepository.GetProducts(queryParam, pageNumber, pageSize);
         }
