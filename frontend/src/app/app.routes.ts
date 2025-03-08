@@ -5,6 +5,7 @@ import { CertificatesComponent } from './features/certificates/pages/certificate
 import { ScpProductsComponent } from './features/certificates/pages/scp-products/scp-products.component';
 import { ProductsComponent } from './features/products/pages/products/products.component';
 import { CompaniesComponent } from './features/users/pages/companies/companies.component';
+import { UsersComponent } from './features/users/pages/users/users.component';
 
 export const routes: Routes = [
   {
@@ -46,5 +47,11 @@ export const routes: Routes = [
     title: 'Companies',
     component: CompaniesComponent,
     data: { breadcrumb: 'Companies' }
-  }
+  },
+  {
+    path: 'companies/users/:id',
+    title: 'Users',
+    component: UsersComponent,
+    data: { breadcrumb: 'Users' }
+},
 ];
