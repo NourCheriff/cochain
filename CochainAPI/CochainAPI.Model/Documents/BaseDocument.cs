@@ -7,8 +7,8 @@ namespace CochainAPI.Model.Documents
 {
     public abstract class BaseDocument: Base
     {
-        public string Path { get; set; }
-        public string Type { get; set; }
+        public string? Path { get; set; }
+        public string? Type { get; set; }
         public string UserEmitterId { get; set; }
         public Guid SupplyChainPartnerReceiverId { get; set; }
         public User UserEmitter { get; set; }
