@@ -27,10 +27,10 @@ namespace CochainAPI.Data.Sql.Repositories
         {
             var query = dbContext.ProductInfo.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam) || x.SupplyChainPartner!.Name!.Contains(queryParam)));
 
-            if (pageSize != null && pageNumber != null)
+            if (int.TryParse(pageSize?.ToString(), out int size) && int.TryParse(pageNumber?.ToString(), out int number))
             {
-                query = query.Skip((pageNumber.Value * pageSize.Value))
-                .Take(pageSize.Value);
+                query = query.Skip(size * number)
+                .Take(size);
             }
 
             var queryComplete = query.Include(x => x.Ingredients)
@@ -42,14 +42,19 @@ namespace CochainAPI.Data.Sql.Repositories
             return await queryComplete.ToListAsync();
         }
 
-        public async Task<List<ProductInfo>> GetProductsOfSCP(Guid id)
+        public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id)
         {
-            return await dbContext.ProductInfo.Where(x => x.SupplyChainPartnerId == id)
+            if (Guid.TryParse(id.ToString(), out Guid scpId))
+            {
+                return await dbContext.ProductInfo.Where(x => x.SupplyChainPartnerId == scpId)
                 .Include(x => x.Ingredients)
                 .Include(x => x.Product)
                 .Include(x => x.ProductLifeCycles)
                 .Include(x => x.ProductDocuments)
                 .ToListAsync();
+            }
+
+            return null;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace CochainAPI.Data.Services
             return await _productRepository.GetProducts(queryParam, pageNumber, pageSize);
         }
 
-        public async Task<List<ProductInfo>> GetProductsOfSCP(Guid id)
+        public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id)
         {
             return await _productRepository.GetProductsOfSCP(id);
         }
