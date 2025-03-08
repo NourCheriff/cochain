@@ -16,6 +16,17 @@ namespace CochainAPI.Controllers
             _productService = productService;
         }
 
+        [HttpGet("default")]
+        [Authorize(Policy = "ReadProducts")]
+        public async Task<IActionResult> GetProducts(Guid id)
+        {
+            var response = await _productService.GetProductsOfSCP(id);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Product infos not found" });
+            }
+            return Ok(response);
+        }
 
         [HttpGet("{id}")]
         [Authorize(Policy = "ReadProducts")]
@@ -31,9 +42,9 @@ namespace CochainAPI.Controllers
 
         [HttpGet("allproducts")]
         [Authorize(Policy = "ReadProducts")]
-        public async Task<IActionResult> GetProducts([FromQuery]string? queryParam, [FromQuery]int? pageNumber, [FromQuery]int? pageSize)
+        public async Task<IActionResult> GetProductsInfo([FromQuery]string? productName, [FromQuery] string? scpName, [FromQuery]int? pageNumber, [FromQuery]int? pageSize)
         {
-            var response = await _productService.GetProducts(queryParam, pageNumber, pageSize);
+            var response = await _productService.GetProducts(productName, scpName, pageNumber, pageSize);
             if (response == null)
             {
                 return BadRequest(new { message = "Product infos not found" });
@@ -42,7 +53,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("categories")]
-        [Authorize(Policy = "AddProducts, ReadProducts")]
+        [Authorize(Policy = "WriteProducts, ReadProducts")]
         public async Task<IActionResult> GetCategories()
         {
             var response = await _productService.GetCategories();
@@ -54,9 +65,10 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "AddProducts")]
+        [Authorize(Policy = "WriteProducts")]
         public async Task<IActionResult> AddProductInfo(ProductInfo productInfo)
         {
+            //update prodotto può essere fatto solo al proprio prodotto
             var response = await _productService.AddProductInfo(productInfo);
             if (response == null)
             {

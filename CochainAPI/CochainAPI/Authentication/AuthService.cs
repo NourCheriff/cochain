@@ -41,10 +41,10 @@ namespace CochainAPI.Authentication
         /// </summary>
         /// <param name="user">the user</param>
         /// <returns>System.String</returns>
-        private string CreateJwtToken(User user)
+        private string CreateJwtToken(User user, List<IdentityRole> roles)
         {
             var key = Encoding.ASCII.GetBytes(_jwt.Secret);
-            var userClaims = BuildUserClaims(user);
+            var userClaims = BuildUserClaims(user, roles);
             var signKey = new SymmetricSecurityKey(key);
 
             var jwtSecurityToken = new JwtSecurityToken(
@@ -63,17 +63,16 @@ namespace CochainAPI.Authentication
         /// </summary>
         /// <param name="user">the User</param>
         /// <returns>List&lt;System.Security.Claims&gt;</returns>
-        private List<Claim> BuildUserClaims(User user)
+        private List<Claim> BuildUserClaims(User user, List<IdentityRole> roles)
         {
             var userClaims = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(ClaimTypes.Role, "Admin"),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
-                new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
+                new Claim(JwtRegisteredClaimNames.Email, user.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
+
+            userClaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Name!)));
 
             return userClaims;
         }
@@ -85,8 +84,8 @@ namespace CochainAPI.Authentication
             {
                 return new BaseResponse<AuthenticateResponse>("Invalid Credentials") { Status = RequestExecution.Error };
             }
-
-            var token = CreateJwtToken(response);
+            var userRoles = new List<IdentityRole>();
+            var token = CreateJwtToken(response, userRoles);
             var refreshToken = "";
             var data = new AuthenticateResponse(response, token, refreshToken);
 

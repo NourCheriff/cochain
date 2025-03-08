@@ -1,15 +1,19 @@
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Product;
+using Microsoft.AspNetCore.Http;
 
 namespace CochainAPI.Data.Services
 {
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
-        public ProductService(IProductRepository productRepository)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public ProductService(IProductRepository productRepository, IHttpContextAccessor contextAccessor)
         {
             _productRepository = productRepository;
+            _contextAccessor = contextAccessor;
+            _contextAccessor.HttpContext.
         }
 
         public async Task<ProductInfo> AddProductInfo(ProductInfo productInfo)
@@ -22,9 +26,9 @@ namespace CochainAPI.Data.Services
             return await _productRepository.GetCategories();
         }
 
-        public async Task<List<ProductInfo>> GetProducts(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<ProductInfo>> GetProducts(string? queryParam, string? scpName, int? pageNumber, int? pageSize)
         {
-            return await _productRepository.GetProducts(queryParam, pageNumber, pageSize);
+            return await _productRepository.GetProducts(queryParam, scpName, pageNumber, pageSize);
         }
 
         public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id)

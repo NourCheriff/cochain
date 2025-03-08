@@ -112,24 +112,54 @@ namespace CochainAPI.Data.Sql
 
             modelBuilder.Entity<CarbonOffsettingAction>().HasOne(x => x.SupplyChainPartner).WithMany(x => x.CarbonOffsettingActions).HasForeignKey(x => x.SupplyChainPartnerId);
 
-            modelBuilder.Entity<IdentityRole<Guid>>().HasData(
-                new IdentityRole<Guid>
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
                 {
-                    Id = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a"),
-                    Name = "Admin",
-                    NormalizedName = "Admin"
+                    Id = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a").ToString(),
+                    Name = "SystemAdmin",
+                    NormalizedName = "System Administrator"
                 },
-                new IdentityRole<Guid>
+                new IdentityRole
                 {
-                    Id = Guid.Parse("cb5b1ae5-43db-4096-9bd6-2afb90fb20c5"),
-                    Name = "SupplyChainPartner",
-                    NormalizedName = "SupplyChainPartner"
+                    Id = Guid.Parse("cb5b1ae5-43db-4096-9bd6-2afb90fb20c5").ToString(),
+                    Name = "AdminSCP",
+                    NormalizedName = "Admin Supply Chain Partner"
                 },
-                new IdentityRole<Guid>
+                new IdentityRole
                 {
-                    Id = Guid.Parse("f6e7ea1d-a99e-4a5c-9a23-2274ba2c62ea"),
-                    Name = "Certifier",
-                    NormalizedName = "Certifier"
+                    Id = Guid.Parse("f6e7ea1d-a99e-4a5c-9a23-2274ba2c62ea").ToString(),
+                    Name = "AdminCA",
+                    NormalizedName = "Admin Certification Authority"
+                },
+                new IdentityRole
+                {
+                    Id = Guid.Parse("a0e8b03e-0cd8-4458-a147-1a4b88df2997").ToString(),
+                    Name = "UserSCP",
+                    NormalizedName = "User Supply Chain Partner"
+                },
+                new IdentityRole
+                {
+                    Id = Guid.Parse("3318013d-0cdd-4749-9ab3-6fdca9b64564").ToString(),
+                    Name = "UserCA",
+                    NormalizedName = "User Certification Authority"
+                },
+                new IdentityRole
+                {
+                    Id = Guid.Parse("916a3160-05e5-4821-88fe-9e46a43d157c").ToString(),
+                    Name = "SCPTransporter",
+                    NormalizedName = "Supply Chain Partner Transporter"
+                },
+                new IdentityRole
+                {
+                    Id = Guid.Parse("cccf28ca-b2f8-477f-a2c1-2436cd83ec0c").ToString(),
+                    Name = "SCPRawMaterial",
+                    NormalizedName = "Supply Chain Partner Raw Material"
+                },
+                new IdentityRole
+                {
+                    Id = Guid.Parse("cccf28ca-b2f8-477f-a2c1-2436cd83ec0c").ToString(),
+                    Name = "SCPTransformator",
+                    NormalizedName = "Supply Chain Partner Transformator"
                 });
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(

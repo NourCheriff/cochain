@@ -55,10 +55,7 @@ namespace CochainAPI.Data.Services
                     var newUser = await _userRepository.AddUser(userObj);
                     isSuccess = newUser != null;
                     userObj = newUser ?? userObj;
-                }
-
-                
-                
+                }                
             }
 
             return isSuccess ? userObj : null;

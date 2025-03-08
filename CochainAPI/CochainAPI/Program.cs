@@ -14,9 +14,6 @@ using System.Text;
 using CochainAPI.Data.Sql;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Data.Sql.Repositories;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Google.Apis.Auth.OAuth2.Web;
-using Google.Apis.Auth.AspNetCore3;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -43,8 +40,16 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("ReadDocuments", policy => policy.RequireRole("Admin", "User"));
-    options.AddPolicy("WriteDocuments", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("ReadDocuments", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
+    options.AddPolicy("WriteContracts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
+    options.AddPolicy("WriteInvoices", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
+    options.AddPolicy("WriteTransportDocument", policy => policy.RequireRole("SystemAdmin", "SCPTransporter"));
+    options.AddPolicy("WriteOriginDocument", policy => policy.RequireRole("SystemAdmin", "SCPRawMaterialt"));
+    options.AddPolicy("WriteCertificationDocument", policy => policy.RequireRole("SystemAdmin", "AdminCA", "UserCA"));
+    options.AddPolicy("RemoveCertificationDocument", policy => policy.RequireRole("SystemAdmin", "AdminCA"));
+    options.AddPolicy("RemoveDocuments", policy => policy.RequireRole("SystemAdmin"));
+    options.AddPolicy("WriteProducts", policy => policy.RequireRole("SystemAdmin", "SCPTransformator", "SCPTransformator"));
+    options.AddPolicy("ReadProducts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
 });
 
 builder.Services.AddDbContext<CochainDBContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Singleton);
@@ -90,19 +95,19 @@ builder.Services.AddSwaggerGen(swagger =>
         Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
     });
     swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
                 {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            new string[] {}
-                    }
-                });
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
 });
 
 
