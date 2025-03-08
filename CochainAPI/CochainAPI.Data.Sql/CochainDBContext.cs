@@ -190,10 +190,7 @@ namespace CochainAPI.Data.Sql
                     UserName = "paolo.roselli02@gmail.com",
                     SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                     IsActive = true
-                }
-            );
-
-            modelBuilder.Entity<User>().HasData(
+                },
                 new User
                 {
                     Id = Guid.Parse("0a317b04-2f87-4b08-8ad8-597103527584").ToString(),
@@ -202,10 +199,7 @@ namespace CochainAPI.Data.Sql
                     UserName = "matteospiga2002@gmail.com",
                     SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                     IsActive = true
-                }
-            );
-
-            modelBuilder.Entity<User>().HasData(
+                },
                 new User
                 {
                     Id = Guid.Parse("a12c3708-0486-4603-b1a5-46d252e79082").ToString(),
@@ -214,10 +208,7 @@ namespace CochainAPI.Data.Sql
                     UserName = "nourcherif.pitos25@gmail.com",
                     SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                     IsActive = true
-                }
-            );
-
-            modelBuilder.Entity<User>().HasData(
+                },
                 new User
                 {
                     Id = Guid.Parse("3542da56-0de3-4797-a059-effff257f63d").ToString(),
@@ -226,10 +217,7 @@ namespace CochainAPI.Data.Sql
                     UserName = "mando3228@gmail.com",
                     SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                     IsActive = true
-                }
-            );
-
-            modelBuilder.Entity<User>().HasData(
+                },
                 new User
                 {
                     Id = Guid.Parse("f4242b5f-4b39-45fc-802e-391293414546").ToString(),
@@ -246,35 +234,27 @@ namespace CochainAPI.Data.Sql
                 {
                     UserId = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd").ToString(),
                     RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a").ToString()
-                });
-
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                },
                 new IdentityUserRole<string>
                 {
                     UserId = Guid.Parse("0a317b04-2f87-4b08-8ad8-597103527584").ToString(),
                     RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a").ToString()
-                });
-
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                },
                 new IdentityUserRole<string>
                 {
                     UserId = Guid.Parse("a12c3708-0486-4603-b1a5-46d252e79082").ToString(),
                     RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a").ToString()
-                });
-
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                },
                 new IdentityUserRole<string>
                 {
                     UserId = Guid.Parse("3542da56-0de3-4797-a059-effff257f63d").ToString(),
                     RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a").ToString()
-                });
-
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                },
                 new IdentityUserRole<string>
                 {
                     UserId = Guid.Parse("f4242b5f-4b39-45fc-802e-391293414546").ToString(),
                     RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a").ToString()
-                });
+                });               
         }
     }
 }

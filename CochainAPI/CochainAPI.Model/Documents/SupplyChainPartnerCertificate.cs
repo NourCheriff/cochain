@@ -1,4 +1,3 @@
-
 namespace CochainAPI.Model.Documents
 {
     public class SupplyChainPartnerCertificate : BaseDocument
