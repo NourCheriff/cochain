@@ -4,6 +4,7 @@ import { ContractsComponent } from './features/contracts/pages/contracts/contrac
 import { CertificatesComponent } from './features/certificates/pages/certificates/certificates.component';
 import { ScpProductsComponent } from './features/certificates/pages/scp-products/scp-products.component';
 import { ProductsComponent } from './features/products/pages/products/products.component';
+import { CompaniesComponent } from './features/users/pages/companies/companies.component';
 
 export const routes: Routes = [
   {
@@ -39,5 +40,11 @@ export const routes: Routes = [
     title: 'Products',
     component: ProductsComponent,
     data: { breadcrumb: 'Products' }
-}
+  },
+  {
+    path: 'companies',
+    title: 'Companies',
+    component: CompaniesComponent,
+    data: { breadcrumb: 'Companies' }
+  }
 ];
