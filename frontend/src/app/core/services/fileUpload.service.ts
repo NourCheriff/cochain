@@ -1,8 +1,7 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { FormGroup } from '@angular/forms';
-import { SupplyChainPartnerCertiticate } from 'src/models/documents/SupplyChainPartnerCertiticate';
+import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +11,7 @@ export class FileUploadService {
 
   constructor(private http: HttpClient) {}
 
-  uploadFile(doc: SupplyChainPartnerCertiticate): Observable<any> {
+  uploadFile(doc: SupplyChainPartnerCertificate): Observable<any> {
     return this.http.post<any>(this.uploadUrl, doc);
   }
 }

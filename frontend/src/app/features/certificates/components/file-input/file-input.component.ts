@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   MatDialogContent,
   MatDialogRef,
@@ -10,9 +10,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FileUploadService } from 'src/app/core/services/fileUpload.service';
-import { SupplyChainPartnerCertiticate } from 'src/models/documents/SupplyChainPartnerCertiticate';
+import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
 
 @Component({
   selector: 'app-file-input',
@@ -55,7 +55,7 @@ export class FileInputComponent {
   }
 
   uploadFile(): void {
-    let doc: SupplyChainPartnerCertiticate = {
+    let doc: SupplyChainPartnerCertificate = {
       file: this.fileUploaded,
       supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
       userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
