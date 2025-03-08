@@ -61,10 +61,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 .Take(pageSize.Value);
             }
 
-            var queryComplete = query.Include(x => x.CompanyType);
-
-
-            return await queryComplete.ToListAsync();
+            return await query.ToListAsync();
         }
 
         public async Task<CertificationAuthority?> GetCertificationAuthorityById(Guid id)

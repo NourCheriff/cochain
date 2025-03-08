@@ -17,7 +17,6 @@ namespace CochainAPI.Data.Sql
         public DbSet<User> Users { get; set; }
         public DbSet<UserTemporaryPassword> UserTemporaryPassword { get; set; }
         public DbSet<CertificationAuthority> CertificationAuthority { get; set; }
-        public DbSet<CompanyType> CompanyType { get; set; }
         public DbSet<SupplyChainPartner> SupplyChainPartner { get; set; }
         public DbSet<SupplyChainPartnerType> SupplyChainPartnerType { get; set; }
         public DbSet<Product> Product { get; set; }
@@ -62,8 +61,6 @@ namespace CochainAPI.Data.Sql
                     OR (""SupplyChainPartnerId"" IS NULL AND ""CertificationAuthorityId"" IS NOT NULL)");
             });
 
-            modelBuilder.Entity<CertificationAuthority>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
-            modelBuilder.Entity<SupplyChainPartner>().HasOne(x => x.CompanyType).WithMany().HasForeignKey(x => x.CompanyTypeId);
             modelBuilder.Entity<SupplyChainPartner>().HasOne(x => x.SupplyChainPartnerType).WithMany().HasForeignKey(x => x.SupplyChainPartnerTypeId);
 
             modelBuilder.Entity<Product>().HasOne(x => x.Category).WithMany().HasForeignKey(x => x.CategoryId);
@@ -163,14 +160,6 @@ namespace CochainAPI.Data.Sql
                     NormalizedName = "Supply Chain Partner Transformator"
                 });
 
-            modelBuilder.Entity<CompanyType>().HasData(
-                new CompanyType
-                {
-                    Id = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"),
-                    Name = "SCP"
-                }
-            );
-
             modelBuilder.Entity<SupplyChainPartnerType>().HasData(
                 new SupplyChainPartnerType
                 {
@@ -187,7 +176,6 @@ namespace CochainAPI.Data.Sql
                     Name = "Prova company",
                     Email = "company@prova.com",
                     Phone = "33309090909",
-                    CompanyTypeId = new Guid("6173d450-c48a-4f24-82f6-f012413ff6f4"),
                     Credits = 0,
                     SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87")
                 }
