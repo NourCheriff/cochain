@@ -1,0 +1,5 @@
+@if (isConnected) {
+  <app-transactions></app-transactions>
+} @else {
+  <app-connect-wallet (connectWalletEvent)="connectWallet()"></app-connect-wallet>
+}

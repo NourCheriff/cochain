@@ -1,0 +1,19 @@
+<article class="card">
+  <div class="info-container">
+    <div class="icon"><mat-icon>credit_card</mat-icon></div>
+    <div>
+      <h3 class="card-title">Wallet ID</h3>
+      <div class="card-content"> {{ walletID }}</div>
+    </div>
+
+    <div class="icon"><mat-icon>account_balance_wallet</mat-icon></div>
+    <div>
+      <h3 class="card-title">Current Balance</h3>
+      <div class="card-content"> {{ balance }} FT</div>
+    </div>
+  </div>
+
+  <div class="btn-container">
+    <button mat-flat-button class="btn-primary" (click)="openDialog()">Transfer Carbon Credits</button>
+  </div>
+</article>

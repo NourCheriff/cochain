@@ -1,0 +1,60 @@
+mat-form-field {
+  width: 100%;
+}
+
+mat-dialog-content{
+  padding-top: 10px !important;
+}
+
+.file_button {
+  padding-bottom: 30px;
+  width: 80%;
+}
+
+.receiver{
+  display: none;
+}
+
+.reset_button {
+  padding-bottom: 25px;
+  float: right;
+  background-color: red;
+  color: white;
+}
+
+.dialog_button {
+  background-color: var(--btn-primary) !important;
+  width: 100%;
+}
+
+::ng-deep .custom-datepicker{
+  background-color: var(--mat-datepicker);
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+  /* Imposta il colore di sfondo desiderato */
+}
+
+/* file upload button */
+input[type="file"]::file-selector-button {
+  border-radius: 4px;
+  padding: 0 16px;
+  height: 40px;
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+  margin-right: 16px;
+  transition: background-color 200ms;
+}
+
+/* file upload button hover state */
+input[type="file"]::file-selector-button:hover {
+  background-color: #f3f4f6;
+}
+
+/* file upload button active state */
+input[type="file"]::file-selector-button:active {
+  background-color: #e5e7eb;
+}
