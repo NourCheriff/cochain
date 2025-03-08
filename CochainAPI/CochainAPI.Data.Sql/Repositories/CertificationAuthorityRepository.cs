@@ -2,6 +2,7 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Documents;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
@@ -54,10 +55,10 @@ namespace CochainAPI.Data.Sql.Repositories
         {
             var query = dbContext.CertificationAuthority.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)));
 
-            if (int.TryParse(pageSize?.ToString(), out int size) && int.TryParse(pageNumber?.ToString(), out int number))
+            if (pageNumber.HasValue && pageSize.HasValue)
             {
-                query = query.Skip(size * number)
-                .Take(size);
+                query = query.Skip(pageSize.Value * pageNumber.Value)
+                .Take(pageSize.Value);
             }
 
             var queryComplete = query.Include(x => x.CompanyType);

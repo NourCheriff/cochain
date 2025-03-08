@@ -1,6 +1,5 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
-using CochainAPI.Model.Documents;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
@@ -16,9 +15,9 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.SupplyChainPartner.FirstOrDefaultAsync(x => x.Id == id); ;
         }
 
-        public async Task<List<SupplyChainPartnerType?>> GetTypes()
+        public async Task<List<SupplyChainPartnerType>> GetTypes()
         {
-            return await dbContext.SupplyChainPartnerType.ToListAsync<SupplyChainPartnerType?>();
+            return await dbContext.SupplyChainPartnerType.ToListAsync();
         }
     }
 }

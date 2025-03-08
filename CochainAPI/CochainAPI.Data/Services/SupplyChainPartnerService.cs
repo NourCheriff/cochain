@@ -22,7 +22,7 @@ namespace CochainAPI.Data.Services
             return null;
         }
 
-        public async Task<List<SupplyChainPartnerType?>> GetTypes()
+        public async Task<List<SupplyChainPartnerType>> GetTypes()
         {
             return await _supplyChainPartnerRepository.GetTypes();
         }
