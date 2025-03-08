@@ -40,6 +40,10 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddAuthorization(options =>
 {
+    options.AddPolicy("ReadCA", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
+    options.AddPolicy("WriteCA", policy => policy.RequireRole("SystemAdmin"));
+    options.AddPolicy("ReadSCP", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
+    options.AddPolicy("WriteSCP", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("ReadDocuments", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteContracts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("WriteInvoices", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
