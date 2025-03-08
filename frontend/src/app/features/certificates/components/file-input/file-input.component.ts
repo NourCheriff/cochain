@@ -12,7 +12,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FileUploadService } from 'src/app/core/services/fileUpload.service';
-import { SupplyChainPartnerDocument } from 'src/models/documents/SupplyChainPartnerCertiticate';
+import { SupplyChainPartnerCertiticate } from 'src/models/documents/SupplyChainPartnerCertiticate';
 
 @Component({
   selector: 'app-file-input',
@@ -55,7 +55,7 @@ export class FileInputComponent {
   }
 
   uploadFile(): void {
-    let doc: SupplyChainPartnerDocument = {
+    let doc: SupplyChainPartnerCertiticate = {
       file: this.fileUploaded,
       supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
       userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
