@@ -4,6 +4,7 @@ import { ContractsComponent } from './features/contracts/pages/contracts/contrac
 import { CertificatesComponent } from './features/certificates/pages/certificates/certificates.component';
 import { WalletComponent } from './features/wallet/pages/wallet/wallet.component';
 import { ScpProductsComponent } from './features/certificates/pages/scp-products/scp-products.component';
+import { ProductsComponent } from './features/products/pages/products/products.component';
 import { ProductDetailsComponent } from './features/products/pages/product-details/product-details.component';
 
 export const routes: Routes = [
@@ -36,9 +37,15 @@ export const routes: Routes = [
       data: { breadcrumb: 'Details' }
   },
   {
-    path:'products',
+    path: 'products',
+    title: 'Products',
+    component: ProductsComponent,
+    data: { breadcrumb: 'Products' }
+  },
+  {
+    path:'products/details',
     title:'Product details',
     component: ProductDetailsComponent,
-    data: { breadcrumb: 'Product details'}
+    data: { breadcrumb: 'Product details' }
   }
 ];
