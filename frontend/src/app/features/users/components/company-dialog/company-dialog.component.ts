@@ -1,12 +1,9 @@
 import { Component, inject, Inject } from '@angular/core';
-import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReactiveFormsModule, FormControl, Validators, FormGroup, FormsModule } from '@angular/forms';
@@ -15,13 +12,9 @@ import { ReactiveFormsModule, FormControl, Validators, FormGroup, FormsModule } 
   imports: [
     MatInputModule,
     MatButtonModule,
-    MatDialogTitle,
     MatDialogContent,
     MatSelectModule,
     MatFormFieldModule,
-    MatIconModule,
-    MatDatepickerModule,
-    MatSlideToggleModule,
     FormsModule,
     MatDividerModule,
     ReactiveFormsModule
@@ -60,12 +53,12 @@ export class CompanyDialogComponent {
 }
 
 interface MyForm {
-  nameCompany:   FormControl<string | null>;
-  emailCompany:  FormControl<string | null>;
-  phoneCompany:  FormControl<string | null>;
-  firstNameUser: FormControl<string | null>;
-  lastNameUser:  FormControl<string | null>;
-  emailUser:     FormControl<string | null>;
-  phoneUser:     FormControl<string | null>;
-  walletCompany?:          FormControl<string | null>;
+  nameCompany:    FormControl<string | null>;
+  emailCompany:   FormControl<string | null>;
+  phoneCompany:   FormControl<string | null>;
+  firstNameUser:  FormControl<string | null>;
+  lastNameUser:   FormControl<string | null>;
+  emailUser:      FormControl<string | null>;
+  phoneUser:      FormControl<string | null>;
+  walletCompany?: FormControl<string | null>;
 }

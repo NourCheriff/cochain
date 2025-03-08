@@ -14,14 +14,14 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-users',
   imports: [
-            MatTableModule,
-            MatPaginatorModule,
-            MatButtonModule,
-            MatIconModule,
-            MatFormFieldModule,
-            FormsModule,
-            MatInputModule
-          ],
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule
+  ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 

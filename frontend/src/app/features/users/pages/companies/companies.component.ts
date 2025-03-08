@@ -11,15 +11,16 @@ import { FormsModule }   from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-companies',
-  imports: [MatTableModule,
-            MatPaginatorModule,
-            MatButtonModule,
-            MatIconModule,
-            MatFormFieldModule,
-            MatSelectModule,
-            FormsModule,
-            MatInputModule
-          ],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    MatInputModule
+  ],
   templateUrl: './companies.component.html',
   styleUrl: './companies.component.css'
 
