@@ -34,47 +34,45 @@ import { SupplyChainPartnerDocument } from 'src/models/documents/SupplyChainPart
 export class FileInputComponent {
 
   readonly dialogRef = inject(MatDialogRef<FileInputComponent>);
+  fileUploaded: File | undefined
+  uploadEnabled: boolean = false;
 
   constructor(private fileUploadService: FileUploadService) {}
 
-  @ViewChild('fileInput') fileInput!: ElementRef;
-
-  fileForm = new FormGroup({
-      file: new FormControl<File | null>(null, Validators.required)
-  });
-
-  onFileSelected(event: Event): void {
+  onSelectFile(event : Event){
     const input = event.target as HTMLInputElement;
-    //this.fileUploadService.onFileSelected(input,this.fileInput)
-    this.uploadFile(input!.files![0]!)
-  }
-
-  uploadFile(fileUpload:File): void {
-   // const file = this.fileForm.get('file')?.value;
-    console.log(fileUpload);
-    if (fileUpload) {
-      let doc: SupplyChainPartnerDocument = {
-        file: fileUpload,
-        supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
-        userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
-        type: 'quality'
+    if (input.files && input.files.length > 0) {
+      this.fileUploaded = input.files[0]
+      if(this.fileUploaded.type !== "application/pdf"){
+        alert("Only PDF allowed")
+        return
       }
-      this.fileUploadService.uploadFile(doc).subscribe({
-        next: (response) => {
-            console.log('File uploaded successfully', response);
-        },
-        error: (error) => {
-          console.error('File upload failed', error);
-        },
-      });
-    } else {
-        alert('Please select a file first.');
-
+      console.log(this.fileUploaded)
+      this.uploadEnabled = true
+    }else{
+      alert("Upload a file!")
     }
   }
 
-  resetFile(): void {
-   this.fileUploadService.resetFile(this.fileInput)
+  uploadFile(): void {
+    let doc: SupplyChainPartnerDocument = {
+      file: this.fileUploaded,
+      supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+      userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
+      type: 'quality'
+    }
+    this.fileUploadService.uploadFile(doc).subscribe({
+      next: (response) => {
+          console.log('File uploaded successfully', response);
+      },
+      error: (error) => {
+        console.error('File upload failed', error);
+      },
+    });
+  }
+
+  reset(){
+    this.uploadEnabled = false
   }
 
 }

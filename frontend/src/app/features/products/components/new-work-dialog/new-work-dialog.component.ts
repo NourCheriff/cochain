@@ -52,17 +52,16 @@ export class NewWorkDialogComponent {
 
   constructor(private fileUploadService: FileUploadService) {}
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.fileUploadService.onFileSelected(input,this.fileInput)
-  }
-
   createWork(): void {
 
     //handle other input field
     //handle multi file
-    const file = this.newWorkForm.get('file')?.value;
+    const file = this.newWorkForm.value.file
+    console.log(this.newWorkForm.value);
     if (file) {
+      if(file.type !== "application/pdf"){
+        alert("Only PDF allowed");
+      }
       // this.fileUploadService.uploadFile(file).subscribe({
       //   next: (response) => {
       //     console.log('File uploaded successfully', response);
@@ -73,12 +72,7 @@ export class NewWorkDialogComponent {
       // });
     } else {
       alert('Please select a file first.');
-
     }
-  }
-
-  resetFile(): void {
-   this.fileUploadService.resetFile(this.fileInput);
   }
 
   onSelectionChange(value: string) {

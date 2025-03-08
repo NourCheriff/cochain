@@ -12,25 +12,7 @@ export class FileUploadService {
 
   constructor(private http: HttpClient) {}
 
-  onFileSelected(inputFile: HTMLInputElement, fileRef: ElementRef): void {
-    if (inputFile.files && inputFile.files.length) {
-      console.log(inputFile.files);
-      const selectedFile = inputFile.files[0];
-      console.log(selectedFile.type)
-      if (selectedFile.type !== 'application/pdf') {
-        alert('Only PDF files are allowed.');
-        fileRef.nativeElement.value = null;
-        return;
-      }
-    }
-  }
-
   uploadFile(doc: SupplyChainPartnerDocument): Observable<any> {
-   //console.log(file.name)
     return this.http.post<any>(this.uploadUrl, doc);
-  }
-
-  resetFile(fileRef: ElementRef): void{
-    fileRef.nativeElement.value = null;
   }
 }

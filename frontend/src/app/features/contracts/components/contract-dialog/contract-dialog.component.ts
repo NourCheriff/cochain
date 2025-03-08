@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   MatDialogContent,
   MatDialogRef,
@@ -32,7 +32,6 @@ export class ContractDialogComponent {
 
   selectedReceiver = null;
   selectedWorkType = null;
-  @ViewChild('fileInput') fileInput!: ElementRef;
 
   newContractForm = new FormGroup({
     work: new FormControl('', Validators.required),
@@ -42,33 +41,26 @@ export class ContractDialogComponent {
 
   constructor(private fileUploadService: FileUploadService) {}
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.fileUploadService.onFileSelected(input, this.fileInput);
-  }
-
   createContract(): void {
 
     //handle other input field
+    const file = this.newContractForm.value.file
 
-    const file = this.newContractForm.get('file')?.value;
     if (file) {
-     /* this.fileUploadService.uploadFile(file).subscribe({
-        next: (response) => {
-          console.log('File uploaded successfully', response);
-        },
-        error: (error) => {
-          console.error('File upload failed', error);
-        },
-      });*/
+      if(file.type !== "application/pdf"){
+        alert("Only PDF allowed")
+      }
+      /* this.fileUploadService.uploadFile(file).subscribe({
+          next: (response) => {
+            console.log('File uploaded successfully', response);
+          },
+          error: (error) => {
+            console.error('File upload failed', error);
+          },
+        });*/
     } else {
       alert('Please select a file first.');
-
     }
-  }
-
-  resetFile(): void {
-    this.fileUploadService.resetFile(this.fileInput);
   }
 
 }

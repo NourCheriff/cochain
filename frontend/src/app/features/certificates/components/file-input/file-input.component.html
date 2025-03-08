@@ -1,27 +1,26 @@
 <h2 mat-dialog-title>Attach certificate</h2>
 <mat-dialog-content class="dialog">
-  <form [formGroup]="fileForm">
+  <form>
     <input
       class="file_button"
       type="file"
       #fileInput
       accept="application/pdf"
-      (change)="onFileSelected($event)"
+      (change)="onSelectFile($event)"
     />
     <button
       mat-icon-button
       class="reset_button"
-      type="button"
-      (click)="resetFile()"
-    >
+      type="reset"
+      (click)="reset()">
       <mat-icon>delete_outline</mat-icon>
     </button>
     <button
       mat-flat-button
       class="dialog_button"
-      [disabled]="!fileForm.valid"
-      type="submit"
-    >
+      type="button"
+      (click)="uploadFile()"
+      [disabled]="!uploadEnabled">
       Upload certificate
     </button>
   </form>

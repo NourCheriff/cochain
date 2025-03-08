@@ -48,6 +48,7 @@ table {
 }
 
 .action_button {
+  background-color: var(--btn-ternary);
   border: none;
   color: white;
   text-align: center;
@@ -57,7 +58,11 @@ table {
   cursor: pointer;
   display: block;
   margin: auto;
-  background-color: var(--btn-ternary);
+}
+
+a{
+  text-decoration: none;
+  color: white;
 }
 
 .header {

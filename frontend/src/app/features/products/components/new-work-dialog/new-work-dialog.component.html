@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>New Work</h2>
 <mat-dialog-content>
-  <form [formGroup]="newWorkForm" (ngSubmit)="createWork()">
+  <form [formGroup]="newWorkForm" >
     <mat-form-field appearance="outline">
       <mat-label>Work Type</mat-label>
       <mat-select [(value)]="selectedWorkType" formControlName="work" (selectionChange)="onSelectionChange($event.value)">
@@ -34,12 +34,12 @@
         <span *ngIf="isReceiverVisible"> and transport documents</span>
       </label>
       <div class="file_button">
-        <input type="file" #fileInput id="fileUp" (change)="onFileSelected($event)" accept="application/pdf" [attr.multiple]="isReceiverVisible ? '' : null" />
-        <button mat-icon-button class="reset_button" type="button" (click)="resetFile()"><mat-icon>delete_outline</mat-icon></button>
+        <input type="file" id="fileUp" accept="application/pdf" [attr.multiple]="isReceiverVisible ? '' : null" formControlName="file"/>
+        <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
       </div>
     </div>
 
-    <button mat-flat-button class="dialog_button" [disabled]="!newWorkForm.valid">Create new work</button>
+    <button mat-flat-button class="dialog_button" (click)="createWork()" [disabled]="!newWorkForm.valid">Create new work</button>
 
   </form>
 </mat-dialog-content>
