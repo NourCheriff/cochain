@@ -52,8 +52,8 @@
 
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef class="action_th" mat-sort-header> Action </th>
-          <td mat-cell *matCellDef="let row">
-            <button mat-button class="action_button">See users</button>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button class="action_button" [routerLink]="'./' + element.name + '/users'" >See users</button>
           </td>
         </ng-container>
 

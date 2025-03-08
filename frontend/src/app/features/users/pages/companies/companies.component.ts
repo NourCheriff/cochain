@@ -9,6 +9,7 @@ import { CompanyDialogComponent } from '../../components/company-dialog/company-
 import { MatDialog } from '@angular/material/dialog';
 import { FormsModule }   from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-companies',
   imports: [
@@ -19,7 +20,8 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    RouterLink
   ],
   templateUrl: './companies.component.html',
   styleUrl: './companies.component.css'
