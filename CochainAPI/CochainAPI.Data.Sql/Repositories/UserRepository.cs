@@ -1,5 +1,6 @@
 ﻿using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
@@ -37,6 +38,14 @@ namespace CochainAPI.Data.Sql.Repositories
         public async Task<User?> GetByUserName(string userName)
         {
             return await dbContext.Users.FirstOrDefaultAsync(c => c.UserName == userName);
+        }
+
+        public async Task<List<IdentityRole>> GetRolesByUserId(string userId)
+        {
+            var userRoles = await dbContext.UserRoles.Where(x => x.UserId == userId).ToListAsync();
+            var roleIds = userRoles.Select(ur => ur.RoleId).Distinct().ToList();
+            return await dbContext.Roles.Where(x => roleIds.Contains(x.Id))
+                                        .ToListAsync();
         }
 
         public async Task<UserTemporaryPassword?> GetUserWithCredentials(AuthenticateRequest model)

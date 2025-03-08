@@ -84,7 +84,7 @@ namespace CochainAPI.Authentication
             {
                 return new BaseResponse<AuthenticateResponse>("Invalid Credentials") { Status = RequestExecution.Error };
             }
-            var userRoles = new List<IdentityRole>();
+            var userRoles = await _userService.GetRolesByUserId(response.Id);
             var token = CreateJwtToken(response, userRoles);
             var refreshToken = "";
             var data = new AuthenticateResponse(response, token, refreshToken);

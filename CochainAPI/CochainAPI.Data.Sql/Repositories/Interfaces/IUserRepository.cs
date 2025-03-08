@@ -1,4 +1,5 @@
 ﻿using CochainAPI.Model.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 namespace CochainAPI.Data.Sql.Repositories.Interfaces
 {
@@ -12,5 +13,6 @@ namespace CochainAPI.Data.Sql.Repositories.Interfaces
         Task<bool> AddTemporaryPassword(UserTemporaryPassword temporaryPassword);
         Task<UserTemporaryPassword?> GetUserWithCredentials(AuthenticateRequest model);
         Task<bool> UpdateTemporaryPassword(UserTemporaryPassword temporaryPassword);
+        Task<List<IdentityRole>> GetRolesByUserId(string userId);
     }
 }

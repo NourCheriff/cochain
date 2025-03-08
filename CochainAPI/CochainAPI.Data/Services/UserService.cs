@@ -2,8 +2,8 @@
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
-using System.Net.Mail;
 using CochainAPI.Data.Helpers;
+using Microsoft.AspNetCore.Identity;
 
 namespace CochainAPI.Data.Services
 {
@@ -66,7 +66,6 @@ namespace CochainAPI.Data.Services
         private bool ValidateUserInput(User user)
         {
             bool emailValid = !string.IsNullOrEmpty(user.UserName) && user.UserName.IsValidEmail();
-
             return emailValid; 
         }
 
@@ -106,6 +105,11 @@ namespace CochainAPI.Data.Services
                 return userValid.User;
             }
             return null;
+        }
+
+        public async Task<List<IdentityRole>> GetRolesByUserId(string userId)
+        {
+            return await _userRepository.GetRolesByUserId(userId);
         }
     }
 }
