@@ -27,7 +27,7 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{documentId}")]
+        [HttpGet("documents/{documentId}")]
         [Authorize]
         public async Task<IActionResult> UpdateSustainabilityCertificate(string documentId)
         {
@@ -39,7 +39,7 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{documentId}")]
+        [HttpPost("documents/{documentId}")]
         [Authorize]
         public async Task<IActionResult> DeleteSustainabilityCertificate(string documentId)
         {

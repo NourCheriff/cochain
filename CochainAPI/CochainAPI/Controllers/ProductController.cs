@@ -29,7 +29,7 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("allproducts")]
         [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProducts([FromQuery]string? queryParam, [FromQuery]int? pageNumber, [FromQuery]int? pageSize)
         {
@@ -41,7 +41,7 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("categories")]
         [Authorize(Policy = "AddProducts, ReadProducts")]
         public async Task<IActionResult> GetCategories()
         {
