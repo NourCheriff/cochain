@@ -18,5 +18,5 @@ export interface BaseDocument extends Base {
   supplyChainPartnerReceiverId: string;
   userEmitter?: string;
   supplyChainPartnerReceiver?: string;
-  file?: File;
+  fileString?: string;
 }
