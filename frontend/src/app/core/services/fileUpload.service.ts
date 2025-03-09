@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
 
@@ -11,7 +11,11 @@ export class FileUploadService {
 
   constructor(private http: HttpClient) {}
 
-  uploadFile(doc: SupplyChainPartnerCertificate): Observable<any> {
-    return this.http.post<any>(this.uploadUrl, doc);
+  uploadFile<T>(doc: T): Observable<any> {
+    const headers = new HttpHeaders({
+      'Access-Control-Allow-Origin': '*', // Questo non serve se il server è già configurato per il CORS
+    });
+
+    return this.http.post<any>(this.uploadUrl, doc, { headers });
   }
 }

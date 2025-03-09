@@ -29,17 +29,29 @@
     </mat-form-field>
 
     <div class="file">
-      <label for="fileUp" class="fileUplabel">
-        Upload bill
-        <span *ngIf="isReceiverVisible"> and transport documents</span>
-      </label>
-      <div class="file_button">
-        <input type="file" id="fileUp" accept="application/pdf" [attr.multiple]="isReceiverVisible ? '' : null" formControlName="file"/>
-        <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
+      <div class="bill">
+        <label for="billUp" >
+          Upload bill
+        </label>
+        <div class="file_button">
+          <input type="file" #billFile id="billUp" accept="application/pdf" (change)="onSelectFile($event)"/>
+          <button mat-icon-button class="reset_button" type="button" (click)="reset('bill')"><mat-icon>delete_outline</mat-icon></button>
+        </div>
       </div>
+      @if(isReceiverVisible){
+        <div class="transport">
+          <label for="transportUp">
+            Upload transport document
+          </label>
+          <div class="file_button">
+            <input type="file" #transportFile id="transportUp" accept="application/pdf" (change)="onSelectFile($event)"/>
+            <button mat-icon-button class="reset_button" type="button" (click)="reset('transport')"><mat-icon>delete_outline</mat-icon></button>
+          </div>
+        </div>
+       }
     </div>
 
-    <button mat-flat-button class="dialog_button" (click)="createWork()" [disabled]="!newWorkForm.valid">Create new work</button>
+    <button mat-flat-button class="dialog_button" (click)="createWork()" [disabled]="!isFormValid()">Create new work</button>
 
   </form>
 </mat-dialog-content>

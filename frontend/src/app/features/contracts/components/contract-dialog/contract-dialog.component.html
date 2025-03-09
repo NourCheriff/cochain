@@ -20,9 +20,9 @@
       </mat-select>
     </mat-form-field>
 
-    <input class="file_button" formControlName="file" type="file" accept="application/pdf"/>
-    <button mat-icon-button class="reset_button" type="reset"><mat-icon>delete_outline</mat-icon></button>
-    <button mat-flat-button class="dialog_button" type = "button" (click)="createContract()" [disabled]="!newContractForm.valid">Create new contract</button>
+    <input class="file_button" #fileInput type="file" accept="application/pdf" (change)="onSelectFile($event)"/>
+    <button mat-icon-button class="reset_button" type="button" (click)="reset()"><mat-icon >delete_outline</mat-icon></button>
+    <button mat-flat-button class="dialog_button" type = "button" (click)="createContract()" [disabled]="!newContractForm.valid || !uploadEnabled">Create new contract</button>
 
   </mat-dialog-content>
 </form>

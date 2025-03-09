@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, model, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, model, signal, ViewChild } from '@angular/core';
 import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +12,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 
 @Component({
   selector: 'app-product-dialog',
@@ -44,15 +45,19 @@ export class ProductDialogComponent {
     name: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required]),
     hasIngredients: new FormControl(false),
-    ingredients: new FormControl(''),
-    file: new FormControl(''),
+    ingredients: new FormControl('')
   });
+
+  @ViewChild("fileInput") fileInput!: ElementRef
+  fileUploaded!: File
+  uploadEnabled: boolean = false;
 
   readonly announcer = inject(LiveAnnouncer);
 
   readonly ingredients = signal<string[]>([]);
   readonly allIngredients: string[] = ['Ingredient1', 'Ingredient2', 'Ingredient3', 'Ingredient4', 'Ingredient5'];
 
+  constructor(private fileUploadService: FileUploadService) {}
   // get from API
   readonly products: Option[] = [
     { value: 'name1', displayValue: 'name1' },
@@ -70,8 +75,6 @@ export class ProductDialogComponent {
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-
-    // Add our ingredient
     if (value) {
       this.ingredients.update(ingredients => [...ingredients, value]);
     }
@@ -100,6 +103,43 @@ export class ProductDialogComponent {
     today.setHours(0, 0, 0, 0);
     return d ? d >= today : false;
   };
+
+
+  createProduct(){
+    const productName = this.newProductForm.value.name
+    const date = this.newProductForm.value.date
+    if(this.newProductForm.value.hasIngredients){
+      const ingredients: string[] = this.ingredients()
+      console.log(ingredients)
+    }
+
+    const fileData = new FormData()
+    fileData.append('file',this.fileUploaded)
+
+    for (const pair of fileData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+  }
+
+
+  onSelectFile(event : Event){
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.fileUploaded = input.files[0]
+      if(this.fileUploaded.type !== "application/pdf"){
+        alert("Only PDF allowed")
+        return
+      }
+      this.uploadEnabled = true
+    }else{
+      alert("Upload a file!")
+    }
+  }
+
+   reset(){
+    this.fileInput.nativeElement.value = null
+    this.uploadEnabled = false
+  }
 }
 
 interface Option {

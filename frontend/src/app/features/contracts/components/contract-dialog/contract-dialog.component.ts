@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import {
   MatDialogContent,
   MatDialogRef,
@@ -33,34 +33,58 @@ export class ContractDialogComponent {
   selectedReceiver = null;
   selectedWorkType = null;
 
+  @ViewChild("fileInput") fileInput!: ElementRef
+  fileUploaded!: File
+  uploadEnabled: boolean = false;
+
   newContractForm = new FormGroup({
     work: new FormControl('', Validators.required),
     receiver: new FormControl('', Validators.required),
-    file: new FormControl<File | null>(null, Validators.required)
   });
 
   constructor(private fileUploadService: FileUploadService) {}
 
+  onSelectFile(event : Event){
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.fileUploaded = input.files[0]
+      if(this.fileUploaded.type !== "application/pdf"){
+        alert("Only PDF allowed")
+        return
+      }
+      console.log(this.fileUploaded)
+      this.uploadEnabled = true
+    }else{
+      alert("Upload a file!")
+    }
+  }
+
   createContract(): void {
 
     //handle other input field
-    const file = this.newContractForm.value.file
+    const receiver = this.newContractForm.value.receiver
+    const workType = this.newContractForm.value.work
+    const fileData = new FormData()
+    fileData.append('file', this.fileUploaded);
 
-    if (file) {
-      if(file.type !== "application/pdf"){
-        alert("Only PDF allowed")
-      }
-      /* this.fileUploadService.uploadFile(file).subscribe({
-          next: (response) => {
-            console.log('File uploaded successfully', response);
-          },
-          error: (error) => {
-            console.error('File upload failed', error);
-          },
-        });*/
-    } else {
-      alert('Please select a file first.');
+    for (const pair of fileData.entries()) {
+      console.log(pair[0], pair[1]);
     }
+
+    /* this.fileUploadService.uploadFile(file).subscribe({
+        next: (response) => {
+          console.log('File uploaded successfully', response);
+        },
+        error: (error) => {
+          console.error('File upload failed', error);
+        },
+      });*/
+
+  }
+
+  reset(){
+    this.fileInput.nativeElement.value = null
+    this.uploadEnabled = false
   }
 
 }

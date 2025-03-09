@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject} from '@angular/core';
 import {
   MatDialogContent,
   MatDialogRef,
@@ -34,7 +34,8 @@ import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain
 export class FileInputComponent {
 
   readonly dialogRef = inject(MatDialogRef<FileInputComponent>);
-  fileUploaded: File | undefined
+
+  fileUploaded!: File;
   uploadEnabled: boolean = false;
 
   constructor(private fileUploadService: FileUploadService) {}
@@ -55,13 +56,26 @@ export class FileInputComponent {
   }
 
   uploadFile(): void {
+
     let doc: SupplyChainPartnerCertificate = {
-      file: this.fileUploaded,
+      file: this.fileUploaded,  // Qui assegni il file che vuoi caricare
       supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
       userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
-      type: 'quality'
-    }
-    this.fileUploadService.uploadFile(doc).subscribe({
+      type: 'quality',
+    };
+
+    // Creiamo un FormData e aggiungiamo i dati dal doc
+    const fileData = new FormData();
+
+    // Aggiungi il file
+    fileData.append('file', this.fileUploaded);
+
+    // Aggiungi gli altri dati (stiamo trattando questi come stringhe, ma se sono di un tipo diverso, potrebbe essere necessario serializzarli)
+    fileData.append('supplyChainPartnerReceiverId', doc.supplyChainPartnerReceiverId);
+    fileData.append('userEmitterId', doc.userEmitterId);
+    fileData.append('type', doc.type);
+
+    this.fileUploadService.uploadFile<FormData>(fileData).subscribe({
       next: (response) => {
           console.log('File uploaded successfully', response);
       },

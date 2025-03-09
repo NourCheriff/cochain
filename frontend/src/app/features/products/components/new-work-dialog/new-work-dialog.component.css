@@ -4,6 +4,7 @@ mat-form-field {
 
 mat-dialog-content{
   padding-top: 10px !important;
+  max-height: fit-content;
 }
 
 .file_button {
@@ -17,10 +18,9 @@ mat-dialog-content{
   flex-direction: column;
 }
 
-.fileUplabel{
+label{
   font-size: 15px;
   color: black;
-
 }
 
 .receiver{
