@@ -24,6 +24,7 @@ namespace CochainAPI.Data.Services
         }
         public async Task<BaseDocument?> AddDocument(BaseDocument documentObj)
         {
+            documentObj.Id = Guid.NewGuid();
             return documentObj switch
             {
                 Contract contract => await AddContract(contract),
