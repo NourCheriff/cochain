@@ -21,6 +21,7 @@ namespace CochainAPI.Model.Documents
         [JsonIgnore]
         public SupplyChainPartner? SupplyChainPartnerReceiver { get; set; }
         [DefaultValue("SGVsbG8gV29ybGQh")]
+        [NotMapped]
         public string? FileString { get; set; }
         [JsonIgnore]
         [NotMapped]
