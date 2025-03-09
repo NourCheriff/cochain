@@ -2,6 +2,7 @@ namespace CochainAPI.Model.Documents
 {
     public class SupplyChainPartnerCertificate : BaseDocument
     {
-        public string QualityStandard { get; set; }
+        public SupplyChainPartnerCertificate() { }
+        public string? QualityStandard { get; set; }
     }
 }

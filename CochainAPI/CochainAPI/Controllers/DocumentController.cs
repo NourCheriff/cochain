@@ -18,7 +18,7 @@ namespace CochainAPI.Controllers
 
         [HttpPost("AddContractDocument")]
         [Authorize(Policy = "WriteContracts")]
-        public async Task<IActionResult> AddContractDocument([FromBody] BaseDocument documentObj)
+        public async Task<IActionResult> AddContractDocument([FromBody] Contract documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
             if (response == null)
@@ -30,7 +30,7 @@ namespace CochainAPI.Controllers
 
         [HttpPost("AddTransportDocument")]
         [Authorize(Policy = "WriteTransportDocument")]
-        public async Task<IActionResult> AddTransportDocument([FromBody] BaseDocument documentObj)
+        public async Task<IActionResult> AddTransportDocument([FromBody] ProductLifeCycleDocument documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
             if (response == null)
@@ -42,7 +42,7 @@ namespace CochainAPI.Controllers
 
         [HttpPost("AddCertificationDocument")]
         //[Authorize(Policy = "WriteCertificationDocument")]
-        public async Task<IActionResult> AddCertificationDocument([FromBody] BaseDocument documentObj)
+        public async Task<IActionResult> AddCertificationDocument([FromBody] SupplyChainPartnerCertificate documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
             if (response == null)
@@ -54,7 +54,7 @@ namespace CochainAPI.Controllers
 
         [HttpPost("AddOriginDocument")]
         [Authorize(Policy = "WriteOriginDocument")]
-        public async Task<IActionResult> AddOriginDocument([FromBody] BaseDocument documentObj)
+        public async Task<IActionResult> AddOriginDocument([FromBody] ProductLifeCycleDocument documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
             if (response == null)
@@ -66,7 +66,7 @@ namespace CochainAPI.Controllers
 
         [HttpPost("AddInvoicesDocument")]
         [Authorize(Policy = "WriteInvoices")]
-        public async Task<IActionResult> AddInvoicesDocument([FromBody] BaseDocument documentObj)
+        public async Task<IActionResult> AddInvoicesDocument([FromBody] ProductLifeCycleDocument documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
             if (response == null)

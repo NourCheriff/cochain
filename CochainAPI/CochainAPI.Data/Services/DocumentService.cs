@@ -37,12 +37,12 @@ namespace CochainAPI.Data.Services
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient("contracts");
             await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
-            string fileName = $"{contract.Id}{Path.GetExtension(contract.File.FileName)}";
+            string fileName = $"{contract.Id}.pdf";
             var blobClient = containerClient.GetBlobClient(fileName);
 
-            using (var stream = contract.File.OpenReadStream())
+            using (var stream = new MemoryStream(contract.File))
             {
-                await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = contract.File.ContentType });
+                await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = "application/pdf" });
             }
 
             contract.Path = blobClient.Uri.ToString();
@@ -72,12 +72,12 @@ namespace CochainAPI.Data.Services
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient("certificates");
             await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
-            string fileName = $"{scpCertificate.Id}{Path.GetExtension(scpCertificate.File.FileName)}";
+            string fileName = $"{scpCertificate.Id}.pdf";
             var blobClient = containerClient.GetBlobClient(fileName);
 
-            using (var stream = scpCertificate.File.OpenReadStream())
+            using (var stream = new MemoryStream(scpCertificate.File))
             {
-                await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = scpCertificate.File.ContentType });
+                await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = "application/pdf" });
             }
 
             scpCertificate.Path = blobClient.Uri.ToString();
@@ -106,12 +106,12 @@ namespace CochainAPI.Data.Services
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient("prodlifecycle");
             await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
-            string fileName = $"{productDocument.Id}{Path.GetExtension(productDocument.File.FileName)}";
+            string fileName = $"{productDocument.Id}.pdf";
             var blobClient = containerClient.GetBlobClient(fileName);
 
-            using (var stream = productDocument.File.OpenReadStream())
+            using (var stream = new MemoryStream(productDocument.File))
             {
-                await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = productDocument.File.ContentType });
+                await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = "application/pdf" });
             }
 
             productDocument.Path = blobClient.Uri.ToString();
