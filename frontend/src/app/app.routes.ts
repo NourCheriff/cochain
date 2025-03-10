@@ -55,7 +55,8 @@ export const routes: Routes = [
     title: 'Users',
     component: UsersComponent,
     data: { breadcrumb: 'Companies/Users' }
-},
+  },
+  {
     path:'products/details/:id',
     title:'Product details',
     component: ProductDetailsComponent,
