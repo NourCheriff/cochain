@@ -6,13 +6,13 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { FileInputComponent } from '../file-input/file-input.component';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 @Component({
   selector: 'app-ca-certificates',
-  imports: [MatSortModule,RouterLink, RouterLinkActive,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
+  imports: [MatSortModule,RouterLink, MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './ca-certificates.component.html',
   styleUrl: './ca-certificates.component.css',
 })
@@ -42,56 +42,54 @@ export class CaCertificatesComponent implements AfterViewInit {
 }
 
 export interface CaCertificate {
+  id: string;
   receiver: string;
   scpType: string;
 }
 
 const certificates: CaCertificate[] = [
   {
+    id: '1',
     receiver: "SCP1",
     scpType: "Azienda agricola",
   },
   {
+    id: '2',
     receiver: "SCP2",
     scpType: "Azienda ittica",
   },
   {
+    id: '3',
     receiver: "SCP3",
     scpType: "Azienda di stoccaggio",
   },
-   {
+  {
+    id: '4',
     receiver: "SCP1",
     scpType: "Azienda agricola",
   },
   {
+    id: '5',
     receiver: "SCP2",
     scpType: "Azienda ittica",
   },
   {
+    id: '6',
     receiver: "SCP3",
     scpType: "Azienda di stoccaggio",
   },
-   {
+  {
+    id: '7',
     receiver: "SCP1",
     scpType: "Azienda agricola",
   },
   {
+    id: '8',
     receiver: "SCP2",
     scpType: "Azienda ittica",
   },
   {
-    receiver: "SCP3",
-    scpType: "Azienda di stoccaggio",
-  },
-   {
-    receiver: "SCP1",
-    scpType: "Azienda agricola",
-  },
-  {
-    receiver: "SCP2",
-    scpType: "Azienda ittica",
-  },
-  {
+    id: '9',
     receiver: "SCP3",
     scpType: "Azienda di stoccaggio",
   },

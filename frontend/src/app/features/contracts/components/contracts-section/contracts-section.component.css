@@ -51,8 +51,4 @@ mat-paginator{
   gap: 20px;
   position: relative;
 
- }
-
-.header_button{
-  background-color: var(--btn-secondary) !important;
 }

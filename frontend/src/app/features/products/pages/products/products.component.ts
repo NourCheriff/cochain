@@ -11,7 +11,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule }   from '@angular/forms';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-products',
@@ -26,7 +26,6 @@ import { MatInputModule } from '@angular/material/input';
             MatSortModule,
             MatInputModule,
             RouterLink,
-            RouterLinkActive
           ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
@@ -102,20 +101,21 @@ export interface User {
 }
 
 export interface ProductElement {
-  name:                       string;
-  category:                   string;
-  expiration_date:            string;
-  producer:                   string;
+  id: string;
+  name: string;
+  category: string;
+  expiration_date: string;
+  producer: string;
   sustainability_certificate: string;
-  action:                     string;
+  action: string;
 }
 
 const PRODUCT_DATA: ProductElement[] = [
-  { name: "ProductName", category: "Product category", expiration_date: "17-04-2025", producer: "Alpha", sustainability_certificate: "link", action: "link_dettagli" },
-  { name: "ProductName", category: "Product category", expiration_date: "15-04-2025", producer: "Beta", sustainability_certificate: "", action: "link_dettagli" },
-  { name: "ProductName", category: "Product category", expiration_date: "07-04-2025", producer: "Supply Chain Partner", sustainability_certificate: "link", action: "link_dettagli" },
-  { name: "ProductName", category: "Product category", expiration_date: "07-04-2025", producer: "Alpha", sustainability_certificate: "link", action: "link_dettagli" },
-  { name: "ProductName", category: "Product category", expiration_date: "03-04-2025", producer: "Supply Chain Partner", sustainability_certificate: "", action: "link_dettagli" },
-  { name: "ProductName", category: "Product category", expiration_date: "01-04-2025", producer: "Supply Chain Partner", sustainability_certificate: "", action: "link_dettagli" }
+  { id: '1', name: "ProductName", category: "Product category", expiration_date: "17-04-2025", producer: "Alpha", sustainability_certificate: "link", action: "link_dettagli" },
+  { id: '2', name: "ProductName", category: "Product category", expiration_date: "15-04-2025", producer: "Beta", sustainability_certificate: "", action: "link_dettagli" },
+  { id: '3', name: "ProductName", category: "Product category", expiration_date: "07-04-2025", producer: "Supply Chain Partner", sustainability_certificate: "link", action: "link_dettagli" },
+  { id: '4', name: "ProductName", category: "Product category", expiration_date: "07-04-2025", producer: "Alpha", sustainability_certificate: "link", action: "link_dettagli" },
+  { id: '5', name: "ProductName", category: "Product category", expiration_date: "03-04-2025", producer: "Supply Chain Partner", sustainability_certificate: "", action: "link_dettagli" },
+  { id: '6', name: "Farina", category: "Product category", expiration_date: "01-04-2025", producer: "Supply Chain Partner", sustainability_certificate: "", action: "link_dettagli" }
 ];
 

@@ -52,7 +52,7 @@ export class ContractsSectionComponent implements AfterViewInit {
         SELECTED_DATA = BACKUP_DATA;
       break;
 
-      case 'recieved_contracts':
+      case 'received_contracts':
         SELECTED_DATA = BACKUP_DATA.filter(item => item.receiver == this.user.supplyChainPartner);
       break;
 

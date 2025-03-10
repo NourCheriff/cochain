@@ -7,12 +7,12 @@
           <mat-label>Select an option</mat-label>
           <mat-select [(value)]="selected" (selectionChange)="updateTable()">
             <mat-option value="all_contracts">All contracts</mat-option>
-            <mat-option value="recieved_contracts">Recieved contracts</mat-option>
+            <mat-option value="received_contracts">Received contracts</mat-option>
             <mat-option value="emitted_contracts">Emitted contracts</mat-option>
           </mat-select>
         </mat-form-field>
 
-        <button mat-flat-button class="header_button" (click)="addContract()"><mat-icon>add</mat-icon>Add contract</button>
+        <button mat-flat-button class="btn-secondary" (click)="addContract()"><mat-icon>add</mat-icon>Add contract</button>
     </section>
     }
 </div>
