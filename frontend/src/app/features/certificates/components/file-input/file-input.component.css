@@ -10,8 +10,7 @@
   color: white;
 }
 
-.dialog_button {
-  background-color: var(--btn-primary) !important;
+.btn-primary {
   width: 100%;
 }
 
