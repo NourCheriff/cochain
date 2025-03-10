@@ -3,7 +3,7 @@
   <form [formGroup]="newProductForm">
 
     <mat-form-field appearance="outline">
-      <mat-label>Favorite food</mat-label>
+      <mat-label>Name</mat-label>
       <mat-select formControlName="name">
         @for (product of products; track $index) {
           <mat-option [value]="product.value"> {{ product.displayValue }} </mat-option>
