@@ -8,6 +8,7 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { NewWorkDialogComponent } from '../../components/new-work-dialog/new-work-dialog.component';
+import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
 
 @Component({
   selector: 'app-product-details',
@@ -28,6 +29,10 @@ export class ProductDetailsComponent implements AfterViewInit {
 
   addWork(){
     this.dialog.open(NewWorkDialogComponent)
+  }
+
+  modifyProduct(){
+    this.dialog.open(EditProductDialogComponent)
   }
 
   isAdmin(): boolean{
