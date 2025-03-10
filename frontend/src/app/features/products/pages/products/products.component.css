@@ -1,0 +1,106 @@
+mat-paginator {
+  background-color: white;
+}
+
+::ng-deep .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__track::after {
+  background-color: var(--btn-ternary) !important;
+}
+
+.main {
+  height: 85vh;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.products_div {
+  width: 70%;
+  border-radius: 25px !important;
+  box-shadow: 0px 0px 12px white !important;
+  padding: 10px;
+  background-color: white;
+  padding-top: 30px;
+}
+
+.search_filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search_icon {
+  float: left;
+  padding-right: 30px;
+}
+
+table {
+  background-color: white;
+}
+
+.mat-elevation-z8{
+  width: 100%;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
+.action_th {
+  text-align: center;
+}
+
+.action_button {
+  background-color: var(--btn-ternary);
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+  margin: auto;
+}
+
+a{
+  text-decoration: none;
+  color: white;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header_text{
+  padding-left: 20px;
+  float: left;
+  font-size: 24px;
+ }
+
+.header_options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.header_button{
+  background-color: var(--btn-secondary) !important;
+}
+
+.file_section {
+  display: flex;
+  justify-content: space-between;
+  float: left;
+}
+
+.file_icon {
+  font-size: 1.5em;
+  color: var(--btn-primary);
+}
+
+.file_link {
+  color: var(--btn-secondary);
+}
+
+

@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.icon {
+  background-color: #FFE0EB;
+  color: #FF82AC;
+  padding: 10px;
+  border-radius: 50%;
+}

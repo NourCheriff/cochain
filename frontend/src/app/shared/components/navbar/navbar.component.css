@@ -1,0 +1,107 @@
+main {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.breadcrumb{
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+.navbar {
+  min-height: 15vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 4px 15px #00000040;
+  background-color: #FFF;
+}
+
+.options {
+  margin-right: 28px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+img {
+  max-height: 100px;
+}
+
+.logo-container {
+  object-fit: contain;
+  margin-left: 40px;
+}
+
+.btn-container {
+  margin: 0 10px;
+  display: flex;
+}
+
+.button {
+  background-color: transparent !important;
+  border: 1px solid black;
+  color: inherit !important;
+  padding: 23px 16px !important;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0 20px;
+}
+
+.button mat-icon {
+  color: inherit;
+}
+
+.nav-link {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.nav-link ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-item {
+  cursor: pointer;
+  padding: 10px 15px;
+  font-size: 18px;
+  text-decoration: none;
+  color: var(--nav-link);
+  position: relative;
+  padding-bottom: 5px;
+  display: inline-block;
+  text-align: center;
+}
+
+.nav-item.active::after {
+  content: "";
+  display: inline-block;
+  width: 50%;
+  height: 2px;
+  background-color: var(--nav-link);
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+  width: 50%;
+}
+
+.nav-item::after {
+  width: 0;
+  transition: width 0.3s ease;
+  left: 50%;
+}
+

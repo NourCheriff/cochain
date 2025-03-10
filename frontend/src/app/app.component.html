@@ -1,1 +1,8 @@
-<router-outlet />
+<div [class.bg]="!isLoginRoute()">
+  @if (!isLoginRoute()) {
+    <app-navbar></app-navbar>
+  }
+  <div [class.content]="!isLoginRoute()">
+    <router-outlet />
+  </div>
+</div>

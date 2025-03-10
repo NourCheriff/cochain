@@ -1,0 +1,20 @@
+.container {
+  margin: 20px 30px;
+}
+
+h3 {
+  font-family: "Cairo", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 24px;
+  color: #FFF;
+}
+
+button {
+  font-family: "Cairo", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 20px;
+  margin-top: 20px;
+  background-color: var(--btn-ternary) !important;
+}
