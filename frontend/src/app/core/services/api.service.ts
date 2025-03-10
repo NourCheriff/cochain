@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class BaseHttpService<T> {
+export class BaseHttpService {
 
   private readonly API_BASE_URL = environment.baseUrl;
   private readonly header = new HttpHeaders({
