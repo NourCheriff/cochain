@@ -19,12 +19,10 @@ export class ContractsSectionComponent implements AfterViewInit {
 
   user: User = {
     "supplyChainPartner": "Alpha",// qui ci va il supply chain partner, quando l'utente effettua il login
-    "role": "Admin"
+    "role": "User"
   };
 
   displayedColumns: string[] = ['emitter', 'receiver', 'workType', 'attachment'];
-
-
 
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
@@ -65,7 +63,7 @@ export class ContractsSectionComponent implements AfterViewInit {
 
     this.dataSource = new MatTableDataSource<PeriodicElement>(SELECTED_DATA);
     this.dataSource.paginator = this.paginator;
-    console.log(`Hi, dolphin`); /** inject and call auth service */
+    console.log(`Hi, a dolphin`); /** inject and call auth service */
   }
 
   isAdmin(): boolean {
@@ -77,7 +75,6 @@ export class ContractsSectionComponent implements AfterViewInit {
   }
 
   openDialog() {
-    console.log("ciao");
     this.dialog.open(ContractDialogComponent);
   }
 }

@@ -1,0 +1,17 @@
+mat-form-field {
+  margin-top: 10px;
+  display: block;
+}
+
+.title {
+  font-weight: 500;
+}
+
+.receiver {
+  min-width: 400px;
+}
+
+
+.container {
+  padding: 18px;
+}

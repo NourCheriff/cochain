@@ -12,6 +12,10 @@ mat-slide-toggle{
   background-color: var(--btn-ternary) !important;
 }
 
+::ng-deep .datepicker {
+  background-color: var(--mat-datepicker);
+}
+
 .dialog{
   height: 550;
   width: 500px;
@@ -27,11 +31,6 @@ mat-slide-toggle{
   float: right;
   background-color: transparent;
   color: red;
-}
-
-.dialog_button{
-  background-color: var(--btn-primary) !important;
-  width: 100%;
 }
 
 input[type="file"]::file-selector-button {
@@ -54,4 +53,17 @@ input[type="file"]::file-selector-button:hover {
 /* file upload button active state */
 input[type="file"]::file-selector-button:active {
   background-color: #e5e7eb;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+.w-75 {
+  width: 75%;
 }

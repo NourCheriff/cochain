@@ -1,14 +1,14 @@
-<main>
+<main class="nav-container">
   <div class="navbar">
     <div class="logo-container">
-      <a routerLink="home">
+      <a routerLink="">
         <img src="logo.png" alt="logo">
       </a>
     </div>
     <div class="options">
       <nav class="nav-link">
         <ul>
-          <li><a routerLink="home" routerLinkActive="active" class="nav-item">Wallet</a></li>
+          <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">Wallet</a></li>
           <li><a routerLink="products" routerLinkActive="active" class="nav-item">Products</a></li>
           <li><a routerLink="certificates" routerLinkActive="active" class="nav-item">Certificates</a></li>
           <li><a routerLink="contracts" routerLinkActive="active" class="nav-item">Contracts</a></li>

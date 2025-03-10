@@ -22,7 +22,7 @@ export class BreadcrumbComponent implements OnInit {
       },
       routerLink: '/',
       style:{
-        'color':'white',
+        'color':'var(--breadcrumb-link)',
         'margin-right':'5px'
       }
   }
@@ -38,6 +38,7 @@ export class BreadcrumbComponent implements OnInit {
       )
       .subscribe(() => {
         this.items = this.createBreadcrumb(this.activatedRoute.root);
+        this.items
       });
   }
 
@@ -59,22 +60,33 @@ export class BreadcrumbComponent implements OnInit {
         url += `/${routeURL}`;
       }
 
-
       // Se il dato 'breadcrumb' è definito nella rotta, lo aggiungiamo
       const label = child.snapshot.data['breadcrumb'];
       if (label) {
-        if (label === "Details") {
-          const id = child.snapshot.paramMap.get('id');
-          breadcrumbs.push(
-            { label: 'Certificates', routerLink: '/certificates' },
-            { label: `Details`, routerLink: `/details/${id}` }
-          );
-        } else {
-          // Crea un singolo menu item per altri casi
-          let menuItem: MenuItem = { label: label };
-          // Se la rotta specifica 'routerLink' nel data, usalo, altrimenti utilizza l'URL accumulato
-          menuItem.routerLink = child.snapshot.data['routerLink'] || url;
-          breadcrumbs.push(menuItem);
+        let id;
+        switch(label){
+          case 'Details':
+            id = child.snapshot.paramMap.get('id');
+            breadcrumbs.push(
+              { label: 'Certificates', routerLink: '/certificates', style:{ 'color':'var(--breadcrumb-link)',} },
+              { label: `Details`, routerLink: `/details/${id}` }
+            );
+            break;
+          case 'Product details':
+            id = child.snapshot.paramMap.get('id');
+            breadcrumbs.push(
+              { label: 'Product', routerLink: '/products', style:{ 'color':'var(--breadcrumb-link)',} },
+              { label: `Details`, routerLink: `/details/${id}` }
+            );
+          break;
+
+          default:
+            // Crea un singolo menu item per altri casi
+            let menuItem: MenuItem = { label: label };
+            // Se la rotta specifica 'routerLink' nel data, usalo, altrimenti utilizza l'URL accumulato
+            menuItem.routerLink = child.snapshot.data['routerLink'] || url;
+            breadcrumbs.push(menuItem);
+          break;
         }
     }
 

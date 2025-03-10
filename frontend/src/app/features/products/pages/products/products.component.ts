@@ -11,6 +11,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule }   from '@angular/forms';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-products',
@@ -23,7 +24,9 @@ import { MatInputModule } from '@angular/material/input';
             MatSlideToggleModule,
             FormsModule,
             MatSortModule,
-            MatInputModule
+            MatInputModule,
+            RouterLink,
+            RouterLinkActive
           ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'

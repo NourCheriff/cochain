@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, model, signal } from '@angular/core';
-import {  MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, model, signal, ViewChild } from '@angular/core';
+import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -7,12 +7,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { LiveAnnouncer} from '@angular/cdk/a11y';
-import { COMMA, ENTER} from '@angular/cdk/keycodes';
-import { FormsModule} from '@angular/forms';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 
 @Component({
   selector: 'app-product-dialog',
@@ -28,7 +28,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatChipsModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
 
   providers: [provideNativeDateAdapter()],
@@ -38,38 +39,45 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 })
 export class ProductDialogComponent {
   readonly dialogRef = inject(MatDialogRef<ProductDialogComponent>);
+  hasIngredients: boolean = false;
 
-  isChecked:boolean =  false;
-
-  myFilter = (d: Date | null): boolean => {
-    const oggi = new Date();
-    oggi.setHours(0, 0, 0, 0);
-    return d ? d >= oggi : false;
-  };
-
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  readonly currentFruit = model('');
-  readonly ingredients = signal<string[]>([]); // if you want to insert default ingredients
-  readonly allFruits: string[] = ['Ingredient1', 'Ingredient2', 'Ingredient3', 'Ingredient4', 'Ingredient5'];//where the ingredients will be loaded
-  readonly filteredFruits = computed(() => {
-    const currentFruit = this.currentFruit().toLowerCase();
-    return currentFruit
-      ? this.allFruits.filter(ingredient => ingredient.toLowerCase().includes(currentFruit))
-      : this.allFruits.slice();
+  newProductForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required]),
+    hasIngredients: new FormControl(false),
+    ingredients: new FormControl('')
   });
+
+  @ViewChild("fileInput") fileInput!: ElementRef
+  fileUploaded!: File
+  uploadEnabled: boolean = false;
 
   readonly announcer = inject(LiveAnnouncer);
 
+  readonly ingredients = signal<string[]>([]);
+  readonly allIngredients: string[] = ['Ingredient1', 'Ingredient2', 'Ingredient3', 'Ingredient4', 'Ingredient5'];
+
+  constructor(private fileUploadService: FileUploadService) {}
+  // get from API
+  readonly products: Option[] = [
+    { value: 'name1', displayValue: 'name1' },
+    { value: 'name2', displayValue: 'name2' },
+    { value: 'name3', displayValue: 'name3' },
+    { value: 'name4', displayValue: 'name4' },
+    { value: 'name5', displayValue: 'name5' },
+  ];
+
+  readonly filteredIngredients = computed(() => {
+    return this.ingredients().length === 0
+      ? this.allIngredients
+      : this.allIngredients.filter((ingredient: string) => !this.ingredients().includes(ingredient));
+  });
+
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-
-    // Add our ingredient
     if (value) {
       this.ingredients.update(ingredients => [...ingredients, value]);
     }
-
-    // Clear the input value
-    this.currentFruit.set('');
   }
 
   remove(ingredient: string): void {
@@ -87,7 +95,54 @@ export class ProductDialogComponent {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.ingredients.update(ingredients => [...ingredients, event.option.viewValue]);
-    this.currentFruit.set('');
     event.option.deselect();
   }
+
+  dateFilter = (d: Date | null): boolean => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return d ? d >= today : false;
+  };
+
+
+  createProduct(){
+    const productName = this.newProductForm.value.name
+    const date = this.newProductForm.value.date
+    if(this.newProductForm.value.hasIngredients){
+      const ingredients: string[] = this.ingredients()
+      console.log(ingredients)
+    }
+
+    const fileData = new FormData()
+    fileData.append('file',this.fileUploaded)
+
+    for (const pair of fileData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+  }
+
+
+  onSelectFile(event : Event){
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.fileUploaded = input.files[0]
+      if(this.fileUploaded.type !== "application/pdf"){
+        alert("Only PDF allowed")
+        return
+      }
+      this.uploadEnabled = true
+    }else{
+      alert("Upload a file!")
+    }
+  }
+
+   reset(){
+    this.fileInput.nativeElement.value = null
+    this.uploadEnabled = false
+  }
+}
+
+interface Option {
+  value: string;
+  displayValue: string;
 }

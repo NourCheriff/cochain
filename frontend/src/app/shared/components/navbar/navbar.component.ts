@@ -14,6 +14,6 @@ export class NavbarComponent {
   readonly router = inject(Router);
 
   isWalletRoute(): boolean {
-    return this.router.url === '/home';
+    return this.router.url === '/';
   }
 }

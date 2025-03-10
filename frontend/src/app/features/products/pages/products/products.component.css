@@ -24,6 +24,8 @@ mat-paginator {
 
 .search_filter {
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .search_icon {
@@ -46,6 +48,7 @@ table {
 }
 
 .action_button {
+  background-color: var(--btn-ternary);
   border: none;
   color: white;
   text-align: center;
@@ -55,24 +58,31 @@ table {
   cursor: pointer;
   display: block;
   margin: auto;
-  background-color: var(--btn-ternary);
+}
+
+a{
+  text-decoration: none;
+  color: white;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .header_text{
   padding-left: 20px;
-  float:left;
+  float: left;
   font-size: 24px;
  }
 
-.header_options{
-  float:right;
+.header_options {
   display: flex;
-  justify-content: flex-start;
-  align-items: stretch;
+  align-items: center;
+  justify-content: center;
   gap: 20px;
-  position: relative;
-
- }
+}
 
 .header_button{
   background-color: var(--btn-secondary) !important;

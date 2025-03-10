@@ -18,7 +18,7 @@ mat-paginator {
 }
 
 .attachment_button {
-  background-color: var(--btn-ternary);
+  background-color: var(--btn-secondary);
   border: none;
   color: white;
   text-align: center;

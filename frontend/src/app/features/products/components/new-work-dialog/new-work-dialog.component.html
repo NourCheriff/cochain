@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>New Work</h2>
+<mat-dialog-content>
+  <form [formGroup]="newWorkForm" >
+    <mat-form-field appearance="outline">
+      <mat-label>Work Type</mat-label>
+      <mat-select [(value)]="selectedWorkType" formControlName="work" (selectionChange)="onSelectionChange($event.value)">
+        <mat-option value="transport">Transport</mat-option>
+        <mat-option value="seed">Seed</mat-option>
+        <mat-option value="packaging">Packaging</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    @if(isReceiverVisible){
+      <mat-form-field appearance="outline">
+        <mat-label>Receiver</mat-label>
+        <mat-select [(value)]="selectedReceiver" formControlName="receiver">
+          <mat-option value="alfa">Alfa</mat-option>
+          <mat-option value="delta">Delta</mat-option>
+          <mat-option value="gamma">Gamma</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
+
+    <mat-form-field appearance="outline" >
+      <mat-label>Choose a date</mat-label>
+      <input matInput  [matDatepicker]="picker" formControlName="workDate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker panelClass="custom-datepicker"></mat-datepicker>
+    </mat-form-field>
+
+    <div class="file">
+      <div class="bill">
+        <label for="billUp" >
+          Upload bill
+        </label>
+        <div class="file_button">
+          <input type="file" #billFile id="billUp" accept="application/pdf" (change)="onSelectFile($event)"/>
+          <button mat-icon-button class="reset_button" type="button" (click)="reset('bill')"><mat-icon>delete_outline</mat-icon></button>
+        </div>
+      </div>
+      @if(isReceiverVisible){
+        <div class="transport">
+          <label for="transportUp">
+            Upload transport document
+          </label>
+          <div class="file_button">
+            <input type="file" #transportFile id="transportUp" accept="application/pdf" (change)="onSelectFile($event)"/>
+            <button mat-icon-button class="reset_button" type="button" (click)="reset('transport')"><mat-icon>delete_outline</mat-icon></button>
+          </div>
+        </div>
+       }
+    </div>
+
+    <button mat-flat-button class="dialog_button" (click)="createWork()" [disabled]="!isFormValid()">Create new work</button>
+
+  </form>
+</mat-dialog-content>
