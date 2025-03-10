@@ -1,0 +1,63 @@
+
+
+<mat-dialog-content class="dialog" [style.height]="isSupplyChainPartner() ? '90%' : '80%'">
+  <h3>{{ this.data.company === 'supply_chain_partner' ? 'Supply Chain Partner' : 'Certification Authority' }}</h3>
+  <br>
+  <form [formGroup]="companyForm" (ngSubmit)="insertCompanyAndUser()">
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Name</mat-label>
+    <input matInput type="text" formControlName="nameCompany">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Phone</mat-label>
+    <input matInput type="tel" formControlName="phoneCompany">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field_form" [style.width]="isSupplyChainPartner() ? '45%' : '95%'">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="emailCompany">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field_form" [style.display]="isSupplyChainPartner() ? 'in-line' : 'none'">
+    <mat-label>Select a supply chain partner type</mat-label>
+    <mat-select [(value)]="selected">
+      <mat-option value="retailer">Retailer</mat-option>
+      <mat-option value="supplier">Supplier</mat-option>
+      <mat-option value="distributor">Distributor</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="wallet_field" [style.display]="isSupplyChainPartner() ? 'block' : 'none'">
+    <mat-label>Wallet</mat-label>
+    <input matInput type="text" formControlName="walletCompany">
+  </mat-form-field>
+
+  <mat-divider></mat-divider>
+
+  <br>
+
+  <h3>First User</h3>
+  <br>
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>First Name</mat-label>
+    <input matInput type="text" formControlName="firstNameUser">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Last Name</mat-label>
+    <input matInput type="text" formControlName="lastNameUser">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="emailUser">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field_form">
+    <mat-label>Phone</mat-label>
+    <input matInput type="tel" formControlName="phoneUser">
+  </mat-form-field>
+  <button mat-flat-button class="btn-primary" [disabled]="!companyForm.valid">Add</button>
+</form>
+</mat-dialog-content>
