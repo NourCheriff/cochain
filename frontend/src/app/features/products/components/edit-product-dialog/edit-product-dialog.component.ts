@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,10 +14,8 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/mat
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileUploadService } from 'src/app/core/services/fileUpload.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductInfo } from 'src/models/product/product-info.model'
-import { Product } from 'src/models/product/product.model'
-import { ProductCategory } from 'src/models/product/product-category.model';
-import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 @Component({
   selector: 'app-edit-product-dialog',
   imports: [
@@ -40,15 +38,9 @@ import { ProductIngredient } from 'src/models/product/product-ingredient.model';
   styleUrl: './edit-product-dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditProductDialogComponent implements AfterViewInit {
+export class EditProductDialogComponent {
 
   readonly dialogRef = inject(MatDialogRef<EditProductDialogComponent>);
-
-  modifiedProductForm = new FormGroup({
-    name: new FormControl(PRODUCT_INFO_3.name!, [Validators.required]),
-    date: new FormControl(new Date(PRODUCT_INFO_3.expirationDate), [Validators.required]),
-    hasIngredients: new FormControl(false),
-    ingredients: new FormControl(PRODUCT_INFO_3.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined))});
 
   @ViewChild("fileInput") fileInput!: ElementRef
   fileUploaded!: File
@@ -56,40 +48,34 @@ export class EditProductDialogComponent implements AfterViewInit {
 
   readonly announcer = inject(LiveAnnouncer);
 
-  readonly ingredients = signal<string[]>([]);
-
-  // get from API
-  readonly allIngredients: string[] = ['Ingredient1', 'Ingredient2', 'Farina', 'Uova', 'Ingredient5'];
-
-  ngAfterViewInit() {
-    // PRODUCT_INFO_3 will be the loaded product get from API
-      const INGREDIENTS = this.modifiedProductForm.get("ingredients")?.getRawValue();
-      this.ingredients.set(INGREDIENTS);
-      // load default ingredients in component
-      if(INGREDIENTS.length > 0){
-        this.modifiedProductForm.get("hasIngredients")?.setValue(true);
-      }
-      else{
-        this.modifiedProductForm.get("hasIngredients")?.setValue(false);
-      }
-
-  }
-
-  constructor(private fileUploadService: FileUploadService) {}
   // get from API
   readonly products: Option[] = [
-    { value: 'name1', displayValue: 'name1' },
-    { value: 'name2', displayValue: 'name2' },
+    { value: 'Uova', displayValue: 'Uova' },
+    { value: 'Farina', displayValue: 'Farina' },
     { value: 'Pasta', displayValue: 'Pasta' },
-    { value: 'name4', displayValue: 'name4' },
-    { value: 'name5', displayValue: 'name5' },
+    { value: 'Pizza', displayValue: 'Pizza' },
+    { value: 'Mozzarella', displayValue: 'Mozzarella' },
   ];
+
+  readonly ingredients = signal<string[]>([]);
+  // get from API
+  readonly allIngredients: string[] = ['Pizza', 'Pasta', 'Farina', 'Uova', 'Mozzarella'];
 
   readonly filteredIngredients = computed(() => {
     return this.ingredients().length === 0
       ? this.allIngredients
       : this.allIngredients.filter((ingredient: string) => !this.ingredients().includes(ingredient));
   });
+
+  modifiedProductForm = new FormGroup<ProductForm>({});
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}, private fileUploadService: FileUploadService) {
+    const INGREDIENTS = this.data.product.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined);
+    this.modifiedProductForm.addControl('name', new FormControl<string>(data.product.name!, Validators.required));
+    this.modifiedProductForm.addControl('date', new FormControl<Date>(new Date(this.data.product.expirationDate), Validators.required));
+    this.modifiedProductForm.addControl('hasIngredients', new FormControl<boolean>((INGREDIENTS.length > 0)? true : false, Validators.required));
+    this.ingredients.set(INGREDIENTS);
+  }
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -165,56 +151,8 @@ interface Option {
   displayValue: string;
 }
 
-const CATEGORY_1: ProductCategory = {
-    description: 'Materie Prime'
-  }
-const CATEGORY_2: ProductCategory = {
-  description: 'Materie Lavorata'
-}
-
-const PRODUCT_1: Product = {
-  description: 'Farina grano duro 00',
-  category: CATEGORY_1
-}
-
-const PRODUCT_2: Product = {
-  description: 'Uova confezione da 6',
-  category: CATEGORY_1
-}
-
-const PRODUCT_3: Product = {
-  description: 'Pasta 500g',
-  category: CATEGORY_2
-}
-
-const PRODUCT_INFO_1: ProductInfo = {
-  id: "1",
-  name: "Farina",
-  product: PRODUCT_1,
-  expirationDate:  "17-04-2025",
-  ingredients: [{}],
-}
-
-const INGREDIENT_1: ProductIngredient = {
-  ingredient: PRODUCT_INFO_1
-}
-
-const PRODUCT_INFO_2: ProductInfo = {
-  id: "2",
-  name: "Uova",
-  product: PRODUCT_2,
-  expirationDate:  "17-04-2025",
-  ingredients: [{}],
-}
-
-const INGREDIENT_2: ProductIngredient = {
-  ingredient: PRODUCT_INFO_2
-}
-
-const PRODUCT_INFO_3: ProductInfo = {
-  id: "3",
-  name: "Pasta",
-  product: PRODUCT_3,
-  expirationDate:  "04/17/2025",
-  ingredients: [INGREDIENT_1, INGREDIENT_2],
+interface ProductForm {
+  name?: FormControl<string | null>;
+  date?: FormControl<Date | null>;
+  hasIngredients?: FormControl<boolean | null>;
 }
