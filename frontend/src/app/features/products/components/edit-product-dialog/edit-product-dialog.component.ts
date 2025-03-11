@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -41,10 +41,12 @@ import { ProductIngredient } from 'src/models/product/product-ingredient.model';
   styleUrl: './edit-product-dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditProductDialogComponent implements OnInit {
+export class EditProductDialogComponent implements AfterViewInit {
 
   readonly dialogRef = inject(MatDialogRef<EditProductDialogComponent>);
-  hasIngredients: boolean = false;
+  hasIngredients:boolean = false;
+  defaultName:string = "";
+  defaultDate: Date = new Date();
 
   newProductForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -59,30 +61,37 @@ export class EditProductDialogComponent implements OnInit {
 
   readonly announcer = inject(LiveAnnouncer);
 
-
-
   readonly ingredients = signal<string[]>([]);
   readonly allIngredients: string[] = ['Ingredient1', 'Ingredient2', 'Farina', 'Uova', 'Ingredient5'];
 
-  ngOnInit() {
+  ngAfterViewInit() {
     // PRODUCT_INFO_3 will be the loaded product
     PRODUCT_INFO_3.ingredients!.forEach(ingredient => {
-      // load ingredients in component
+      // load default ingredients in component
       const ingredientNames = PRODUCT_INFO_3.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined);;
       if(ingredientNames.length > 0){
         this.ingredients.set(ingredientNames);
+        this.newProductForm.value.hasIngredients = true;
         this.hasIngredients = true;
       }
-
+      else{
+        this.newProductForm.value.hasIngredients = false;
+        this.hasIngredients = false;
+      }
     });
+    this.defaultName = PRODUCT_INFO_3.name!;
+    this.defaultDate = new Date(PRODUCT_INFO_3.expirationDate);
+    console.log(this.defaultDate)
   }
+
+
 
   constructor(private fileUploadService: FileUploadService) {}
   // get from API
   readonly products: Option[] = [
     { value: 'name1', displayValue: 'name1' },
     { value: 'name2', displayValue: 'name2' },
-    { value: 'name3', displayValue: 'name3' },
+    { value: 'Pasta', displayValue: 'Pasta' },
     { value: 'name4', displayValue: 'name4' },
     { value: 'name5', displayValue: 'name5' },
   ];
@@ -217,6 +226,6 @@ const PRODUCT_INFO_3: ProductInfo = {
   id: "3",
   name: "Pasta",
   product: PRODUCT_3,
-  expirationDate:  "17-04-2025",
+  expirationDate:  "04/17/2025",
   ingredients: [INGREDIENT_1, INGREDIENT_2],
 }
