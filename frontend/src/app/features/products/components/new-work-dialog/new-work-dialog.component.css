@@ -30,12 +30,11 @@ label{
 .reset_button {
   padding-bottom: 25px;
   float: right;
-  background-color: red;
-  color: white;
+  background-color: transparent;
+  color: red;
 }
 
-.dialog_button {
-  background-color: var(--btn-primary) !important;
+.btn-primary {
   width: 100%;
 }
 
