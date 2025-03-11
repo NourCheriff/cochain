@@ -9,7 +9,10 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { NewWorkDialogComponent } from '../../components/new-work-dialog/new-work-dialog.component';
 import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
-
+import { ProductInfo } from 'src/models/product/product-info.model'
+import { Product } from 'src/models/product/product.model'
+import { ProductCategory } from 'src/models/product/product-category.model';
+import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 @Component({
   selector: 'app-product-details',
   imports: [MatTableModule, MatPaginatorModule, MatCardModule,MatButtonModule, MatDividerModule, MatIconModule,MatChipsModule],
@@ -32,7 +35,9 @@ export class ProductDetailsComponent implements AfterViewInit {
   }
 
   modifyProduct(){
-    this.dialog.open(EditProductDialogComponent)
+    this.dialog.open(EditProductDialogComponent,
+      {data: {product: PRODUCT_INFO_2,}}
+    );
   }
 
   isAdmin(): boolean{
@@ -64,3 +69,58 @@ const workElements: WorkElement[] = [
   { workType: "Construction", emissions: 140, workDate: 1710604800000, attachments: "building_permit.pdf" },
   { workType: "Agriculture", emissions: 170, workDate: 1710691200000, attachments: "crop_rotation.pdf" }
 ];
+
+
+const CATEGORY_1: ProductCategory = {
+  description: 'Materie Prime'
+}
+const CATEGORY_2: ProductCategory = {
+description: 'Materie Lavorata'
+}
+
+const PRODUCT_1: Product = {
+description: 'Farina grano duro 00',
+category: CATEGORY_1
+}
+
+const PRODUCT_2: Product = {
+description: 'Uova confezione da 6',
+category: CATEGORY_1
+}
+
+const PRODUCT_3: Product = {
+description: 'Pasta 500g',
+category: CATEGORY_2
+}
+
+const PRODUCT_INFO_1: ProductInfo = {
+id: "1",
+name: "Farina",
+product: PRODUCT_1,
+expirationDate:  "10/30/2026",
+ingredients: [],
+}
+
+const INGREDIENT_1: ProductIngredient = {
+ingredient: PRODUCT_INFO_1
+}
+
+const PRODUCT_INFO_2: ProductInfo = {
+id: "2",
+name: "Uova",
+product: PRODUCT_2,
+expirationDate:  "07/24/2025",
+ingredients: [],
+}
+
+const INGREDIENT_2: ProductIngredient = {
+ingredient: PRODUCT_INFO_2
+}
+
+const PRODUCT_INFO_3: ProductInfo = {
+id: "3",
+name: "Pasta",
+product: PRODUCT_3,
+expirationDate:  "04/17/2025",
+ingredients: [INGREDIENT_1, INGREDIENT_2],
+}
