@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild, OnInit } from '@angular/core';
 import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +14,10 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/mat
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileUploadService } from 'src/app/core/services/fileUpload.service';
-
+import { ProductInfo } from 'src/models/product/product-info.model'
+import { Product } from 'src/models/product/product.model'
+import { ProductCategory } from 'src/models/product/product-category.model';
+import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 @Component({
   selector: 'app-edit-product-dialog',
   imports: [
@@ -38,7 +41,8 @@ import { FileUploadService } from 'src/app/core/services/fileUpload.service';
   styleUrl: './edit-product-dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditProductDialogComponent {
+export class EditProductDialogComponent implements OnInit {
+
   readonly dialogRef = inject(MatDialogRef<EditProductDialogComponent>);
   hasIngredients: boolean = false;
 
@@ -55,8 +59,23 @@ export class EditProductDialogComponent {
 
   readonly announcer = inject(LiveAnnouncer);
 
+
+
   readonly ingredients = signal<string[]>([]);
-  readonly allIngredients: string[] = ['Ingredient1', 'Ingredient2', 'Ingredient3', 'Ingredient4', 'Ingredient5'];
+  readonly allIngredients: string[] = ['Ingredient1', 'Ingredient2', 'Farina', 'Uova', 'Ingredient5'];
+
+  ngOnInit() {
+    // PRODUCT_INFO_3 will be the loaded product
+    PRODUCT_INFO_3.ingredients!.forEach(ingredient => {
+      // load ingredients in component
+      const ingredientNames = PRODUCT_INFO_3.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined);;
+      if(ingredientNames.length > 0){
+        this.ingredients.set(ingredientNames);
+        this.hasIngredients = true;
+      }
+
+    });
+  }
 
   constructor(private fileUploadService: FileUploadService) {}
   // get from API
@@ -146,4 +165,58 @@ export class EditProductDialogComponent {
 interface Option {
   value: string;
   displayValue: string;
+}
+
+const CATEGORY_1: ProductCategory = {
+    description: 'Materie Prime'
+  }
+const CATEGORY_2: ProductCategory = {
+  description: 'Materie Lavorata'
+}
+
+const PRODUCT_1: Product = {
+  description: 'Farina grano duro 00',
+  category: CATEGORY_1
+}
+
+const PRODUCT_2: Product = {
+  description: 'Uova confezione da 6',
+  category: CATEGORY_1
+}
+
+const PRODUCT_3: Product = {
+  description: 'Pasta 500g',
+  category: CATEGORY_2
+}
+
+const PRODUCT_INFO_1: ProductInfo = {
+  id: "1",
+  name: "Farina",
+  product: PRODUCT_1,
+  expirationDate:  "17-04-2025",
+  ingredients: [{}],
+}
+
+const INGREDIENT_1: ProductIngredient = {
+  ingredient: PRODUCT_INFO_1
+}
+
+const PRODUCT_INFO_2: ProductInfo = {
+  id: "2",
+  name: "Uova",
+  product: PRODUCT_2,
+  expirationDate:  "17-04-2025",
+  ingredients: [{}],
+}
+
+const INGREDIENT_2: ProductIngredient = {
+  ingredient: PRODUCT_INFO_2
+}
+
+const PRODUCT_INFO_3: ProductInfo = {
+  id: "3",
+  name: "Pasta",
+  product: PRODUCT_3,
+  expirationDate:  "17-04-2025",
+  ingredients: [INGREDIENT_1, INGREDIENT_2],
 }
