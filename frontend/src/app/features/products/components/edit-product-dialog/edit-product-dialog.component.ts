@@ -35,7 +35,6 @@ import { ProductIngredient } from 'src/models/product/product-ingredient.model';
     FormsModule,
     ReactiveFormsModule
   ],
-
   providers: [provideNativeDateAdapter()],
   templateUrl: './edit-product-dialog.component.html',
   styleUrl: './edit-product-dialog.component.css',
@@ -44,13 +43,10 @@ import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 export class EditProductDialogComponent implements AfterViewInit {
 
   readonly dialogRef = inject(MatDialogRef<EditProductDialogComponent>);
-  hasIngredients:boolean = false;
-  defaultName:string = "";
-  defaultDate: Date = new Date();
 
-  newProductForm = new FormGroup({
+  modifiedProductForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    date: new FormControl('', [Validators.required]),
+    date: new FormControl(new Date(), [Validators.required]),
     hasIngredients: new FormControl(false),
     ingredients: new FormControl('')
   });
@@ -62,29 +58,32 @@ export class EditProductDialogComponent implements AfterViewInit {
   readonly announcer = inject(LiveAnnouncer);
 
   readonly ingredients = signal<string[]>([]);
+
+  // get from API
   readonly allIngredients: string[] = ['Ingredient1', 'Ingredient2', 'Farina', 'Uova', 'Ingredient5'];
 
   ngAfterViewInit() {
-    // PRODUCT_INFO_3 will be the loaded product
+    // PRODUCT_INFO_3 will be the loaded product get from API
+
+    //set default name and date
+    this.modifiedProductForm.get("name")?.setValue(PRODUCT_INFO_3.name!);
+    this.modifiedProductForm.get("date")?.setValue(new Date(PRODUCT_INFO_3.expirationDate));
+
     PRODUCT_INFO_3.ingredients!.forEach(ingredient => {
       // load default ingredients in component
-      const ingredientNames = PRODUCT_INFO_3.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined);;
+      const ingredientNames = PRODUCT_INFO_3.ingredients!
+                              .map(ingredient => ingredient.ingredient!.name)
+                              .filter((name): name is string => name !== undefined);
+
       if(ingredientNames.length > 0){
         this.ingredients.set(ingredientNames);
-        this.newProductForm.value.hasIngredients = true;
-        this.hasIngredients = true;
+        this.modifiedProductForm.get("hasIngredients")?.setValue(true);
       }
       else{
-        this.newProductForm.value.hasIngredients = false;
-        this.hasIngredients = false;
+        this.modifiedProductForm.get("hasIngredients")?.setValue(false);
       }
     });
-    this.defaultName = PRODUCT_INFO_3.name!;
-    this.defaultDate = new Date(PRODUCT_INFO_3.expirationDate);
-    console.log(this.defaultDate)
   }
-
-
 
   constructor(private fileUploadService: FileUploadService) {}
   // get from API
@@ -134,12 +133,12 @@ export class EditProductDialogComponent implements AfterViewInit {
   };
 
 
-  createProduct(){
-    const productName = this.newProductForm.value.name
-    const date = this.newProductForm.value.date
-    if(this.newProductForm.value.hasIngredients){
-      const ingredients: string[] = this.ingredients()
-      console.log(ingredients)
+  modifyProduct(){
+    const modifiedProductName = this.modifiedProductForm.value.name
+    const modifiedDate = this.modifiedProductForm.value.date
+    if(this.modifiedProductForm.value.hasIngredients){
+      const modifiedIngredients: string[] = this.ingredients()
+      console.log(modifiedIngredients)
     }
 
     const fileData = new FormData()

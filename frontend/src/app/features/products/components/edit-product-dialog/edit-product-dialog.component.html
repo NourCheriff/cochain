@@ -1,10 +1,10 @@
 <h2 mat-dialog-title>Edit Product</h2>
 <mat-dialog-content class="dialog">
-  <form [formGroup]="newProductForm">
+  <form [formGroup]="modifiedProductForm">
 
     <mat-form-field appearance="outline">
       <mat-label>Name</mat-label>
-      <mat-select formControlName="name" [(value)]="defaultName">
+      <mat-select formControlName="name" [(value)]="modifiedProductForm.value.name">
         @for (product of products; track $index) {
           <mat-option [value]="product.value"> {{ product.displayValue }} </mat-option>
         }
@@ -13,13 +13,13 @@
 
     <mat-form-field appearance="outline">
       <mat-label> Expiration date </mat-label>
-      <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" formControlName="date" [value]="defaultDate">
+      <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" formControlName="date" [value]="modifiedProductForm.value.date">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
     </mat-form-field>
 
-    <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients" [(ngModel)]="hasIngredients"> Has ingredients </mat-slide-toggle></p>
-      <div [class.hidden]="!newProductForm.value.hasIngredients">
+    <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients"> Has ingredients </mat-slide-toggle></p>
+      <div [class.hidden]="!modifiedProductForm.value.hasIngredients">
         <mat-form-field appearance="outline">
           <mat-label> Choose ingredients </mat-label>
           <mat-chip-grid #chipGrid aria-label="insert ingredients" formControlName="ingredients">
@@ -52,7 +52,7 @@
         <button mat-icon-button class="reset_button" type="button" (click)="reset()"><mat-icon>delete_outline</mat-icon></button>
       </div>
       <div class="btn-container">
-        <button mat-flat-button class="btn-primary w-75" [disabled]="!newProductForm.valid || !uploadEnabled" (click)="createProduct()">Create product</button>
+        <button mat-flat-button class="btn-primary w-75" [disabled]="!modifiedProductForm.valid || !uploadEnabled" (click)="modifyProduct()">Modify product</button>
       </div>
   </form>
 
