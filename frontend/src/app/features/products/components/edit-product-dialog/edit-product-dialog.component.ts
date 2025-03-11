@@ -45,11 +45,10 @@ export class EditProductDialogComponent implements AfterViewInit {
   readonly dialogRef = inject(MatDialogRef<EditProductDialogComponent>);
 
   modifiedProductForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    date: new FormControl(new Date(), [Validators.required]),
+    name: new FormControl(PRODUCT_INFO_3.name!, [Validators.required]),
+    date: new FormControl(new Date(PRODUCT_INFO_3.expirationDate), [Validators.required]),
     hasIngredients: new FormControl(false),
-    ingredients: new FormControl('')
-  });
+    ingredients: new FormControl(PRODUCT_INFO_3.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined))});
 
   @ViewChild("fileInput") fileInput!: ElementRef
   fileUploaded!: File
@@ -64,25 +63,16 @@ export class EditProductDialogComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     // PRODUCT_INFO_3 will be the loaded product get from API
-
-    //set default name and date
-    this.modifiedProductForm.get("name")?.setValue(PRODUCT_INFO_3.name!);
-    this.modifiedProductForm.get("date")?.setValue(new Date(PRODUCT_INFO_3.expirationDate));
-
-    PRODUCT_INFO_3.ingredients!.forEach(ingredient => {
+      const INGREDIENTS = this.modifiedProductForm.get("ingredients")?.getRawValue();
+      this.ingredients.set(INGREDIENTS);
       // load default ingredients in component
-      const ingredientNames = PRODUCT_INFO_3.ingredients!
-                              .map(ingredient => ingredient.ingredient!.name)
-                              .filter((name): name is string => name !== undefined);
-
-      if(ingredientNames.length > 0){
-        this.ingredients.set(ingredientNames);
+      if(INGREDIENTS.length > 0){
         this.modifiedProductForm.get("hasIngredients")?.setValue(true);
       }
       else{
         this.modifiedProductForm.get("hasIngredients")?.setValue(false);
       }
-    });
+
   }
 
   constructor(private fileUploadService: FileUploadService) {}
