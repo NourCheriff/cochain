@@ -3,10 +3,10 @@
   <form [formGroup]="newProductForm">
 
     <mat-form-field appearance="outline">
-      <mat-label>Favorite food</mat-label>
+      <mat-label>Product type</mat-label>
       <mat-select formControlName="name">
-        @for (product of products; track $index) {
-          <mat-option [value]="product.value"> {{ product.displayValue }} </mat-option>
+        @for (productCategory of productCategories; track $index) {
+          <mat-option [value]="productCategory.name"> {{ productCategory.name }} </mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -52,8 +52,9 @@
         <button mat-icon-button class="reset_button" type="button" (click)="reset()"><mat-icon>delete_outline</mat-icon></button>
       </div>
       <div class="btn-container">
-        <button mat-flat-button class="btn-primary w-75" [disabled]="!newProductForm.valid || !uploadEnabled" (click)="createProduct()">Create product</button>
+        <button mat-flat-button class="btn-primary w-75"  (click)="createProduct()">Create product</button>
       </div>
+      <!-- [disabled]="!newProductForm.valid || !uploadEnabled" -->
   </form>
 
 </mat-dialog-content>
