@@ -12,23 +12,21 @@
     <mat-card-content class="content">
       <div class="info_row">
         <p class="label">Name</p>
-        <p>product1</p>
+        <p>{{productInfo.name}}</p>
       </div>
       <div class="info_row">
         <p class="label">Category</p>
-        <p>category1</p>
+        <p>{{productInfo.product?.category?.id}}</p>
       </div>
       <div class="info_row">
         <p class="label">Description</p>
         <p class="description">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione, nobis eum.
-          Deserunt temporibus recusandae repellendus eos facere maxime praesentium itaque
-          veniam non, officiis ipsa ducimus hic ea necessitatibus perspiciatis maiores.
+          {{productInfo.product?.description}}
         </p>
       </div>
       <div class="info_row">
         <p class="label">Expiration date</p>
-        <p>22-05-2025</p>
+        <p>{{productInfo.expirationDate}}</p>
       </div>
       <div class="info_row">
         <p class="label">Quality certificate</p>
@@ -50,10 +48,9 @@
       <div class="info_row">
         <p class="label">Ingredients</p>
         <mat-chip-set aria-label="Ingredient">
-          <mat-chip>Ingredient 1</mat-chip>
-          <mat-chip>Ingredient 2</mat-chip>
-          <mat-chip>Ingredient 3</mat-chip>
-          <mat-chip>Ingredient 4</mat-chip>
+          @for (item of productInfo.ingredients; track $index) {
+            <mat-chip>{{item.ingredientId}}</mat-chip>
+          }
         </mat-chip-set>
       </div>
     </mat-card-content>
