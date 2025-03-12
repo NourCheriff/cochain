@@ -59,11 +59,14 @@ namespace CochainAPI.Controllers
         public async Task<IActionResult> RequestPassword(AuthenticateRequest model)
         {
             var response = await _authService.GenerateTemporaryCredentials(model);
-
+            /*
             if (!response)
                 return BadRequest(new { message = "Username is incorrect" });
-
+            
             return Ok(response);
+            */
+            
+            return Ok();
         }
 
         [HttpPost("Login")]
