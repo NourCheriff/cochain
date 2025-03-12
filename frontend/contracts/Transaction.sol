@@ -9,17 +9,17 @@ contract SmartWalletAccount {
         return totalCarbonCreditsTransferred;
     }
 
-    function getCarbonCreditsBalance(
-        address walletAddress
-    ) public view returns (uint256) {
-        return carbonCreditsBalances[walletAddress];
+    function getCarbonCreditsBalance() public view returns (uint256) {
+        return carbonCreditsBalances[msg.sender];
     }
 
-    function transferCarbonCredits(address receiverAddress) public payable {
-        carbonCreditsBalances[receiverAddress] += msg.value;
-        carbonCreditsBalances[msg.sender] -= msg.value;
-        totalCarbonCreditsTransferred =
-            totalCarbonCreditsTransferred +
-            msg.value;
+    function transferCarbonCredits(
+        address receiverAddress,
+        uint256 amount
+    ) public {
+        require(carbonCreditsBalances[msg.sender] >= amount);
+        carbonCreditsBalances[receiverAddress] += amount;
+        carbonCreditsBalances[msg.sender] -= amount;
+        totalCarbonCreditsTransferred = totalCarbonCreditsTransferred + amount;
     }
 }
