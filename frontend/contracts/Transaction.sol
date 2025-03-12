@@ -1,22 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract Transaction {
-    event Transfer(
-        address indexed emitter,
-        address indexed receiver,
-        uint256 amount
-    );
+contract SmartWalletAccount {
+    uint256 totalCarbonCreditsTransferred = 0;
+    mapping(address => uint256) carbonCreditsBalances;
 
-    function transferFunds(address payable receiver) public payable {
-        require(msg.value > 0, "Inserisci un importo positivo");
-        require(
-            receiver != address(0),
-            "Indirizzo del destinatario non valido"
-        );
+    function getCarbonCreditsTransferred() public view returns (uint256) {
+        return totalCarbonCreditsTransferred;
+    }
 
-        receiver.transfer(msg.value);
+    function getCarbonCreditsBalance(
+        address walletAddress
+    ) public view returns (uint256) {
+        return carbonCreditsBalances[walletAddress];
+    }
 
-        emit Transfer(msg.sender, receiver, msg.value);
+    function transferCarbonCredits(address receiverAddress) public payable {
+        carbonCreditsBalances[receiverAddress] += msg.value;
+        carbonCreditsBalances[msg.sender] -= msg.value;
+        totalCarbonCreditsTransferred =
+            totalCarbonCreditsTransferred +
+            msg.value;
     }
 }
