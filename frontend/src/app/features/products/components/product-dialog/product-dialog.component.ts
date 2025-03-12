@@ -13,6 +13,10 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/mat
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileUploadService } from 'src/app/core/services/fileUpload.service';
+import { Product } from 'src/models/product/product.model';
+import { ProductCategory } from 'src/models/product/product-category.model';
+import { ProductInfo } from 'src/models/product/product-info.model';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-dialog',
@@ -57,7 +61,7 @@ export class ProductDialogComponent {
   readonly ingredients = signal<string[]>([]);
   readonly allIngredients: string[] = ['Ingredient1', 'Ingredient2', 'Ingredient3', 'Ingredient4', 'Ingredient5'];
 
-  constructor(private fileUploadService: FileUploadService) {}
+  constructor(private productService: ProductService) {}
   // get from API
   readonly products: Option[] = [
     { value: 'name1', displayValue: 'name1' },
@@ -110,15 +114,36 @@ export class ProductDialogComponent {
     const date = this.newProductForm.value.date
     if(this.newProductForm.value.hasIngredients){
       const ingredients: string[] = this.ingredients()
-      console.log(ingredients)
     }
 
-    const fileData = new FormData()
-    fileData.append('file',this.fileUploaded)
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
 
-    for (const pair of fileData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
+      let category: ProductCategory = {
+        description: 'prova'
+      }
+
+      let product: Product = {
+        description:'prova',
+        category: category,
+      }
+
+      let productInfo: ProductInfo = {
+        name: productName!,
+        product: product,
+        expirationDate: date!,
+      }
+
+      const res = this.productService.addProduct(productInfo)
+      console.log(res)
+      // this.fileUploadService.uploadFile(doc).subscribe({
+      //   next: (response) => console.log('File uploaded successfully', response),
+      //   error: (error) => console.error('File upload failed', error),
+      // });
+    };
+
+    reader.readAsDataURL(this.fileUploaded);
   }
 
 

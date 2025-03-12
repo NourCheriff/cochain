@@ -11,6 +11,6 @@ export class ProductService {
   constructor(private apiService: BaseHttpService) {}
 
   addProduct(productInfo: ProductInfo): Observable<ProductInfo>{
-      return this.apiService.add("/api/Product", productInfo)
+    return this.apiService.add("/api/Product", productInfo)
   }
 }
