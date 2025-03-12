@@ -10,10 +10,7 @@ import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-
-interface DialogData {
-  email: string;
-}
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-login-dialog',
@@ -33,10 +30,11 @@ export class LoginDialogComponent {
   @Output() resendOtpEvent = new EventEmitter();
   isLoginRequestSent = false;
 
+  private authService = inject(AuthService);
   private _snackBar = inject(MatSnackBar);
   readonly dialogRef = inject(MatDialogRef<LoginDialogComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA)
-  otp = new FormControl("", Validators.required);
+  otp = new FormControl("", [Validators.required, Validators.pattern("^[0-9]{6}$")]);
 
   resendOtp() {
     this._showSnackbar('OTP resent');
@@ -44,12 +42,16 @@ export class LoginDialogComponent {
   }
 
   login() {
-    this.isLoginRequestSent = true; // disable send button
+    this.isLoginRequestSent = true;
     this._showSnackbar('Login request sent successfully');
-    console.log(`OTP Sent: ${this.data.email}, ${this.otp.value}`); /** inject and call auth service or do it in the form component */
+    this.authService.login(this.data.email, this.otp.value!)
   }
 
   private _showSnackbar(message: string) {
     this._snackBar.open(message, undefined, { duration: 3000 });
   }
+}
+
+interface DialogData {
+  email: string;
 }

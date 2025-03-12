@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialogComponent } from '../dialog/dialog.component';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -12,6 +13,7 @@ import { LoginDialogComponent } from '../dialog/dialog.component';
   styleUrl: './form.component.css'
 })
 export class LoginFormComponent {
+  private authService = inject(AuthService);
   readonly dialog = inject(MatDialog);
 
   loginForm = new FormGroup({
@@ -19,7 +21,10 @@ export class LoginFormComponent {
   });
 
   requestOtp() {
-    console.log(`Hi, ${this.loginForm.value.email}`); /** inject and call auth service */
+    if (!this.loginForm.valid) return;
+
+    let email = this.loginForm.value.email!;
+    this.authService.requestOtp(email);
     if (!this.dialog.openDialogs || !this.dialog.openDialogs.length)
       this._openDialog();
   }
