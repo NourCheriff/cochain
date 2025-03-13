@@ -30,6 +30,11 @@ namespace CochainAPI.Data.Services
             return await _productRepository.GetGenericProducts(id);
         }
 
+        public async Task<List<ProductInfo>?> GetProductById(Guid id)
+        {
+            return await _productRepository.GetProductById(id);
+        }
+
         public async Task<List<ProductInfo>> GetProducts(string? queryParam, string? scpName, int? pageNumber, int? pageSize)
         {
             return await _productRepository.GetProducts(queryParam, scpName, pageNumber, pageSize);

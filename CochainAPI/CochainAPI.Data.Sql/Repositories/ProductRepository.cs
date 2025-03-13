@@ -53,6 +53,21 @@ namespace CochainAPI.Data.Sql.Repositories
             return await queryComplete.ToListAsync();
         }
 
+        public async Task<List<ProductInfo>?> GetProductById(Guid id)
+        {
+            if (Guid.TryParse(id.ToString(), out Guid productId))
+            {
+                return await dbContext.ProductInfo.Where(x => x.Id == productId)
+                .Include(x => x.Ingredients)
+                .Include(x => x.Product)
+                .Include(x => x.ProductLifeCycles)
+                .Include(x => x.ProductDocuments)
+                .ToListAsync();
+            }
+
+            return null;
+        }
+
         public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id)
         {
             if (Guid.TryParse(id.ToString(), out Guid scpId))
