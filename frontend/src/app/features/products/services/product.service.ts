@@ -5,6 +5,7 @@ import { BaseHttpService } from 'src/app/core/services/api.service';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
+import { Product } from 'src/models/product/product.model';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 
@@ -44,6 +45,10 @@ export class ProductService {
 
   getAllProductLifeCycleCategories(): Observable<ProductLifeCycleCategory[]>{
     return this.apiService.getAll('api/ProductLifeCycle')
+  }
+
+  getAllGenericProducts(categoryId: string): Observable<Product[]>{
+    return this.apiService.getAll('api/Product/generic', {'id' :categoryId})
   }
 
   getAllSupplyChainPartner(): Observable<SupplyChainPartner[]>{
