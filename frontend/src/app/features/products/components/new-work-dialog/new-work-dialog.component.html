@@ -4,9 +4,9 @@
     <mat-form-field appearance="outline">
       <mat-label>Work Type</mat-label>
       <mat-select [(value)]="selectedWorkType" formControlName="work" (selectionChange)="onSelectionChange($event.value)">
-        <mat-option value="transport">Transport</mat-option>
-        <mat-option value="seed">Seed</mat-option>
-        <mat-option value="packaging">Packaging</mat-option>
+       @for (productLifeCycleCategory of productLifeCycleCategories; track $index) {
+          <mat-option [value]="productLifeCycleCategory.name"> {{ productLifeCycleCategory.name }} </mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
@@ -14,9 +14,9 @@
       <mat-form-field appearance="outline">
         <mat-label>Receiver</mat-label>
         <mat-select [(value)]="selectedReceiver" formControlName="receiver">
-          <mat-option value="alfa">Alfa</mat-option>
-          <mat-option value="delta">Delta</mat-option>
-          <mat-option value="gamma">Gamma</mat-option>
+          @for (supplyChainPartner of supplyChainPartners; track $index) {
+          <mat-option [value]="supplyChainPartner.name"> {{ supplyChainPartner.name }} </mat-option>
+        }
         </mat-select>
       </mat-form-field>
     }
@@ -27,6 +27,11 @@
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker panelClass="custom-datepicker"></mat-datepicker>
     </mat-form-field>
+
+    <label class="label_emissions">
+      Emissions calculated by the sistem:
+      <p class="emissions" #emissions></p>
+    </label>
 
     <div class="file">
       <div class="bill">
