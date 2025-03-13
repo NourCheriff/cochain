@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,6 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { RouterLink } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
-import { BaseHttpService } from 'src/app/core/services/api.service';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
 @Component({
@@ -92,7 +91,6 @@ export class ProductsComponent implements OnInit {
 
   updateTable() {
     const BACKUP_DATA = this.productInfo;
-
     let SELECTED_DATA: ProductInfo[] = [];
 
     SELECTED_DATA = !this.isChecked ? BACKUP_DATA :

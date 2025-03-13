@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, inject, OnInit } from '@angular/core';
+import { Component, ViewChild, inject, OnInit, AfterViewInit } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewWorkDialogComponent } from '../../components/new-work-dialog/new-work-dialog.component';
 import { ProductService } from '../../services/product.service';
 import { ProductInfo } from 'src/models/product/product-info.model';
+import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 
 @Component({
   selector: 'app-product-details',
@@ -17,25 +18,29 @@ import { ProductInfo } from 'src/models/product/product-info.model';
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })
-export class ProductDetailsComponent implements AfterViewInit, OnInit {
+export class ProductDetailsComponent implements OnInit, AfterViewInit {
   readonly dialog = inject(MatDialog);
   displayedColumns: string[] = ['workType', 'emissions', 'workDate', 'attachments'];
-  dataSource = new MatTableDataSource<WorkElement>(workElements);
+
+  productLifeCycle: ProductLifeCycle[] = [];
   userRole: string = "SCP";
   productInfo!: ProductInfo;
+  dataSource: any;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private productService: ProductService){}
+  ngAfterViewInit(): void {
+     this.dataSource.paginator = this.paginator;
+  }
 
   ngOnInit(): void {
     this.productService.selectedProduct.subscribe(data => {
       this.productInfo = data;
     });
-    console.log(this.productInfo)
-  }
-
-  ngAfterViewInit() {
+    this.dataSource = new MatTableDataSource<WorkElement>(workElements);
     this.dataSource.paginator = this.paginator;
+
   }
 
   addWork(){
