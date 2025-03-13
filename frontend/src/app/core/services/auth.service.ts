@@ -5,12 +5,13 @@ import { environment } from 'src/environments/environment';
 import { AuthRequest } from 'src/models/auth/auth-request.model';
 import { AuthResponse } from 'src/models/auth/auth-response.model';
 import { BaseResponse } from 'src/models/auth/base-response.model';
+import { jwtDecode } from 'jwt-decode';
+import { Jwt } from 'src/models/auth/jwt-payload.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // add jwt checks before getting it from getStoredToken() to ensure validity
 
   private readonly TOKEN_KEY = 'token';
   private readonly API_BASE_URL = `${environment.baseUrl}${environment.apiEndpoint}`;
@@ -49,11 +50,15 @@ export class AuthService {
       return;
     }
 
-    this.saveToken(response.data.token)
+    this.saveToken(response.data.token);
   }
 
   public getStoredToken(): string | null {
-    return sessionStorage.getItem(this.TOKEN_KEY);
+    let token = sessionStorage.getItem(this.TOKEN_KEY);
+    if(!this.isTokenValid(token))
+      return null;
+
+    return token;
   }
 
   private saveToken(token: string): void {
@@ -64,6 +69,18 @@ export class AuthService {
   private clearToken(): void {
     sessionStorage.removeItem(this.TOKEN_KEY);
     this._tokenSource.next(null);
+  }
+
+  private isTokenValid(token: string | null): boolean {
+    if (!token)
+      return false;
+
+    try {
+      let decodedJwt: Jwt = jwtDecode<Jwt>(token);
+      return Date.now() < decodedJwt.exp * 1000;
+    } catch {
+      return false;
+    }
   }
 
 }
