@@ -46,7 +46,8 @@ export class ProductDialogComponent implements OnInit {
   hasIngredients: boolean = false;
 
   newProductForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
+    category: new FormControl('', [Validators.required]),
+    product: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required]),
     hasIngredients: new FormControl(false),
     ingredients: new FormControl('')
@@ -61,6 +62,8 @@ export class ProductDialogComponent implements OnInit {
   productCategories: ProductCategory[] = [];
 
   allIngredientsRes: ProductInfo[] = [];
+
+  genericProducts: Product[] = [];
   readonly ingredients = signal<string[]>([]);
   readonly allIngredients: string[] = [];
 
@@ -69,7 +72,6 @@ export class ProductDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProductCategories();
-    this.loadIngredients();
   }
 
   private loadProductCategories(): void {
@@ -79,20 +81,34 @@ export class ProductDialogComponent implements OnInit {
     });
   }
 
-  private loadIngredients(): void {
-    this.productService.getAllProductInfo().subscribe({
+  loadIngredients(): void {
+    if(this.allIngredientsRes != null)
+      this.productService.getAllProductInfo().subscribe({
+        next: (response) => {
+
+          this.allIngredientsRes = response
+          console.log(this.allIngredientsRes)
+          this.allIngredientsRes.forEach(ingredient =>{
+            this.allIngredients.push(ingredient.name!)
+          })
+        },
+        error: (error) => console.error(error)
+      });
+  }
+
+  loadGenericProducts(){
+    this.productService.getAllGenericProducts(this.newProductForm.getRawValue().category!).subscribe({
       next: (response) => {
-        this.allIngredientsRes = response
-        this.allIngredientsRes.forEach(ingredient =>{
-          this.allIngredients.push(ingredient.name!)
-        })
+        this.genericProducts = response
       },
       error: (error) => console.error(error)
     });
+
   }
 
   createProduct(){
-    const productCategory = this.newProductForm.value.name
+    const productCategory = this.newProductForm.value.category
+    const genericProduct = this.newProductForm.value.product
     const date = this.newProductForm.value.date
     const ingredients = this.ingredients()
 
