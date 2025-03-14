@@ -31,6 +31,18 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{companyId}")]
+        //[Authorize]
+        public async Task<IActionResult> GetUsersByCompanyId(Guid id)
+        {
+            var response = await _userService.GetUsersByCompanyId(id);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Users not found" });
+            }
+            return Ok(response);
+        }
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<IActionResult> GetById(string id)

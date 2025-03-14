@@ -7,6 +7,7 @@ namespace CochainAPI.Data.Sql.Repositories.Interfaces
     {
         Task<List<User>> GetAllActive();
         Task<User?> GetById(string id);
+        Task<List<User>?> GetUsersByCompanyId(Guid id);
         Task<User?> GetByUserName(string userName);
         Task<User?> AddUser(User userObj);
         Task<bool> UpdateUser(User userObj);
