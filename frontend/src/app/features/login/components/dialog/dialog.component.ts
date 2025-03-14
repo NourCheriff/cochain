@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-dialog',
@@ -31,6 +32,7 @@ export class LoginDialogComponent {
   isLoginRequestSent = false;
 
   private authService = inject(AuthService);
+  private router = inject(Router);
   private _snackBar = inject(MatSnackBar);
   readonly dialogRef = inject(MatDialogRef<LoginDialogComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA)
@@ -44,7 +46,15 @@ export class LoginDialogComponent {
   login() {
     this.isLoginRequestSent = true;
     this._showSnackbar('Login request sent successfully');
-    this.authService.login(this.data.email, this.otp.value!)
+    this.authService.login(this.data.email, this.otp.value!).subscribe((success) => {
+      if (!success) {
+        this._showSnackbar('Invalid Credentials');
+        this.dialogRef.close(false);
+        return;
+      }
+      this.dialogRef.close(true);
+      this.router.navigate(['']);
+    });
   }
 
   private _showSnackbar(message: string) {

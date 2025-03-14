@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthRequest } from 'src/models/auth/auth-request.model';
 import { AuthResponse } from 'src/models/auth/auth-response.model';
-import { BaseResponse } from 'src/models/auth/base-response.model';
+import { BaseResponse, RequestExecution } from 'src/models/auth/base-response.model';
 import { jwtDecode } from 'jwt-decode';
 import { Jwt } from 'src/models/auth/jwt-payload.model';
 
@@ -27,17 +27,18 @@ export class AuthService {
     return this._tokenSource.value;
   }
 
-  public requestOtp(email: string): void {
+  public requestOtp(email: string): Observable<boolean> {
     let body: AuthRequest = { username: email, password: 'System' };
-    this.http.post<boolean>(`${this.API_BASE_URL}/Users/RequestPassword`, body).subscribe();
+    return this.http.post<boolean>(`${this.API_BASE_URL}/Users/RequestPassword`, body);
   }
 
-  public login(email: string, otp: string): void {
+  public login(email: string, otp: string): Observable<boolean> {
     let body: AuthRequest = { username: email, password: otp };
 
-    this.http.post<BaseResponse<AuthResponse>>(`${this.API_BASE_URL}/Users/Login`, body).subscribe({
-      next: (response) => this.onResponse(response),
-    });
+    return this.http.post<BaseResponse<AuthResponse>>(`${this.API_BASE_URL}/Users/Login`, body).pipe(
+      tap((response) => this.onResponse(response)),
+      map((response) => response.status === RequestExecution.successful),
+    );
   }
 
   public logout(): void {
@@ -45,7 +46,7 @@ export class AuthService {
   }
 
   public onResponse(response: BaseResponse<AuthResponse>): void {
-    if (!response.data) {
+    if (response.status !== RequestExecution.successful || !response.data) {
       this.clearToken();
       return;
     }
