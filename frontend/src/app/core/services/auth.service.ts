@@ -7,6 +7,7 @@ import { AuthResponse } from 'src/models/auth/auth-response.model';
 import { BaseResponse, RequestExecution } from 'src/models/auth/base-response.model';
 import { jwtDecode } from 'jwt-decode';
 import { Jwt } from 'src/models/auth/jwt-payload.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class AuthService {
   private _tokenSource: BehaviorSubject<string | null>;
   public readonly token$: Observable<string | null>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this._tokenSource = new BehaviorSubject<string | null>(this.getStoredToken());
     this.token$ = this._tokenSource.asObservable();
   }
@@ -43,6 +44,7 @@ export class AuthService {
 
   public logout(): void {
     this.clearToken();
+    this.router.navigateByUrl('/login');
   }
 
   public onResponse(response: BaseResponse<AuthResponse>): void {
