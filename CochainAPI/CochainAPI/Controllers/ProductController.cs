@@ -66,9 +66,9 @@ namespace CochainAPI.Controllers
 
         [HttpGet("generic")]
         //[Authorize(Policy = "WriteProducts, ReadProducts")]
-        public async Task<IActionResult> GetGenericProducts(Guid id)
+        public async Task<IActionResult> GetGenericProducts(Guid categoryId)
         {
-            var response = await _productService.GetGenericProducts(id);
+            var response = await _productService.GetGenericProducts(categoryId);
             if (response == null)
             {
                 return BadRequest(new { message = "Generic products not found" });
