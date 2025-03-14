@@ -30,6 +30,8 @@ namespace CochainAPI.Data.Sql.Repositories
                 .Take(pageSize.Value);
             }
 
+            query = query.Include(x => x.SupplyChainPartnerType);
+
             return await query.ToListAsync();
         }
     }
