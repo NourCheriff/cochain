@@ -15,6 +15,8 @@ export class NavbarComponent {
   private router = inject(Router);
   private authService = inject(AuthService)
 
+  isAdmin = this.authService.isAdmin();
+  username = this.authService.getUsername();
   isWalletRoute(): boolean {
     return this.router.url === '/';
   }

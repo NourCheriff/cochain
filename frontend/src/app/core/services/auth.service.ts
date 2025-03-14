@@ -60,6 +60,18 @@ export class AuthService {
     }
   }
 
+  public getUsername(): string | null {
+    if (!this.token)
+      return null;
+
+    try {
+      let decodedJwt: Jwt = jwtDecode<Jwt>(this.token);
+      return decodedJwt.email.split('@')[0];
+    } catch {
+      return null;
+    }
+  }
+
   public onResponse(response: BaseResponse<AuthResponse>): void {
     if (response.status !== RequestExecution.successful || !response.data) {
       this.clearToken();

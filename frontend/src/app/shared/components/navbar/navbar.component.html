@@ -9,6 +9,9 @@
       <nav class="nav-link">
         <ul>
           <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">Wallet</a></li>
+          @if (isAdmin) {
+            <li><a routerLink="companies" routerLinkActive="active" class="nav-item">Companies</a></li>
+          }
           <li><a routerLink="products" routerLinkActive="active" class="nav-item">Products</a></li>
           <li><a routerLink="certificates" routerLinkActive="active" class="nav-item">Certificates</a></li>
           <li><a routerLink="contracts" routerLinkActive="active" class="nav-item">Contracts</a></li>
@@ -17,7 +20,7 @@
       <div class="btn-container">
           <button class="button" mat-button disabled appearance="outline">
               <mat-icon>person</mat-icon>
-              Ciao, cochain
+              Ciao, {{ username }}
           </button>
           <button class="btn-primary" mat-flat-button (click)="logout()">
               <mat-icon>logout</mat-icon>
