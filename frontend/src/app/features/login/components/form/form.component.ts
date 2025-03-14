@@ -5,16 +5,18 @@ import { ReactiveFormsModule, FormControl, Validators, FormGroup } from '@angula
 import { MatDialog } from '@angular/material/dialog';
 import { LoginDialogComponent } from '../dialog/dialog.component';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-login-form',
-  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css'
 })
 export class LoginFormComponent {
   private authService = inject(AuthService);
   readonly dialog = inject(MatDialog);
+  isLoading = false;
 
   loginForm = new FormGroup({
     email: new FormControl("", [Validators.required, Validators.email],),
@@ -23,8 +25,9 @@ export class LoginFormComponent {
   requestOtp() {
     if (!this.loginForm.valid) return;
 
+    this.isLoading = true;
     let email = this.loginForm.value.email!;
-    this.authService.requestOtp(email);
+    this.authService.requestOtp(email).subscribe();
     if (!this.dialog.openDialogs || !this.dialog.openDialogs.length)
       this._openDialog();
   }
@@ -37,5 +40,7 @@ export class LoginFormComponent {
     };
     const ref = this.dialog.open(LoginDialogComponent, config);
     ref.componentInstance.resendOtpEvent.subscribe(this.requestOtp.bind(this));
+
+    ref.afterClosed().subscribe((success) => this.isLoading = success);
   }
 }

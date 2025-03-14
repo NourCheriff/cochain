@@ -6,7 +6,7 @@ export interface BaseResponse<T> {
   errors: string[];
 }
 
-enum RequestExecution {
+export enum RequestExecution {
   successful = 1,
   failed,
   error

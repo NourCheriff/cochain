@@ -3,5 +3,12 @@
     <mat-label>Email</mat-label>
     <input type="email" matInput formControlName="email">
   </mat-form-field>
-  <button type="submit" mat-flat-button class="btn-primary" [disabled]="!loginForm.valid">Request OTP</button>
+  <div class="btn-container">
+    @if (isLoading) {
+      <mat-spinner></mat-spinner>
+    } @else {
+      <button type="submit" mat-flat-button class="btn-primary" [disabled]="!loginForm.valid">Request OTP</button>
+    }
+  </div>
+
 </form>
