@@ -20,6 +20,10 @@ export class CompanyService {
     this.company.next(companyId);
   }
 
+  getCurrentCompanyId(): string | null {
+    return this.company.getValue();
+  }
+
   getAllCertificationAuthorities(): Observable<CertificationAuthority[]>{
     return this.apiService.getAll('api/CertificationAuthority')
   }
