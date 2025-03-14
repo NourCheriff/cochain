@@ -32,7 +32,11 @@ namespace CochainAPI.Data.Services
 
         public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id)
         {
-            return await _productRepository.GetProductsOfSCP(id);
+            if (Guid.TryParse(id.ToString(), out Guid scpId))
+            {
+                return await _productRepository.GetProductsOfSCP(id);
+            }
+            return null;
         }
     }
 }

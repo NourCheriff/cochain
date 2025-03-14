@@ -44,17 +44,12 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id)
         {
-            if (Guid.TryParse(id.ToString(), out Guid scpId))
-            {
-                return await dbContext.ProductInfo.Where(x => x.SupplyChainPartnerId == scpId)
+            return await dbContext.ProductInfo.Where(x => x.SupplyChainPartnerId == id)
                 .Include(x => x.Ingredients)
                 .Include(x => x.Product)
                 .Include(x => x.ProductLifeCycles)
                 .Include(x => x.ProductDocuments)
                 .ToListAsync();
-            }
-
-            return null;
         }
     }
 }

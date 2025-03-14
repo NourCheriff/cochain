@@ -16,7 +16,7 @@ namespace CochainAPI.Controllers
             _productService = productService;
         }
 
-        [HttpGet("default")]
+        [HttpGet]
         [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProducts(Guid id)
         {

@@ -38,7 +38,7 @@ builder.Services.AddAuthentication()
 })
 .AddCookie();
 
-builder.Services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+builder.Services.AddCors(options => options.AddPolicy("AllowAll", p => p.WithOrigins(["http://localhost:4200"]).WithMethods(["GET", "POST", "OPTIONS"]).AllowAnyHeader()));
 
 builder.Services.AddAuthorization(options =>
 {
