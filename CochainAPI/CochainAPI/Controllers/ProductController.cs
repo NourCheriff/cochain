@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Data.Services.Interfaces;
-using CochainAPI.Helpers;
 using CochainAPI.Model.Product;
 
 namespace CochainAPI.Controllers
@@ -16,19 +15,7 @@ namespace CochainAPI.Controllers
             _productService = productService;
         }
 
-        [HttpGet("default")]
-        //[Authorize(Policy = "ReadProducts")]
-        public async Task<IActionResult> GetProducts(Guid id)
-        {
-            var response = await _productService.GetProductsOfSCP(id);
-            if (response == null)
-            {
-                return BadRequest(new { message = "Product infos not found" });
-            }
-            return Ok(response);
-        }
-
-        [HttpGet("{id}")]
+        [HttpGet("scp/{id}")]
         //[Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProductsBySCP(Guid id)
         {
@@ -66,9 +53,9 @@ namespace CochainAPI.Controllers
 
         [HttpGet("generic")]
         //[Authorize(Policy = "WriteProducts, ReadProducts")]
-        public async Task<IActionResult> GetGenericProducts(Guid id)
+        public async Task<IActionResult> GetGenericProducts(Guid categoryId)
         {
-            var response = await _productService.GetGenericProducts(id);
+            var response = await _productService.GetGenericProducts(categoryId);
             if (response == null)
             {
                 return BadRequest(new { message = "Generic products not found" });
@@ -76,7 +63,7 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("")]
+        [HttpGet("{id}")]
         //[Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
