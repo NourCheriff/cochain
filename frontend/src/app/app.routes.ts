@@ -9,6 +9,7 @@ import { CompaniesComponent } from './features/users/pages/companies/companies.c
 import { UsersComponent } from './features/users/pages/users/users.component';
 import { ProductDetailsComponent } from './features/products/pages/product-details/product-details.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { RoleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -55,14 +56,14 @@ export const routes: Routes = [
     title: 'Companies',
     component: CompaniesComponent,
     data: { breadcrumb: 'Companies' },
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: 'companies/:id/users',
     title: 'Users',
     component: UsersComponent,
     data: { breadcrumb: 'Companies/Users' },
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path:'products/details/:id',
@@ -70,5 +71,9 @@ export const routes: Routes = [
     component: ProductDetailsComponent,
     data: { breadcrumb: 'Product details' },
     canActivate: [AuthGuard],
+  },
+  {
+    path:'**',
+    redirectTo: '',
   }
 ];

@@ -8,6 +8,7 @@ import { BaseResponse, RequestExecution } from 'src/models/auth/base-response.mo
 import { jwtDecode } from 'jwt-decode';
 import { Jwt } from 'src/models/auth/jwt-payload.model';
 import { Router } from '@angular/router';
+import { Role } from 'src/types/roles.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,18 @@ export class AuthService {
   public logout(): void {
     this.clearToken();
     this.router.navigateByUrl('/login');
+  }
+
+  public isAdmin(): boolean {
+    if (!this.token)
+      return false;
+
+    try {
+      let decodedJwt: Jwt = jwtDecode<Jwt>(this.token);
+      return decodedJwt['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === Role.SysAdmin;
+    } catch {
+      return false;
+    }
   }
 
   public onResponse(response: BaseResponse<AuthResponse>): void {
