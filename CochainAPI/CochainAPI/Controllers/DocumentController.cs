@@ -107,7 +107,7 @@ namespace CochainAPI.Controllers
         [Authorize(Policy = "RemoveCertificationDocument")]
         public async Task<IActionResult> DeleteCertificateById(Guid id, string fileName, string type)
         {
-            var response = await _documentService.DeleteById(id, fileName, type);
+            var response = await _documentService.DeleteCertificateById(id, fileName, type);
             if (!response)
             {
                 return BadRequest(new { message = "Document not found" });
