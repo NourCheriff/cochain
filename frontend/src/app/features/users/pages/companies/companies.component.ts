@@ -103,6 +103,10 @@ export class CompaniesComponent implements  OnInit, AfterViewInit {
     }
   }
 
+  sendCompany(companyId: string) {
+    this.companyService.passCompany(companyId);
+  }
+
   addCompany() {
     this.dialog.open(
       CompanyDialogComponent,
