@@ -1,4 +1,4 @@
-import { AfterViewInit, OnInit, Component, ViewChild, inject } from '@angular/core';
+import { OnInit, Component, ViewChild, inject } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,7 +30,7 @@ import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-par
   styleUrl: './companies.component.css'
 
 })
-export class CompaniesComponent implements  OnInit, AfterViewInit {
+export class CompaniesComponent implements  OnInit {
 
   user: User = {
     "supplyChainPartner": "Alpha",
@@ -57,15 +57,9 @@ export class CompaniesComponent implements  OnInit, AfterViewInit {
     this.getAllSupplyChainPartners();
   }
 
-  ngAfterViewInit() {
-    this.scpSource!.paginator = this.paginator;
-    this.caSource!.paginator = this.paginator;
-  }
-
   getAllCertificationAuthorities(){
     this.companyService.getAllCertificationAuthorities().subscribe({
       next: (response) => {
-        console.log(response)
         this.caList = response
         this.caSource = new MatTableDataSource<CertificationAuthority>(this.caList);
         this.caSource.paginator = this.paginator;
@@ -77,7 +71,6 @@ export class CompaniesComponent implements  OnInit, AfterViewInit {
   getAllSupplyChainPartners(){
     this.companyService.getAllSupplyChainPartners().subscribe({
       next: (response) => {
-        console.log(response)
         this.scpList = response
         this.scpSource = new MatTableDataSource<SupplyChainPartner>(this.scpList);
         this.scpSource.paginator = this.paginator;
