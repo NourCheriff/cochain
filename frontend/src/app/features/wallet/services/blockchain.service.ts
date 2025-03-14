@@ -11,12 +11,28 @@ export class BlockchainService {
   // null values means that the account is disconnected
   private provider: ethers.BrowserProvider | null = null;  // for readonly operations
   private signer: ethers.JsonRpcSigner | null = null;  // for 'write' operations
+
   private network: string | null = null;
   private account: string | null = null; // account address (in hex representation)
-  private transaction = new ethers.Transaction();
+
+  private activityABI: any;
+  private carbonCreditsABI: any;
+
+  private activityContract: ethers.Contract | null = null;
+  private carbonCreditsContract: ethers.Contract | null = null;
 
   isConnected = new EventEmitter<boolean>();
   errorEvent = new EventEmitter<string>();
+  transactionEvent = new EventEmitter<{hash: string, status: string}>();
+
+  constructor() {
+    try {
+      this.activityABI = require('frontend/artifacts/contracts/Activity.sol/Activity.json').abi;
+      this.carbonCreditsABI = require('frontend/artifacts/contracts/CarbonCredits.sol/CarbonCredits.json').abi;
+    } catch (error) {
+      console.error('Errore nel caricamento degli ABI:', error);
+    }
+  }
 
   // returns a boolean that indicates if the connection was successfull or not
   async connectWallet(): Promise<boolean> {
@@ -29,25 +45,64 @@ export class BlockchainService {
     try {
       await this.setupAccount();
       this.setEventHandlers();
+      await this.initializeContracts();
+      return true
     } catch (error) {
+      console.error('Errore nella connessione del wallet:', error);
       this.isConnected.emit(false);
-      this.errorEvent.emit("Failed to connect wallet");
+      this.errorEvent.emit("Impossibile connettere il wallet: " + (error instanceof Error ? error.message : String(error)));
       return false;
     }
-    return true
   }
 
-  async sendCarbonCredits(receiverAddress: string, amount: number) {
-    if (this.account === null) return;
-    if (!ethers.isAddress(receiverAddress)) return;
+  private async initializeContracts(): Promise<void> {
+    if (!this.signer) return;
+
+    const activityContractAddress = require('frontend/deployments/localhost/Activity.json').address;
+    const carbonCreditsContractAddress = require('frontend/deployments/localhost/CarbonCredits.json').address;
 
     try {
-      let tx = await this.signer?.sendTransaction({
-        from: this.account,
-        to: receiverAddress,
-        value: amount,
-      });
-    } catch(error) {
+      this.activityContract = new ethers.Contract(
+        activityContractAddress,
+        this.activityABI,
+        this.signer
+      );
+
+      this.carbonCreditsContract = new ethers.Contract(
+        carbonCreditsContractAddress,
+        this.carbonCreditsABI,
+        this.signer
+      );
+    } catch (error) {
+      this.errorEvent.emit("Errore nell'inizializzazione dei contratti");
+    }
+  }
+
+  async sendCarbonCredits(receiverAddress: string, amount: number): Promise<string | null> {
+    if (!this.signer || !this.account || !this.carbonCreditsContract) {
+      this.errorEvent.emit('Wallet non connesso');
+      return null;
+    }
+
+    if (!ethers.isAddress(receiverAddress)) {
+      this.errorEvent.emit('Indirizzo destinatario non valido');
+      return null;
+    }
+
+    try {
+      const amountInWei = ethers.parseUnits(amount.toString(), 18);
+
+      const tx = await this.carbonCreditsContract['transfer'](receiverAddress, amountInWei);
+      this.transactionEvent.emit({hash: tx.hash, status: 'pending'});
+
+      const receipt = await tx.wait(); // wait for transaction to confirmation
+      this.transactionEvent.emit({hash: tx.hash, status: 'confirmed'});
+
+      return tx.hash;
+    } catch (error) {
+      console.error('Errore nell\'invio dei carbon credits:', error);
+      this.errorEvent.emit('Transazione fallita: ' + (error instanceof Error ? error.message : String(error)));
+      return null;
     }
   }
 
