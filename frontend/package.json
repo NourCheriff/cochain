@@ -21,7 +21,7 @@
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",
     "@openzeppelin/contracts": "^5.2.0",
-    "ethers": "^6.13.5",
+    "dotenv": "^16.4.7",
     "frontend": "file:",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -31,14 +31,18 @@
     "@angular-devkit/build-angular": "^19.1.8",
     "@angular/cli": "^19.1.8",
     "@angular/compiler-cli": "^19.1.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@types/jasmine": "~5.1.0",
+    "ethers": "^6.13.5",
     "hardhat": "^2.22.19",
+    "hardhat-deploy": "^1.0.1",
     "jasmine-core": "~5.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "~5.7.2"
   }
 }
