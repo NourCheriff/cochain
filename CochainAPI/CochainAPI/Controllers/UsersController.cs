@@ -31,7 +31,7 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{companyId}")]
+        [HttpGet("company/{companyId}")]
         //[Authorize]
         public async Task<IActionResult> GetUsersByCompanyId(Guid companyId)
         {
