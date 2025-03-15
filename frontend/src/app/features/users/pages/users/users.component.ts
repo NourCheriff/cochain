@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormsModule }   from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
 import { User } from 'src/models/auth/user.model';
 @Component({
@@ -31,7 +32,7 @@ export class UsersComponent implements OnInit {
 
 
   readonly dialog = inject(MatDialog);
-  constructor(private route: ActivatedRoute, private companyService: CompanyService) {}
+  constructor(private route: ActivatedRoute, private userService: UserService, private companyService: CompanyService) {}
 
   @ViewChild(MatTable) myTable!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -46,7 +47,7 @@ export class UsersComponent implements OnInit {
     this.companyId2 = this.route.snapshot.paramMap.get('id');// to get SCP/CA name for query
 
     this.companyId = this.companyService.getCurrentCompanyId();
-    this.companyService.getUsersByCompanyId(this.companyId!).subscribe({
+    this.userService.getUsersByCompanyId(this.companyId!).subscribe({
       next: (response) => {
         this.usersList = response;
         this.userSource = new MatTableDataSource<User>(this.usersList);
@@ -56,7 +57,8 @@ export class UsersComponent implements OnInit {
     })
   }
   addUser() {
-    this.dialog.open(UserDialogComponent);
+    this.dialog.open(UserDialogComponent,
+      {data: {company: this.companyId}});
   }
 }
 
