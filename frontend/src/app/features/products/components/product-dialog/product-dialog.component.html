@@ -3,10 +3,19 @@
   <form [formGroup]="newProductForm">
 
     <mat-form-field appearance="outline">
-      <mat-label>Product type</mat-label>
-      <mat-select formControlName="name">
+      <mat-label>Category type</mat-label>
+      <mat-select formControlName="category" (selectionChange)="loadGenericProducts()">
         @for (productCategory of productCategories; track $index) {
-          <mat-option [value]="productCategory.name"> {{ productCategory.name }} </mat-option>
+          <mat-option [value]="productCategory.id"> {{ productCategory.name }} </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" [class.hidden]="!newProductForm.value.category">
+      <mat-label>Product type</mat-label>
+      <mat-select formControlName="product">
+        @for (genericProduct of genericProducts; track $index) {
+          <mat-option [value]="genericProduct.id"> {{ genericProduct.name }} </mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -18,7 +27,7 @@
       <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
     </mat-form-field>
 
-    <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients"> Has ingredients </mat-slide-toggle></p>
+    <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients" (click)="loadIngredients()"> Has ingredients </mat-slide-toggle></p>
       <div [class.hidden]="!newProductForm.value.hasIngredients">
         <mat-form-field appearance="outline">
           <mat-label> Choose ingredients </mat-label>

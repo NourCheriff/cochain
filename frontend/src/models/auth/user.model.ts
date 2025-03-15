@@ -4,8 +4,11 @@ import { SupplyChainPartner } from "../company-entities/supply-chain-partner.mod
 export interface User {
   firstName: string;
   lastName: string;
+  userName: string;
   phone: string;
   role: string;
-  certificationAuthority: CertificationAuthority;
-  supplyChainPartner: SupplyChainPartner;
+  certificationAuthorityId?: string;
+  certificationAuthority?: CertificationAuthority;
+  supplyChainPartnerId?: string;
+  supplyChainPartner?: SupplyChainPartner;
 }

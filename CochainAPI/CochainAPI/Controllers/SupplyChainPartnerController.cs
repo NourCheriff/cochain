@@ -39,6 +39,18 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetSupplyChainPartner(string? queryparam, int? pageNumber, int? pageSize)
+        {
+            var response = await _supplychainPartnerService.GetSupplyChainPartners(queryparam, pageNumber, pageSize);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Supply chain partner not found" });
+            }
+            return Ok(response);
+        }
+
         [HttpPost("addSCP")]
         //[Authorize(Policy = "WriteSCP")]
         public async Task<IActionResult> AddSupplyChainPartner()
