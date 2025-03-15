@@ -13,6 +13,7 @@ import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
 @Component({
   selector: 'app-product-details',
   imports: [
@@ -74,6 +75,12 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
 
   addWork(){
     this.dialog.open(NewWorkDialogComponent)
+  }
+
+  modifyProduct(){
+    this.dialog.open(EditProductDialogComponent,
+      {data: {product: PRODUCT_INFO_2,}}
+    );
   }
 
   isAdmin(): boolean{
