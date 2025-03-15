@@ -32,16 +32,17 @@
           <button mat-icon-button class="attachment_button" (click)="attachCertificate()" matTooltip="Upload">
             <mat-icon>upload_file</mat-icon>
           </button>
-          <button mat-icon-button class="attachment_button download" matTooltip="Download">
-            <span class="material-symbols-outlined">file_save</span>
-          </button>
+          <a target="_blank" href="https://teststoragedocum.blob.core.windows.net/certificates/d94bdf27-6469-4356-be04-2a6e76c7aec1.pdf" >
+            <button mat-icon-button class="attachment_button download" matTooltip="Download">
+              <span class="material-symbols-outlined">file_save</span>
+            </button>
+          </a>
           <button mat-icon-button class="attachment_button delete" matTooltip="Delete">
             <span class="material-symbols-outlined">scan_delete</span>
           </button>
         </div>
       </td>
     </ng-container>
-
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef class="attachment_th"> Action </th>

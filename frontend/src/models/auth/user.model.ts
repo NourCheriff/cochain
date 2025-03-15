@@ -5,9 +5,12 @@ export interface User {
   id: string;
   firstName: string;
   lastName: string;
+  userName: string;
   phone?: string;
-  certificationAuthority?: CertificationAuthority;
-  supplyChainPartner?: SupplyChainPartner;
+  role: string;
   userRoles?: string[];
-  role?: string;
+  certificationAuthorityId?: string;
+  certificationAuthority?: CertificationAuthority;
+  supplyChainPartnerId?: string;
+  supplyChainPartner?: SupplyChainPartner;
 }

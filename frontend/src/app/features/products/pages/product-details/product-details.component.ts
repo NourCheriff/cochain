@@ -1,33 +1,86 @@
-import { Component, AfterViewInit, ViewChild, inject } from '@angular/core';
-import {MatCardModule} from '@angular/material/card';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatButtonModule} from '@angular/material/button';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { Component, ViewChild, inject, OnInit, AfterViewInit } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { NewWorkDialogComponent } from '../../components/new-work-dialog/new-work-dialog.component';
-
+import { ProductService } from '../../services/product.service';
+import { ProductInfo } from 'src/models/product/product-info.model';
+import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
 @Component({
   selector: 'app-product-details',
-  imports: [MatTableModule, MatPaginatorModule, MatCardModule,MatButtonModule, MatDividerModule, MatIconModule,MatChipsModule],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatChipsModule,
+    CommonModule,
+    RouterLink,
+  ],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })
-export class ProductDetailsComponent implements AfterViewInit {
+export class ProductDetailsComponent implements OnInit, AfterViewInit {
   readonly dialog = inject(MatDialog);
   displayedColumns: string[] = ['workType', 'emissions', 'workDate', 'attachments'];
-  dataSource = new MatTableDataSource<WorkElement>(workElements);
+  productLifeCycle: ProductLifeCycle[] = [];
   userRole: string = "SCP";
+  productInfo!: ProductInfo;
+  ingredients:ProductInfo[] = [];
+  dataSource: any;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  ngAfterViewInit() {
+  constructor(private productService: ProductService){}
+
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnInit(): void {
+    this.productService.selectedProduct.subscribe(data => {
+      this.productInfo = data
+
+      if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
+        this.productInfo.ingredients.forEach(element => {
+          this.productService.getProductInfoById(element.ingredientId!).subscribe({
+            next: (response) => {
+              this.ingredients.push(response.at(0)!)
+            },
+            error: (error) => console.log(error)
+          })
+        });
+      }
+    });
+
+
+    this.dataSource = new MatTableDataSource<WorkElement>(workElements);
+    this.dataSource.paginator = this.paginator;
+  }
+
+  sendProduct(product: ProductInfo) {
+    this.ingredients = [];
+    this.productService.passProduct(product);
   }
 
   addWork(){
     this.dialog.open(NewWorkDialogComponent)
+  }
+
+  modifyProduct(){
+    this.dialog.open(EditProductDialogComponent,
+      {data: {product: PRODUCT_INFO_2,}}
+    );
   }
 
   isAdmin(): boolean{

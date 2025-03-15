@@ -26,5 +26,23 @@ namespace CochainAPI.Data.Services
         {
             return await _supplyChainPartnerRepository.GetTypes();
         }
+
+        public async Task<List<SupplyChainPartner>> GetSupplyChainPartners(string? queryParam, int? pageNumber, int? pageSize)
+        {
+            int? size = null;
+            int? number = null;
+
+            if (pageSize.HasValue && int.TryParse(pageSize.ToString(), out var parsedSize))
+            {
+                size = parsedSize;
+            }
+
+            if (pageNumber.HasValue && int.TryParse(pageNumber.ToString(), out var parsedNumber))
+            {
+                number = parsedNumber;
+            }
+
+            return await _supplyChainPartnerRepository.GetSupplyChainPartners(queryParam, number, size);            
+        }
     }
 }

@@ -43,6 +43,11 @@ namespace CochainAPI.Data.Services
             return await _userRepository.GetById(id);
         }
 
+        public async Task<List<User>?> GetUsersByCompanyId(Guid id)
+        {
+            return await _userRepository.GetUsersByCompanyId(id);
+        }
+
         public async Task<User?> AddUser(User userObj)
         {
             if (!ValidateUserInput(userObj))

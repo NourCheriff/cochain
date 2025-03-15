@@ -23,6 +23,17 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.ProductCategory.ToListAsync();
         }
 
+        public async Task<List<Product>?> GetGenericProducts(Guid id)
+        {
+            if (Guid.TryParse(id.ToString(), out Guid categoryId))
+            {
+                return await dbContext.Product.Where(x => x.CategoryId == categoryId)
+                .ToListAsync();
+            }
+
+            return null;
+        }
+
         public async Task<List<ProductInfo>> GetProducts(string? productName, string? scpName, int? pageNumber, int? pageSize)
         {
             var query = dbContext.ProductInfo.Include(x => x.SupplyChainPartner).Where(x =>  (productName == null || (x.Name != null && x.Name.Contains(productName))) && (scpName == null || (x.SupplyChainPartner != null && x.SupplyChainPartner.Name != null && x.SupplyChainPartner.Name.Contains(scpName))));
@@ -36,10 +47,26 @@ namespace CochainAPI.Data.Sql.Repositories
             var queryComplete = query.Include(x => x.Ingredients)
                         .Include(x => x.Product)
                         .Include(x => x.ProductLifeCycles)
-                        .Include(x => x.ProductDocuments);
+                        .Include(x => x.ProductDocuments)
+                        .Include(x => x.Product!.Category);
 
             
             return await queryComplete.ToListAsync();
+        }
+
+        public async Task<List<ProductInfo>?> GetProductById(Guid id)
+        {
+            if (Guid.TryParse(id.ToString(), out Guid productId))
+            {
+                return await dbContext.ProductInfo.Where(x => x.Id == productId)
+                .Include(x => x.Ingredients)
+                .Include(x => x.Product)
+                .Include(x => x.ProductLifeCycles)
+                .Include(x => x.ProductDocuments)
+                .ToListAsync();
+            }
+
+            return null;
         }
 
         public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id)

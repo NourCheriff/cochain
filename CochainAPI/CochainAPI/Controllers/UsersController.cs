@@ -3,6 +3,8 @@ using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Helpers;
 using CochainAPI.Authentication.Interfaces;
+using System.Threading.Tasks;
+using System;
 
 namespace CochainAPI.Controllers
 {
@@ -67,5 +69,17 @@ namespace CochainAPI.Controllers
 
             return Ok(response);
         }
+    }
+
+    [HttpGet("company/{companyId}")]
+    //[Authorize]
+    public async Task<IActionResult> GetUsersByCompanyId(Guid companyId)
+    {
+        var response = await _userService.GetUsersByCompanyId(companyId);
+        if (response == null)
+        {
+            return BadRequest(new { message = "Users not found" });
+        }
+        return Ok(response);
     }
 }

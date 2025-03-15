@@ -63,22 +63,26 @@ export class BreadcrumbComponent implements OnInit {
       // Se il dato 'breadcrumb' è definito nella rotta, lo aggiungiamo
       const label = child.snapshot.data['breadcrumb'];
       if (label) {
-        let id;
+        let id = child.snapshot.paramMap.get('id');
         switch(label){
           case 'Details':
-            id = child.snapshot.paramMap.get('id');
             breadcrumbs.push(
               { label: 'Certificates', routerLink: '/certificates', style:{ 'color':'var(--breadcrumb-link)',} },
               { label: `Details`, routerLink: `/details/${id}` }
             );
             break;
           case 'Product details':
-            id = child.snapshot.paramMap.get('id');
             breadcrumbs.push(
               { label: 'Product', routerLink: '/products', style:{ 'color':'var(--breadcrumb-link)',} },
               { label: `Details`, routerLink: `/details/${id}` }
             );
-          break;
+            break;
+          case 'Companies Users':
+            breadcrumbs.push(
+              { label: 'Companies', routerLink: '/companies', style:{ 'color':'var(--breadcrumb-link)',} },
+              { label: `Users`, routerLink: `/${id}/users` }
+            );
+            break;
 
           default:
             // Crea un singolo menu item per altri casi

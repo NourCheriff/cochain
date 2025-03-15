@@ -42,7 +42,9 @@
     <ng-container matColumnDef="attachment">
       <th mat-header-cell *matHeaderCellDef class="attachment_th"> Attachment </th>
       <td mat-cell *matCellDef="let row">
-        <button mat-icon-button class="attachment_button"><span class="material-symbols-outlined">file_save</span></button>
+        <a target="_blank" >
+          <button mat-icon-button class="attachment_button"><span class="material-symbols-outlined">file_save</span></button>
+        </a>
       </td>
     </ng-container>
 
