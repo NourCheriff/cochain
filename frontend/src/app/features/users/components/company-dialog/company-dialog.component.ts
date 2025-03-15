@@ -7,6 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReactiveFormsModule, FormControl, Validators, FormGroup, FormsModule } from '@angular/forms';
+import { CompanyType } from 'src/types/company.enum';
+
 @Component({
   selector: 'app-company-dialog',
   imports: [
@@ -24,7 +26,7 @@ import { ReactiveFormsModule, FormControl, Validators, FormGroup, FormsModule } 
 })
 export class CompanyDialogComponent {
   readonly dialogRef = inject(MatDialogRef<CompanyDialogComponent>);
-  companyForm  = new FormGroup<MyForm>({
+  companyForm  = new FormGroup<CompanyForm>({
     nameCompany:   new FormControl("", [Validators.required],),
     emailCompany:  new FormControl("", [Validators.required, Validators.email],),
     phoneCompany:  new FormControl("", [Validators.required],),
@@ -35,16 +37,17 @@ export class CompanyDialogComponent {
     phoneUser:     new FormControl("", [Validators.required],),
   });
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {company: string}) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {companyType: CompanyType}) {
     if(this.isSupplyChainPartner()){
       this.companyForm.addControl('walletCompany', new FormControl<string | null>('', Validators.required));
     }
   }
 
+  CompanyType = CompanyType;
   selected = "retailer";
 
   isSupplyChainPartner(){
-    return this.data.company == 'supply_chain_partner';
+    return this.data.companyType === CompanyType.SupplyChainPartner;
   }
 
   insertCompanyAndUser(){
@@ -52,7 +55,7 @@ export class CompanyDialogComponent {
   }
 }
 
-interface MyForm {
+interface CompanyForm {
   nameCompany:    FormControl<string | null>;
   emailCompany:   FormControl<string | null>;
   phoneCompany:   FormControl<string | null>;
