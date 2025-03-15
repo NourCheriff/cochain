@@ -153,8 +153,16 @@ namespace CochainAPI.Data.Services
             return Type switch
             {
                 "Contract" => await DeleteContract(id, filename),
-                "SCPCertificate" => await DeleteCertificate(id, filename),
                 "ProductDocument" => await DeleteProductDocument(id, filename),
+                _ => false,
+            };
+        }
+
+        public async Task<bool> DeleteCertificateById(Guid id, string filename, string Type)
+        {
+            return Type switch
+            {
+                "SCPCertificate" => await DeleteCertificate(id, filename),
                 _ => false,
             };
         }

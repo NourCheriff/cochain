@@ -48,7 +48,64 @@ namespace CochainAPI.Data.Services
             return await _userRepository.GetUsersByCompanyId(id);
         }
 
-        public async Task<User?> AddAndUpdateUser(User userObj)
+        public async Task<User?> AddUser(User userObj)
+        {
+            if (!ValidateUserInput(userObj))
+                return null;
+
+            var isSCP = !userObj.SupplyChainPartnerId.HasValue;
+            var isCA = !userObj.CertificationAuthorityId.HasValue;
+            if (!isSCP && !isCA)
+                return null;
+
+            List<string> roles = new List<string>();
+            if (isSCP && Guid.TryParse(userObj.SupplyChainPartnerId.ToString(), out Guid scpId))
+            {
+                var scp = await _supplyChainPartnerRepository.GetSupplyChainPartnerById(scpId);
+                if (scp != null)
+                {
+                    if (!string.IsNullOrEmpty(userObj.Role) && userObj.Role.Equals("Admin"))
+                    {
+                        roles.Add("AdminSCP");
+                    }
+                    else
+                    {
+                        roles.Add("UserSCP");
+                    }
+                    var newUser = await _userRepository.AddUser(userObj);
+                    if (newUser != null)
+                    {
+                        await AssignScpRoles(newUser, scp, roles);
+                    }
+
+                    userObj = newUser ?? userObj;
+                }
+            }
+            else if (isCA && Guid.TryParse(userObj.CertificationAuthorityId.ToString(), out Guid caId))
+            {
+                var ca = await _certificationAuthorityRepository.GetCertificationAuthorityById(caId);
+                if (ca != null)
+                {
+                    if (!string.IsNullOrEmpty(userObj.Role) && userObj.Role.Equals("Admin"))
+                    {
+                        roles.Add("AdminCA");
+                    }
+                    else
+                    {
+                        roles.Add("UserCA");
+                    }
+                    var newUser = await _userRepository.AddUser(userObj);
+                    if (newUser != null)
+                    {
+                        await AssignCaRoles(newUser, roles);
+                    }
+                    userObj = newUser ?? userObj;
+                }
+            }
+            return null;
+        }
+
+        public async Task<User?> UpdateUser(User userObj)
         {
             bool isSuccess = false;
             if (!string.IsNullOrEmpty(userObj.Id))
@@ -58,67 +115,9 @@ namespace CochainAPI.Data.Services
                 {
                     obj.FirstName = userObj.FirstName;
                     obj.LastName = userObj.LastName;
+                    obj.IsActive = userObj.IsActive;
                     isSuccess = await _userRepository.UpdateUser(obj);
                 }
-            }
-            else
-            {
-                if (!ValidateUserInput(userObj))
-                    return null;
-
-                var isSCP = !string.IsNullOrEmpty(userObj.SupplyChainPartnerId?.ToString());
-                var isCA = !string.IsNullOrEmpty(userObj.CertificationAuthorityId?.ToString());
-                if (!isSCP && !isCA)
-                    return null;
-
-                List<string> roles = new List<string>();
-                if (isSCP && Guid.TryParse(userObj.SupplyChainPartnerId.ToString(), out Guid scpId))
-                {
-                    var scp = await _supplyChainPartnerRepository.GetSupplyChainPartnerById(scpId);
-                    if (scp != null)
-                    {
-                        if (!string.IsNullOrEmpty(userObj.Role) && userObj.Role.Equals("Admin"))
-                        {
-                            roles.Add("AdminSCP");
-                        }
-                        else
-                        {
-                            roles.Add("UserSCP");
-                        }
-                        var newUser = await _userRepository.AddUser(userObj);
-                        if (newUser != null)
-                        {
-                            await AssignScpRoles(newUser, scp, roles);
-                            isSuccess = true;
-                        }
-
-                        userObj = newUser ?? userObj;
-                    }
-                }
-                else if (isCA && Guid.TryParse(userObj.CertificationAuthorityId.ToString(), out Guid caId))
-                {
-                    var ca = await _certificationAuthorityRepository.GetCertificationAuthorityById(caId);
-                    if (ca != null)
-                    {
-                        if (!string.IsNullOrEmpty(userObj.Role) && userObj.Role.Equals("Admin"))
-                        {
-                            roles.Add("AdminCA");
-                        }
-                        else
-                        {
-                            roles.Add("UserCA");
-                        }
-                        var newUser = await _userRepository.AddUser(userObj);
-                        if (newUser != null)
-                        {
-                            await AssignCaRoles(newUser, roles);
-                            isSuccess = true;
-                        }
-                        userObj = newUser ?? userObj;
-                    }
-                }
-                else
-                    return null;
             }
 
             return isSuccess ? userObj : null;

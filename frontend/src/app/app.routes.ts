@@ -8,12 +8,15 @@ import { ProductsComponent } from './features/products/pages/products/products.c
 import { CompaniesComponent } from './features/users/pages/companies/companies.component';
 import { UsersComponent } from './features/users/pages/users/users.component';
 import { ProductDetailsComponent } from './features/products/pages/product-details/product-details.component';
+import { AuthGuard } from './core/guards/auth.guard';
+import { RoleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
     path: '',
     title: 'Home',
-    component: WalletComponent
+    component: WalletComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'login',
@@ -24,42 +27,53 @@ export const routes: Routes = [
     path: 'contracts',
     title: 'Contracts',
     component: ContractsComponent,
-    data: { breadcrumb: 'Contracts' }
+    data: { breadcrumb: 'Contracts' },
+    canActivate: [AuthGuard],
   },
   {
     path: 'certificates',
     title: 'Certificates',
     component: CertificatesComponent,
-    data: { breadcrumb: 'Certificates' }
+    data: { breadcrumb: 'Certificates' },
+    canActivate: [AuthGuard],
   },
   {
       path: 'certificates/details/:id',
       title: 'Details',
       component: ScpProductsComponent,
-      data: { breadcrumb: 'Details' }
+      data: { breadcrumb: 'Details' },
+      canActivate: [AuthGuard],
   },
   {
     path: 'products',
     title: 'Products',
     component: ProductsComponent,
-    data: { breadcrumb: 'Products' }
+    data: { breadcrumb: 'Products' },
+    canActivate: [AuthGuard],
   },
   {
     path: 'companies',
     title: 'Companies',
     component: CompaniesComponent,
-    data: { breadcrumb: 'Companies' }
+    data: { breadcrumb: 'Companies' },
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path: 'companies/:id/users',
     title: 'Users',
     component: UsersComponent,
-    data: { breadcrumb: 'Companies Users' }
+    data: { breadcrumb: 'Companies Users' },
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path:'products/details/:id',
     title:'Product details',
     component: ProductDetailsComponent,
-    data: { breadcrumb: 'Product details' }
+    data: { breadcrumb: 'Product details' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path:'**',
+    redirectTo: '',
   }
 ];

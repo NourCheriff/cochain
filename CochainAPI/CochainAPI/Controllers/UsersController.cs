@@ -3,6 +3,8 @@ using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Helpers;
 using CochainAPI.Authentication.Interfaces;
+using System.Threading.Tasks;
+using System;
 
 namespace CochainAPI.Controllers
 {
@@ -19,35 +21,11 @@ namespace CochainAPI.Controllers
             _authService = authService;
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Get()
+        [HttpPost("AddUser")]
+        [Authorize(Policy = "AddUser")]
+        public async Task<IActionResult> AddUser([FromBody] User userObj)
         {
-            var response = await _userService.GetAllActive();
-            if (response == null)
-            {
-                return BadRequest(new { message = "Users not found" });
-            }
-            return Ok(response);
-        }
-
-        [HttpGet("company/{companyId}")]
-        //[Authorize]
-        public async Task<IActionResult> GetUsersByCompanyId(Guid companyId)
-        {
-            var response = await _userService.GetUsersByCompanyId(companyId);
-            if (response == null)
-            {
-                return BadRequest(new { message = "Users not found" });
-            }
-            return Ok(response);
-        }
-
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetById(string id)
-        {
-            var response = await _userService.GetById(id);
+            var response = await _userService.AddUser(userObj);
             if (response == null)
             {
                 return BadRequest(new { message = "User not found" });
@@ -56,10 +34,10 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("UpdateUser")]
-        [Authorize]
-        public async Task<IActionResult> Post([FromBody] User userObj)
+        [Authorize(Policy = "AddUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] User userObj)
         {
-            var response = await _userService.AddAndUpdateUser(userObj);
+            var response = await _userService.UpdateUser(userObj);
             if (response == null)
             {
                 return BadRequest(new { message = "User not found" });
@@ -71,11 +49,14 @@ namespace CochainAPI.Controllers
         public async Task<IActionResult> RequestPassword(AuthenticateRequest model)
         {
             var response = await _authService.GenerateTemporaryCredentials(model);
-
+            /*
             if (!response)
                 return BadRequest(new { message = "Username is incorrect" });
-
+            
             return Ok(response);
+            */
+            
+            return Ok();
         }
 
         [HttpPost("Login")]
@@ -88,5 +69,17 @@ namespace CochainAPI.Controllers
 
             return Ok(response);
         }
+    }
+
+    [HttpGet("company/{companyId}")]
+    //[Authorize]
+    public async Task<IActionResult> GetUsersByCompanyId(Guid companyId)
+    {
+        var response = await _userService.GetUsersByCompanyId(companyId);
+        if (response == null)
+        {
+            return BadRequest(new { message = "Users not found" });
+        }
+        return Ok(response);
     }
 }

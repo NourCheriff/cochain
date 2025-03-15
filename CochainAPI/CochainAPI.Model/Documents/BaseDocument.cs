@@ -1,6 +1,5 @@
 ﻿using CochainAPI.Model.Authentication;
 using CochainAPI.Model.CompanyEntities;
-using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -11,6 +10,7 @@ namespace CochainAPI.Model.Documents
     {
         public BaseDocument() { }
         public string? Path { get; set; }
+        public string? Hash { get; set; }
         public string? Type { get; set; }
         [DefaultValue("3542da56-0de3-4797-a059-effff257f63d")]
         public string? UserEmitterId { get; set; }

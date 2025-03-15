@@ -88,6 +88,7 @@ namespace CochainAPI.Data.Sql
                 entity.HasKey(x => x.Id);
                 entity.HasOne(d => d.UserEmitter).WithMany(u => u.EmittedProductDocument).HasForeignKey(d => d.UserEmitterId);
                 entity.HasOne(d => d.SupplyChainPartnerReceiver).WithMany(u => u.ReceivedProductDocument).HasForeignKey(d => d.SupplyChainPartnerReceiverId);
+                entity.HasOne(d => d.ProductInfo).WithMany(x => x.ProductDocuments).HasForeignKey(x => x.ProductInfoId);
             });
 
             modelBuilder.Entity<ProductLifeCycleDocument>(entity =>

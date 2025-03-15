@@ -38,7 +38,7 @@ builder.Services.AddAuthentication()
 })
 .AddCookie();
 
-builder.Services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+builder.Services.AddCors(options => options.AddPolicy("AllowAll", p => p.WithOrigins(["http://localhost:4200"]).WithMethods(["GET", "POST", "OPTIONS"]).WithHeaders(["Authorization", "Content-Type"])));
 
 builder.Services.AddAuthorization(options =>
 {
@@ -46,6 +46,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("WriteCA", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("ReadSCP", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteSCP", policy => policy.RequireRole("SystemAdmin"));
+    options.AddPolicy("AddUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
+    options.AddPolicy("ReadUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
     options.AddPolicy("ReadDocuments", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteContracts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("WriteInvoices", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
@@ -54,7 +56,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("WriteCertificationDocument", policy => policy.RequireRole("SystemAdmin", "AdminCA", "UserCA"));
     options.AddPolicy("RemoveCertificationDocument", policy => policy.RequireRole("SystemAdmin", "AdminCA"));
     options.AddPolicy("RemoveDocuments", policy => policy.RequireRole("SystemAdmin"));
-    options.AddPolicy("WriteProducts", policy => policy.RequireRole("SystemAdmin", "SCPTransformator", "SCPTransformator"));
+    options.AddPolicy("WriteProducts", policy => policy.RequireRole("SystemAdmin", "SCPRawMaterial", "SCPTransformator"));
     options.AddPolicy("ReadProducts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
 });
 
@@ -136,7 +138,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<JwtMiddleware>();

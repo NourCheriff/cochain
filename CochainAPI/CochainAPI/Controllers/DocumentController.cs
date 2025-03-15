@@ -43,8 +43,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("AddCertificationDocument")]
-        [AllowAnonymous]
-        //[Authorize(Policy = "WriteCertificationDocument")]
+        [Authorize(Policy = "WriteCertificationDocument")]
         public async Task<IActionResult> AddCertificationDocument([FromBody] SupplyChainPartnerCertificate documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
@@ -80,7 +79,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("{type}/{id}")]
-        [Authorize]
+        [Authorize(Policy = "ReadDocuments")]
         public async Task<IActionResult> GetById(string id, string type)
         {
             var response = await _documentService.GetById(id, type);
@@ -107,7 +106,7 @@ namespace CochainAPI.Controllers
         [Authorize(Policy = "RemoveCertificationDocument")]
         public async Task<IActionResult> DeleteCertificateById(Guid id, string fileName, string type)
         {
-            var response = await _documentService.DeleteById(id, fileName, type);
+            var response = await _documentService.DeleteCertificateById(id, fileName, type);
             if (!response)
             {
                 return BadRequest(new { message = "Document not found" });
