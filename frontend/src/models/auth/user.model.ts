@@ -7,6 +7,8 @@ export interface User {
   userName: string;
   phone: string;
   role: string;
-  certificationAuthority: CertificationAuthority;
-  supplyChainPartner: SupplyChainPartner;
+  certificationAuthorityId?: string;
+  certificationAuthority?: CertificationAuthority;
+  supplyChainPartnerId?: string;
+  supplyChainPartner?: SupplyChainPartner;
 }
