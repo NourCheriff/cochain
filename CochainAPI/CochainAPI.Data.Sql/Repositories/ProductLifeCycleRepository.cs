@@ -11,9 +11,19 @@ namespace CochainAPI.Data.Sql.Repositories
         {
         }
 
+        public Task<ProductLifeCycle>? AddProductLifeCycle(ProductLifeCycle productLifeCycle)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<ProductLifeCycleCategory?>> GetCategories()
         {
             return await dbContext.ProductLifeCycleCategory.ToListAsync<ProductLifeCycleCategory?>();
+        }
+
+        public Task<List<ProductLifeCycle?>> GetProductLifeCyclesByProductInfo(Guid productInfoId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

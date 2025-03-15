@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Helpers;
+using CochainAPI.Model.Product;
 
 namespace CochainAPI.Controllers
 {
@@ -16,7 +17,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetCategories()
         {
             var response = await _productLifeCycleService.GetCategories();
@@ -27,12 +28,35 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("documents/{id}")]
+        [HttpGet("LifeCycle/{id}")]
         [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProductLifeCycleDocument(Guid id)            
         {
-            //se type fattura o ddt solo i diretti interessati e admin di sistema
-            var response = await _productLifeCycleService.GetCategories();
+            var response = await _productLifeCycleService.GetProductLifeCyclesByProductInfo(id);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Product life cycle categories not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("LifeCycle/AddTransport")]
+        [Authorize(Policy = "ReadProducts")]
+        public async Task<IActionResult> AddProductLifeCycleTransport(ProductLifeCycle productLifeCycle)
+        {
+            var response = await _productLifeCycleService.AddProductLifeCycle(productLifeCycle);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Product life cycle categories not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("LifeCycle/AddGeneric")]
+        [Authorize(Policy = "ReadProducts")]
+        public async Task<IActionResult> AddProductLifeCycleInvoice(ProductLifeCycle productLifeCycle)
+        {
+            var response = await _productLifeCycleService.AddProductLifeCycle(productLifeCycle);
             if (response == null)
             {
                 return BadRequest(new { message = "Product life cycle categories not found" });

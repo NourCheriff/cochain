@@ -166,5 +166,20 @@ namespace CochainAPI.Data.Services
                 _ => false,
             };
         }
+
+        public Task<List<SupplyChainPartnerCertificate>?> GetSustainabilityCertificates(string queryParam, int? pageNumber, int? pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SupplyChainPartnerCertificate>?> GetEmittedContracts(string userId, string queryParam, int? pageNumber, int? pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SupplyChainPartnerCertificate>?> GetReceivedContracts(string scpId, string queryParam, int? pageNumber, int? pageSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -113,5 +113,41 @@ namespace CochainAPI.Controllers
             }
             return Ok(response);
         }
+
+        [HttpGet("Sustainability")]
+        [Authorize(Policy = "ReadDocuments")]
+        public async Task<IActionResult> GetSustainabilityCertificates(string queryParam, int? pageNumber, int? pageSize)
+        {
+            var response = await _documentService.GetSustainabilityCertificates(queryParam, pageNumber, pageSize);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("EmittedContracts")]
+        [Authorize(Policy = "ReadDocuments")]
+        public async Task<IActionResult> GetEmittedContracts(string userId, string queryParam, int? pageNumber, int? pageSize)
+        {
+            var response = await _documentService.GetEmittedContracts(userId, queryParam, pageNumber, pageSize);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("ReceivedContracts")]
+        [Authorize(Policy = "ReadDocuments")]
+        public async Task<IActionResult> GetReceivedContracts(string scpId, string queryParam, int? pageNumber, int? pageSize)
+        {
+            var response = await _documentService.GetReceivedContracts(scpId, queryParam, pageNumber, pageSize);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
     }
 }

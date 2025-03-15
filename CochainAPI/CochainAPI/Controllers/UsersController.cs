@@ -69,17 +69,17 @@ namespace CochainAPI.Controllers
 
             return Ok(response);
         }
-    }
 
-    [HttpGet("company/{companyId}")]
-    //[Authorize]
-    public async Task<IActionResult> GetUsersByCompanyId(Guid companyId)
-    {
-        var response = await _userService.GetUsersByCompanyId(companyId);
-        if (response == null)
+        [HttpGet("company/{companyId}")]
+        //[Authorize]
+        public async Task<IActionResult> GetUsersByCompanyId(Guid companyId)
         {
-            return BadRequest(new { message = "Users not found" });
+            var response = await _userService.GetUsersByCompanyId(companyId);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Users not found" });
+            }
+            return Ok(response);
         }
-        return Ok(response);
     }
 }

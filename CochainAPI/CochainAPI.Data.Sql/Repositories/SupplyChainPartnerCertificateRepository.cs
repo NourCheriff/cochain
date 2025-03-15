@@ -34,5 +34,10 @@ namespace CochainAPI.Data.Sql.Repositories
         {
             return await dbContext.SupplyChainPartnerCertificate.FirstOrDefaultAsync(c => c.Id.ToString() == id);
         }
+
+        public Task<List<SupplyChainPartnerCertificate>?> GetSustainabilityCertificates(string queryParam, int? pageNumber, int? pageSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -34,5 +34,15 @@ namespace CochainAPI.Data.Sql.Repositories
         {
             return await dbContext.Contract.FirstOrDefaultAsync(c => c.Id.ToString() == id);
         }
+
+        public Task<List<SupplyChainPartnerCertificate>?> GetEmittedContracts(string userId, string queryParam, int? pageNumber, int? pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SupplyChainPartnerCertificate>?> GetReceivedContracts(string scpId, string queryParam, int? pageNumber, int? pageSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

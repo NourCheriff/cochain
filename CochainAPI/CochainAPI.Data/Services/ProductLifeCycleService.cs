@@ -11,9 +11,20 @@ namespace CochainAPI.Data.Services
         {
             _productLifeCycleRepository = productLifeCycleRepository;
         }
+
+        public Task<ProductLifeCycle>? AddProductLifeCycle(ProductLifeCycle productLifeCycle)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<ProductLifeCycleCategory?>> GetCategories()
         {
             return await _productLifeCycleRepository.GetCategories();
+        }
+
+        public Task<List<ProductLifeCycle?>> GetProductLifeCyclesByProductInfo(Guid productInfoId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
