@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/internal/Observable';
 import { BaseHttpService } from 'src/app/core/services/api.service';
 import { CertificationAuthority } from 'src/models/company-entities/certification-authority.model';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
-import { User } from 'src/models/auth/user.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -34,9 +33,5 @@ export class CompanyService {
 
   addSupplyChainPartner(newSCP: SupplyChainPartner){
     return this.apiService.add('api/SupplyChainPartner/addSCP', {})
-  }
-
-  getUsersByCompanyId(companyId: string): Observable<User[]>{
-    return this.apiService.getAll('api/Users/company/'+ companyId)
   }
 }
