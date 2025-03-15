@@ -47,6 +47,14 @@ namespace CochainAPI.Data.Sql
                 entity.HasKey(r => new { r.Value, r.UserId });
             });
 
+            modelBuilder.Entity<IdentityUser>().Ignore(x => x.NormalizedUserName)
+                                                .Ignore(x => x.NormalizedEmail)
+                                                .Ignore(x => x.PhoneNumber)
+                                                .Ignore(x => x.PhoneNumberConfirmed)
+                                                .Ignore(x => x.TwoFactorEnabled)
+                                                .Ignore(x => x.EmailConfirmed)
+                                                .Ignore(x => x.PasswordHash);
+
             modelBuilder.Entity<User>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
             modelBuilder.Entity<User>().HasOne(x => x.CertificationAuthority).WithMany().HasForeignKey(x => x.CertificationAuthorityId);
             modelBuilder.Entity<User>().HasMany(x => x.TemporaryPasswords).WithOne(x => x.User).HasForeignKey(x => x.UserId);
