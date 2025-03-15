@@ -9,11 +9,9 @@ import {
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-
-interface DialogData {
-  email: string;
-}
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login-dialog',
@@ -24,32 +22,57 @@ interface DialogData {
     MatDialogContent,
     MatDialogActions,
     ReactiveFormsModule,
-    MatSnackBarModule,
   ],
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.css'
 })
 export class LoginDialogComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private toasterService = inject(ToastrService);
+
   @Output() resendOtpEvent = new EventEmitter();
   isLoginRequestSent = false;
 
-  private _snackBar = inject(MatSnackBar);
   readonly dialogRef = inject(MatDialogRef<LoginDialogComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA)
-  otp = new FormControl("", Validators.required);
+  otp = new FormControl("", [Validators.required, Validators.pattern("^[0-9]{6}$")]);
 
   resendOtp() {
-    this._showSnackbar('OTP resent');
+    this._showToast('OTP resent');
     this.resendOtpEvent.emit();
   }
 
   login() {
-    this.isLoginRequestSent = true; // disable send button
-    this._showSnackbar('Login request sent successfully');
-    console.log(`OTP Sent: ${this.data.email}, ${this.otp.value}`); /** inject and call auth service or do it in the form component */
+    this.isLoginRequestSent = true;
+    this._showToast('Login request sent');
+    this.authService.login(this.data.email, this.otp.value!).subscribe((success) => {
+      if (!success) {
+        this._showToast('Invalid Credentials', 'error');
+        this.dialogRef.close(false);
+        return;
+      }
+
+      this._showToast('Logged in successfully!', 'success');
+      this.dialogRef.close(true);
+      this.router.navigate(['']);
+    });
   }
 
-  private _showSnackbar(message: string) {
-    this._snackBar.open(message, undefined, { duration: 3000 });
+  private _showToast(message: string, severity: string = 'info') {
+    switch(severity) {
+      case 'success':
+        this.toasterService.success(message, 'Success');
+        break;
+      case 'error':
+        this.toasterService.error(message, 'Error');
+        break;
+      default:
+        this.toasterService.info(message, 'Info');
+    }
   }
+}
+
+interface DialogData {
+  email: string;
 }

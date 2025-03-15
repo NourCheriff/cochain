@@ -4,6 +4,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-navbar',
   imports: [BreadcrumbComponent,MatIconModule, MatDividerModule, MatButtonModule, RouterLink, RouterLinkActive],
@@ -11,9 +12,16 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  readonly router = inject(Router);
+  private router = inject(Router);
+  private authService = inject(AuthService)
 
+  isAdmin = this.authService.isAdmin();
+  username = this.authService.getUsername();
   isWalletRoute(): boolean {
     return this.router.url === '/';
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
