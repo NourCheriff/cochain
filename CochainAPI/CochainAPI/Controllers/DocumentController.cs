@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Data.Services.Interfaces;
-using CochainAPI.Helpers;
 using CochainAPI.Model.Documents;
-using Microsoft.AspNetCore.Authorization;
 using AuthorizeAttribute = CochainAPI.Helpers.AuthorizeAttribute;
 
 namespace CochainAPI.Controllers

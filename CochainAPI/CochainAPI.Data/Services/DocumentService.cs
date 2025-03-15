@@ -4,6 +4,7 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using Azure.Storage.Blobs;
 using Azure.Identity;
 using Azure.Storage.Blobs.Models;
+using CochainAPI.Model.Authentication;
 
 namespace CochainAPI.Data.Services
 {
@@ -167,19 +168,29 @@ namespace CochainAPI.Data.Services
             };
         }
 
-        public Task<List<SupplyChainPartnerCertificate>?> GetSustainabilityCertificates(string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<SupplyChainPartnerCertificate>> GetSustainabilityCertificates(string queryParam, int? pageNumber, int? pageSize)
         {
-            throw new NotImplementedException();
+            return await _supplyChainPartnerCertificate.GetSustainabilityCertificates(queryParam, pageNumber, pageSize);
         }
 
-        public Task<List<SupplyChainPartnerCertificate>?> GetEmittedContracts(string userId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<Contract>?> GetEmittedContracts(string userId, string queryParam, int? pageNumber, int? pageSize)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(userId))
+            {
+                return await _contractRepository.GetEmittedContracts(userId, queryParam, pageNumber, pageSize);
+            }
+
+            return null;
         }
 
-        public Task<List<SupplyChainPartnerCertificate>?> GetReceivedContracts(string scpId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<Contract>?> GetReceivedContracts(string scpId, string queryParam, int? pageNumber, int? pageSize)
         {
-            throw new NotImplementedException();
+            if (Guid.TryParse(scpId, out var id))
+            {
+                return await _contractRepository.GetReceivedContracts(id, queryParam, pageNumber, pageSize);
+            }
+
+            return null;
         }
     }
 }
