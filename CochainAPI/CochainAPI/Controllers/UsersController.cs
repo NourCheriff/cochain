@@ -55,23 +55,11 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("AddUser")]
-        [Authorize]
-        public async Task<IActionResult> AddUser([FromBody] User userObj)
-        {
-            var response = await _userService.AddUser(userObj);
-            if (response == null)
-            {
-                return BadRequest(new { message = "Insertion of user failed" });
-            }
-            return Ok(response);
-        }
-
         [HttpPost("UpdateUser")]
         [Authorize]
-        public async Task<IActionResult> UpdateUser([FromBody] User userObj)
+        public async Task<IActionResult> Post([FromBody] User userObj)
         {
-            var response = await _userService.UpdateUser(userObj);
+            var response = await _userService.AddAndUpdateUser(userObj);
             if (response == null)
             {
                 return BadRequest(new { message = "User not found" });
