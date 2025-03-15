@@ -70,11 +70,11 @@ export class EditProductDialogComponent {
   modifiedProductForm = new FormGroup<ProductForm>({});
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}, private fileUploadService: FileUploadService) {
-    const INGREDIENTS = this.data.product.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined);
+    //const INGREDIENTS = this.data.product.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined);
     this.modifiedProductForm.addControl('name', new FormControl<string>(data.product.name!, Validators.required));
     this.modifiedProductForm.addControl('date', new FormControl<Date>(new Date(this.data.product.expirationDate), Validators.required));
-    this.modifiedProductForm.addControl('hasIngredients', new FormControl<boolean>((INGREDIENTS.length > 0)? true : false, Validators.required));
-    this.ingredients.set(INGREDIENTS);
+    //this.modifiedProductForm.addControl('hasIngredients', new FormControl<boolean>((INGREDIENTS.length > 0)? true : false, Validators.required));
+    //this.ingredients.set(INGREDIENTS);
   }
 
   add(event: MatChipInputEvent): void {
