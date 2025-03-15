@@ -10,17 +10,25 @@ import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-par
 })
 export class CompanyService {
 
-  private company = new BehaviorSubject<any>(null);
-  selectedCompany = this.company.asObservable();
-
   constructor(private apiService: BaseHttpService) {}
 
-  passCompany(companyId: string) {
-    this.company.next(companyId);
+  private companyId = new BehaviorSubject<any>(null);
+  selectedCompanyId = this.companyId.asObservable();
+
+  private companyType = new BehaviorSubject<any>(null);
+  selectedCompanyType = this.companyType.asObservable();
+
+  passCompany(companyId: string, companyType: string) {
+    this.companyId.next(companyId);
+    this.companyType.next(companyType);
   }
 
   getCurrentCompanyId(): string | null {
-    return this.company.getValue();
+    return this.companyId.getValue();
+  }
+
+  getCurrentCompanyType(): string | null {
+    return this.companyType.getValue();
   }
 
   getAllCertificationAuthorities(): Observable<CertificationAuthority[]>{

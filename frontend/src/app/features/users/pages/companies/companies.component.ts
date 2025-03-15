@@ -97,7 +97,7 @@ export class CompaniesComponent implements  OnInit {
   }
 
   sendCompany(companyId: string) {
-    this.companyService.passCompany(companyId);
+    this.companyService.passCompany(companyId, this.selected);
   }
 
   addCompany() {
