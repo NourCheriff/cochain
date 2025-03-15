@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, FormControl, Validators, FormGroup, FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { User } from 'src/models/auth/user.model';
 @Component({
   selector: 'app-user-dialog',
   imports: [
@@ -22,24 +24,38 @@ import { ReactiveFormsModule, FormControl, Validators, FormGroup, FormsModule } 
 })
 export class UserDialogComponent {
 
+  readonly dialogRef = inject(MatDialogRef<UserDialogComponent>);
+
+  constructor(private userService: UserService) {}
+
+  newUser!: User;
   selected = "user";
 
-  readonly dialogRef = inject(MatDialogRef<UserDialogComponent>);
   userForm  = new FormGroup<MyForm>({
-    firstNameUser: new FormControl("", [Validators.required],),
-    lastNameUser:  new FormControl("", [Validators.required],),
-    emailUser:     new FormControl("", [Validators.required, Validators.email],),
-    phoneUser:     new FormControl("", [Validators.required],),
+    firstName: new FormControl("", [Validators.required],),
+    lastName: new FormControl("", [Validators.required],),
+    userName: new FormControl("", [Validators.required, Validators.email],),
+    phone: new FormControl("", [Validators.required],),
   });
 
   insertUser(){
-    //where to insert the query for adding a company and the SCP/CA admin
+    this.newUser.firstName = this.userForm.get('firstName')?.value!;
+    this.newUser.lastName = this.userForm.get('lastName')?.value!;
+    this.newUser.userName = this.userForm.get('userName')?.value!;
+    this.newUser.phone = this.userForm.get('phone')?.value!;
+
+    this.userService.addUser(this.newUser).subscribe({
+      next: (response) => {
+        console.log(response)
+      },
+      error: (error) => console.log(error)
+    })
   }
 }
 
 interface MyForm {
-  firstNameUser: FormControl<string | null>;
-  lastNameUser:  FormControl<string | null>;
-  emailUser:     FormControl<string | null>;
-  phoneUser:     FormControl<string | null>;
+  firstName: FormControl<string | null>;
+  lastName: FormControl<string | null>;
+  userName: FormControl<string | null>;
+  phone: FormControl<string | null>;
 }

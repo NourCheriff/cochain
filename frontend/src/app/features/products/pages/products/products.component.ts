@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +13,8 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { RouterLink } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
+import { ProductInfo } from 'src/models/product/product-info.model';
+import { ProductService } from '../../services/product.service';
 @Component({
   selector: 'app-products',
   imports: [MatTableModule,
@@ -31,12 +33,14 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './products.component.css'
 
 })
-export class ProductsComponent implements AfterViewInit {
+export class ProductsComponent implements OnInit {
 
   user: User = {
-    "supplyChainPartner": "Alpha", // qui ci va il supply chain partner, quando l'utente effettua il login
+    "supplyChainPartner": "Prova company", // qui ci va il supply chain partner, quando l'utente effettua il login
     "role": "Admin"
   };
+
+  productInfo: ProductInfo[] = [];
 
   readonly dialog = inject(MatDialog);
 
@@ -46,14 +50,30 @@ export class ProductsComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'sustainability_certificate', 'action'];
 
-  dataSource = new MatTableDataSource<ProductElement>(PRODUCT_DATA);
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  dataSource: any;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  constructor(private productService: ProductService){}
+
+  ngOnInit(): void {
+    this.getAllProductInfo()
+  }
+
+  sendProduct(product: ProductInfo) {
+    this.productService.passProduct(product);
+  }
+
+  getAllProductInfo(){
+    this.productService.getAllProductInfo().subscribe({
+      next: (response) => {
+        this.productInfo = response
+        this.dataSource = new MatTableDataSource<ProductInfo>(this.productInfo);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (error) => console.log(error)
+    })
   }
 
   announceSortChange(sortState: Sort) {
@@ -67,25 +87,16 @@ export class ProductsComponent implements AfterViewInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-}
+  }
 
   updateTable() {
+    const BACKUP_DATA = this.productInfo;
+    let SELECTED_DATA: ProductInfo[] = [];
 
-    const BACKUP_DATA = PRODUCT_DATA;
+    SELECTED_DATA = !this.isChecked ? BACKUP_DATA :
+    BACKUP_DATA.filter(item => item.supplyChainPartner?.name === this.user.supplyChainPartner)
 
-    var SELECTED_DATA: ProductElement[] = [];
-
-    switch(this.isChecked){
-      case true:
-        SELECTED_DATA = BACKUP_DATA.filter(item => item.producer == this.user.supplyChainPartner);
-      break;
-
-      case false:
-        SELECTED_DATA = BACKUP_DATA;
-      break;
-    }
-
-    this.dataSource = new MatTableDataSource<ProductElement>(SELECTED_DATA);
+    this.dataSource = new MatTableDataSource<ProductInfo>(SELECTED_DATA);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -94,28 +105,7 @@ export class ProductsComponent implements AfterViewInit {
     this.dialog.open(ProductDialogComponent);
   }
 }
-
 export interface User {
   supplyChainPartner: string;
   role: string;
 }
-
-export interface ProductElement {
-  id: string;
-  name: string;
-  category: string;
-  expiration_date: string;
-  producer: string;
-  sustainability_certificate: string;
-  action: string;
-}
-
-const PRODUCT_DATA: ProductElement[] = [
-  { id: '1', name: "ProductName", category: "Product category", expiration_date: "17-04-2025", producer: "Alpha", sustainability_certificate: "link", action: "link_dettagli" },
-  { id: '2', name: "ProductName", category: "Product category", expiration_date: "15-04-2025", producer: "Beta", sustainability_certificate: "", action: "link_dettagli" },
-  { id: '3', name: "ProductName", category: "Product category", expiration_date: "07-04-2025", producer: "Supply Chain Partner", sustainability_certificate: "link", action: "link_dettagli" },
-  { id: '4', name: "ProductName", category: "Product category", expiration_date: "07-04-2025", producer: "Alpha", sustainability_certificate: "link", action: "link_dettagli" },
-  { id: '5', name: "ProductName", category: "Product category", expiration_date: "03-04-2025", producer: "Supply Chain Partner", sustainability_certificate: "", action: "link_dettagli" },
-  { id: '6', name: "Farina", category: "Product category", expiration_date: "01-04-2025", producer: "Supply Chain Partner", sustainability_certificate: "", action: "link_dettagli" }
-];
-

@@ -17,11 +17,12 @@ mat-slide-toggle{
 }
 
 .dialog{
-  height: 550;
+  min-height: fit-content;
   width: 500px;
 }
 
 .file_button{
+  padding-top: 10px;
   padding-bottom: 30px;
   width:80%;
 }

@@ -1,33 +1,76 @@
-import { Component, AfterViewInit, ViewChild, inject } from '@angular/core';
-import {MatCardModule} from '@angular/material/card';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatButtonModule} from '@angular/material/button';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { Component, ViewChild, inject, OnInit, AfterViewInit } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { NewWorkDialogComponent } from '../../components/new-work-dialog/new-work-dialog.component';
+import { ProductService } from '../../services/product.service';
+import { ProductInfo } from 'src/models/product/product-info.model';
+import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
-import { ProductInfo } from 'src/models/product/product-info.model'
-import { Product } from 'src/models/product/product.model'
-import { ProductCategory } from 'src/models/product/product-category.model';
-import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 @Component({
   selector: 'app-product-details',
-  imports: [MatTableModule, MatPaginatorModule, MatCardModule,MatButtonModule, MatDividerModule, MatIconModule,MatChipsModule],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatChipsModule,
+    CommonModule,
+    RouterLink,
+  ],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })
-export class ProductDetailsComponent implements AfterViewInit {
+export class ProductDetailsComponent implements OnInit, AfterViewInit {
   readonly dialog = inject(MatDialog);
   displayedColumns: string[] = ['workType', 'emissions', 'workDate', 'attachments'];
-  dataSource = new MatTableDataSource<WorkElement>(workElements);
+  productLifeCycle: ProductLifeCycle[] = [];
   userRole: string = "SCP";
+  productInfo!: ProductInfo;
+  ingredients:ProductInfo[] = [];
+  dataSource: any;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  ngAfterViewInit() {
+  constructor(private productService: ProductService){}
+
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnInit(): void {
+    this.productService.selectedProduct.subscribe(data => {
+      this.productInfo = data
+
+      if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
+        this.productInfo.ingredients.forEach(element => {
+          this.productService.getProductInfoById(element.ingredientId!).subscribe({
+            next: (response) => {
+              this.ingredients.push(response.at(0)!)
+            },
+            error: (error) => console.log(error)
+          })
+        });
+      }
+    });
+
+
+    this.dataSource = new MatTableDataSource<WorkElement>(workElements);
+    this.dataSource.paginator = this.paginator;
+  }
+
+  sendProduct(product: ProductInfo) {
+    this.ingredients = [];
+    this.productService.passProduct(product);
   }
 
   addWork(){
@@ -69,58 +112,3 @@ const workElements: WorkElement[] = [
   { workType: "Construction", emissions: 140, workDate: 1710604800000, attachments: "building_permit.pdf" },
   { workType: "Agriculture", emissions: 170, workDate: 1710691200000, attachments: "crop_rotation.pdf" }
 ];
-
-
-const CATEGORY_1: ProductCategory = {
-  description: 'Materie Prime'
-}
-const CATEGORY_2: ProductCategory = {
-description: 'Materie Lavorata'
-}
-
-const PRODUCT_1: Product = {
-description: 'Farina grano duro 00',
-category: CATEGORY_1
-}
-
-const PRODUCT_2: Product = {
-description: 'Uova confezione da 6',
-category: CATEGORY_1
-}
-
-const PRODUCT_3: Product = {
-description: 'Pasta 500g',
-category: CATEGORY_2
-}
-
-const PRODUCT_INFO_1: ProductInfo = {
-id: "1",
-name: "Farina",
-product: PRODUCT_1,
-expirationDate:  "10/30/2026",
-ingredients: [],
-}
-
-const INGREDIENT_1: ProductIngredient = {
-ingredient: PRODUCT_INFO_1
-}
-
-const PRODUCT_INFO_2: ProductInfo = {
-id: "2",
-name: "Uova",
-product: PRODUCT_2,
-expirationDate:  "07/24/2025",
-ingredients: [],
-}
-
-const INGREDIENT_2: ProductIngredient = {
-ingredient: PRODUCT_INFO_2
-}
-
-const PRODUCT_INFO_3: ProductInfo = {
-id: "3",
-name: "Pasta",
-product: PRODUCT_3,
-expirationDate:  "04/17/2025",
-ingredients: [INGREDIENT_1, INGREDIENT_2],
-}

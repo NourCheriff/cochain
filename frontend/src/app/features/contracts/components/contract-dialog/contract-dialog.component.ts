@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import {
   MatDialogContent,
   MatDialogRef,
@@ -10,7 +10,10 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
+import { Contract } from 'src/models/documents/contract.model';
+import { ContractService } from '../../service/contract.service';
+import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
+import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 
 @Component({
   selector: 'app-contract-dialog',
@@ -27,7 +30,7 @@ import { FileUploadService } from 'src/app/core/services/fileUpload.service';
   templateUrl: './contract-dialog.component.html',
   styleUrl: './contract-dialog.component.css'
 })
-export class ContractDialogComponent {
+export class ContractDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<ContractDialogComponent>);
 
   selectedReceiver = null;
@@ -42,7 +45,29 @@ export class ContractDialogComponent {
     receiver: new FormControl('', Validators.required),
   });
 
-  constructor(private fileUploadService: FileUploadService) {}
+  supplyChainPartners: SupplyChainPartner[] = []
+  productLifeCycleCategories: ProductLifeCycleCategory[] = [];
+
+  constructor(private contractService: ContractService) {}
+
+  ngOnInit(): void {
+    this.getAllProductLifeCycleCategories()
+    this.getAllSupplyChainPartner()
+  }
+
+  getAllProductLifeCycleCategories(){
+    this.contractService.getAllProductLifeCycleCategories().subscribe({
+      next: (response) => { this.productLifeCycleCategories = response },
+      error: (error) => console.error('Errore nel recupero dei prodotti:', error)
+    });
+  }
+
+  getAllSupplyChainPartner(){
+    this.contractService.getAllSupplyChainPartner().subscribe({
+      next: (response) => { this.supplyChainPartners = response },
+      error: (error) => console.error('Errore nel recupero dei prodotti:', error)
+    });
+  }
 
   onSelectFile(event : Event){
     const input = event.target as HTMLInputElement;
@@ -60,26 +85,30 @@ export class ContractDialogComponent {
   }
 
   createContract(): void {
-
     //handle other input field
     const receiver = this.newContractForm.value.receiver
     const workType = this.newContractForm.value.work
-    const fileData = new FormData()
-    fileData.append('file', this.fileUploaded);
 
-    for (const pair of fileData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
 
-    /* this.fileUploadService.uploadFile(file).subscribe({
-        next: (response) => {
-          console.log('File uploaded successfully', response);
-        },
-        error: (error) => {
-          console.error('File upload failed', error);
-        },
-      });*/
+      // const contract: Contract = {
+      //   productLifeCycleCategory: this.newContractForm.value.work,
+      //   fileString: base64String,
+      //   supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+      //   userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
+      //   type: 'contract',
+      // };
 
+      // this.contractService.addContract(contract).subscribe({
+      //   next: (response) => console.log('Contract uploaded successfully', response),
+      //   error: (error) => console.error('Contract upload failed', error),
+      // });
+
+    };
+
+    reader.readAsDataURL(this.fileUploaded);
   }
 
   reset(){

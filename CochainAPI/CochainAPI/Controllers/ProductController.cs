@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Data.Services.Interfaces;
-using CochainAPI.Helpers;
 using CochainAPI.Model.Product;
 
 namespace CochainAPI.Controllers
@@ -16,20 +15,8 @@ namespace CochainAPI.Controllers
             _productService = productService;
         }
 
-        [HttpGet("default")]
-        [Authorize(Policy = "ReadProducts")]
-        public async Task<IActionResult> GetProducts(Guid id)
-        {
-            var response = await _productService.GetProductsOfSCP(id);
-            if (response == null)
-            {
-                return BadRequest(new { message = "Product infos not found" });
-            }
-            return Ok(response);
-        }
-
-        [HttpGet("{id}")]
-        [Authorize(Policy = "ReadProducts")]
+        [HttpGet("scp/{id}")]
+        //[Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProductsBySCP(Guid id)
         {
             var response = await _productService.GetProductsOfSCP(id);
@@ -41,7 +28,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("allproducts")]
-        [Authorize(Policy = "ReadProducts")]
+        //[Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProductsInfo([FromQuery]string? productName, [FromQuery] string? scpName, [FromQuery]int? pageNumber, [FromQuery]int? pageSize)
         {
             var response = await _productService.GetProducts(productName, scpName, pageNumber, pageSize);
@@ -53,7 +40,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("categories")]
-        [Authorize(Policy = "WriteProducts, ReadProducts")]
+        //[Authorize(Policy = "WriteProducts, ReadProducts")]
         public async Task<IActionResult> GetCategories()
         {
             var response = await _productService.GetCategories();
@@ -64,8 +51,32 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
+        [HttpGet("generic")]
+        //[Authorize(Policy = "WriteProducts, ReadProducts")]
+        public async Task<IActionResult> GetGenericProducts(Guid categoryId)
+        {
+            var response = await _productService.GetGenericProducts(categoryId);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Generic products not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        //[Authorize(Policy = "ReadProducts")]
+        public async Task<IActionResult> GetProductById(Guid id)
+        {
+            var response = await _productService.GetProductById(id);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Product infos not found" });
+            }
+            return Ok(response);
+        }
+
         [HttpPost]
-        [Authorize(Policy = "WriteProducts")]
+        //[Authorize(Policy = "WriteProducts")]
         public async Task<IActionResult> AddProductInfo(ProductInfo productInfo)
         {
             //update prodotto può essere fatto solo al proprio prodotto

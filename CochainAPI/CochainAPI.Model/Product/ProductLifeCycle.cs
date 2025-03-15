@@ -1,4 +1,4 @@
-
+using System.Text.Json.Serialization;
 using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Documents;
 
@@ -13,6 +13,7 @@ namespace CochainAPI.Model.Product
         public Guid SupplyChainPartnerId { get; set; }
         public SupplyChainPartner SupplyChainPartner { get; set; }
         public Guid ProductInfoId { get; set; }
+        [JsonIgnore]
         public ProductInfo ProductInfo { get; set; }
         public List<ProductLifeCycleDocument>? ProductLifeCycleDocuments { get; set; }
     }

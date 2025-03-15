@@ -19,5 +19,20 @@ namespace CochainAPI.Data.Sql.Repositories
         {
             return await dbContext.SupplyChainPartnerType.ToListAsync();
         }
+
+        public async Task<List<SupplyChainPartner>> GetSupplyChainPartners(string? queryParam, int? pageNumber, int? pageSize)
+        {
+            var query = dbContext.SupplyChainPartner.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)));
+
+            if (pageNumber.HasValue && pageSize.HasValue)
+            {
+                query = query.Skip(pageSize.Value * pageNumber.Value)
+                .Take(pageSize.Value);
+            }
+
+            query = query.Include(x => x.SupplyChainPartnerType);
+
+            return await query.ToListAsync();
+        }
     }
 }
