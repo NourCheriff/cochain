@@ -19,30 +19,6 @@ namespace CochainAPI.Controllers
             _authService = authService;
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Get()
-        {
-            var response = await _userService.GetAllActive();
-            if (response == null)
-            {
-                return BadRequest(new { message = "Users not found" });
-            }
-            return Ok(response);
-        }
-
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetById(string id)
-        {
-            var response = await _userService.GetById(id);
-            if (response == null)
-            {
-                return BadRequest(new { message = "User not found" });
-            }
-            return Ok(response);
-        }
-
         [HttpPost("AddUser")]
         [Authorize(Policy = "AddUser")]
         public async Task<IActionResult> AddUser([FromBody] User userObj)

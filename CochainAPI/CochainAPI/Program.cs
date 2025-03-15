@@ -38,15 +38,16 @@ builder.Services.AddAuthentication()
 })
 .AddCookie();
 
-builder.Services.AddCors(options => options.AddPolicy("AllowAll", p => p.WithOrigins(["http://localhost:4200"]).WithMethods(["GET", "POST", "OPTIONS"]).AllowAnyHeader()));
+builder.Services.AddCors(options => options.AddPolicy("AllowAll", p => p.WithOrigins(["http://localhost:4200"]).WithMethods(["GET", "POST", "OPTIONS"]).WithHeaders(["Authorization", "Content-Type"])));
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ReadCA", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteCA", policy => policy.RequireRole("SystemAdmin"));
-    options.AddPolicy("AddUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
     options.AddPolicy("ReadSCP", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteSCP", policy => policy.RequireRole("SystemAdmin"));
+    options.AddPolicy("AddUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
+    options.AddPolicy("ReadUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
     options.AddPolicy("ReadDocuments", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteContracts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("WriteInvoices", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
@@ -136,7 +137,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<JwtMiddleware>();
