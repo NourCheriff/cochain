@@ -57,6 +57,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RemoveCertificationDocument", policy => policy.RequireRole("SystemAdmin", "AdminCA"));
     options.AddPolicy("RemoveDocuments", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("WriteProducts", policy => policy.RequireRole("SystemAdmin", "SCPRawMaterial", "SCPTransformator"));
+    options.AddPolicy("WriteProductLifeCycle", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("ReadProducts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
 });
 

@@ -1,5 +1,4 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
-using CochainAPI.Model.Documents;
 using CochainAPI.Model.Product;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,19 +10,22 @@ namespace CochainAPI.Data.Sql.Repositories
         {
         }
 
-        public Task<ProductLifeCycle>? AddProductLifeCycle(ProductLifeCycle productLifeCycle)
+        public async Task<ProductLifeCycle> AddProductLifeCycle(ProductLifeCycle productLifeCycle)
         {
-            throw new NotImplementedException();
+            var savePLC = await dbContext.ProductLifeCycle.AddAsync(productLifeCycle);
+            await dbContext.SaveChangesAsync();
+            productLifeCycle.Id = savePLC.Entity.Id;
+            return productLifeCycle;
         }
 
-        public async Task<List<ProductLifeCycleCategory?>> GetCategories()
+        public async Task<List<ProductLifeCycleCategory>> GetCategories()
         {
-            return await dbContext.ProductLifeCycleCategory.ToListAsync<ProductLifeCycleCategory?>();
+            return await dbContext.ProductLifeCycleCategory.ToListAsync();
         }
 
-        public Task<List<ProductLifeCycle?>> GetProductLifeCyclesByProductInfo(Guid productInfoId)
+        public async Task<List<ProductLifeCycle>> GetProductLifeCyclesByProductInfo(Guid productInfoId)
         {
-            throw new NotImplementedException();
+            return await dbContext.ProductLifeCycle.Where(x => x.ProductInfoId == productInfoId).ToListAsync();
         }
     }
 }

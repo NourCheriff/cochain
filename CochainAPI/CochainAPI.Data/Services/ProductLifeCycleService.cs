@@ -12,19 +12,32 @@ namespace CochainAPI.Data.Services
             _productLifeCycleRepository = productLifeCycleRepository;
         }
 
-        public Task<ProductLifeCycle>? AddProductLifeCycle(ProductLifeCycle productLifeCycle)
+        public async Task<ProductLifeCycle?> AddProductLifeCycle(ProductLifeCycle productLifeCycle)
         {
-            throw new NotImplementedException();
+            if (!productLifeCycle.ProductLifeCycleCategory.Name!.Equals("Trasporto"))
+                return null;
+
+            return await _productLifeCycleRepository.AddProductLifeCycle(productLifeCycle);
         }
 
-        public async Task<List<ProductLifeCycleCategory?>> GetCategories()
+        public async Task<ProductLifeCycle?> AddProductLifeTransport(ProductLifeCycle productLifeCycle)
+        {
+            return await _productLifeCycleRepository.AddProductLifeCycle(productLifeCycle);
+        }
+
+        public async Task<List<ProductLifeCycleCategory>> GetCategories()
         {
             return await _productLifeCycleRepository.GetCategories();
         }
 
-        public Task<List<ProductLifeCycle?>> GetProductLifeCyclesByProductInfo(Guid productInfoId)
+        public async Task<List<ProductLifeCycle>> GetProductLifeCyclesByProductInfo(Guid productInfoId)
         {
-            throw new NotImplementedException();
+            if (Guid.TryParse(productInfoId.ToString(), out var id))
+            {
+                return await _productLifeCycleRepository.GetProductLifeCyclesByProductInfo(id);
+            }
+
+            return new List<ProductLifeCycle>();
         }
     }
 }
