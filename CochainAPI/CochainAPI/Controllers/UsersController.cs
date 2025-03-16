@@ -3,8 +3,6 @@ using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Helpers;
 using CochainAPI.Authentication.Interfaces;
-using System.Threading.Tasks;
-using System;
 
 namespace CochainAPI.Controllers
 {
@@ -71,7 +69,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("company/{companyId}")]
-        //[Authorize]
+        [Authorize(Roles = "SystemAdmin")]
         public async Task<IActionResult> GetUsersByCompanyId(Guid companyId)
         {
             var response = await _userService.GetUsersByCompanyId(companyId);
