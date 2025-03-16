@@ -14,6 +14,8 @@ using System.Text;
 using CochainAPI.Data.Sql;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Data.Sql.Repositories;
+using Quartz;
+using CochainAPI.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -124,10 +126,20 @@ builder.Services.AddSwaggerGen(swagger =>
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddQuartz(q =>
+{
+    var jobKey = new JobKey("TokenProcessor");
+    q.AddJob<TokenProcessor>(opts => opts.WithIdentity(jobKey));
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("TokenProcessor-trigger")
+        .WithSimpleSchedule(x => x.WithIntervalInHours(8).RepeatForever()));
+});
+
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
