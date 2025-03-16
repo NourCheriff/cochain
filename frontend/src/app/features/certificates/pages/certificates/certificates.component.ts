@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, inject, ViewChild} from '@angular/core';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -9,8 +9,10 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common'; // Add this import for NgClass
-import {MatSort, MatSortModule} from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { FileInputComponent } from '../../components/file-input/file-input.component';
+import { CertificatesService } from '../../service/certificates.service';
+import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 
 @Component({
   selector: 'app-certificates',
@@ -18,23 +20,37 @@ import { FileInputComponent } from '../../components/file-input/file-input.compo
   templateUrl: './certificates.component.html',
   styleUrl: './certificates.component.css',
 })
-export class CertificatesComponent implements AfterViewInit {
+export class CertificatesComponent implements OnInit {
   readonly dialog = inject(MatDialog);
+
+  private certificateService = inject(CertificatesService);
 
   scpType: SCPType = {
     "type": "CA"
   }
 
   displayedColumns: string[] = ['receiver', 'scpType', 'attachments', 'actions'];
-  dataSource = new MatTableDataSource<CaCertificate>(certificates);
-  selected = 'receiver';
+  dataSource = new MatTableDataSource<SupplyChainPartner>([]);
+  supplyChainPartners: SupplyChainPartner[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+  ngOnInit(): void {
+    this.getSupplyChainPartners()
+  }
+
+  getSupplyChainPartners(){
+    this.certificateService.getSupplyChainPartners().subscribe({
+      next: (response) => {
+        this.supplyChainPartners = response
+        this.dataSource = new MatTableDataSource<SupplyChainPartner>(this.supplyChainPartners);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+      },
+      error: (error) => { console.log(error) }
+    })
   }
 
   applyFilter(event: Event) {
@@ -43,7 +59,14 @@ export class CertificatesComponent implements AfterViewInit {
   }
 
   attachCertificate() {
-    this.dialog.open(FileInputComponent);
+    this.dialog.open(FileInputComponent,{
+      data: {documentType: 'sustainability'}
+    });
+  }
+
+  onPageChange(event: PageEvent){
+    console.log('Cambiata la pagina:', event.pageIndex);
+    console.log('Elementi per pagina:', event.pageSize);
   }
 
 }
@@ -51,58 +74,3 @@ export class CertificatesComponent implements AfterViewInit {
 export interface SCPType {
   type: string
 }
-
-export interface CaCertificate {
-  id: string;
-  receiver: string;
-  scpType: string;
-}
-
-const certificates: CaCertificate[] = [
-  {
-    id: '1',
-    receiver: "SCP1",
-    scpType: "Azienda agricola",
-  },
-  {
-    id: '2',
-    receiver: "SCP2",
-    scpType: "Azienda ittica",
-  },
-  {
-    id: '3',
-    receiver: "SCP3",
-    scpType: "Azienda di stoccaggio",
-  },
-  {
-    id: '4',
-    receiver: "SCP1",
-    scpType: "Azienda agricola",
-  },
-  {
-    id: '5',
-    receiver: "SCP2",
-    scpType: "Azienda ittica",
-  },
-  {
-    id: '6',
-    receiver: "SCP3",
-    scpType: "Azienda di stoccaggio",
-  },
-  {
-    id: '7',
-    receiver: "SCP1",
-    scpType: "Azienda agricola",
-  },
-  {
-    id: '8',
-    receiver: "SCP2",
-    scpType: "Azienda ittica",
-  },
-  {
-    id: '9',
-    receiver: "SCP3",
-    scpType: "Azienda di stoccaggio",
-  },
-];
-
