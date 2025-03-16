@@ -47,7 +47,6 @@ export class CertificatesComponent implements OnInit {
         this.dataSource = new MatTableDataSource<SupplyChainPartner>(this.supplyChainPartners);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-
       },
       error: (error) => { console.log(error) }
     })
@@ -58,9 +57,21 @@ export class CertificatesComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  attachCertificate() {
+  deleteCertificate(id: string){
+    this.certificateService.deleteCertificate(id).subscribe({
+      next: (response) => {
+        console.log(response)
+      },
+      error: (error) => { console.log(error) }
+    })
+  }
+
+  attachCertificate(scpReceiverId: string) {
     this.dialog.open(FileInputComponent,{
-      data: {documentType: 'sustainability'}
+      data: {
+        scpReceiverId: scpReceiverId,
+        documentType: 'sustainability'
+      }
     });
   }
 
