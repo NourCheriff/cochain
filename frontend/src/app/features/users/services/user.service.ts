@@ -9,25 +9,14 @@ import { CompanyType } from 'src/types/company.enum';
 })
 export class UserService {
 
-  constructor(private apiService: BaseHttpService) {}
+  constructor(private apiService: BaseHttpService) { }
 
   getUsersByCompanyId(companyId: string, companyType: CompanyType): Observable<User[]> {
     let params = { companyType: companyType };
     return this.apiService.getAll(`api/Users/company/${companyId}`, params);
   }
 
-  addUser(newUser: User){
-    const body = {
-      "id": null,
-      "firstName": newUser.firstName,
-      "lastName": newUser.lastName,
-      "userName": newUser.userName,
-      "phone": newUser.phone,
-      ...(newUser.certificationAuthorityId ? { certificationAuthorityId: newUser.certificationAuthorityId } : {}),
-      ...(newUser.supplyChainPartnerId ? { supplyChainPartnerId: newUser.supplyChainPartnerId } : {}),
-      "role": "Admin",
-    }
-
-    return this.apiService.add('api/Users/UpdateUser', body)
+  addUser(newUser: User): Observable<User> {
+    return this.apiService.add('api/Users/AddUser', newUser);
   }
 }

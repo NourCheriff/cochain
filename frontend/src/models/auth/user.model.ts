@@ -2,7 +2,7 @@ import { CertificationAuthority } from "../company-entities/certification-author
 import { SupplyChainPartner } from "../company-entities/supply-chain-partner.model";
 
 export interface User {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   userName: string;

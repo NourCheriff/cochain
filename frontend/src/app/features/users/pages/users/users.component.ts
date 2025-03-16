@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { User } from 'src/models/auth/user.model';
 import { CompanyType } from 'src/types/company.enum';
+
 @Component({
   selector: 'app-users',
   imports: [
@@ -28,36 +29,40 @@ import { CompanyType } from 'src/types/company.enum';
 
 })
 export class UsersComponent implements OnInit {
-
-  readonly dialog = inject(MatDialog);
   constructor(private route: ActivatedRoute, private userService: UserService) {}
 
+  readonly dialog = inject(MatDialog);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   userSource: any;
   users: User[] = [];
   companyId: string | null = null;
+  companyType: CompanyType | null = null;
   displayedColumns: string[] = ['firstName', 'lastName', 'email', 'phone', 'role', 'action'];
 
   ngOnInit(): void {
     this.companyId = this.route.snapshot.paramMap.get('id');
-    let companyType = this.route.snapshot.queryParamMap.get('type') as CompanyType | null;
-    if (!this.companyId || !companyType)
+    this.companyType = this.route.snapshot.queryParamMap.get('type') as CompanyType | null;
+    if (!this.companyId || !this.companyType)
       return;
 
-    this.userService.getUsersByCompanyId(this.companyId, companyType).subscribe({
+    this.userService.getUsersByCompanyId(this.companyId, this.companyType).subscribe({
       next: (users) => {
         this.users = users;
         this.userSource = new MatTableDataSource<User>(this.users);
         this.userSource.paginator = this.paginator;
       },
-      error: (error) => console.log(error)
+      error: (error) => console.error(error)
     })
   }
 
-  addUser() {
-    this.dialog.open(UserDialogComponent,
-      { data: { company: this.companyId } });
+  addUser(): void {
+    let dialogData = {
+      id: this.companyId,
+      type: this.companyType,
+    };
+
+    this.dialog.open(UserDialogComponent, { data: dialogData });
   }
 }
 
