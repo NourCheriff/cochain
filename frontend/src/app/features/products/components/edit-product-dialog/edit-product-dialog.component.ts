@@ -13,7 +13,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductInfo } from 'src/models/product/product-info.model'
 @Component({
@@ -69,7 +68,7 @@ export class EditProductDialogComponent {
 
   modifiedProductForm = new FormGroup<ProductForm>({});
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}, private fileUploadService: FileUploadService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}) {
     //const INGREDIENTS = this.data.product.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined);
     this.modifiedProductForm.addControl('name', new FormControl<string>(data.product.name!, Validators.required));
     this.modifiedProductForm.addControl('date', new FormControl<Date>(new Date(this.data.product.expirationDate), Validators.required));

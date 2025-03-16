@@ -11,8 +11,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
+import { CertificatesService } from '../../service/certificates.service';
 
 @Component({
   selector: 'app-file-input',
@@ -33,12 +33,12 @@ import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain
 
 export class FileInputComponent {
 
+  private certificatesService = inject(CertificatesService);
+
   readonly dialogRef = inject(MatDialogRef<FileInputComponent>);
 
   fileUploaded!: File;
   uploadEnabled: boolean = false;
-
-  constructor(private fileUploadService: FileUploadService) {}
 
   onSelectFile(event : Event){
     const input = event.target as HTMLInputElement;
@@ -61,14 +61,14 @@ export class FileInputComponent {
     reader.onload = () => {
       const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
 
-      let doc: SupplyChainPartnerCertificate = {
-        fileString: base64String,
+      let certificate: SupplyChainPartnerCertificate = {
+        hash: base64String,
         supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
         userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
         type: 'quality',
       };
 
-      this.fileUploadService.uploadFile(doc).subscribe({
+      this.certificatesService.uploadCertificate(certificate).subscribe({
         next: (response) => console.log('File uploaded successfully', response),
         error: (error) => console.error('File upload failed', error),
       });

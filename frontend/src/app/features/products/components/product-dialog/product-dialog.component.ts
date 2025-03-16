@@ -12,7 +12,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { Product } from 'src/models/product/product.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
