@@ -7,6 +7,6 @@ export interface BaseDocument extends Base {
   supplyChainPartnerReceiverId: string;
   userEmitter?: string;
   supplyChainPartnerReceiver?: string;
-  hash?: string;
+  hash: string;
   //fileString: string;
 }
