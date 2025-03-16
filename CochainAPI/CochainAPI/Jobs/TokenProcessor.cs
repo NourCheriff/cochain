@@ -7,11 +7,13 @@ namespace CochainAPI.Jobs
     {
         private readonly IProductLifeCycleService _lifeCycleService;
         private readonly ISupplyChainPartnerService _supplyChainPartnerService;
+        private readonly ICarbonOffsettingActionService _actionService;
 
-        public TokenProcessor(IProductLifeCycleService lifeCycleService, ISupplyChainPartnerService supplyChainPartnerService)
+        public TokenProcessor(IProductLifeCycleService lifeCycleService, ISupplyChainPartnerService supplyChainPartnerService, ICarbonOffsettingActionService actionService)
         {
             _lifeCycleService = lifeCycleService;
             _supplyChainPartnerService = supplyChainPartnerService;
+            _actionService = actionService;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -28,6 +30,20 @@ namespace CochainAPI.Jobs
                 {
                     item.IsEmissionProcessed = true;
                     await _lifeCycleService.SaveProductLife(item);
+                }
+            }
+
+            var offsettingActions = await _actionService.GetOffsettingActionsToBeProcessed();
+            foreach(var item in offsettingActions)
+            {
+                //transaction with blockchain item.Offset
+                var transactionId = "";
+                item.EmissionTransactionId = transactionId;
+                var updateResult = await _supplyChainPartnerService.UpdateScpCredits(item.SupplyChainPartnerId, item.Offset);
+                if (!updateResult)
+                {
+                    item.IsProcessed = true;
+                    await _actionService.SaveCarbonOffsettingAction(item);
                 }
             }
         }

@@ -85,6 +85,7 @@ builder.Services.AddScoped<IDocumentService, DocumentService>();
 builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddSingleton<IProductLifeCycleService, ProductLifeCycleService>();
 builder.Services.AddSingleton<ICertificationAuthorityService, CertificationAuthorityService>();
+builder.Services.AddSingleton<ICarbonOffsettingActionService, CarbonOffsettingActionService>();
 
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerRepository, SupplyChainPartnerRepository>();
@@ -94,6 +95,7 @@ builder.Services.AddSingleton<IProductLifeCycleRepository, ProductLifeCycleRepos
 builder.Services.AddSingleton<IContractRepository, ContractRepository>();
 builder.Services.AddSingleton<IProductLifeCycleDocumentRepository, ProductLifeCycleDocumentRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerCertificateRepository, SupplyChainPartnerCertificateRepository>();
+builder.Services.AddSingleton<ICarbonOffsettingActionRepository, CarbonOffsettingActionRepository>();
 
 
 builder.Services.AddSwaggerGen(swagger =>
