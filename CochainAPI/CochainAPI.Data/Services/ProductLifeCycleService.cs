@@ -39,5 +39,15 @@ namespace CochainAPI.Data.Services
 
             return new List<ProductLifeCycle>();
         }
+
+        public Task<List<ProductLifeCycle>> GetProductLifeCyclesToBeProcessed()
+        {
+            return _productLifeCycleRepository.GetProductLifeCyclesToBeProcessed();
+        }
+
+        public async Task<bool> SaveProductLife(ProductLifeCycle productLifeCycle)
+        {
+            return await _productLifeCycleRepository.SaveProductLife(productLifeCycle);
+        }
     }
 }

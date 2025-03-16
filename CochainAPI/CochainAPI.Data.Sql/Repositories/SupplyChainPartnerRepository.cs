@@ -34,5 +34,13 @@ namespace CochainAPI.Data.Sql.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task<bool> UpdateScpCredits(Guid scpId, float credits)
+        {
+            return await dbContext.SupplyChainPartner.Where(s => s.Id == scpId)
+                                                    .ExecuteUpdateAsync(s => s.SetProperty(
+                                                        scp => scp.Credits,
+                                                        scp => scp.Credits + credits)) > 0;
+        }
     }
 }

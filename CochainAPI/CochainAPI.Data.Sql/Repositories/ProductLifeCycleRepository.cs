@@ -27,5 +27,16 @@ namespace CochainAPI.Data.Sql.Repositories
         {
             return await dbContext.ProductLifeCycle.Where(x => x.ProductInfoId == productInfoId).ToListAsync();
         }
+
+        public async Task<List<ProductLifeCycle>> GetProductLifeCyclesToBeProcessed()
+        {
+            return await dbContext.ProductLifeCycle.Where(x => !x.IsEmissionProcessed).Include(x => x.SupplyChainPartner).ThenInclude(x => x.SupplyChainPartnerType).ToListAsync();
+        }
+
+        public async Task<bool> SaveProductLife(ProductLifeCycle productLifeCycle)
+        {
+            dbContext.ProductLifeCycle.Update(productLifeCycle);
+            return await dbContext.SaveChangesAsync() > 0;
+        }
     }
 }
