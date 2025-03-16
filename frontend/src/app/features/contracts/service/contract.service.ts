@@ -22,7 +22,7 @@ export class ContractService {
       ? 'api/Document/ReceivedContracts'
       : 'api/Document/EmittedContracts';
 
-    return this.apiService.getAll(endpoint, { pageNumber, pageSize, scpId ,queryParam});
+    return this.apiService.getAll(endpoint, { params: { pageNumber, pageSize, scpId, queryParam } });
 }
 
 

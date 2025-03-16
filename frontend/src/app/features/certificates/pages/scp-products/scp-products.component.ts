@@ -23,10 +23,10 @@ export class ScpProductsComponent implements AfterViewInit, OnInit {
   readonly dialog = inject(MatDialog);
 
   private route = inject(ActivatedRoute);
-  private scpProductsService = inject(CertificatesService);
+  private certificateService = inject(CertificatesService);
 
   scpType: SCPType = {
-      "type": "SCP"
+      "type": "CA"
   }
 
   displayedColumns: string[] = ['name', 'category', 'expirationDate', 'attachments'];
@@ -47,7 +47,7 @@ export class ScpProductsComponent implements AfterViewInit, OnInit {
 
   getScpProducts(){
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.scpProductsService.getScpProducts(id).subscribe({
+    this.certificateService.getScpProducts(id).subscribe({
       next: (response) => { console.log(response) },
       error: (error) => { console.log(error) }
     })
@@ -59,7 +59,9 @@ export class ScpProductsComponent implements AfterViewInit, OnInit {
   }
 
   attachCertificate() {
-    this.dialog.open(FileInputComponent);
+    this.dialog.open(FileInputComponent,{
+      data: {documentType: 'quality'}
+    });
   }
 }
 
