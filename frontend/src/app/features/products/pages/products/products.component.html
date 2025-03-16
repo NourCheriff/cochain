@@ -40,21 +40,6 @@
           <td mat-cell *matCellDef="let element"> {{element.supplyChainPartner.name}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="sustainability_certificate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Sustainability Certificate </th>
-          <td mat-cell *matCellDef="let element">
-            <div class="file_section">
-                @if(element.productDocuments !== undefined || element.productDocuments !== null){
-                  <mat-icon class="file_icon">insert_drive_file</mat-icon>
-                  <p class="file_link">{{element.productDocuments}}</p>
-                }
-                @else{
-                  <p>Not Present</p>
-                }
-            </div>
-          </td>
-        </ng-container>
-
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef class="action_th"> Action </th>
           <td mat-cell *matCellDef="let element">
