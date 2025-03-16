@@ -12,6 +12,11 @@ namespace CochainAPI.Data.Services
             _actionRepository = actionService;
         }
 
+        public async Task<CarbonOffsettingAction?> AddCarbonOffsettingAction(CarbonOffsettingAction action)
+        {
+            return await _actionRepository.AddCarbonOffsettingAction(action);
+        }
+
         public async Task<List<CarbonOffsettingAction>> GetOffsettingActionsToBeProcessed()
         {
             return await _actionRepository.GetOffsettingActionsToBeProcessed();
