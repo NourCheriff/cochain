@@ -18,6 +18,19 @@ namespace CochainAPI.Data.Sql.Repositories
             return action;
         }
 
+        public async Task<List<CarbonOffsettingAction>> GetCarbonOffsettingActions(string? scpId, string? queryParam, int? pageNumber, int? pageSize)
+        {
+            var query = dbContext.CarbonOffsettingAction.Where(x => (x.SupplyChainPartner != null && x.SupplyChainPartner.Name != null && (queryParam == null || x.SupplyChainPartner.Name.Contains(queryParam))) && (x.SupplyChainPartnerId != null && (scpId == null || x.SupplyChainPartnerId.ToString().Contains(scpId))));
+
+            if (pageNumber.HasValue && pageSize.HasValue)
+            {
+                query = query.Skip(pageSize.Value * pageNumber.Value)
+                .Take(pageSize.Value);
+            }
+
+            return await query.ToListAsync();
+        }
+
         public async Task<List<CarbonOffsettingAction>> GetOffsettingActionsToBeProcessed()
         {
             return await dbContext.CarbonOffsettingAction.Where(s => !s.IsProcessed).ToListAsync();

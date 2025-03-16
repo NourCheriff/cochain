@@ -17,6 +17,11 @@ namespace CochainAPI.Data.Services
             return await _actionRepository.AddCarbonOffsettingAction(action);
         }
 
+        public async Task<List<CarbonOffsettingAction>> GetCarbonOffsettingActions(string? scpId, string? queryParam, int? pageNumber, int? pageSize)
+        {
+            return await _actionRepository.GetCarbonOffsettingActions(scpId, queryParam, pageNumber, pageSize);
+        }
+
         public async Task<List<CarbonOffsettingAction>> GetOffsettingActionsToBeProcessed()
         {
             return await _actionRepository.GetOffsettingActionsToBeProcessed();
