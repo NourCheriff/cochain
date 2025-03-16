@@ -2,7 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.DTOs.Configuration;
 using System.Data;
@@ -43,34 +42,29 @@ namespace CochainAPI.Helpers
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    // set clock skew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value;
-                var role = jwtToken.Claims.First(x => x.Type == ClaimTypes.Role).Value;
+                var jti = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+                var roles = jwtToken.Claims.Where(x => x.Type == ClaimTypes.Role);
                 var user = await userService.GetById(userId);
 
                 if (user != null)
                 {
-                    // Create ClaimsIdentity based on the user's claims
                     var claims = new List<Claim>
                     {
-                        new Claim(JwtRegisteredClaimNames.NameId, userId),
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Role, role)  // Or loop through if you have multiple roles
+                        new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                        new Claim(JwtRegisteredClaimNames.Email, user.UserName!),
+                        new Claim(JwtRegisteredClaimNames.Jti, jti),
                     };
+                    claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Value)));
 
                     var identity = new ClaimsIdentity(claims, "jwt");
-
-                    // Create ClaimsPrincipal
                     var principal = new ClaimsPrincipal(identity);
-
-                    // Attach ClaimsPrincipal to context
                     context.User = principal;
-                    context.Items["User"] = principal;  // You can still keep your user object if needed
+                    context.Items["User"] = principal;
                 }
             }
             catch
