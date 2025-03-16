@@ -29,6 +29,18 @@ export class AuthService {
     return this._tokenSource.value;
   }
 
+  public get userId(): string | null {
+    if (!this.token)
+      return null;
+
+    try {
+      let decodedJwt: Jwt = jwtDecode<Jwt>(this.token);
+      return decodedJwt.nameid;
+    } catch (err) {
+      return null;
+    }
+  }
+
   public requestOtp(email: string): Observable<boolean> {
     let body: AuthRequest = { username: email, password: 'System' };
     return this.http.post<boolean>(`${this.API_BASE_URL}/Users/RequestPassword`, body);
@@ -55,7 +67,7 @@ export class AuthService {
     try {
       let decodedJwt: Jwt = jwtDecode<Jwt>(this.token);
       return decodedJwt['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === Role.SysAdmin;
-    } catch {
+    } catch (err) {
       return false;
     }
   }
@@ -67,7 +79,7 @@ export class AuthService {
     try {
       let decodedJwt: Jwt = jwtDecode<Jwt>(this.token);
       return decodedJwt.email.split('@')[0];
-    } catch {
+    } catch (err) {
       return null;
     }
   }
@@ -106,7 +118,7 @@ export class AuthService {
     try {
       let decodedJwt: Jwt = jwtDecode<Jwt>(token);
       return Date.now() < decodedJwt.exp * 1000;
-    } catch {
+    } catch (err) {
       return false;
     }
   }
