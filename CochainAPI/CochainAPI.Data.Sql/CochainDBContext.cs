@@ -70,6 +70,10 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<ProductInfo>().HasMany(x => x.ProductLifeCycles).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
             modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.ProductLifeCycleCategory).WithMany().HasForeignKey(x => x.ProductLifeCycleCategoryId);
             modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
+            modelBuilder.Entity<ProductLifeCycle>()
+                        .Property(c => c.IsEmissionProcessed)
+                        .HasDefaultValue(false);
+
             modelBuilder.Entity<ProductIngredient>(entity =>
             {
                 entity.HasKey(r => new { r.ProductInfoId, r.IngredientId });
@@ -110,6 +114,9 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<ProductLifeCycleDocument>().HasOne(x => x.ProductLifeCycle).WithMany(x => x.ProductLifeCycleDocuments).HasForeignKey(x => x.ProductLifeCycleId);
 
             modelBuilder.Entity<CarbonOffsettingAction>().HasOne(x => x.SupplyChainPartner).WithMany(x => x.CarbonOffsettingActions).HasForeignKey(x => x.SupplyChainPartnerId);
+            modelBuilder.Entity<CarbonOffsettingAction>()
+                        .Property(c => c.IsProcessed)
+                        .HasDefaultValue(false);
 
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
