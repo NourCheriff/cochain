@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild,inject} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild,inject} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
@@ -9,27 +9,48 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { FileInputComponent } from '../../components/file-input/file-input.component';
 import {MatSort, MatSortModule} from '@angular/material/sort';
-
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ScpProductsService } from '../../service/scp-products.service';
 @Component({
   selector: 'app-scp-products',
-  imports: [MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
+  imports: [CommonModule,MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './scp-products.component.html',
   styleUrl: './scp-products.component.css'
 })
-export class ScpProductsComponent implements AfterViewInit {
+export class ScpProductsComponent implements AfterViewInit, OnInit {
 
   readonly dialog = inject(MatDialog);
+
+  private route = inject(ActivatedRoute);
+  private scpProductsService = inject(ScpProductsService);
+
+  scpType: SCPType = {
+      "type": "SCP"
+  }
+
   displayedColumns: string[] = ['name', 'category', 'expirationDate', 'attachments'];
   dataSource = new MatTableDataSource<SCPProducts>(scpProducts);
   certificateId: number | null = null;
 
-  selected = 'name';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnInit(): void {
+    this.getScpProducts()
+  }
+
+  getScpProducts(){
+    const id = this.route.snapshot.paramMap.get('id')!;
+    this.scpProductsService.getScpProducts(id).subscribe({
+      next: (response) => { console.log(response) },
+      error: (error) => { console.log(error) }
+    })
   }
 
   applyFilter(event: Event) {
@@ -40,6 +61,10 @@ export class ScpProductsComponent implements AfterViewInit {
   attachCertificate() {
     this.dialog.open(FileInputComponent);
   }
+}
+
+export interface SCPType {
+  type: string
 }
 
 export interface SCPProducts {
