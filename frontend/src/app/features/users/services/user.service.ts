@@ -11,7 +11,7 @@ export class UserService {
   constructor(private apiService: BaseHttpService) {}
 
   getUsersByCompanyId(companyId: string): Observable<User[]>{
-    return this.apiService.getAll('api/Users/company/'+ companyId)
+    return this.apiService.getAll(`api/Users/company/${companyId}`);
   }
 
   addUser(newUser: User){
