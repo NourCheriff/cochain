@@ -16,15 +16,20 @@ export class ContractService {
     return this.apiService.add('api/Document/AddContractDocument', conctact)
   }
 
-  getAllContracts(): Observable<Contract[]>{
-    return this.apiService.getAll('api/Document/')
-  }
+  getContracts(scpId: string, type: string, pageSize: string, pageNumber: string): Observable<Contract[]> {
+    const endpoint = type === "received_contracts"
+      ? 'api/Document/ReceivedContracts'
+      : 'api/Document/EmittedContracts';
+
+    return this.apiService.getAll(endpoint, { pageNumber, pageSize, scpId });
+}
+
 
   getAllProductLifeCycleCategories(): Observable<ProductLifeCycleCategory[]>{
     return this.apiService.getAll('api/ProductLifeCycle')
   }
 
   getAllSupplyChainPartner(): Observable<SupplyChainPartner[]>{
-    return this.apiService.getAll('api/SupplyChainPartner/categories')
+    return this.apiService.getAll('api/SupplyChainPartner')
   }
 }
