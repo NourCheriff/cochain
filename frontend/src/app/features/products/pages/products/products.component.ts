@@ -48,7 +48,7 @@ export class ProductsComponent implements OnInit {
 
   private _liveAnnouncer = inject(LiveAnnouncer);
 
-  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'sustainability_certificate', 'action'];
+  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'action'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
