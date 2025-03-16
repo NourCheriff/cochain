@@ -11,7 +11,7 @@ import { FileInputComponent } from '../../components/file-input/file-input.compo
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ScpProductsService } from '../../service/scp-products.service';
+import { CertificatesService } from '../../service/certificates.service';
 @Component({
   selector: 'app-scp-products',
   imports: [CommonModule,MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
@@ -23,7 +23,7 @@ export class ScpProductsComponent implements AfterViewInit, OnInit {
   readonly dialog = inject(MatDialog);
 
   private route = inject(ActivatedRoute);
-  private scpProductsService = inject(ScpProductsService);
+  private scpProductsService = inject(CertificatesService);
 
   scpType: SCPType = {
       "type": "SCP"

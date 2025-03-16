@@ -17,11 +17,12 @@ export class ContractService {
   }
 
   getContracts(scpId: string, type: string, pageSize: string, pageNumber: string): Observable<Contract[]> {
+    const queryParam = {'text': 'sjfjsd'}
     const endpoint = type === "received_contracts"
       ? 'api/Document/ReceivedContracts'
       : 'api/Document/EmittedContracts';
 
-    return this.apiService.getAll(endpoint, { pageNumber, pageSize, scpId });
+    return this.apiService.getAll(endpoint, { pageNumber, pageSize, scpId ,queryParam});
 }
 
 

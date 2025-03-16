@@ -22,7 +22,7 @@ export class CertificatesComponent implements AfterViewInit {
   readonly dialog = inject(MatDialog);
 
   scpType: SCPType = {
-    "type": "SCP"
+    "type": "CA"
   }
 
   displayedColumns: string[] = ['receiver', 'scpType', 'attachments', 'actions'];

@@ -100,7 +100,7 @@ export class ContractDialogComponent implements OnInit {
 
       const contract: Contract = {
         productLifeCycleCategory: productLifeCycleCategory,
-        fileString: hashedBase64Contract,
+        hash: hashedBase64Contract,
         supplyChainPartnerReceiverId: this.selectedReceiverId,
         userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
         type: 'contract',
