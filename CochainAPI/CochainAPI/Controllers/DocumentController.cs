@@ -41,7 +41,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("AddCertificationDocument")]
-        [Authorize(Policy = "WriteCertificationDocument")]
+        //[Authorize(Policy = "WriteCertificationDocument")]
         public async Task<IActionResult> AddCertificationDocument([FromBody] SupplyChainPartnerCertificate documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
