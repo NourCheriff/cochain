@@ -93,14 +93,10 @@ export class CompaniesComponent implements OnInit {
       this.showCertificationAuthorities();
   }
 
-  sendCompany(companyId: string): void {
-    this.companyService.passCompany(companyId, this.selected);
-  }
-
   addCompany(): void {
     this.dialog.open(
       CompanyDialogComponent,
-      { data: {companyType: this.selected} }
+      { data: { companyType: this.selected } }
     );
   }
 
