@@ -35,7 +35,7 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.Contract.FirstOrDefaultAsync(c => c.Id.ToString() == id);
         }
 
-        public async Task<List<Contract>> GetEmittedContracts(string userId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<Contract>> GetEmittedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.Contract.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)) && x.UserEmitterId == userId);
 
@@ -48,7 +48,7 @@ namespace CochainAPI.Data.Sql.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<List<Contract>> GetReceivedContracts(Guid scpId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<Contract>> GetReceivedContracts(Guid scpId, string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.Contract.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)) && x.SupplyChainPartnerReceiverId == scpId);
 

@@ -114,7 +114,7 @@ namespace CochainAPI.Controllers
 
         [HttpGet("Sustainability")]
         [Authorize(Policy = "ReadDocuments")]
-        public async Task<IActionResult> GetSustainabilityCertificates(string queryParam, int? pageNumber, int? pageSize)
+        public async Task<IActionResult> GetSustainabilityCertificates(string? queryParam, int? pageNumber, int? pageSize)
         {
             var response = await _documentService.GetSustainabilityCertificates(queryParam, pageNumber, pageSize);
             if (response == null)
@@ -126,7 +126,7 @@ namespace CochainAPI.Controllers
 
         [HttpGet("EmittedContracts")]
         [Authorize(Policy = "ReadDocuments")]
-        public async Task<IActionResult> GetEmittedContracts(string userId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<IActionResult> GetEmittedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
         {
             var response = await _documentService.GetEmittedContracts(userId, queryParam, pageNumber, pageSize);
             if (response == null)
@@ -138,7 +138,7 @@ namespace CochainAPI.Controllers
 
         [HttpGet("ReceivedContracts")]
         [Authorize(Policy = "ReadDocuments")]
-        public async Task<IActionResult> GetReceivedContracts(string scpId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<IActionResult> GetReceivedContracts(string scpId, string? queryParam, int? pageNumber, int? pageSize)
         {
             var response = await _documentService.GetReceivedContracts(scpId, queryParam, pageNumber, pageSize);
             if (response == null)
