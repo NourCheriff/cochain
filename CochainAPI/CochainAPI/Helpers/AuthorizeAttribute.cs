@@ -20,7 +20,7 @@ namespace CochainAPI.Helpers
         {
             var user = (ClaimsPrincipal)context.HttpContext.User;
             
-            if (user == null /*|| !user.Identity.IsAuthenticated*/)
+            if (user == null || !user.Identity!.IsAuthenticated)
             {
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
                 return;
