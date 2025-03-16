@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { User } from 'src/models/auth/user.model';
+import { CompanyType } from 'src/types/company.enum';
 @Component({
   selector: 'app-users',
   imports: [
@@ -40,10 +41,11 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.companyId = this.route.snapshot.paramMap.get('id');
-    if (!this.companyId)
+    let companyType = this.route.snapshot.queryParamMap.get('type') as CompanyType | null;
+    if (!this.companyId || !companyType)
       return;
 
-    this.userService.getUsersByCompanyId(this.companyId).subscribe({
+    this.userService.getUsersByCompanyId(this.companyId, companyType).subscribe({
       next: (users) => {
         this.users = users;
         this.userSource = new MatTableDataSource<User>(this.users);
@@ -55,7 +57,7 @@ export class UsersComponent implements OnInit {
 
   addUser() {
     this.dialog.open(UserDialogComponent,
-      { data: {company: this.companyId} });
+      { data: { company: this.companyId } });
   }
 }
 

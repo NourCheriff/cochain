@@ -72,9 +72,9 @@ namespace CochainAPI.Controllers
 
         [HttpGet("company/{companyId}")]
         //[Authorize(Roles = "SystemAdmin")]
-        public async Task<IActionResult> GetUsersByCompanyId(Guid companyId)
+        public async Task<IActionResult> GetUsersByCompanyId(Guid companyId, [FromQuery] string? companyType)
         {
-            var response = await _userService.GetUsersByCompanyId(companyId);
+            var response = await _userService.GetUsersByCompanyId(companyId, companyType);
             if (response == null)
             {
                 return BadRequest(new { message = "Users not found" });

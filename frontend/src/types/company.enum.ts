@@ -1,4 +1,4 @@
 export enum CompanyType {
-  SupplyChainPartner = 'supply-chain-partner',
-  CertificationAuthority = 'certification-authority',
+  SupplyChainPartner = 'scp',
+  CertificationAuthority = 'ca',
 }
