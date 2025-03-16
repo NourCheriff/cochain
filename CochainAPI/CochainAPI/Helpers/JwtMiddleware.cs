@@ -6,6 +6,7 @@ using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.DTOs.Configuration;
 using System.Data;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CochainAPI.Helpers
 {

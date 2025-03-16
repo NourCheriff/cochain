@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using CochainAPI.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using CochainAPI.Data.Services.Interfaces;
 
 namespace CochainAPI.Controllers
