@@ -39,7 +39,7 @@ export class FileInputComponent {
   readonly dialogRef = inject(MatDialogRef<FileInputComponent>);
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { documentType: string }
+    @Inject(MAT_DIALOG_DATA) public data: { documentType: string, scpReceiverId: string }
   ){}
 
   fileUploaded!: File;
@@ -62,12 +62,13 @@ export class FileInputComponent {
   uploadFile(): void {
     const reader = new FileReader();
     reader.onload = () => {
-      const base64String = reader.result?.toString().split(',')[1];
+      const base64String = reader.result?.toString().split(',')[1]!;
       const hashedBase64Contract = sha256(base64String!)
 
       let certificate: SupplyChainPartnerCertificate = {
         hash: hashedBase64Contract,
-        supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+        fileString: base64String,
+        supplyChainPartnerReceiverId: this.data.scpReceiverId,
         userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
         type: this.data?.documentType!,
       };
