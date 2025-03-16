@@ -53,7 +53,6 @@ export class FileInputComponent {
         alert("Only PDF allowed")
         return
       }
-      console.log(this.fileUploaded)
       this.uploadEnabled = true
     }else{
       alert("Upload a file!")
