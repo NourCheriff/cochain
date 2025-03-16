@@ -168,12 +168,12 @@ namespace CochainAPI.Data.Services
             };
         }
 
-        public async Task<List<SupplyChainPartnerCertificate>> GetSustainabilityCertificates(string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<SupplyChainPartnerCertificate>> GetSustainabilityCertificates(string? queryParam, int? pageNumber, int? pageSize)
         {
             return await _supplyChainPartnerCertificate.GetSustainabilityCertificates(queryParam, pageNumber, pageSize);
         }
 
-        public async Task<List<Contract>?> GetEmittedContracts(string userId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<Contract>?> GetEmittedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
         {
             if (!string.IsNullOrEmpty(userId))
             {
@@ -183,7 +183,7 @@ namespace CochainAPI.Data.Services
             return null;
         }
 
-        public async Task<List<Contract>?> GetReceivedContracts(string scpId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<Contract>?> GetReceivedContracts(string scpId, string? queryParam, int? pageNumber, int? pageSize)
         {
             if (Guid.TryParse(scpId, out var id))
             {

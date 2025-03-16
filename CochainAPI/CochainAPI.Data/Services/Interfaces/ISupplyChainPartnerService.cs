@@ -7,5 +7,6 @@ namespace CochainAPI.Data.Services.Interfaces
         Task<SupplyChainPartner?> GetSupplyChainPartnerById(Guid id);
         Task<List<SupplyChainPartnerType>> GetTypes();
         Task<List<SupplyChainPartner>> GetSupplyChainPartners(string? queryParam, int? pageNumber, int? pageSize);
+        Task<bool> UpdateScpCredits(Guid scpId, float credits);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using CochainAPI.Data.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CochainAPI.Data.Sql.Migrations
 {
     [DbContext(typeof(CochainDBContext))]
-    partial class CochainDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250316145001_InsertHash")]
+    partial class InsertHash
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,7 +103,7 @@ namespace CochainAPI.Data.Sql.Migrations
 
                     b.ToTable("User", t =>
                         {
-                            t.HasCheckConstraint("CK_User_PartnerOrAuthority", "(\"SupplyChainPartnerId\" IS NOT NULL AND \"CertificationAuthorityId\" IS NULL)\n                    OR (\"SupplyChainPartnerId\" IS NULL AND \"CertificationAuthorityId\" IS NOT NULL)");
+                            t.HasCheckConstraint("CK_User_PartnerOrAuthority", "(\"SupplyChainPartnerId\" IS NOT NULL AND \"CertificationAuthorityId\" IS NULL)\r\n                    OR (\"SupplyChainPartnerId\" IS NULL AND \"CertificationAuthorityId\" IS NOT NULL)");
                         });
 
                     b.HasData(
@@ -108,14 +111,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "5e4b0ca8-aa85-417a-af23-035ac1b555cd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "616ff929-70ad-443a-a157-d53f26a40ac0",
+                            ConcurrencyStamp = "05252f9f-5081-4409-9bb3-dbcee371abc0",
                             EmailConfirmed = false,
                             FirstName = "Paolo",
                             IsActive = true,
                             LastName = "Roselli",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "37def6ff-400f-4b52-995a-ec71d3ffeacc",
+                            SecurityStamp = "73ac03e0-557f-493e-aeae-f2a55241acbe",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "paolo.roselli02@gmail.com"
@@ -124,14 +127,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "0a317b04-2f87-4b08-8ad8-597103527584",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b9c15a89-2582-4664-95e3-fe9553e3bb15",
+                            ConcurrencyStamp = "c6ed9301-c93c-4c55-bbf7-d3e990a19df7",
                             EmailConfirmed = false,
                             FirstName = "Matteo",
                             IsActive = true,
                             LastName = "Spiga",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fc849eb3-e235-4e5a-b7b3-07f29c8b13ce",
+                            SecurityStamp = "4470464e-1418-499e-a268-ed55f86bde28",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "matteospiga2002@gmail.com"
@@ -140,14 +143,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "a12c3708-0486-4603-b1a5-46d252e79082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b7b727b-8134-4270-9966-f2dc4332ccf5",
+                            ConcurrencyStamp = "db8c8777-6c1c-4bc0-82c6-fb058c3bc872",
                             EmailConfirmed = false,
                             FirstName = "Cherif",
                             IsActive = true,
                             LastName = "Nour",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d0958d8e-0d03-4c49-a94a-c4fa2383013a",
+                            SecurityStamp = "cbb791ff-aed8-4fc5-b016-dc000d8718fb",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "nourcherif.pitos25@gmail.com"
@@ -156,14 +159,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "3542da56-0de3-4797-a059-effff257f63d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "589d7fc2-a4af-4534-a583-5388c1d31280",
+                            ConcurrencyStamp = "93adc910-f361-42fa-ab3a-9099c225f3e2",
                             EmailConfirmed = false,
                             FirstName = "Mattia",
                             IsActive = true,
                             LastName = "Mandorlini",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ba6cfcfa-304c-4849-8c71-bcd8bebfd00a",
+                            SecurityStamp = "d680b303-6377-48d3-ae8a-eaff4ac72299",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "mando3228@gmail.com"
@@ -172,14 +175,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "f4242b5f-4b39-45fc-802e-391293414546",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "28fdc8c5-0039-46aa-9bdd-b84adb99f293",
+                            ConcurrencyStamp = "53f4335e-638b-4f83-a311-864f26570b36",
                             EmailConfirmed = false,
                             FirstName = "Samuele",
                             IsActive = true,
                             LastName = "Sacchetti",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "46935ed2-16e5-4b5e-825d-d26b74933ab6",
+                            SecurityStamp = "3d673bbb-a9f6-43c7-8162-b61365e878a1",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "sacchettisamuele@gmail.com"
@@ -218,14 +221,6 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("EmissionTransactionId")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsProcessed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -600,16 +595,8 @@ namespace CochainAPI.Data.Sql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("EmissionTransactionId")
-                        .HasColumnType("text");
-
                     b.Property<float>("Emissions")
                         .HasColumnType("real");
-
-                    b.Property<bool>("IsEmissionProcessed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -733,49 +720,49 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "8e342ad6-78d9-4aee-abe5-245b1fae6c4a",
                             Name = "SystemAdmin",
-                            NormalizedName = "SYSTEMADMIN"
+                            NormalizedName = "System Administrator"
                         },
                         new
                         {
                             Id = "cb5b1ae5-43db-4096-9bd6-2afb90fb20c5",
                             Name = "AdminSCP",
-                            NormalizedName = "ADMINSCP"
+                            NormalizedName = "Admin Supply Chain Partner"
                         },
                         new
                         {
                             Id = "f6e7ea1d-a99e-4a5c-9a23-2274ba2c62ea",
                             Name = "AdminCA",
-                            NormalizedName = "ADMINCA"
+                            NormalizedName = "Admin Certification Authority"
                         },
                         new
                         {
                             Id = "a0e8b03e-0cd8-4458-a147-1a4b88df2997",
                             Name = "UserSCP",
-                            NormalizedName = "USERSCP"
+                            NormalizedName = "User Supply Chain Partner"
                         },
                         new
                         {
                             Id = "3318013d-0cdd-4749-9ab3-6fdca9b64564",
                             Name = "UserCA",
-                            NormalizedName = "USERCA"
+                            NormalizedName = "User Certification Authority"
                         },
                         new
                         {
                             Id = "916a3160-05e5-4821-88fe-9e46a43d157c",
                             Name = "SCPTransporter",
-                            NormalizedName = "SCPTRANSPORTER"
+                            NormalizedName = "Supply Chain Partner Transporter"
                         },
                         new
                         {
                             Id = "cccf28ca-b2f8-477f-a2c1-2436cd83ec0c",
                             Name = "SCPRawMaterial",
-                            NormalizedName = "SCPRAWMATERIAL"
+                            NormalizedName = "Supply Chain Partner Raw Material"
                         },
                         new
                         {
                             Id = "f08d90db-ac61-4c92-a229-ef803b672e60",
                             Name = "SCPTransformator",
-                            NormalizedName = "SCPTRANSFORMATOR"
+                            NormalizedName = "Supply Chain Partner Transformator"
                         });
                 });
 

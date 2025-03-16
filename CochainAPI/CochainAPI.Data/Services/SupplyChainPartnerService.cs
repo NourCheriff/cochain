@@ -44,5 +44,15 @@ namespace CochainAPI.Data.Services
 
             return await _supplyChainPartnerRepository.GetSupplyChainPartners(queryParam, number, size);            
         }
+
+        public async Task<bool> UpdateScpCredits(Guid scpId, float credits)
+        {
+            if (Guid.TryParse(scpId.ToString(), out var id) && float.TryParse(credits.ToString(), out var deltaCredits))
+            {
+                return await _supplyChainPartnerRepository.UpdateScpCredits(id, deltaCredits);
+            }
+
+            return false;
+        }
     }
 }

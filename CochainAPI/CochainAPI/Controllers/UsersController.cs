@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Model.Authentication;
 using CochainAPI.Data.Services.Interfaces;
-using CochainAPI.Helpers;
 using CochainAPI.Authentication.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CochainAPI.Controllers
 {

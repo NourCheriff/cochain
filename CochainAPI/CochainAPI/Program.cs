@@ -14,6 +14,9 @@ using System.Text;
 using CochainAPI.Data.Sql;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Data.Sql.Repositories;
+using Quartz;
+using CochainAPI.Jobs;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -21,7 +24,11 @@ string connectionString = builder.Configuration.GetConnectionString("CochainDB")
 
 builder.Services.Configure<Jwt>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-builder.Services.AddAuthentication()
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -78,6 +85,7 @@ builder.Services.AddScoped<IDocumentService, DocumentService>();
 builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddSingleton<IProductLifeCycleService, ProductLifeCycleService>();
 builder.Services.AddSingleton<ICertificationAuthorityService, CertificationAuthorityService>();
+builder.Services.AddSingleton<ICarbonOffsettingActionService, CarbonOffsettingActionService>();
 
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerRepository, SupplyChainPartnerRepository>();
@@ -87,6 +95,7 @@ builder.Services.AddSingleton<IProductLifeCycleRepository, ProductLifeCycleRepos
 builder.Services.AddSingleton<IContractRepository, ContractRepository>();
 builder.Services.AddSingleton<IProductLifeCycleDocumentRepository, ProductLifeCycleDocumentRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerCertificateRepository, SupplyChainPartnerCertificateRepository>();
+builder.Services.AddSingleton<ICarbonOffsettingActionRepository, CarbonOffsettingActionRepository>();
 
 
 builder.Services.AddSwaggerGen(swagger =>
@@ -124,10 +133,20 @@ builder.Services.AddSwaggerGen(swagger =>
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddQuartz(q =>
+{
+    var jobKey = new JobKey("TokenProcessor");
+    q.AddJob<TokenProcessor>(opts => opts.WithIdentity(jobKey));
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("TokenProcessor-trigger")
+        .WithSimpleSchedule(x => x.WithIntervalInHours(8).RepeatForever()));
+});
+
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -139,9 +158,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+
+// If your JwtMiddleware attaches or modifies the user,
+// it should run before authentication.
+app.UseMiddleware<JwtMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<JwtMiddleware>();
+
 app.MapControllers();
 
 app.Run();
