@@ -16,6 +16,7 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Data.Sql.Repositories;
 using Quartz;
 using CochainAPI.Jobs;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -23,7 +24,11 @@ string connectionString = builder.Configuration.GetConnectionString("CochainDB")
 
 builder.Services.Configure<Jwt>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-builder.Services.AddAuthentication()
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -151,9 +156,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+
+// If your JwtMiddleware attaches or modifies the user,
+// it should run before authentication.
+app.UseMiddleware<JwtMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<JwtMiddleware>();
+
 app.MapControllers();
 
 app.Run();

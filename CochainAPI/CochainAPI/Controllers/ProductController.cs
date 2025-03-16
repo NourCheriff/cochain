@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.Product;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CochainAPI.Controllers
 {
