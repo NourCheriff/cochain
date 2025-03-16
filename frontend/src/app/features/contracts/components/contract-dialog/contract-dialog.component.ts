@@ -91,7 +91,7 @@ export class ContractDialogComponent implements OnInit {
 
     const reader = new FileReader();
     reader.onload = () => {
-      const base64String = reader.result?.toString().split(',')[1];
+      const base64String = reader.result?.toString().split(',')[1]!;
       const hashedBase64Contract = sha256(base64String!)
 
       const productLifeCycleCategory: ProductLifeCycleCategory = {
@@ -99,6 +99,7 @@ export class ContractDialogComponent implements OnInit {
       }
 
       const contract: Contract = {
+        fileString: base64String,
         productLifeCycleCategory: productLifeCycleCategory,
         hash: hashedBase64Contract,
         supplyChainPartnerReceiverId: this.selectedReceiverId,

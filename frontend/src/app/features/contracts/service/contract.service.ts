@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { BaseHttpService } from 'src/app/core/services/api.service';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { Contract } from 'src/models/documents/contract.model';
+import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 
 @Injectable({
@@ -23,8 +24,7 @@ export class ContractService {
       : 'api/Document/EmittedContracts';
 
     return this.apiService.getAll(endpoint, { params: { pageNumber, pageSize, scpId, queryParam } });
-}
-
+  }
 
   getAllProductLifeCycleCategories(): Observable<ProductLifeCycleCategory[]>{
     return this.apiService.getAll('api/ProductLifeCycle')
@@ -32,5 +32,10 @@ export class ContractService {
 
   getAllSupplyChainPartner(): Observable<SupplyChainPartner[]>{
     return this.apiService.getAll('api/SupplyChainPartner')
+  }
+
+  //ENDPOINT COULD BE CHANGED
+  deleteCertificate(id: string): Observable<SupplyChainPartnerCertificate>{
+    return this.apiService.delete('api/Document/RemoveCertificate',id)
   }
 }

@@ -9,12 +9,12 @@ import { ContractDialogComponent } from '../contract-dialog/contract-dialog.comp
 import { MatDialog } from '@angular/material/dialog';
 import { ContractService } from '../../service/contract.service';
 import { Contract } from 'src/models/documents/contract.model';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-contracts-section',
   templateUrl: './contracts-section.component.html',
   styleUrl: './contracts-section.component.css',
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule]
+  imports: [CommonModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule]
 })
 export class ContractsSectionComponent implements OnInit {
   readonly dialog = inject(MatDialog);
@@ -64,9 +64,17 @@ export class ContractsSectionComponent implements OnInit {
     this.getContracts()
   }
 
-
   isAdmin(): boolean {
     return this.user.role === 'Admin';
+  }
+
+  deleteCertificate(id: string){
+    this.contractService.deleteCertificate(id).subscribe({
+      next: (response) => {
+        console.log(response)
+      },
+      error: (error) => { console.log(error) }
+    })
   }
 
   addContractDialog() {
