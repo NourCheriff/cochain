@@ -63,11 +63,12 @@ namespace CochainAPI.Data.Services
             if (!ValidateUserInput(userObj))
                 return null;
 
-            var isSCP = !userObj.SupplyChainPartnerId.HasValue;
-            var isCA = !userObj.CertificationAuthorityId.HasValue;
+            var isSCP = userObj.SupplyChainPartnerId.HasValue;
+            var isCA = userObj.CertificationAuthorityId.HasValue;
             if (!isSCP && !isCA)
                 return null;
 
+            User? newUser = null;
             List<string> roles = new List<string>();
             if (isSCP && Guid.TryParse(userObj.SupplyChainPartnerId.ToString(), out Guid scpId))
             {
@@ -82,7 +83,7 @@ namespace CochainAPI.Data.Services
                     {
                         roles.Add("UserSCP");
                     }
-                    var newUser = await _userRepository.AddUser(userObj);
+                    newUser = await _userRepository.AddUser(userObj);
                     if (newUser != null)
                     {
                         await AssignScpRoles(newUser, scp, roles);
@@ -104,7 +105,7 @@ namespace CochainAPI.Data.Services
                     {
                         roles.Add("UserCA");
                     }
-                    var newUser = await _userRepository.AddUser(userObj);
+                    newUser = await _userRepository.AddUser(userObj);
                     if (newUser != null)
                     {
                         await AssignCaRoles(newUser, roles);
@@ -112,7 +113,7 @@ namespace CochainAPI.Data.Services
                     userObj = newUser ?? userObj;
                 }
             }
-            return null;
+            return newUser;
         }
 
         public async Task<User?> UpdateUser(User userObj)
