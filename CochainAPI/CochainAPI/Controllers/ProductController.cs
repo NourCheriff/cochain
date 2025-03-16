@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.Product;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CochainAPI.Controllers
 {
@@ -18,9 +17,9 @@ namespace CochainAPI.Controllers
 
         [HttpGet("scp/{id}")]
         //[Authorize(Policy = "ReadProducts")]
-        public async Task<IActionResult> GetProductsBySCP(Guid id)
+        public async Task<IActionResult> GetProductsBySCP(Guid id, string? queryParam, int? pageNumber, int? pageSize)
         {
-            var response = await _productService.GetProductsOfSCP(id);
+            var response = await _productService.GetProductsOfSCP(id, queryParam, pageNumber, pageSize);
             if (response == null)
             {
                 return BadRequest(new { message = "Product infos not found" });
