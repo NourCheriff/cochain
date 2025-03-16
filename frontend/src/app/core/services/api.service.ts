@@ -35,13 +35,6 @@ export class BaseHttpService {
     });
   }
 
-  getByIdWithParams<T>(endpoint: string, params?: { [key: string]: any } ) : Observable<T>{
-    return this.http.get<T>(`${this.API_BASE_URL}/${endpoint}`,{
-      headers: this.header,
-      params: this.createParams(params)
-    });
-  }
-
   getById<T>(endpoint: string, id: string) : Observable<T>{
     return this.http.get<T>(`${this.API_BASE_URL}/${endpoint}/${id}`,{
       headers: this.header,

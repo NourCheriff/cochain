@@ -52,7 +52,7 @@ export class ProductService {
   }
 
   getProductInfoById(product: string): Observable<ProductInfo[]> {
-    return this.apiService.getByIdWithParams('api/Product', {'id' :product})
+    return this.apiService.getById('api/Product', product)
   }
 
   getAllSupplyChainPartner(): Observable<SupplyChainPartner[]>{
