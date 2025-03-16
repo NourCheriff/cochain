@@ -40,7 +40,7 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("LifeCycle/AddTransport")]
+        [HttpPost("LifeCycle/AddTransport")]
         [Authorize(Policy = "WriteTransportDocument")]
         public async Task<IActionResult> AddProductLifeCycleTransport(ProductLifeCycle productLifeCycle)
         {
@@ -52,7 +52,7 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("LifeCycle/AddGeneric")]
+        [HttpPost("LifeCycle/AddGeneric")]
         [Authorize(Policy = "WriteProductLifeCycle")] 
         public async Task<IActionResult> AddProductLifeCycleGeneric(ProductLifeCycle productLifeCycle)
         {
