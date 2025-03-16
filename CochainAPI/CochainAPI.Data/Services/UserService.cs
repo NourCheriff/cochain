@@ -45,7 +45,18 @@ namespace CochainAPI.Data.Services
 
         public async Task<List<User>?> GetUsersByCompanyId(Guid id)
         {
-            return await _userRepository.GetUsersByCompanyId(id);
+            if (!Guid.TryParse(id.ToString(), out Guid companyId))
+                return null;
+
+            var scp = await _supplyChainPartnerRepository.GetSupplyChainPartnerById(companyId);
+            var ca = await _certificationAuthorityRepository.GetCertificationAuthorityById(companyId);
+            if (ca == null && scp == null)
+                return null;
+            
+            if (scp != null)
+                return await _userRepository.GetUsersByCompanyId(id, "SCP");
+            
+            return await _userRepository.GetUsersByCompanyId(id, "CA");
         }
 
         public async Task<User?> AddUser(User userObj)

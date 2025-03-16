@@ -35,13 +35,12 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.Users.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<List<User>?> GetUsersByCompanyId(Guid id)
+        public async Task<List<User>?> GetUsersByCompanyId(Guid id, string companyType)
         {
-            if (Guid.TryParse(id.ToString(), out Guid companyId))
-            {
-            return await dbContext.Users.Where(x => x.SupplyChainPartnerId == companyId).ToListAsync();
-            }
-            return null;
+            if (companyType == "SCP")
+                return await dbContext.Users.Where(x => x.SupplyChainPartnerId == id).ToListAsync();
+
+            return await dbContext.Users.Where(x => x.CertificationAuthorityId == id).ToListAsync();
         }
 
         public async Task<User?> GetByUserName(string userName)
