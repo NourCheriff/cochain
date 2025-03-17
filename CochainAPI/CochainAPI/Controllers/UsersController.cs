@@ -79,5 +79,17 @@ namespace CochainAPI.Controllers
             }
             return Ok(response);
         }
+
+        [HttpPost("DeleteUser/{id}")]
+        [Authorize(Policy = "RemoveUser")]
+        public async Task<IActionResult> DeleteUserById(Guid id)
+        {
+            var response = await _userService.DeleteById(id);
+            if (!response)
+            {
+                return BadRequest(new { message = "User not found" });
+            }
+            return Ok(response);
+        }
     }
 }

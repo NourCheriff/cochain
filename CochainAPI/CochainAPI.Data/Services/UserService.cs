@@ -73,6 +73,7 @@ namespace CochainAPI.Data.Services
             if ((!isSCP && !isCA) || (isSCP && isCA))
                 return null;
 
+            userObj.IsActive = true;
             User? newUser = null;
             List<string> roles = new List<string>();
             if (isSCP && Guid.TryParse(userObj.SupplyChainPartnerId.ToString(), out Guid scpId))
@@ -210,6 +211,19 @@ namespace CochainAPI.Data.Services
         public async Task<List<IdentityRole>> GetRolesByUserId(string userId)
         {
             return await _userRepository.GetRolesByUserId(userId);
+        }
+
+        public async Task<bool> DeleteById(Guid id)
+        {
+            if (!Guid.TryParse(id.ToString(), out Guid userId))
+                return false;
+
+            var user = await _userRepository.GetById(userId.ToString());
+            if (user == null)
+                return false;
+            
+            user.IsActive = false;
+            return await _userRepository.UpdateUser(user);
         }
     }
 }
