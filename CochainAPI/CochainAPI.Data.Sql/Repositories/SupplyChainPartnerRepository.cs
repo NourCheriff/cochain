@@ -34,5 +34,13 @@ namespace CochainAPI.Data.Sql.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task<SupplyChainPartner?> AddSupplyChainPartner(SupplyChainPartner supplyChainPartner)
+        {
+            var savedSupplyChainPartner = await dbContext.SupplyChainPartner.AddAsync(supplyChainPartner);
+            await dbContext.SaveChangesAsync();
+            supplyChainPartner.Id = savedSupplyChainPartner.Entity.Id;
+            return supplyChainPartner;
+        }
     }
 }

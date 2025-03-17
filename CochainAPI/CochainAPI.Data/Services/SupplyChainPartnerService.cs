@@ -1,3 +1,4 @@
+using CochainAPI.Data.Helpers;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
@@ -43,6 +44,22 @@ namespace CochainAPI.Data.Services
             }
 
             return await _supplyChainPartnerRepository.GetSupplyChainPartners(queryParam, number, size);            
+        }
+
+        public async Task<SupplyChainPartner?> AddSupplyChainPartner(SupplyChainPartner supplyChainPartner)
+        {
+            if (!supplyChainPartner.Email.IsValidEmail())
+                return null;
+            
+            var supplyChainPartnerTypes = await _supplyChainPartnerRepository.GetTypes();
+            if (!supplyChainPartnerTypes.Exists(x => x.Id == supplyChainPartner.SupplyChainPartnerTypeId))
+                return null;
+
+            supplyChainPartner.Credits = 0.0F;
+
+            
+
+            return await _supplyChainPartnerRepository.AddSupplyChainPartner(supplyChainPartner);
         }
     }
 }
