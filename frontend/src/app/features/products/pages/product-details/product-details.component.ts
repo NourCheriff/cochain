@@ -79,7 +79,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
 
   modifyProduct(){
     this.dialog.open(EditProductDialogComponent,
-      {data: {product: this.productInfo}}
+      {data: {product: this.productInfo, ingredients: this.ingredients}}
     );
   }
 
