@@ -1,11 +1,11 @@
 import { Component, ViewChild, inject, OnInit } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule, MatTable } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { UserDialogComponent } from '../../components/user-dialog/user-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import { FormsModule }   from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
@@ -60,7 +60,11 @@ export class UsersComponent implements OnInit {
       type: this.companyType,
     };
 
-    this.dialog.open(UserDialogComponent, { data: dialogData });
+    const dialogRef = this.dialog.open(UserDialogComponent, { data: dialogData });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result)
+        this.getUsers()
+    });
   }
 
   deleteUser(id: string): void {

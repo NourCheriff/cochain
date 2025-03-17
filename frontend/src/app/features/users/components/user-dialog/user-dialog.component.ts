@@ -27,8 +27,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class UserDialogComponent {
 
-  constructor(private userService: UserService) {}
-
+  private userService = inject(UserService)
   private toasterService = inject(ToastrService);
 
   readonly dialogRef = inject(MatDialogRef<UserDialogComponent>);
@@ -57,15 +56,20 @@ export class UserDialogComponent {
       ...(this.data.type === CompanyType.SupplyChainPartner ? { supplyChainPartnerId: this.data.id! } : { certificationAuthorityId: this.data.id! }),
     }
 
+    let reloadContent: boolean = false;
+
     this.userService.addUser(newUser).subscribe({
       next: (response) => {
         console.log(response);
         this.showToast('User inserted successfully!', 'success');
-        this.dialogRef.close();
+        reloadContent = true;
+        this.dialogRef.close(reloadContent);
       },
       error: (error) => {
         console.error(error);
         this.showToast('Error on user insertion', 'error');
+        reloadContent = false
+        this.dialogRef.close(reloadContent);
       }
     })
   }
