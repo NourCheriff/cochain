@@ -1,5 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { ethers } from 'ethers';
+import ActivityCompiled from 'frontend/artifacts/contracts/Activity.sol/Activity.json';
+import ActivityDeployed from 'frontend/deployments/localhost/Activity.json';
+import CarbonCreditsCompiled from 'frontend/artifacts/contracts/CarbonCredits.sol/CarbonCredits.json';
+import CarbonCreditsDeployed from 'frontend/deployments/localhost/CarbonCredits.json';
 
 declare const window: any; // window object provided by the browser API
 
@@ -18,21 +22,15 @@ export class BlockchainService {
   private activityABI: any;
   private carbonCreditsABI: any;
 
+  private activityAddress: any;
+  private carbonCreditsAddress: any;
+
   private activityContract: ethers.Contract | null = null;
   private carbonCreditsContract: ethers.Contract | null = null;
 
   isConnected = new EventEmitter<boolean>();
   errorEvent = new EventEmitter<string>();
   transactionEvent = new EventEmitter<{hash: string, status: string}>();
-
-  constructor() {
-    try {
-      this.activityABI = require('frontend/artifacts/contracts/Activity.sol/Activity.json').abi;
-      this.carbonCreditsABI = require('frontend/artifacts/contracts/CarbonCredits.sol/CarbonCredits.json').abi;
-    } catch (error) {
-      console.error('Errore nel caricamento degli ABI:', error);
-    }
-  }
 
   // returns a boolean that indicates if the connection was successfull or not
   async connectWallet(): Promise<boolean> {
@@ -58,18 +56,21 @@ export class BlockchainService {
   private async initializeContracts(): Promise<void> {
     if (!this.signer) return;
 
-    const activityContractAddress = require('frontend/deployments/localhost/Activity.json').address;
-    const carbonCreditsContractAddress = require('frontend/deployments/localhost/CarbonCredits.json').address;
+    this.activityABI = ActivityCompiled.abi;
+    this.carbonCreditsABI = CarbonCreditsCompiled.abi;
+
+    this.activityAddress = ActivityDeployed.address;
+    this.carbonCreditsAddress = CarbonCreditsDeployed.address;
 
     try {
       this.activityContract = new ethers.Contract(
-        activityContractAddress,
+        this.activityAddress,
         this.activityABI,
         this.signer
       );
 
       this.carbonCreditsContract = new ethers.Contract(
-        carbonCreditsContractAddress,
+        this.carbonCreditsAddress,
         this.carbonCreditsABI,
         this.signer
       );
@@ -109,7 +110,38 @@ export class BlockchainService {
   private async setupAccount(): Promise<void> {
     this.provider = new ethers.BrowserProvider(window.ethereum);
     this.signer = await this.provider.getSigner();
-    this.network = (await this.provider.getNetwork()).name
+
+    let addEthereumChainResponse = await window.ethereum.request({
+      "method": "wallet_addEthereumChain",
+      "params": [
+        {
+          chainId: "0x539",
+          chainName: "COCHAIN",
+          rpcUrls: [
+            "http://127.0.0.1:8545"
+          ],
+          nativeCurrency: {
+            name: "ETH",
+            symbol: "ETH",
+            decimals: 18
+          },
+        }
+      ]
+    });
+    if (!addEthereumChainResponse) {
+      await window.ethereum.request({
+        "method": "wallet_switchEthereumChain",
+        "params": [
+          {
+            chainId: "0x539"
+          },
+        ]
+      });
+    }
+    else {
+      this.errorEvent.emit('Errore nel collegamento con la network');
+    }
+
     let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     this.account = accounts[0];
     this.isConnected.emit(true);
@@ -132,6 +164,12 @@ export class BlockchainService {
     this.signer = null;
     this.network = null;
     this.account = null;
+    this.activityABI = null;
+    this.carbonCreditsABI = null;
+    this.activityAddress = null;
+    this.carbonCreditsAddress = null;
+    this.activityContract = null;
+    this.carbonCreditsContract = null;
     this.isConnected.emit(false);
   }
 }
