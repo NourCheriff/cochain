@@ -26,6 +26,10 @@ export class WalletComponent {
     this.blockchainService.errorEvent.subscribe((message: string) => {
       this.ngZone.run(() => this.showMessage(message));
     });
+
+    this.blockchainService.transferEvent.subscribe(event => {
+      //Chiamata backend per salvataggio transaction console.log("Trasferimento: ", event);
+    });
   }
 
   async connectWallet(): Promise<void> {
