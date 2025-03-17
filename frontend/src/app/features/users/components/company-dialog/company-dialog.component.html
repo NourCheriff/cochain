@@ -20,11 +20,11 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="field_form" [style.display]="isSupplyChainPartner() ? 'in-line' : 'none'">
-    <mat-label>Select a supply chain partner type</mat-label>
-    <mat-select [(value)]="selected">
-      <mat-option value="retailer">Retailer</mat-option>
-      <mat-option value="supplier">Supplier</mat-option>
-      <mat-option value="distributor">Distributor</mat-option>
+    <mat-label>Type</mat-label>
+    <mat-select [(value)]="selectedTypeId">
+      @for (scpType of scpTypes; track $index) {
+        <mat-option [value]="scpType.id">{{scpType.name}}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 

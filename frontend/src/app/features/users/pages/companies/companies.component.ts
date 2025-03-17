@@ -94,10 +94,14 @@ export class CompaniesComponent implements OnInit {
   }
 
   addCompany(): void {
-    this.dialog.open(
+    const dialogRef = this.dialog.open(
       CompanyDialogComponent,
       { data: { companyType: this.selected } }
     );
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result.reloadContent)
+        result.isSCP ? this.getSupplyChainPartners() : this.getCertificationAuthorities()
+    });
   }
 
   private showSupplyChainPartners(): void {
