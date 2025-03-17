@@ -3,22 +3,31 @@
   <form [formGroup]="modifiedProductForm">
 
     <mat-form-field appearance="outline">
-      <mat-label>Name</mat-label>
-      <mat-select formControlName="name" [(value)]="modifiedProductForm.value.name">
-        @for (product of products; track $index) {
-          <mat-option [value]="product.value"> {{ product.displayValue }} </mat-option>
+      <mat-label>Category type</mat-label>
+      <mat-select formControlName="category" (selectionChange)="loadGenericProducts()">
+        @for (productCategory of productCategories; track $index) {
+          <mat-option [value]="productCategory.id"> {{ productCategory.name }} </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" [class.hidden]="!modifiedProductForm.value.category">
+      <mat-label>Product type</mat-label>
+      <mat-select formControlName="product">
+        @for (genericProduct of genericProducts; track $index) {
+          <mat-option [value]="genericProduct.id"> {{ genericProduct.name }} </mat-option>
         }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label> Expiration date </mat-label>
+      <mat-label> Choose a date </mat-label>
       <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" formControlName="date" [value]="modifiedProductForm.value.date">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
     </mat-form-field>
 
-    <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients"> Has ingredients </mat-slide-toggle></p>
+    <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients" (click)="loadIngredientsOnce()"> Has ingredients </mat-slide-toggle></p>
       <div [class.hidden]="!modifiedProductForm.value.hasIngredients">
         <mat-form-field appearance="outline">
           <mat-label> Choose ingredients </mat-label>
