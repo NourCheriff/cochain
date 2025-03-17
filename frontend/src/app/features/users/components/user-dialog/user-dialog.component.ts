@@ -61,6 +61,7 @@ export class UserDialogComponent {
       next: (response) => {
         console.log(response);
         this.showToast('User inserted successfully!', 'success');
+        this.dialogRef.close();
       },
       error: (error) => {
         console.error(error);

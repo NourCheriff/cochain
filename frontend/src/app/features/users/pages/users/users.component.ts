@@ -51,14 +51,7 @@ export class UsersComponent implements OnInit {
     if (!this.companyId || !this.companyType)
       return;
 
-    this.userService.getUsersByCompanyId(this.companyId, this.companyType).subscribe({
-      next: (users) => {
-        this.users = users;
-        this.userSource = new MatTableDataSource<User>(this.users);
-        this.userSource.paginator = this.paginator;
-      },
-      error: (error) => console.error(error)
-    })
+    this.getUsers();
   }
 
   addUser(): void {
@@ -72,10 +65,12 @@ export class UsersComponent implements OnInit {
 
   deleteUser(id: string): void {
     this.userService.deleteUser(id).subscribe((response) => {
-      if (response)
-        this.showToast('User deleted successfully!', 'success');
-      else
+      if (!response) {
         this.showToast('Error in removing user', 'error');
+        return;
+      }
+      this.showToast('User deleted successfully!', 'success');
+      this.getUsers();
     });
   }
 
@@ -90,6 +85,17 @@ export class UsersComponent implements OnInit {
       default:
         this.toasterService.info(message, 'Info');
     }
+  }
+
+  private getUsers(): void {
+    this.userService.getUsersByCompanyId(this.companyId!, this.companyType!).subscribe({
+      next: (users) => {
+        this.users = users;
+        this.userSource = new MatTableDataSource<User>(this.users);
+        this.userSource.paginator = this.paginator;
+      },
+      error: (error) => console.error(error)
+    })
   }
 }
 
