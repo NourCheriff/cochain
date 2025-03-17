@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { User } from 'src/models/auth/user.model';
 import { CompanyType } from 'src/types/company.enum';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users',
@@ -29,7 +30,11 @@ import { CompanyType } from 'src/types/company.enum';
 
 })
 export class UsersComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private userService: UserService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private toasterService: ToastrService
+  ) {}
 
   readonly dialog = inject(MatDialog);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -63,6 +68,28 @@ export class UsersComponent implements OnInit {
     };
 
     this.dialog.open(UserDialogComponent, { data: dialogData });
+  }
+
+  deleteUser(id: string): void {
+    this.userService.deleteUser(id).subscribe((response) => {
+      if (response)
+        this.showToast('User deleted successfully!', 'success');
+      else
+        this.showToast('Error in removing user', 'error');
+    });
+  }
+
+  private showToast(message: string, severity: string | undefined) {
+    switch(severity) {
+      case 'success':
+        this.toasterService.success(message, 'Success');
+        break;
+      case 'error':
+        this.toasterService.error(message, 'Error');
+        break;
+      default:
+        this.toasterService.info(message, 'Info');
+    }
   }
 }
 

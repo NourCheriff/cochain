@@ -19,4 +19,8 @@ export class UserService {
   addUser(newUser: User): Observable<User> {
     return this.apiService.add('api/Users/AddUser', newUser);
   }
+
+  deleteUser(id: string): Observable<boolean> {
+    return this.apiService.delete<boolean>('api/Users/DeleteUser', id);
+  }
 }
