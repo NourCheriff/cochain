@@ -5,6 +5,7 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Data.Helpers;
 using Microsoft.AspNetCore.Identity;
 using CochainAPI.Model.CompanyEntities;
+using System.Text;
 
 namespace CochainAPI.Data.Services
 {
@@ -63,9 +64,13 @@ namespace CochainAPI.Data.Services
             if (!ValidateUserInput(userObj))
                 return null;
 
+            var result = await _userRepository.GetByUserName(userObj.UserName!);
+            if (result != null)
+                return null;
+
             var isSCP = userObj.SupplyChainPartnerId.HasValue;
             var isCA = userObj.CertificationAuthorityId.HasValue;
-            if (!isSCP && !isCA)
+            if ((!isSCP && !isCA) || (isSCP && isCA))
                 return null;
 
             User? newUser = null;
