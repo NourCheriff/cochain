@@ -1,3 +1,3 @@
 export interface ProductIngredient {
-  ingredientId?: string;
+  ingredientId: string;
 }
