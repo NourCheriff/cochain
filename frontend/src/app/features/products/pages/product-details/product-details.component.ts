@@ -49,7 +49,8 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.selectedProduct.subscribe(data => {
       this.productInfo = data;
 
-      this.lifeCyclesList = this.productInfo.productLifeCycle!;
+      this.lifeCyclesList = this.productInfo.productLifeCycles!;
+      console.log(this.productInfo.productLifeCycles!);
       this.lifeCycleSource = new MatTableDataSource<ProductLifeCycle>(this.lifeCyclesList);
       this.lifeCycleSource.paginator = this.paginator;
 
