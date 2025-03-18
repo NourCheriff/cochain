@@ -172,7 +172,7 @@ export class EditProductDialogComponent implements OnInit{
     const datepipe: DatePipe = new DatePipe('en-US')
     let formattedDate = datepipe.transform(this.modifiedProductForm.value.date!, 'YYYY-MM-dd');
 
-    const newProduct: ProductInfo = {
+    const modifiedProduct: ProductInfo = {
       id: this.data.product.id,
       name: this.modifiedProductForm.value.name!,
       productId: this.modifiedProductForm.value.product!,
@@ -181,7 +181,7 @@ export class EditProductDialogComponent implements OnInit{
       ingredients: productIngredients,
     }
 
-    this.productService.addProductInfo(newProduct).subscribe({
+    this.productService.updateProductInfo(modifiedProduct).subscribe({
       next: (response) => console.log(response),
       error: (error) => console.error(error),
     })
