@@ -73,7 +73,9 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addWork(){
-    this.dialog.open(NewWorkDialogComponent)
+    this.dialog.open(NewWorkDialogComponent,
+      {data: {product: this.productInfo}}
+    )
   }
 
   modifyProduct(){
