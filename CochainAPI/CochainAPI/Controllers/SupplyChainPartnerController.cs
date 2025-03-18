@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using CochainAPI.Data.Services.Interfaces;
+using CochainAPI.Model.CompanyEntities;
 
 namespace CochainAPI.Controllers
 {
@@ -53,18 +54,18 @@ namespace CochainAPI.Controllers
 
         [HttpPost("addSCP")]
         //[Authorize(Policy = "WriteSCP")]
-        public async Task<IActionResult> AddSupplyChainPartner()
+        public async Task<IActionResult> AddSupplyChainPartner([FromBody] SupplyChainPartner supplyChainPartner)
         {
-            var response = await _supplychainPartnerService.GetTypes();
+            var response = await _supplychainPartnerService.AddSupplyChainPartner(supplyChainPartner);
             if (response == null)
             {
-                return BadRequest(new { message = "Supply Chain Partner types not found" });
+                return BadRequest(new { message = "Supply chain partner not found" });
             }
             return Ok(response);
         }
 
         [HttpPost("updateSCP")]
-        //[Authorize(Policy ="UpdateSCP")]
+        [Authorize(Policy ="WriteSCP")]
         public async Task<IActionResult> UpdateSupplyChainPartner()
         {
             var response = await _supplychainPartnerService.GetTypes();

@@ -56,6 +56,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("WriteSCP", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("AddUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
     options.AddPolicy("ReadUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
+    options.AddPolicy("RemoveUser", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("ReadDocuments", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteContracts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("WriteInvoices", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
