@@ -17,6 +17,7 @@ import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Product } from 'src/models/product/product.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
+import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
 @Component({
@@ -51,7 +52,7 @@ export class EditProductDialogComponent implements OnInit{
     this.modifiedProductForm.addControl('hasIngredients', new FormControl<boolean>((INGREDIENTS.length > 0)? true : false, Validators.required));
     if(INGREDIENTS.length > 0){
       this.loadIngredients();
-      this.modifiedProductForm.addControl('ingredients', new FormControl<string>("", Validators.required));
+      this.modifiedProductForm.addControl('ingredients', new FormControl<string>(""));
       this.ingredients.set(INGREDIENTS);
     }
   }
@@ -66,13 +67,9 @@ export class EditProductDialogComponent implements OnInit{
   uploadEnabled: boolean = false;
 
   modifiedProductForm = new FormGroup<ProductForm>({});
-
   genericProducts: Product[] = [];
-
   productCategories: ProductCategory[] = [];
-
   allIngredientsRes: ProductInfo[] = [];
-
   alreadyLoaded: boolean = false;
 
   ngOnInit(): void {
@@ -118,23 +115,6 @@ export class EditProductDialogComponent implements OnInit{
     return d ? d >= today : false;
   };
 
-
-  modifyProduct(){
-    const modifiedProductName = this.modifiedProductForm.value.product
-    const modifiedDate = this.modifiedProductForm.value.date
-    if(this.modifiedProductForm.value.hasIngredients){
-      const modifiedIngredients: string[] = this.ingredients()
-      console.log(modifiedIngredients)
-    }
-
-    const fileData = new FormData()
-    fileData.append('file',this.fileUploaded)
-
-    for (const pair of fileData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
-  }
-
   private loadProductCategories(): void {
     this.productService.getProductCategories().subscribe({
       next: (response) => {
@@ -165,9 +145,8 @@ export class EditProductDialogComponent implements OnInit{
     if(this.allIngredientsRes != null)
       this.productService.getAllProductInfo().subscribe({
         next: (response) => {
-
           this.allIngredientsRes = response
-          console.log(this.allIngredientsRes)
+
           this.allIngredientsRes.forEach(ingredient =>{
             this.allIngredients.push(ingredient.name!)
           })
@@ -176,6 +155,31 @@ export class EditProductDialogComponent implements OnInit{
       });
   }
 
+
+  modifyProduct(){
+    const product: Product = {
+      id: this.modifiedProductForm.value.product!,
+    }
+
+    const ingredientsValue = this.ingredients();
+
+    const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
+      const ingredient = this.allIngredientsRes.find(item => item.name === ingredientName);
+      return ingredient ? { ingredientId: ingredient.id } : null;
+    }).filter(ingredient => ingredient !== null);
+
+    const newProduct: ProductInfo = {
+      id: this.data.product.id,
+      product: product,
+      expirationDate: this.modifiedProductForm.value.date!.toDateString(),
+      ingredients: productIngredients,
+    }
+
+    this.productService.addProductInfo(newProduct,'d65e685f-8bdd-470b-a6b8-c9a62e39f095').subscribe({
+      next: (response) => console.log(response),
+      error: (error) => console.error(error),
+    })
+  }
 
   onSelectFile(event : Event){
     const input = event.target as HTMLInputElement;
