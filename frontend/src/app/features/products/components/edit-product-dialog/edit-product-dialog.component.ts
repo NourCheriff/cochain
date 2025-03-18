@@ -154,14 +154,7 @@ export class EditProductDialogComponent implements OnInit{
 
           if(ingredients != null){
             this.ingredients.set(ingredients);
-            ingredients?.forEach(ingredientName => {
-              this.allIngredientsRes.forEach(ingredient =>{
-                if(ingredientName != ingredient.name)
-                  this.allIngredients.push(ingredient.name!)
-              })
-            })
           }
-
         },
         error: (error) => console.error(error)
       });
