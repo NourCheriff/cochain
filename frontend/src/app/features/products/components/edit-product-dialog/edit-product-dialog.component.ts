@@ -20,6 +20,7 @@ import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-edit-product-dialog',
   imports: [
@@ -164,10 +165,14 @@ export class EditProductDialogComponent implements OnInit{
       return ingredient ? { ingredientId: ingredient.id }: null;
     }).filter((ingredient): ingredient is ProductIngredient => ingredient !== null);
 
+    const datepipe: DatePipe = new DatePipe('en-US')
+    let formattedDate = datepipe.transform(this.modifiedProductForm.value.date!, 'YYYY-MM-dd');
+
     const newProduct: ProductInfo = {
+      id: this.data.product.id,
       productId: this.modifiedProductForm.value.product!,
       supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
-      expirationDate: this.modifiedProductForm.value.date!.toDateString(),
+      expirationDate: formattedDate!,
       ingredients: productIngredients,
     }
 
