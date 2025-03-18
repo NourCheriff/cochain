@@ -23,14 +23,8 @@ export class ProductService {
     this.productInfo.next(product);
   }
 
-  addProductInfo(productInfo: ProductInfo, scpId: string){
-
-    const body = {
-      productInfo,
-      "supplyChainPartnerId" : scpId
-    }
-
-    return this.apiService.add("api/Product", body)
+  addProductInfo(productInfo: ProductInfo): Observable<ProductInfo>{
+    return this.apiService.add("api/Product", productInfo)
   }
 
   // addProductLifeCycle(productLifeCycle: ProductLifeCycle): Observable<ProductLifeCycle>{
