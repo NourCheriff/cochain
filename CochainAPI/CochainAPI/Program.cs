@@ -21,6 +21,7 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("CochainDB")!;
+//string blockchainURL = "http://13.73.227.222:8545";
 
 builder.Services.Configure<Jwt>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
