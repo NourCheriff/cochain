@@ -15,6 +15,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { Product } from 'src/models/product/product.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
+import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
 
@@ -103,38 +104,36 @@ export class ProductDialogComponent implements OnInit {
       },
       error: (error) => console.error(error)
     });
-
   }
 
   createProduct(){
-    const productCategory = this.newProductForm.value.category
-    const genericProduct = this.newProductForm.value.product
-    const date = this.newProductForm.value.date
-    const ingredients = this.ingredients()
+
+    const product: Product = {
+      id: this.newProductForm.value.product!,
+    }
+
+    const ingredientsValue = this.ingredients();
+
+    const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
+      const ingredient = this.allIngredientsRes.find(item => item.name === ingredientName);
+      return ingredient ? { ingredientId: ingredient.id } : null;
+    }).filter(ingredient => ingredient !== null);
+
+    const newProduct: ProductInfo = {
+      product: product,
+      expirationDate: this.newProductForm.value.date!,
+      ingredients: productIngredients,
+    }
+
+    this.productService.addProductInfo(newProduct,'d65e685f-8bdd-470b-a6b8-c9a62e39f095').subscribe({
+      next: (response) => console.log(response),
+      error: (error) => console.error(error),
+    })
+
 
     // const reader = new FileReader();
     // reader.onload = () => {
     //   const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
-
-    const category: ProductCategory = {
-      description: productCategory!
-    }
-
-    const product: Product = {
-      description: 'prova',
-      category: category,
-    }
-
-    const productInfo: ProductInfo = {
-      product: product,
-      expirationDate: date!,
-     // supplyChainPartner: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095'
-    }
-
-    this.productService.addProductInfo(productInfo).subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.error(error),
-    })
 
       // this.fileUploadService.uploadFile(doc).subscribe({
       //   next: (response) => console.log('File uploaded successfully', response),
