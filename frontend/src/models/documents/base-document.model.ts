@@ -13,10 +13,11 @@ export interface BaseDocument extends Base {
 
 export interface BaseDocument extends Base {
   path?: string;
-  type: string;
-  userEmitterId: string;
+  hash?: string;
+  type?: string;
+  userEmitterId?: string;
   supplyChainPartnerReceiverId: string;
-  userEmitter?: string;
-  supplyChainPartnerReceiver?: string;
+  userEmitter?: User;
+  supplyChainPartnerReceiver?: SupplyChainPartner;
   fileString?: string;
 }

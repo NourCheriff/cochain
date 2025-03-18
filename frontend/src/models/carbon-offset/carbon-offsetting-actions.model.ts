@@ -3,5 +3,8 @@ import { SupplyChainPartner } from "../company-entities/supply-chain-partner.mod
 
 export interface CarbonOffsettingAction extends Base {
   offset: number;
-  supplyChainPartner: SupplyChainPartner;
+  supplyChainPartnerId: string;
+  supplyChainPartner?: SupplyChainPartner;
+  isProcessed: boolean;
+  emissionTransactionId?: string;
 }

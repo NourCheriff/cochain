@@ -2,5 +2,6 @@ import { ProductLifeCycleCategory } from "../product/product-life-cycle-category
 import { BaseDocument } from "./base-document.model";
 
 export interface Contract extends BaseDocument {
-  productLifeCycleCategory: ProductLifeCycleCategory;
+  productLifeCycleCategoryId: string;
+  productLifeCycleCategory?: ProductLifeCycleCategory;
 }

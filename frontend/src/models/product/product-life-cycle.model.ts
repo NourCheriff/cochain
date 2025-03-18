@@ -7,8 +7,13 @@ import { ProductLifeCycleCategory } from "./product-life-cycle-category.model";
 export interface ProductLifeCycle extends Base {
   timestamp: string;
   emissions: number;
-  productLifeCycleCategory: ProductLifeCycleCategory;
-  supplyChainPartner: SupplyChainPartner;
-  productInfo: ProductInfo;
+  isEmissionsProcessed: boolean;
+  emissionTransactionId?: string;
+  productLifeCycleCategoryId: string;
+  productLifeCycleCategory?: ProductLifeCycleCategory;
+  supplyChainPartnerId: string;
+  supplyChainPartner?: SupplyChainPartner;
+  productInfoId: string;
+  productInfo?: ProductInfo;
   productLifeCycleDocuments?: ProductLifeCycleDocument[];
 }
