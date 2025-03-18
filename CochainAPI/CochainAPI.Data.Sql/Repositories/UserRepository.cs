@@ -32,7 +32,7 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<User?> GetById(string id)
         {
-            return await dbContext.Users.FirstOrDefaultAsync(c => c.Id == id);
+            return await dbContext.Users.FirstOrDefaultAsync(c => c.Id == id && c.IsActive == true);
         }
 
         public async Task<List<User>?> GetUsersByCompanyId(Guid id, string companyType)
@@ -45,7 +45,7 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<User?> GetByUserName(string userName)
         {
-            return await dbContext.Users.FirstOrDefaultAsync(c => c.UserName == userName);
+            return await dbContext.Users.FirstOrDefaultAsync(c => c.UserName == userName && c.IsActive == true);
         }
 
         public async Task<List<IdentityRole>> GetRolesByUserId(string userId)
@@ -61,7 +61,8 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.UserTemporaryPassword.Include(x => x.User).Where(x => x.User.UserName!.ToLower().Equals(model.Username.ToLower()) &&
                 x.Password == model.Password &&
                 x.ExpirationDate >= DateTime.UtcNow &&
-                !x.IsUsed).FirstOrDefaultAsync();
+                !x.IsUsed &&
+                x.User.IsActive == true).FirstOrDefaultAsync();
         }
 
         public async Task<bool> UpdateTemporaryPassword(UserTemporaryPassword temporaryPassword)

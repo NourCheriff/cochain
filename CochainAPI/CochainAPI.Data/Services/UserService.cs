@@ -23,6 +23,8 @@ namespace CochainAPI.Data.Services
         private readonly string RESELLER_TYPE = "Rivenditore Dettaglio";
         private readonly string STOCKIST_TYPE = "Grossista";
         private readonly string STORAGE_TYPE = "Stoccaggio";
+        private readonly string SUPPLY_CHAIN_PARTNER = "scp";
+        private readonly string CERTIFICATION_AUTHORITY = "ca";
 
         public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository, ISupplyChainPartnerRepository supplyChainPartnerRepository, ICertificationAuthorityRepository certificationAuthorityRepository, UserManager<User> userManager)
         {
@@ -53,7 +55,7 @@ namespace CochainAPI.Data.Services
                 return null;
 
             companyType = companyType.ToLower();
-            if (companyType != "scp" && companyType != "ca")
+            if (companyType != SUPPLY_CHAIN_PARTNER && companyType != CERTIFICATION_AUTHORITY)
                 return null;
             
             return await _userRepository.GetUsersByCompanyId(id, companyType);
