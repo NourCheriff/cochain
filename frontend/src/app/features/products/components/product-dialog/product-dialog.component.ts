@@ -120,6 +120,7 @@ export class ProductDialogComponent implements OnInit {
       description: productCategory!
     }
 
+    /*
     const product: Product = {
       description: 'prova',
       category: category,
@@ -136,6 +137,7 @@ export class ProductDialogComponent implements OnInit {
       error: (error) => console.error(error),
     })
 
+    */
       // this.fileUploadService.uploadFile(doc).subscribe({
       //   next: (response) => console.log('File uploaded successfully', response),
       //   error: (error) => console.error('File upload failed', error),
