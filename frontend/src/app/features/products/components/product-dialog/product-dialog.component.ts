@@ -50,6 +50,7 @@ export class ProductDialogComponent implements OnInit {
   newProductForm = new FormGroup({
     category: new FormControl('', [Validators.required]),
     product: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required]),
     hasIngredients: new FormControl(false),
     ingredients: new FormControl('')
@@ -128,6 +129,7 @@ export class ProductDialogComponent implements OnInit {
     let formattedDate = datepipe.transform(this.newProductForm.value.date!, 'YYYY-MM-dd');
 
     const newProduct: ProductInfo = {
+      name: this.newProductForm.value.name!,
       productId: this.newProductForm.value.product!,
       supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
       expirationDate: formattedDate!,
