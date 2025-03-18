@@ -12,7 +12,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { Product } from 'src/models/product/product.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
@@ -120,6 +119,10 @@ export class ProductDialogComponent implements OnInit {
     //   description: productCategory!
     // }
 
+    // const product: Product = {
+    //   description: 'prova',
+    //   category: category,
+    // }
     /*
     const product: Product = {
       description: 'prova',
@@ -129,6 +132,8 @@ export class ProductDialogComponent implements OnInit {
     // const productInfo: ProductInfo = {
     //   product: product,
     //   expirationDate: date!,
+    //   productId: '',
+    //   supplyChainPartnerId: ''
     //  // supplyChainPartner: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095'
     // }
 

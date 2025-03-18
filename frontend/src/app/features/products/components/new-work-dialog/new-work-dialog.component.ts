@@ -13,7 +13,6 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators,AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { ProductService } from '../../services/product.service';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
@@ -63,7 +62,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
   productLifeCycleCategories: ProductLifeCycleCategory[] = [];
   supplyChainPartners: SupplyChainPartner[] = [];
 
-  constructor(private fileUploadService: FileUploadService, private productService: ProductService) {}
+  constructor(private productService: ProductService) {}
 
   ngAfterViewInit(): void {
      this.emissions.nativeElement.textContent = `${this.getRandomInt(0, 100)}T CO2e `;

@@ -8,7 +8,7 @@ import "primeicons/primeicons.css";
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.css'],
-  standalone: true, // se usi componenti standalone (Angular 14+)
+  standalone: true,
   imports: [BreadcrumbModule]
 })
 export class BreadcrumbComponent implements OnInit {
@@ -67,20 +67,56 @@ export class BreadcrumbComponent implements OnInit {
         switch(label){
           case 'Details':
             breadcrumbs.push(
-              { label: 'Certificates', routerLink: '/certificates', style:{ 'color':'var(--breadcrumb-link)',} },
-              { label: `Details`, routerLink: `/details/${id}` }
+              {
+                label: 'Certificates',
+                routerLink: '/certificates',
+                style:{
+                  'color':'var(--breadcrumb-link)',
+                  'margin-left':'5px',
+                  'margin-right':'5px'
+                }
+              },
+              {
+                label: `Details`,
+                routerLink: `/details/${id}`,
+                style:{'margin-left':'5px'}
+              }
             );
             break;
           case 'Product details':
             breadcrumbs.push(
-              { label: 'Product', routerLink: '/products', style:{ 'color':'var(--breadcrumb-link)',} },
-              { label: `Details`, routerLink: `/details/${id}` }
+              {
+                label: 'Product',
+                routerLink: '/products',
+                style:{
+                  'color':'var(--breadcrumb-link)',
+                  'margin-left':'5px',
+                  'margin-right':'5px'
+                }
+              },
+              {
+                label: `Details`,
+                routerLink: `/details/${id}`,
+                style:{'margin-left':'5px'}
+              }
             );
             break;
           case 'Companies Users':
             breadcrumbs.push(
-              { label: 'Companies', routerLink: '/companies', style:{ 'color':'var(--breadcrumb-link)',} },
-              { label: `Users`, routerLink: `/${id}/users` }
+              {
+                label: 'Companies',
+                routerLink: '/companies',
+                style:{
+                  'color':'var(--breadcrumb-link)',
+                  'margin-left':'5px',
+                  'margin-right':'5px'
+                }
+              },
+              {
+                label: `Users`,
+                routerLink: `/${id}/users`,
+                style:{'margin-left':'5px'}
+              }
             );
             break;
 

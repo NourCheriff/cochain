@@ -1,5 +1,6 @@
-import { Component, inject} from '@angular/core';
+import { Component, Inject, inject, Input} from '@angular/core';
 import {
+  MAT_DIALOG_DATA,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle,
@@ -11,8 +12,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
+import { CertificatesService } from '../../service/certificates.service';
+import { sha256 } from 'js-sha256';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-file-input',
@@ -33,12 +36,16 @@ import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain
 
 export class FileInputComponent {
 
+  private certificatesService = inject(CertificatesService);
+  private authService = inject(AuthService);
   readonly dialogRef = inject(MatDialogRef<FileInputComponent>);
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { documentType: string, scpReceiverId: string }
+  ){}
 
   fileUploaded!: File;
   uploadEnabled: boolean = false;
-
-  constructor(private fileUploadService: FileUploadService) {}
 
   onSelectFile(event : Event){
     const input = event.target as HTMLInputElement;
@@ -48,7 +55,6 @@ export class FileInputComponent {
         alert("Only PDF allowed")
         return
       }
-      console.log(this.fileUploaded)
       this.uploadEnabled = true
     }else{
       alert("Upload a file!")
@@ -56,19 +62,20 @@ export class FileInputComponent {
   }
 
   uploadFile(): void {
-
     const reader = new FileReader();
     reader.onload = () => {
-      const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
+      const base64String = reader.result?.toString().split(',')[1]!;
+      const hashedBase64Contract = sha256(base64String!)
 
-      let doc: SupplyChainPartnerCertificate = {
+      let certificate: SupplyChainPartnerCertificate = {
+        hash: hashedBase64Contract,
         fileString: base64String,
-        supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
-        userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
-        type: 'quality',
+        supplyChainPartnerReceiverId: this.data.scpReceiverId,
+        userEmitterId: this.authService.userId!,
+        type: this.data?.documentType!,
       };
 
-      this.fileUploadService.uploadFile(doc).subscribe({
+      this.certificatesService.uploadCertificate(certificate).subscribe({
         next: (response) => console.log('File uploaded successfully', response),
         error: (error) => console.error('File upload failed', error),
       });

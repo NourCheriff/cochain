@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -9,28 +9,28 @@ import { ContractDialogComponent } from '../contract-dialog/contract-dialog.comp
 import { MatDialog } from '@angular/material/dialog';
 import { ContractService } from '../../service/contract.service';
 import { Contract } from 'src/models/documents/contract.model';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-contracts-section',
   templateUrl: './contracts-section.component.html',
   styleUrl: './contracts-section.component.css',
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule]
+  imports: [CommonModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule]
 })
 export class ContractsSectionComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   user: User = {
+    "id": "3542da56-0de3-4797-a059-effff257f63d",
     "supplyChainPartner": "Prova company",// qui ci va il supply chain partner, quando l'utente effettua il login
     "role": "User"
   };
 
   displayedColumns: string[] = ['emitter', 'receiver', 'workType', 'attachment'];
-
-  dataSource: any;
+  dataSource = new MatTableDataSource<Contract>([]);
   contracts: Contract[] = [];
 
-  selected = 'all_contracts';
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  selected = 'received_contracts';
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   constructor(private contractService: ContractService){}
 
@@ -38,57 +38,52 @@ export class ContractsSectionComponent implements OnInit {
     if (this.isAdmin()) {
       this.displayedColumns.push('action');
     }
-    //this.getAllContracts()
+    this.getContracts(5,1)
   }
 
-  getAllContracts(){
-    this.contractService.getAllContracts().subscribe({
+  onPageChange(event: PageEvent){
+    console.log('Cambiata la pagina:', event.pageIndex);
+    console.log('Elementi per pagina:', event.pageSize);
+    this.getContracts(event.pageSize, event.pageIndex)
+  }
+
+  getContracts(pageSize: number = 5, pageNumber: number = 1){
+    const currentSCPId = this.user.id
+    this.contractService.getContracts(currentSCPId,this.selected,pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
         this.contracts = response
-        this.dataSource = new MatTableDataSource<Contract>(this.contracts);
+        this.dataSource.data = this.contracts;
         this.dataSource.paginator = this.paginator;
       },
       error: (error) => console.log(error)
     })
   }
 
-  updateTable() {
-
-    const BACKUP_DATA = this.contracts;
-    let SELECTED_DATA: Contract[] = [];
-
-    switch(this.selected){
-      case 'all_contracts':
-        SELECTED_DATA = BACKUP_DATA;
-      break;
-
-      case 'received_contracts':
-       // SELECTED_DATA = BACKUP_DATA.filter(item => item.supplyChainPartnerReceiver?.name == this.user.supplyChainPartner);
-      break;
-
-      case 'emitted_contracts':
-       // SELECTED_DATA = BACKUP_DATA.filter(item => item.userEmitter?.supplyChainPartner.name == this.user.supplyChainPartner);
-      break;
-    }
-
-    this.dataSource = new MatTableDataSource<Contract>(SELECTED_DATA);
-    this.dataSource.paginator = this.paginator;
+  updateSelected(event: any){
+    this.selected = event.value
+    this.getContracts()
   }
 
   isAdmin(): boolean {
-    return this.user.role == "Admin";
+    return this.user.role === 'Admin';
   }
 
-  addContract() {
-    this.openDialog();
+  deleteCertificate(id: string){
+    this.contractService.deleteCertificate(id).subscribe({
+      next: (response) => {
+        console.log(response)
+      },
+      error: (error) => { console.log(error) }
+    })
   }
 
-  openDialog() {
+  addContractDialog() {
     this.dialog.open(ContractDialogComponent);
   }
 }
 
 export interface User {
+  id: string,
   supplyChainPartner: string;
   role: string;
 }

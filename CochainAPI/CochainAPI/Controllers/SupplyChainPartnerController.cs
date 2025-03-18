@@ -41,7 +41,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetSupplyChainPartner(string? queryparam, int? pageNumber, int? pageSize)
         {
             var response = await _supplychainPartnerService.GetSupplyChainPartners(queryparam, pageNumber, pageSize);
