@@ -120,32 +120,29 @@ export class BlockchainService {
     }
   }
 
-  public async getWalletId() {
-    if (this.provider && this.account) {
+  public get walletId(): string | null {
+    if (this.provider && this.account)
       return this.account;
-    }
-    else {
-      this.errorEvent.emit('Impossibile recuperare il wallet ID dell\'account');
-      return;
-    }
+
+    this.errorEvent.emit('Impossibile recuperare il wallet ID dell\'account');
+    return null;
   }
 
-  public async getBalance() {
-    if (this.provider && this.account) {
-      if (!this.carbonCreditsContract) {
-        await this.initializeContracts();
-      }
-      let balance = await this.carbonCreditsContract!!['balanceOf'](this.account);
-      balance = balance.toString();
-
-      return balance;
-    }
-    else {
+  public async getBalance(): Promise<string | null> {
+    if (!this.provider || !this.account) {
       this.errorEvent.emit('Impossibile recuperare il wallet ID dell\'account');
-      return;
+      return null;
     }
+
+    if (!this.carbonCreditsContract) {
+      await this.initializeContracts();
+    }
+
+    let balance = await this.carbonCreditsContract!!['balanceOf'](this.account);
+    return balance.toString();
   }
 
+  /*
   public async getTransactions(): Promise<Transaction[]> {
     const params = { walletId: this.account || '' };
     const etherScan = new ethers.EtherscanProvider();
@@ -175,6 +172,7 @@ export class BlockchainService {
       return [];
     }
   }
+    */
 
   private async setupAccount(): Promise<void> {
     this.provider = new ethers.BrowserProvider(window.ethereum);

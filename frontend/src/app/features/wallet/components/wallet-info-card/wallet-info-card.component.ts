@@ -12,7 +12,7 @@ import { TransactionsDialogComponent } from '../transactions-dialog/transactions
 })
 export class WalletInfoCardComponent {
   @Input() walletID: string = '0x1234';
-  @Input() balance: number = 0;
+  @Input() balance: string = '0';
 
   readonly dialog = inject(MatDialog);
 
