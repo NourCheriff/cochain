@@ -12,12 +12,10 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators,AbstractControl
 import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { ProductService } from '../../services/product.service';
-import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CompanyService } from '../../../users/services/company.service';
 @Component({
   selector: 'app-new-work-dialog',
     imports: [
@@ -39,6 +37,8 @@ import { CompanyService } from '../../../users/services/company.service';
 })
 export class NewWorkDialogComponent implements OnInit, AfterViewInit {
 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}, private fileUploadService: FileUploadService, private productService: ProductService) {}
+
   readonly dialogRef = inject(MatDialogRef<NewWorkDialogComponent>);
 
   @ViewChild('billFile') billFile!: ElementRef;
@@ -47,7 +47,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
 
   selectedReceiver: string = '';
   selectedWorkType: string = '';
-  isReceiverVisible: boolean = false;
+  isTransportDocument: boolean = false;
 
   newWorkForm = new FormGroup({
     work: new FormControl('', Validators.required),
@@ -60,12 +60,11 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
   uploadEnabled: boolean = false;
 
   productLifeCycleCategories: ProductLifeCycleCategory[] = [];
-  supplyChainPartners: SupplyChainPartner[] = [];
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}, private fileUploadService: FileUploadService, private productService: ProductService, private companyService: CompanyService) {}
+  emissionsValue: any;
 
   ngAfterViewInit(): void {
-     this.emissions.nativeElement.textContent = `${this.getRandomInt(0, 100)}T CO2e `;
+    this.emissionsValue = this.getRandomInt(0, 100);
+    this.emissions.nativeElement.textContent = `${this.emissionsValue}T CO2e `;
   }
 
   ngOnInit(): void {
@@ -75,35 +74,27 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
   getAllProductLifeCycleCategories(){
     this.productService.getAllProductLifeCycleCategories().subscribe({
       next: (response) => {
-        this.productLifeCycleCategories = response
+        this.productLifeCycleCategories = response;
       },
       error: (error) => console.error(error)
     })
   }
 
-  getAllSupplyChainPartner(){
-    this.companyService.getAllSupplyChainPartners().subscribe({
-      next: (response) => {
-        this.supplyChainPartners = response;
-      },
-      error: (error) => console.log(error)
-    })
-  }
-
   createWork(): void {
-
     const datepipe: DatePipe = new DatePipe('en-US')
     let formattedDate = datepipe.transform(this.newWorkForm.value.workDate, 'YYYY-MM-dd');
 
     const newProductLifeCycle: ProductLifeCycle = {
       timestamp: formattedDate!,
-      emissions: 50,
+      emissions: this.emissionsValue,
       isEmissionsProcessed: false,
       productLifeCycleCategoryId: this.newWorkForm.value.work!,
+      //productLifeCycleCategory:
       supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
       productInfoId: this.data.product.id!,
     }
-    if(this.isReceiverVisible){
+
+    if(this.isTransportDocument){
       const receiver = this.newWorkForm.value.receiver
       this.productService.addProductLifeCycleTransport(newProductLifeCycle).subscribe({
         next: (response) => console.log(response),
@@ -116,8 +107,6 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
         error: (error) => console.error(error),
       })
     }
-
-
   }
 
   onSelectFile(event : Event){
@@ -138,7 +127,8 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     if(fileType === 'bill'){
       this.billFileUploaded = undefined!
       this.billFile.nativeElement.value = null;
-    }else{
+    }
+    else{
       this.transportFileUploaded = undefined!
       this.transportFile.nativeElement.value = null;
     }
@@ -152,11 +142,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
   }
 
   onSelectionChange(value: string) {
-    this.selectedWorkType = value;
-    this.isReceiverVisible = value === '7a286d32-f89b-4e86-88bc-a6eb32fa2132';
-    if (this.isReceiverVisible) {
-      this.getAllSupplyChainPartner();
-    }
+    this.isTransportDocument = value === '7a286d32-f89b-4e86-88bc-a6eb32fa2132';
   }
 
   private getRandomInt(min: number, max: number): number{
