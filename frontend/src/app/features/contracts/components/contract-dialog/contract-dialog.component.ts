@@ -15,6 +15,7 @@ import { Contract } from 'src/models/documents/contract.model';
 import { ContractService } from '../../service/contract.service';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-contract-dialog',
@@ -32,9 +33,9 @@ import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-par
   styleUrl: './contract-dialog.component.css'
 })
 export class ContractDialogComponent implements OnInit {
-  readonly dialogRef = inject(MatDialogRef<ContractDialogComponent>);
+  private authService = inject(AuthService)
 
-  selectedReceiverId = '';
+  readonly dialogRef = inject(MatDialogRef<ContractDialogComponent>);
 
   @ViewChild("fileInput") fileInput!: ElementRef
   fileUploaded!: File
@@ -47,6 +48,8 @@ export class ContractDialogComponent implements OnInit {
 
   supplyChainPartners: SupplyChainPartner[] = []
   productLifeCycleCategories: ProductLifeCycleCategory[] = [];
+  selecteCategoryId = '';
+  selectedReceiverId = '';
 
   constructor(private contractService: ContractService) {}
 
@@ -88,23 +91,19 @@ export class ContractDialogComponent implements OnInit {
   }
 
   createContract(): void {
-
     const reader = new FileReader();
+
     reader.onload = () => {
       const base64String = reader.result?.toString().split(',')[1]!;
-      const hashedBase64Contract = sha256(base64String!)
-
-      const productLifeCycleCategory: ProductLifeCycleCategory = {
-        description: this.newContractForm.value.work!
-      }
+      const hashedBase64Contract = sha256(base64String)
 
       const contract: Contract = {
         fileString: base64String,
-        productLifeCycleCategory: productLifeCycleCategory,
         hash: hashedBase64Contract,
         supplyChainPartnerReceiverId: this.selectedReceiverId,
-        userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
+        userEmitterId: this.authService.userId!,
         type: 'contract',
+        productLifeCycleCategoryId: this.selecteCategoryId
       };
 
       this.contractService.addContract(contract).subscribe({

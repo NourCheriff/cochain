@@ -13,9 +13,9 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Work Type</mat-label>
-      <mat-select formControlName="work">
+      <mat-select formControlName="work" [(value)]="selecteCategoryId">
         @for (productLifeCycleCategory of productLifeCycleCategories; track $index) {
-          <mat-option [value]="productLifeCycleCategory.name"> {{ productLifeCycleCategory.name }} </mat-option>
+          <mat-option [value]="productLifeCycleCategory.id"> {{ productLifeCycleCategory.name }} </mat-option>
         }
       </mat-select>
     </mat-form-field>

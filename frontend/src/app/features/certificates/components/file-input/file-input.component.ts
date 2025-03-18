@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
 import { CertificatesService } from '../../service/certificates.service';
 import { sha256 } from 'js-sha256';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-file-input',
@@ -36,6 +37,7 @@ import { sha256 } from 'js-sha256';
 export class FileInputComponent {
 
   private certificatesService = inject(CertificatesService);
+  private authService = inject(AuthService);
   readonly dialogRef = inject(MatDialogRef<FileInputComponent>);
 
   constructor(
@@ -69,7 +71,7 @@ export class FileInputComponent {
         hash: hashedBase64Contract,
         fileString: base64String,
         supplyChainPartnerReceiverId: this.data.scpReceiverId,
-        userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
+        userEmitterId: this.authService.userId!,
         type: this.data?.documentType!,
       };
 

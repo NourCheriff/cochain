@@ -115,25 +115,26 @@ export class ProductDialogComponent implements OnInit {
     // reader.onload = () => {
     //   const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
 
-    const category: ProductCategory = {
-      description: productCategory!
-    }
+    // const category: ProductCategory = {
+    //   description: productCategory!
+    // }
 
-    const product: Product = {
-      description: 'prova',
-      category: category,
-    }
+    // const product: Product = {
+    //   description: 'prova',
+    //   category: category,
+    // }
 
-    const productInfo: ProductInfo = {
-      product: product,
-      expirationDate: date!,
-     // supplyChainPartner: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095'
-    }
+    // const productInfo: ProductInfo = {
+    //   product: product,
+    //   expirationDate: date!,
+    //   productId: '',
+    //   supplyChainPartnerId: ''
+    // }
 
-    this.productService.addProductInfo(productInfo).subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.error(error),
-    })
+    // this.productService.addProductInfo(productInfo).subscribe({
+    //   next: (response) => console.log(response),
+    //   error: (error) => console.error(error),
+    // })
 
       // this.fileUploadService.uploadFile(doc).subscribe({
       //   next: (response) => console.log('File uploaded successfully', response),
