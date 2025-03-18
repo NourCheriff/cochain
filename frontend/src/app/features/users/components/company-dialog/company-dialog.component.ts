@@ -17,6 +17,7 @@ import { CertificationAuthority } from 'src/models/company-entities/certificatio
 import { UserService } from '../../services/user.service';
 import { Company } from 'src/models/company-entities/company.model';
 import { ToastrService } from 'ngx-toastr';
+import { SanitizerUtil } from 'src/app/core/utilities/sanitizer';
 
 @Component({
   selector: 'app-company-dialog',
@@ -39,21 +40,23 @@ export class CompanyDialogComponent {
   private companyService = inject(CompanyService)
   private userService = inject(UserService)
   private toasterService = inject(ToastrService)
+  private sanitizer = inject(SanitizerUtil)
 
   companyForm  = new FormGroup<CompanyForm>({
     nameCompany:   new FormControl("", [Validators.required]),
     emailCompany:  new FormControl("", [Validators.required, Validators.email],),
-    phoneCompany:  new FormControl("", [Validators.required]),
+    phoneCompany:  new FormControl("", [Validators.required,Validators.pattern('[- +()0-9]+')]),
 
     firstNameUser: new FormControl("", [Validators.required]),
     lastNameUser:  new FormControl("", [Validators.required]),
     emailUser:     new FormControl("", [Validators.required, Validators.email],),
-    phoneUser:     new FormControl("", [Validators.required]),
+    phoneUser:     new FormControl("", [Validators.required,Validators.pattern('[- +()0-9]+')]),
   });
 
   CompanyType = CompanyType;
   selectedTypeId = ''
   scpTypes: SupplyChainPartnerType[] = [];
+  reloadContentAfterDialogClosed: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {companyType: CompanyType}) {
     if(this.isSupplyChainPartner()){
@@ -76,17 +79,19 @@ export class CompanyDialogComponent {
   }
 
   insertCompanyAndUser() {
+    const companyUserSanitized = this.sanitizer.sanitizeForm(this.companyForm)
+
     const companyData: Company = {
-      name: this.companyForm.value.nameCompany!,
-      phone: this.companyForm.value.phoneCompany!,
-      email: this.companyForm.value.emailCompany!
+      name: companyUserSanitized.nameCompany,
+      phone: companyUserSanitized.phoneCompany,
+      email: companyUserSanitized.emailCompany
     };
 
     const userData: User = {
-      firstName: this.companyForm.value.firstNameUser!,
-      lastName: this.companyForm.value.lastNameUser!,
-      userName: this.companyForm.value.emailUser!,
-      phone: this.companyForm.value.phoneUser!,
+      firstName: companyUserSanitized.firstNameUser,
+      lastName: companyUserSanitized.lastNameUser,
+      userName: companyUserSanitized.emailUser,
+      phone: companyUserSanitized.phoneUser,
       role: Role.Admin
     };
 
@@ -100,7 +105,7 @@ export class CompanyDialogComponent {
   private addSupplyChainPartner(companyData: Company, userData: User) {
     const supplyChainPartner: SupplyChainPartner = {
       ...companyData,
-      supplyChainPartnerTypeId: this.selectedTypeId,
+      supplyChainPartnerTypeId: this.sanitizer.sanitizeValue(this.selectedTypeId),
       credits: 0
     };
 
@@ -132,22 +137,21 @@ export class CompanyDialogComponent {
   }
 
   private addUser(user: User) {
-    let reloadContent: boolean = false;
     this.userService.addUser(user).subscribe({
       next: () => {
         this.showToast('Company and User added successfully', 'success');
-        reloadContent = true;
+        this.reloadContentAfterDialogClosed = true;
         this.dialogRef.close({
-          reloadContent: reloadContent,
+          reloadContent: this.reloadContentAfterDialogClosed,
           isSCP: this.isSupplyChainPartner()
         });
       },
       error: (error) => {
         this.showToast('Error adding user', 'error');
         console.error("Error adding user:", error)
-        reloadContent = false;
+        this.reloadContentAfterDialogClosed = false;
         this.dialogRef.close(
-          {reloadContent: reloadContent }
+          {reloadContent: this.reloadContentAfterDialogClosed }
         )
       }
     });

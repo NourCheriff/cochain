@@ -10,6 +10,7 @@ import { User } from 'src/models/auth/user.model';
 import { Role } from 'src/types/roles.enum';
 import { CompanyType } from 'src/types/company.enum';
 import { ToastrService } from 'ngx-toastr';
+import { SanitizerUtil } from 'src/app/core/utilities/sanitizer';
 
 @Component({
   selector: 'app-user-dialog',
@@ -29,6 +30,7 @@ export class UserDialogComponent {
 
   private userService = inject(UserService)
   private toasterService = inject(ToastrService);
+  private sanitizer = inject(SanitizerUtil)
 
   readonly dialogRef = inject(MatDialogRef<UserDialogComponent>);
   data = inject<CompanyData>(MAT_DIALOG_DATA);
@@ -47,12 +49,14 @@ export class UserDialogComponent {
     if (!this.userForm.valid || !this.data.id || !this.data.type)
       return;
 
+    const sanitizedForm = this.sanitizer.sanitizeForm(this.userForm)
+
     let newUser: User = {
-      firstName: this.userForm.value.firstName!,
-      lastName: this.userForm.value.lastName!,
-      userName: this.userForm.value.userName!,
-      phone: this.userForm.value.phone!,
-      role: this.userForm.value.role!,
+      firstName: sanitizedForm.firstName,
+      lastName: sanitizedForm.lastName,
+      userName: sanitizedForm.userName,
+      phone: sanitizedForm.phone,
+      role: sanitizedForm.role!,
       ...(this.data.type === CompanyType.SupplyChainPartner ? { supplyChainPartnerId: this.data.id! } : { certificationAuthorityId: this.data.id! }),
     }
 
@@ -60,7 +64,6 @@ export class UserDialogComponent {
 
     this.userService.addUser(newUser).subscribe({
       next: (response) => {
-        console.log(response);
         this.showToast('User inserted successfully!', 'success');
         reloadContent = true;
         this.dialogRef.close(reloadContent);

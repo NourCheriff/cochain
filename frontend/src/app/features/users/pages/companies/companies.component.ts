@@ -65,7 +65,7 @@ export class CompaniesComponent implements OnInit {
         this.certificationAuthorities = certificationAuthorities;
         this.showCertificationAuthorities();
       },
-      error: (error) => console.log(error)
+      error: (error) => console.error(error)
     })
   }
 
@@ -75,7 +75,7 @@ export class CompaniesComponent implements OnInit {
         this.supplyChainPartners = supplyChainPartners;
         this.showSupplyChainPartners();
       },
-      error: (error) => console.log(error)
+      error: (error) => console.error(error)
     })
   }
 
@@ -98,8 +98,8 @@ export class CompaniesComponent implements OnInit {
       CompanyDialogComponent,
       { data: { companyType: this.selected } }
     );
-    dialogRef.afterClosed().subscribe(result =>{
-      if(result.reloadContent)
+    dialogRef.afterClosed().subscribe(result => {
+      if(result && result.reloadContent)
         result.isSCP ? this.getSupplyChainPartners() : this.getCertificationAuthorities()
     });
   }

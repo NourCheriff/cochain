@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { UserDialogComponent } from '../../components/user-dialog/user-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { FormsModule }   from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
@@ -62,7 +62,7 @@ export class UsersComponent implements OnInit {
 
     const dialogRef = this.dialog.open(UserDialogComponent, { data: dialogData });
     dialogRef.afterClosed().subscribe(result => {
-      if(result)
+      if(result && result.reloadContent)
         this.getUsers()
     });
   }
