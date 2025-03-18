@@ -8,10 +8,11 @@ import { SupplyChainPartnerType } from "./supply-chain-partner-type.model";
 
 export interface SupplyChainPartner extends Company {
   credits: number;
-  supplyChainPartnerType: SupplyChainPartnerType;
-  receivedContracts: Contract[];
-  receivedProductDocuments: ProductDocument[];
-  receivedProductLifeCycleDocuments: ProductLifeCycleDocument[];
-  receivedSupplyChainPartnerCertificates: SupplyChainPartnerCertificate[];
-  carbonOffsettingActions: CarbonOffsettingAction[];
+  supplyChainPartnerTypeId: string;
+  supplyChainPartnerType?: SupplyChainPartnerType;
+  receivedContracts?: Contract[];
+  receivedProductDocuments?: ProductDocument[];
+  receivedProductLifeCycleDocuments?: ProductLifeCycleDocument[];
+  receivedSupplyChainPartnerCertificates?: SupplyChainPartnerCertificate[];
+  carbonOffsettingActions?: CarbonOffsettingAction[];
 }
