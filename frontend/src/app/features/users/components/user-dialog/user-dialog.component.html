@@ -13,10 +13,10 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="field_form">
-      <mat-label>Select a role</mat-label>
-      <mat-select [(value)]="selected">
-        <mat-option value="user">User</mat-option>
-        <mat-option value="admin">Admin</mat-option>
+      <mat-label>Role</mat-label>
+      <mat-select [(value)]="selectedRole" formControlName="role">
+        <mat-option [value]="Role.User">User</mat-option>
+        <mat-option [value]="Role.Admin">Admin</mat-option>
       </mat-select>
     </mat-form-field>
 

@@ -123,12 +123,18 @@ export class ProductDialogComponent implements OnInit {
     //   description: 'prova',
     //   category: category,
     // }
+    /*
+    const product: Product = {
+      description: 'prova',
+      category: category,
+    }
 
     // const productInfo: ProductInfo = {
     //   product: product,
     //   expirationDate: date!,
     //   productId: '',
     //   supplyChainPartnerId: ''
+    //  // supplyChainPartner: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095'
     // }
 
     // this.productService.addProductInfo(productInfo).subscribe({
@@ -136,6 +142,7 @@ export class ProductDialogComponent implements OnInit {
     //   error: (error) => console.error(error),
     // })
 
+    */
       // this.fileUploadService.uploadFile(doc).subscribe({
       //   next: (response) => console.log('File uploaded successfully', response),
       //   error: (error) => console.error('File upload failed', error),

@@ -10,5 +10,6 @@ namespace CochainAPI.Data.Sql.Repositories.Interfaces
         Task<List<SupplyChainPartnerCertificate>> GetSustainabilityCertificate(string certificationAuthorityId);
         Task<bool> DeleteSustainabilityCertificate(Guid documentId);
         Task<SupplyChainPartnerCertificate?> UpdateSustainabilityCertificate(Guid documentId);
+        Task<CertificationAuthority?> AddCertificationAuthority(CertificationAuthority certificationAuthority);
     }
 }

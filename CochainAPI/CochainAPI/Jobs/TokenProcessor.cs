@@ -1,4 +1,4 @@
-﻿using CochainAPI.Data.Services.Interfaces;
+using CochainAPI.Data.Services.Interfaces;
 using Quartz;
 using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
@@ -23,13 +23,13 @@ namespace CochainAPI.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var walletId = item.SupplyChainPartner.WalletId;
-            var account = new Account(walletId);
-            var web3 = new Web3(account, _blockchainURL);
-            var productLifeCycle = await _lifeCycleService.GetProductLifeCyclesToBeProcessed();
+            var productLifeCycles = await _lifeCycleService.GetProductLifeCyclesToBeProcessed();
 
-            foreach (var item in productLifeCycle)
+            foreach (var item in productLifeCycles)
             {
+                var walletId = item.SupplyChainPartner.WalletId;
+                var account = new Account(walletId);
+                var web3 = new Web3(account, _blockchainURL);
                 var credits = item.SupplyChainPartner.SupplyChainPartnerType.Baseline - item.Emissions;
                 var transaction = await web3.Eth.GetEtherTransferService()
                 .TransferEtherAndWaitForReceiptAsync(walletId, (decimal)credits);
@@ -49,6 +49,9 @@ namespace CochainAPI.Jobs
             var offsettingActions = await _actionService.GetOffsettingActionsToBeProcessed();
             foreach (var item in offsettingActions)
             {
+                var walletId = item.SupplyChainPartner.WalletId;
+                var account = new Account(walletId);
+                var web3 = new Web3(account, _blockchainURL);
                 var transaction = await web3.Eth.GetEtherTransferService()
                 .TransferEtherAndWaitForReceiptAsync(walletId, (decimal)item.Offset);
                 var transactionId = transaction.TransactionHash;
