@@ -18,6 +18,7 @@ import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-product-dialog',
@@ -67,6 +68,7 @@ export class ProductDialogComponent implements OnInit {
   genericProducts: Product[] = [];
   readonly ingredients = signal<string[]>([]);
   readonly allIngredients: string[] = [];
+  alreadyLoaded: boolean = false;
 
 
   constructor(private productService: ProductService) {}
@@ -82,7 +84,14 @@ export class ProductDialogComponent implements OnInit {
     });
   }
 
-  loadIngredients(): void {
+  loadIngredientsOnce(){
+    if(!this.alreadyLoaded){
+      this.loadIngredients();
+      this.alreadyLoaded = true;
+    }
+  }
+
+  private loadIngredients(): void {
     if(this.allIngredientsRes != null)
       this.productService.getAllProductInfo().subscribe({
         next: (response) => {
@@ -115,10 +124,13 @@ export class ProductDialogComponent implements OnInit {
       return ingredient ? { ingredientId: ingredient.id }: null;
     }).filter((ingredient): ingredient is ProductIngredient => ingredient !== null);
 
+    const datepipe: DatePipe = new DatePipe('en-US')
+    let formattedDate = datepipe.transform(this.newProductForm.value.date!, 'YYYY-MM-dd');
+
     const newProduct: ProductInfo = {
       productId: this.newProductForm.value.product!,
       supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
-      expirationDate: this.newProductForm.value.date!,
+      expirationDate: formattedDate!,
       ingredients: productIngredients,
     }
 

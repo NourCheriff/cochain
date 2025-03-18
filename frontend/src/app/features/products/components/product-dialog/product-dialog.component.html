@@ -27,7 +27,7 @@
       <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
     </mat-form-field>
 
-    <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients" (click)="loadIngredients()"> Has ingredients </mat-slide-toggle></p>
+    <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients" (click)="loadIngredientsOnce()"> Has ingredients </mat-slide-toggle></p>
       <div [class.hidden]="!newProductForm.value.hasIngredients">
         <mat-form-field appearance="outline">
           <mat-label> Choose ingredients </mat-label>
