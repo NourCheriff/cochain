@@ -118,7 +118,7 @@ export class EditProductDialogComponent implements OnInit{
   private loadProductCategories(): void {
     this.productService.getProductCategories().subscribe({
       next: (response) => {
-        this.productCategories = response
+        this.productCategories = response;
         this.loadGenericProducts();
       },
       error: (error) => console.error('Error during retrieval of products.', error)
@@ -128,7 +128,7 @@ export class EditProductDialogComponent implements OnInit{
   loadGenericProducts(){
     this.productService.getAllGenericProducts(this.modifiedProductForm.getRawValue().category!).subscribe({
       next: (response) => {
-        this.genericProducts = response
+        this.genericProducts = response;
       },
       error: (error) => console.error(error)
     });
@@ -145,7 +145,7 @@ export class EditProductDialogComponent implements OnInit{
     if(this.allIngredientsRes != null)
       this.productService.getAllProductInfo().subscribe({
         next: (response) => {
-          this.allIngredientsRes = response
+          this.allIngredientsRes = response;
 
           this.allIngredientsRes.forEach(ingredient =>{
             this.allIngredients.push(ingredient.name!)
@@ -157,25 +157,21 @@ export class EditProductDialogComponent implements OnInit{
 
 
   modifyProduct(){
-    const product: Product = {
-      id: this.modifiedProductForm.value.product!,
-    }
-
     const ingredientsValue = this.ingredients();
 
     const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
       const ingredient = this.allIngredientsRes.find(item => item.name === ingredientName);
-      return ingredient ? { ingredientId: ingredient.id } : null;
-    }).filter(ingredient => ingredient !== null);
+      return ingredient ? { ingredientId: ingredient.id }: null;
+    }).filter((ingredient): ingredient is ProductIngredient => ingredient !== null);
 
     const newProduct: ProductInfo = {
-      id: this.data.product.id,
-      product: product,
+      productId: this.modifiedProductForm.value.product!,
+      supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
       expirationDate: this.modifiedProductForm.value.date!.toDateString(),
       ingredients: productIngredients,
     }
 
-    this.productService.addProductInfo(newProduct,'d65e685f-8bdd-470b-a6b8-c9a62e39f095').subscribe({
+    this.productService.addProductInfo(newProduct).subscribe({
       next: (response) => console.log(response),
       error: (error) => console.error(error),
     })

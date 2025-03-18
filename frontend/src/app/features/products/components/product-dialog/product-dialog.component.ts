@@ -108,24 +108,21 @@ export class ProductDialogComponent implements OnInit {
 
   createProduct(){
 
-    const product: Product = {
-      id: this.newProductForm.value.product!,
-    }
-
     const ingredientsValue = this.ingredients();
 
     const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
       const ingredient = this.allIngredientsRes.find(item => item.name === ingredientName);
-      return ingredient ? { ingredientId: ingredient.id } : null;
-    }).filter(ingredient => ingredient !== null);
+      return ingredient ? { ingredientId: ingredient.id }: null;
+    }).filter((ingredient): ingredient is ProductIngredient => ingredient !== null);
 
     const newProduct: ProductInfo = {
-      product: product,
+      productId: this.newProductForm.value.product!,
+      supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
       expirationDate: this.newProductForm.value.date!,
       ingredients: productIngredients,
     }
 
-    this.productService.addProductInfo(newProduct,'d65e685f-8bdd-470b-a6b8-c9a62e39f095').subscribe({
+    this.productService.addProductInfo(newProduct).subscribe({
       next: (response) => console.log(response),
       error: (error) => console.error(error),
     })
