@@ -54,7 +54,7 @@
             [matAutocomplete]="auto"
           />
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); ingredientInput.value = ''">
-            @for (ingredient of filteredIngredients(); track ingredient) {
+            @for (ingredient of filteredIngredients(); track $index) {
               <mat-option [value]="ingredient">{{ingredient}}</mat-option>
             }
           </mat-autocomplete>

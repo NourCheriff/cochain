@@ -157,12 +157,12 @@ export class ProductDialogComponent implements OnInit {
 
 
   readonly filteredIngredients = computed(() => {
-  return this.ingredients().length === 0
-    ? this.allIngredients
-    : this.allIngredients.filter((ingredient: string) =>
-        !this.ingredients().includes(ingredient)
-    );
-  });
+    return this.ingredients().length === 0
+      ? this.allIngredients
+      : this.allIngredients.filter((ingredient: string) =>
+          !this.ingredients().includes(ingredient)
+      );
+    });
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
