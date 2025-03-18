@@ -26,6 +26,10 @@ export class ProductService {
     return this.apiService.add("api/Product", productInfo)
   }
 
+  updateProductInfo(productInfo: ProductInfo): Observable<ProductInfo>{
+    return this.apiService.add("api/Product/UpdateProduct", productInfo)
+  }
+
   addProductLifeCycleGeneric(newWork: ProductLifeCycle): Observable<ProductLifeCycle>{
     return this.apiService.add("api/ProductLifeCycle/LifeCycle/AddGeneric", newWork)
   }
