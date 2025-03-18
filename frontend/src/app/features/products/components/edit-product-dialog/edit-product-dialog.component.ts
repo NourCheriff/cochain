@@ -47,14 +47,14 @@ export class EditProductDialogComponent implements OnInit{
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo, ingredients: ProductInfo[]}, private fileUploadService: FileUploadService, private productService: ProductService) {
     const INGREDIENTS = this.data.ingredients.map(ingredient => ingredient.name).filter((name): name is string => name !== undefined);
+    this.modifiedProductForm.addControl('name', new FormControl<string>(this.data.product.name!, Validators.required));
     this.modifiedProductForm.addControl('product', new FormControl<string>(this.data.product.product?.id!, Validators.required));
     this.modifiedProductForm.addControl('date', new FormControl<Date>(new Date(this.data.product.expirationDate), Validators.required));
     this.modifiedProductForm.addControl('category', new FormControl<string>(this.data.product.product?.category?.id!, Validators.required));
     this.modifiedProductForm.addControl('hasIngredients', new FormControl<boolean>((INGREDIENTS.length > 0)? true : false, Validators.required));
     if(INGREDIENTS.length > 0){
-      this.loadIngredients();
+      this.loadIngredients(INGREDIENTS);
       this.modifiedProductForm.addControl('ingredients', new FormControl<string>(""));
-      this.ingredients.set(INGREDIENTS);
     }
   }
 
@@ -137,20 +137,31 @@ export class EditProductDialogComponent implements OnInit{
 
   loadIngredientsOnce(){
     if(!this.alreadyLoaded){
-      this.loadIngredients();
+      this.loadIngredients(null);
       this.alreadyLoaded = true;
     }
   }
 
-  private loadIngredients(): void {
+  private loadIngredients(ingredients: string[] | null): void {
     if(this.allIngredientsRes != null)
       this.productService.getAllProductInfo().subscribe({
         next: (response) => {
-          this.allIngredientsRes = response;
 
+          this.allIngredientsRes = response;
           this.allIngredientsRes.forEach(ingredient =>{
             this.allIngredients.push(ingredient.name!)
           })
+
+          if(ingredients != null){
+            this.ingredients.set(ingredients);
+            ingredients?.forEach(ingredientName => {
+              this.allIngredientsRes.forEach(ingredient =>{
+                if(ingredientName != ingredient.name)
+                  this.allIngredients.push(ingredient.name!)
+              })
+            })
+          }
+
         },
         error: (error) => console.error(error)
       });
@@ -170,6 +181,7 @@ export class EditProductDialogComponent implements OnInit{
 
     const newProduct: ProductInfo = {
       id: this.data.product.id,
+      name: this.modifiedProductForm.value.name!,
       productId: this.modifiedProductForm.value.product!,
       supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
       expirationDate: formattedDate!,
@@ -208,6 +220,7 @@ interface Option {
 }
 
 interface ProductForm {
+  name?: FormControl<string | null>;
   product?: FormControl<string | null>;
   category?: FormControl<string | null>;
   date?: FormControl<Date | null>;
