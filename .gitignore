@@ -1,17 +1,8 @@
 .DS_Store
 
-onchain/node1/database/
-onchain/node2/database/
+onchain/node*/
+onchain/validator*/
 
-onchain/node1/caches/
-onchain/node2/caches/
+onchain/keys/validator*/
 
-onchain/validator1/database/
-onchain/validator2/database/
-onchain/validator3/database/
-onchain/validator4/database/
-
-onchain/validator1/caches/
-onchain/validator2/caches/
-onchain/validator3/caches/
-onchain/validator4/caches/
+onchain/toEncode.json
