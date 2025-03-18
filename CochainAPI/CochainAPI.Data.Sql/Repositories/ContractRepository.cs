@@ -10,7 +10,7 @@ namespace CochainAPI.Data.Sql.Repositories
         {
         }
 
-        public async Task<Contract?> AddDocument(Contract documentObj)
+        public async Task<Contract> AddDocument(Contract documentObj)
         {
             var savedDocument = await dbContext.Contract.AddAsync(documentObj);
             await dbContext.SaveChangesAsync();
@@ -35,14 +35,30 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.Contract.FirstOrDefaultAsync(c => c.Id.ToString() == id);
         }
 
-        public Task<List<SupplyChainPartnerCertificate>?> GetEmittedContracts(string userId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<Contract>> GetEmittedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
         {
-            throw new NotImplementedException();
+            var query = dbContext.Contract.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)) && x.UserEmitterId == userId);
+
+            if (pageNumber.HasValue && pageSize.HasValue)
+            {
+                query = query.Skip(pageSize.Value * pageNumber.Value)
+                .Take(pageSize.Value);
+            }
+
+            return await query.ToListAsync();
         }
 
-        public Task<List<SupplyChainPartnerCertificate>?> GetReceivedContracts(string scpId, string queryParam, int? pageNumber, int? pageSize)
+        public async Task<List<Contract>> GetReceivedContracts(Guid scpId, string? queryParam, int? pageNumber, int? pageSize)
         {
-            throw new NotImplementedException();
+            var query = dbContext.Contract.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)) && x.SupplyChainPartnerReceiverId == scpId);
+
+            if (pageNumber.HasValue && pageSize.HasValue)
+            {
+                query = query.Skip(pageSize.Value * pageNumber.Value)
+                .Take(pageSize.Value);
+            }
+
+            return await query.ToListAsync();
         }
     }
 }
