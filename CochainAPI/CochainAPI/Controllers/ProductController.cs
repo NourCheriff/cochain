@@ -75,6 +75,17 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
+        [HttpPost("UpdateProduct")]
+        public async Task<IActionResult> UpdateProduct([FromBody] ProductInfo productObj)
+        {
+            var response = await _productService.UpdateProduct(productObj);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Product not found" });
+            }
+            return Ok(response);
+        }
+
         [HttpPost]
         //[Authorize(Policy = "WriteProducts")]
         public async Task<IActionResult> AddProductInfo(ProductInfo productInfo)

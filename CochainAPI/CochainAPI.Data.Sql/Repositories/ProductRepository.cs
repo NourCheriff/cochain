@@ -82,5 +82,13 @@ namespace CochainAPI.Data.Sql.Repositories
 
             return await queryComplete.ToListAsync();
         }
+
+
+        public async Task<bool> UpdateProduct(ProductInfo productObj)
+        {
+            dbContext.ProductInfo.Update(productObj);
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
     }
 }

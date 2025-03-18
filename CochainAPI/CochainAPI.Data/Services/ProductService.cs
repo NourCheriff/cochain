@@ -53,5 +53,24 @@ namespace CochainAPI.Data.Services
             }
             return null;
         }
+
+        public async Task<ProductInfo?> UpdateProduct(ProductInfo productObj)
+        {
+            bool isSuccess = false;
+            if (!string.IsNullOrEmpty(productObj.Id.ToString()))
+            {
+                var obj = await _productRepository.GetProductById(productObj.Id);
+                if (obj != null)
+                {
+                    obj[0].Name = productObj.Name;
+                    obj[0].ProductId = productObj.ProductId;
+                    obj[0].ExpirationDate = productObj.ExpirationDate;
+                    obj[0].Ingredients = productObj.Ingredients;
+                    isSuccess = await _productRepository.UpdateProduct(obj[0]);
+                }
+            }
+
+            return isSuccess ? productObj : null;
+        }
     }
 }
