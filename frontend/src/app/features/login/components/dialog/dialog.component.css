@@ -1,4 +1,10 @@
 mat-form-field {
   margin-top: 10px;
   margin-bottom: 10px;
+  min-width: 400px;
+}
+
+.resend {
+  cursor: pointer;
+  color: var(--href-secondary);
 }

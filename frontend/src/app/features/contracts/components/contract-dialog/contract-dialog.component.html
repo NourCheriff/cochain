@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>New Contract</h2>
+<form [formGroup]="newContractForm">
+
+  <mat-dialog-content class="dialog">
+    <mat-form-field appearance="outline">
+      <mat-label>Receiver</mat-label>
+      <mat-select [(value)]="selectedReceiverId" formControlName="receiver">
+        @for (supplyChainPartner of supplyChainPartners; track $index) {
+          <mat-option [value]="supplyChainPartner.id"> {{ supplyChainPartner.name }} </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Work Type</mat-label>
+      <mat-select formControlName="work" [(value)]="selecteCategoryId">
+        @for (productLifeCycleCategory of productLifeCycleCategories; track $index) {
+          <mat-option [value]="productLifeCycleCategory.id"> {{ productLifeCycleCategory.name }} </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <input class="file_button" #fileInput type="file" accept="application/pdf" (change)="onSelectFile($event)"/>
+    <button mat-icon-button class="reset_button" type="button" (click)="reset()"><mat-icon >delete_outline</mat-icon></button>
+    <button mat-flat-button class="btn-primary" type = "button" (click)="createContract()" [disabled]="!newContractForm.valid || !uploadEnabled">Create new contract</button>
+
+  </mat-dialog-content>
+</form>

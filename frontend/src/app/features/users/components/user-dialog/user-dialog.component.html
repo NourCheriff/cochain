@@ -1,0 +1,35 @@
+<mat-dialog-content class="dialog">
+  <form [formGroup]="userForm" (ngSubmit)="insertUser()">
+    <h3>New User</h3>
+    <br>
+    <mat-form-field appearance="outline" class="field_form">
+      <mat-label>First Name</mat-label>
+      <input matInput type="text" formControlName="firstName">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field_form">
+      <mat-label>Last Name</mat-label>
+      <input matInput type="text" formControlName="lastName">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field_form">
+      <mat-label>Role</mat-label>
+      <mat-select [(value)]="selectedRole" formControlName="role">
+        <mat-option [value]="Role.User">User</mat-option>
+        <mat-option [value]="Role.Admin">Admin</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field_form">
+      <mat-label>Phone</mat-label>
+      <input matInput type="tel" formControlName="phone">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="email_field">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="userName">
+    </mat-form-field>
+
+    <button mat-flat-button class="btn-primary" [disabled]="!userForm.valid">Add</button>
+  </form>
+</mat-dialog-content>

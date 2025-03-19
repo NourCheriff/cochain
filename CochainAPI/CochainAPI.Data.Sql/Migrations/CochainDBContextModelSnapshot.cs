@@ -30,6 +30,9 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("CertificationAuthorityId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("text");
 
@@ -43,7 +46,11 @@ namespace CochainAPI.Data.Sql.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
@@ -61,14 +68,23 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
+                    b.Property<string>("Phone")
+                        .HasColumnType("text");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("SupplyChainPartnerId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
@@ -76,29 +92,97 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("text");
 
-                    b.Property<bool>("isActive")
-                        .HasColumnType("boolean");
-
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.HasIndex("CertificationAuthorityId");
+
+                    b.HasIndex("SupplyChainPartnerId");
+
+                    b.ToTable("User", t =>
+                        {
+                            t.HasCheckConstraint("CK_User_PartnerOrAuthority", "(\"SupplyChainPartnerId\" IS NOT NULL AND \"CertificationAuthorityId\" IS NULL)\n                    OR (\"SupplyChainPartnerId\" IS NULL AND \"CertificationAuthorityId\" IS NOT NULL)");
+                        });
 
                     b.HasData(
                         new
                         {
-                            Id = "ID1",
+                            Id = "5e4b0ca8-aa85-417a-af23-035ac1b555cd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f4c1da91-ee76-46e1-af53-31e0fa660100",
-                            Email = "System",
+                            ConcurrencyStamp = "616ff929-70ad-443a-a157-d53f26a40ac0",
                             EmailConfirmed = false,
-                            FirstName = "System",
-                            LastName = "System",
+                            FirstName = "Paolo",
+                            IsActive = true,
+                            LastName = "Roselli",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1e8453fc-9050-48c5-9fe6-c86882d7b5a4",
+                            SecurityStamp = "37def6ff-400f-4b52-995a-ec71d3ffeacc",
+                            SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
-                            UserName = "System",
-                            isActive = false
+                            UserName = "paolo.roselli02@gmail.com"
+                        },
+                        new
+                        {
+                            Id = "0a317b04-2f87-4b08-8ad8-597103527584",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "b9c15a89-2582-4664-95e3-fe9553e3bb15",
+                            EmailConfirmed = false,
+                            FirstName = "Matteo",
+                            IsActive = true,
+                            LastName = "Spiga",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "fc849eb3-e235-4e5a-b7b3-07f29c8b13ce",
+                            SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                            TwoFactorEnabled = false,
+                            UserName = "matteospiga2002@gmail.com"
+                        },
+                        new
+                        {
+                            Id = "a12c3708-0486-4603-b1a5-46d252e79082",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "6b7b727b-8134-4270-9966-f2dc4332ccf5",
+                            EmailConfirmed = false,
+                            FirstName = "Cherif",
+                            IsActive = true,
+                            LastName = "Nour",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d0958d8e-0d03-4c49-a94a-c4fa2383013a",
+                            SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                            TwoFactorEnabled = false,
+                            UserName = "nourcherif.pitos25@gmail.com"
+                        },
+                        new
+                        {
+                            Id = "3542da56-0de3-4797-a059-effff257f63d",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "589d7fc2-a4af-4534-a583-5388c1d31280",
+                            EmailConfirmed = false,
+                            FirstName = "Mattia",
+                            IsActive = true,
+                            LastName = "Mandorlini",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "ba6cfcfa-304c-4849-8c71-bcd8bebfd00a",
+                            SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                            TwoFactorEnabled = false,
+                            UserName = "mando3228@gmail.com"
+                        },
+                        new
+                        {
+                            Id = "f4242b5f-4b39-45fc-802e-391293414546",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "28fdc8c5-0039-46aa-9bdd-b84adb99f293",
+                            EmailConfirmed = false,
+                            FirstName = "Samuele",
+                            IsActive = true,
+                            LastName = "Sacchetti",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "46935ed2-16e5-4b5e-825d-d26b74933ab6",
+                            SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                            TwoFactorEnabled = false,
+                            UserName = "sacchettisamuele@gmail.com"
                         });
                 });
 
@@ -127,16 +211,503 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserTemporaryPassword");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.CarbonOffset.CarbonOffsettingAction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("EmissionTransactionId")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsProcessed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<float>("Offset")
+                        .HasColumnType("real");
+
+                    b.Property<Guid>("SupplyChainPartnerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplyChainPartnerId");
+
+                    b.ToTable("CarbonOffsettingAction");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.CompanyEntities.CertificationAuthority", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WalletId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CertificationAuthority");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.CompanyEntities.SupplyChainPartner", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<float>("Credits")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SupplyChainPartnerTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("WalletId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplyChainPartnerTypeId");
+
+                    b.ToTable("SupplyChainPartner");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e029a7f9-46a4-41c6-bb85-d837c4908be5"),
-                            ExpirationDate = new DateTime(2027, 2, 28, 21, 6, 30, 989, DateTimeKind.Utc).AddTicks(4524),
-                            IsUsed = false,
-                            Password = "System",
-                            UserId = "ID1"
+                            Id = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                            Credits = 0f,
+                            Email = "company@prova.com",
+                            Name = "Prova company",
+                            Phone = "33309090909",
+                            SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87")
                         });
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.CompanyEntities.SupplyChainPartnerType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<float>("Baseline")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SupplyChainPartnerType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e1117db4-760e-4515-9aa0-11a3fa766e87"),
+                            Baseline = 1000f,
+                            Name = "Materia Prima"
+                        },
+                        new
+                        {
+                            Id = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                            Baseline = 1000f,
+                            Name = "Trasportatore"
+                        },
+                        new
+                        {
+                            Id = new Guid("ef01b3b4-760e-4515-9aa0-bdab7c766e87"),
+                            Baseline = 1000f,
+                            Name = "Trasformazione"
+                        },
+                        new
+                        {
+                            Id = new Guid("ab2e7db4-760e-4515-9aa0-bda314266e87"),
+                            Baseline = 1000f,
+                            Name = "Stoccaggio"
+                        },
+                        new
+                        {
+                            Id = new Guid("ef0e7124-744e-1115-9ba0-bda3fc766e87"),
+                            Baseline = 1000f,
+                            Name = "Rivenditore Dettaglio"
+                        },
+                        new
+                        {
+                            Id = new Guid("eaae7124-761e-4515-9aa0-bda3fc7aee87"),
+                            Baseline = 1000f,
+                            Name = "Grossista"
+                        });
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Documents.Contract", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Hash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProductLifeCycleCategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SupplyChainPartnerReceiverId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserEmitterId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductLifeCycleCategoryId");
+
+                    b.HasIndex("SupplyChainPartnerReceiverId");
+
+                    b.HasIndex("UserEmitterId");
+
+                    b.ToTable("Contract");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Documents.ProductDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Hash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProductInfoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SupplyChainPartnerReceiverId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserEmitterId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductInfoId");
+
+                    b.HasIndex("SupplyChainPartnerReceiverId");
+
+                    b.HasIndex("UserEmitterId");
+
+                    b.ToTable("ProductDocument");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Documents.ProductLifeCycleDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Hash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProductLifeCycleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SupplyChainPartnerReceiverId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserEmitterId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductLifeCycleId");
+
+                    b.HasIndex("SupplyChainPartnerReceiverId");
+
+                    b.HasIndex("UserEmitterId");
+
+                    b.ToTable("ProductLifeCycleDocument");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Documents.SupplyChainPartnerCertificate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Hash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("text");
+
+                    b.Property<string>("QualityStandard")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SupplyChainPartnerReceiverId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserEmitterId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplyChainPartnerReceiverId");
+
+                    b.HasIndex("UserEmitterId");
+
+                    b.ToTable("SupplyChainPartnerCertificate");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductCategory");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("ExpirationDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SupplyChainPartnerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SupplyChainPartnerId");
+
+                    b.ToTable("ProductInfo");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductIngredient", b =>
+                {
+                    b.Property<Guid>("ProductInfoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ProductInfoId", "IngredientId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("ProductIngredient");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductLifeCycle", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("EmissionTransactionId")
+                        .HasColumnType("text");
+
+                    b.Property<float>("Emissions")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("IsEmissionProcessed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProductInfoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductLifeCycleCategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SupplyChainPartnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductInfoId");
+
+                    b.HasIndex("ProductLifeCycleCategoryId");
+
+                    b.HasIndex("SupplyChainPartnerId");
+
+                    b.ToTable("ProductLifeCycle");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductLifeCycleCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductLifeCycleCategory");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Utils.Log", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Cookies")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Entity")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EntityId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("QueryString")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Log");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -156,6 +727,56 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8e342ad6-78d9-4aee-abe5-245b1fae6c4a",
+                            Name = "SystemAdmin",
+                            NormalizedName = "SYSTEMADMIN"
+                        },
+                        new
+                        {
+                            Id = "cb5b1ae5-43db-4096-9bd6-2afb90fb20c5",
+                            Name = "AdminSCP",
+                            NormalizedName = "ADMINSCP"
+                        },
+                        new
+                        {
+                            Id = "f6e7ea1d-a99e-4a5c-9a23-2274ba2c62ea",
+                            Name = "AdminCA",
+                            NormalizedName = "ADMINCA"
+                        },
+                        new
+                        {
+                            Id = "a0e8b03e-0cd8-4458-a147-1a4b88df2997",
+                            Name = "UserSCP",
+                            NormalizedName = "USERSCP"
+                        },
+                        new
+                        {
+                            Id = "3318013d-0cdd-4749-9ab3-6fdca9b64564",
+                            Name = "UserCA",
+                            NormalizedName = "USERCA"
+                        },
+                        new
+                        {
+                            Id = "916a3160-05e5-4821-88fe-9e46a43d157c",
+                            Name = "SCPTransporter",
+                            NormalizedName = "SCPTRANSPORTER"
+                        },
+                        new
+                        {
+                            Id = "cccf28ca-b2f8-477f-a2c1-2436cd83ec0c",
+                            Name = "SCPRawMaterial",
+                            NormalizedName = "SCPRAWMATERIAL"
+                        },
+                        new
+                        {
+                            Id = "f08d90db-ac61-4c92-a229-ef803b672e60",
+                            Name = "SCPTransformator",
+                            NormalizedName = "SCPTRANSFORMATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -199,6 +820,8 @@ namespace CochainAPI.Data.Sql.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserClaims");
                 });
 
@@ -232,6 +855,33 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "5e4b0ca8-aa85-417a-af23-035ac1b555cd",
+                            RoleId = "8e342ad6-78d9-4aee-abe5-245b1fae6c4a"
+                        },
+                        new
+                        {
+                            UserId = "0a317b04-2f87-4b08-8ad8-597103527584",
+                            RoleId = "8e342ad6-78d9-4aee-abe5-245b1fae6c4a"
+                        },
+                        new
+                        {
+                            UserId = "a12c3708-0486-4603-b1a5-46d252e79082",
+                            RoleId = "8e342ad6-78d9-4aee-abe5-245b1fae6c4a"
+                        },
+                        new
+                        {
+                            UserId = "3542da56-0de3-4797-a059-effff257f63d",
+                            RoleId = "8e342ad6-78d9-4aee-abe5-245b1fae6c4a"
+                        },
+                        new
+                        {
+                            UserId = "f4242b5f-4b39-45fc-802e-391293414546",
+                            RoleId = "8e342ad6-78d9-4aee-abe5-245b1fae6c4a"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -255,6 +905,21 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.ToTable("UserTokens");
                 });
 
+            modelBuilder.Entity("CochainAPI.Model.Authentication.User", b =>
+                {
+                    b.HasOne("CochainAPI.Model.CompanyEntities.CertificationAuthority", "CertificationAuthority")
+                        .WithMany()
+                        .HasForeignKey("CertificationAuthorityId");
+
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartner")
+                        .WithMany()
+                        .HasForeignKey("SupplyChainPartnerId");
+
+                    b.Navigation("CertificationAuthority");
+
+                    b.Navigation("SupplyChainPartner");
+                });
+
             modelBuilder.Entity("CochainAPI.Model.Authentication.UserTemporaryPassword", b =>
                 {
                     b.HasOne("CochainAPI.Model.Authentication.User", "User")
@@ -266,9 +931,267 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CochainAPI.Model.CarbonOffset.CarbonOffsettingAction", b =>
+                {
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartner")
+                        .WithMany("CarbonOffsettingActions")
+                        .HasForeignKey("SupplyChainPartnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SupplyChainPartner");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.CompanyEntities.SupplyChainPartner", b =>
+                {
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartnerType", "SupplyChainPartnerType")
+                        .WithMany()
+                        .HasForeignKey("SupplyChainPartnerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SupplyChainPartnerType");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Documents.Contract", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Product.ProductLifeCycleCategory", "ProductLifeCycleCategory")
+                        .WithMany()
+                        .HasForeignKey("ProductLifeCycleCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerReceiver")
+                        .WithMany("ReceivedContract")
+                        .HasForeignKey("SupplyChainPartnerReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.Authentication.User", "UserEmitter")
+                        .WithMany("EmittedContract")
+                        .HasForeignKey("UserEmitterId");
+
+                    b.Navigation("ProductLifeCycleCategory");
+
+                    b.Navigation("SupplyChainPartnerReceiver");
+
+                    b.Navigation("UserEmitter");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Documents.ProductDocument", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Product.ProductInfo", "ProductInfo")
+                        .WithMany("ProductDocuments")
+                        .HasForeignKey("ProductInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerReceiver")
+                        .WithMany("ReceivedProductDocument")
+                        .HasForeignKey("SupplyChainPartnerReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.Authentication.User", "UserEmitter")
+                        .WithMany("EmittedProductDocument")
+                        .HasForeignKey("UserEmitterId");
+
+                    b.Navigation("ProductInfo");
+
+                    b.Navigation("SupplyChainPartnerReceiver");
+
+                    b.Navigation("UserEmitter");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Documents.ProductLifeCycleDocument", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Product.ProductLifeCycle", "ProductLifeCycle")
+                        .WithMany("ProductLifeCycleDocuments")
+                        .HasForeignKey("ProductLifeCycleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerReceiver")
+                        .WithMany("ReceivedProductLifeCycleDocument")
+                        .HasForeignKey("SupplyChainPartnerReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.Authentication.User", "UserEmitter")
+                        .WithMany("EmittedProductLifeCycleDocument")
+                        .HasForeignKey("UserEmitterId");
+
+                    b.Navigation("ProductLifeCycle");
+
+                    b.Navigation("SupplyChainPartnerReceiver");
+
+                    b.Navigation("UserEmitter");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Documents.SupplyChainPartnerCertificate", b =>
+                {
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerReceiver")
+                        .WithMany("ReceivedSupplyChainPartnerCertificate")
+                        .HasForeignKey("SupplyChainPartnerReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.Authentication.User", "UserEmitter")
+                        .WithMany("EmittedSupplyChainPartnerCertificate")
+                        .HasForeignKey("UserEmitterId");
+
+                    b.Navigation("SupplyChainPartnerReceiver");
+
+                    b.Navigation("UserEmitter");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.Product", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Product.ProductCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductInfo", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Product.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartner")
+                        .WithMany()
+                        .HasForeignKey("SupplyChainPartnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SupplyChainPartner");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductIngredient", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Product.ProductInfo", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.Product.ProductInfo", "ProductInfo")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("ProductInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("ProductInfo");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductLifeCycle", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Product.ProductInfo", "ProductInfo")
+                        .WithMany("ProductLifeCycles")
+                        .HasForeignKey("ProductInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.Product.ProductLifeCycleCategory", "ProductLifeCycleCategory")
+                        .WithMany()
+                        .HasForeignKey("ProductLifeCycleCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartner")
+                        .WithMany()
+                        .HasForeignKey("SupplyChainPartnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductInfo");
+
+                    b.Navigation("ProductLifeCycleCategory");
+
+                    b.Navigation("SupplyChainPartner");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Utils.Log", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Authentication.User", "User")
+                        .WithMany("Logs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Authentication.User", null)
+                        .WithMany("UserClaims")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("CochainAPI.Model.Authentication.User", null)
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CochainAPI.Model.Authentication.User", b =>
                 {
+                    b.Navigation("EmittedContract");
+
+                    b.Navigation("EmittedProductDocument");
+
+                    b.Navigation("EmittedProductLifeCycleDocument");
+
+                    b.Navigation("EmittedSupplyChainPartnerCertificate");
+
+                    b.Navigation("Logs");
+
                     b.Navigation("TemporaryPasswords");
+
+                    b.Navigation("UserClaims");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.CompanyEntities.SupplyChainPartner", b =>
+                {
+                    b.Navigation("CarbonOffsettingActions");
+
+                    b.Navigation("ReceivedContract");
+
+                    b.Navigation("ReceivedProductDocument");
+
+                    b.Navigation("ReceivedProductLifeCycleDocument");
+
+                    b.Navigation("ReceivedSupplyChainPartnerCertificate");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductInfo", b =>
+                {
+                    b.Navigation("Ingredients");
+
+                    b.Navigation("ProductDocuments");
+
+                    b.Navigation("ProductLifeCycles");
+                });
+
+            modelBuilder.Entity("CochainAPI.Model.Product.ProductLifeCycle", b =>
+                {
+                    b.Navigation("ProductLifeCycleDocuments");
                 });
 #pragma warning restore 612, 618
         }

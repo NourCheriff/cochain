@@ -1,5 +1,6 @@
 ﻿using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
@@ -24,24 +25,44 @@ namespace CochainAPI.Data.Sql.Repositories
             return userObj;
         }
 
-        public async Task<IEnumerable<User>> GetAllActive()
+        public async Task<List<User>> GetAllActive()
         {
-            return await dbContext.Users.Where(x => x.isActive == true).ToListAsync();
+            return await dbContext.Users.Where(x => x.IsActive == true).ToListAsync();
         }
 
         public async Task<User?> GetById(string id)
         {
-            return await dbContext.Users.FirstOrDefaultAsync(c => c.Id == id);
+            return await dbContext.Users.FirstOrDefaultAsync(c => c.Id == id && c.IsActive == true);
+        }
+
+        public async Task<List<User>?> GetUsersByCompanyId(Guid id, string companyType)
+        {
+            if (companyType == "scp")
+                return await dbContext.Users.Where(x => x.SupplyChainPartnerId == id && x.IsActive == true).ToListAsync();
+
+            return await dbContext.Users.Where(x => x.CertificationAuthorityId == id && x.IsActive == true).ToListAsync();
         }
 
         public async Task<User?> GetByUserName(string userName)
         {
-            return await dbContext.Users.FirstOrDefaultAsync(c => c.UserName == userName);
+            return await dbContext.Users.FirstOrDefaultAsync(c => c.UserName == userName && c.IsActive == true);
+        }
+
+        public async Task<List<IdentityRole>> GetRolesByUserId(string userId)
+        {
+            var userRoles = await dbContext.UserRoles.Where(x => x.UserId == userId).ToListAsync();
+            var roleIds = userRoles.Select(ur => ur.RoleId).Distinct().ToList();
+            return await dbContext.Roles.Where(x => roleIds.Contains(x.Id))
+                                        .ToListAsync();
         }
 
         public async Task<UserTemporaryPassword?> GetUserWithCredentials(AuthenticateRequest model)
         {
-            return await dbContext.UserTemporaryPassword.SingleOrDefaultAsync(x => x.User.UserName == model.UserId && x.Password == model.Password && x.ExpirationDate >= DateTime.UtcNow && !x.IsUsed);
+            return await dbContext.UserTemporaryPassword.Include(x => x.User).Where(x => x.User.UserName!.ToLower().Equals(model.Username.ToLower()) &&
+                x.Password == model.Password &&
+                x.ExpirationDate >= DateTime.UtcNow &&
+                !x.IsUsed &&
+                x.User.IsActive == true).FirstOrDefaultAsync();
         }
 
         public async Task<bool> UpdateTemporaryPassword(UserTemporaryPassword temporaryPassword)

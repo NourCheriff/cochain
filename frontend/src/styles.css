@@ -9,6 +9,7 @@
   --href-secondary: #329D9C;
   --nav-link: #329D9C;
   --breadcrumb-link: #CFF4D2;
+  --mat-datepicker: white;
   --card-title: #718EBF;
   --linear-gradient: linear-gradient(135deg, var(--secondary), var(--primary) 68%);
 }
@@ -18,10 +19,6 @@
   padding: 0;
 }
 
-html, body {
-  height: 100%;
-}
-
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -29,12 +26,17 @@ body {
 
 .bg {
   background: var(--linear-gradient);
-  height: 100vh;
 }
 
 .btn-primary {
   padding: 24px !important;
   background-color: var(--btn-primary) !important;
+  color: #FFF !important;
+}
+
+.btn-secondary{
+  padding: 0px 20px 0px 20px !important;
+  background-color: var(--btn-secondary) !important;
   color: #FFF !important;
 }
 

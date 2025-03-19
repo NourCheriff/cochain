@@ -69,5 +69,47 @@ const DATA: Transaction[] = [
     receiver: 'SCP A',
     amount: 4,
     date: '12 sep 2024, 12:30 AM',
-  }
+  },
+  {
+    id: '1',
+    sender: 'SCP A',
+    receiver: 'SCP B',
+    amount: 3,
+    date: '12 sep 2024, 12:30 AM',
+  },
+  {
+    id: '2',
+    sender: 'SCP A',
+    receiver: 'SCP B',
+    amount: 1,
+    date: '12 sep 2024, 12:30 AM',
+  },
+  {
+    id: '1',
+    sender: 'SCP A',
+    receiver: 'SCP B',
+    amount: 3,
+    date: '12 sep 2024, 12:30 AM',
+  },
+  {
+    id: '2',
+    sender: 'SCP A',
+    receiver: 'SCP B',
+    amount: 1,
+    date: '12 sep 2024, 12:30 AM',
+  },
+  {
+    id: '1',
+    sender: 'SCP A',
+    receiver: 'SCP B',
+    amount: 3,
+    date: '12 sep 2024, 12:30 AM',
+  },
+  {
+    id: '2',
+    sender: 'SCP A',
+    receiver: 'SCP B',
+    amount: 1,
+    date: '12 sep 2024, 12:30 AM',
+  },
 ]

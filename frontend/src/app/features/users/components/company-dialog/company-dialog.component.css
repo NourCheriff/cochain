@@ -1,0 +1,24 @@
+mat-form-field {
+  margin: 10px;
+}
+
+h3 {
+  margin-left: 15px;
+}
+
+.field_form {
+  width: 45%;
+}
+
+.wallet_field{
+  width:  95%;
+}
+
+.dialog{
+  max-height: 250vw !important;
+  max-width:  300vw !important;
+}
+
+.btn-primary {
+  width: 100%;
+}

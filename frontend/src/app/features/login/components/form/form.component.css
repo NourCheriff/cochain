@@ -3,3 +3,17 @@ form {
   flex-direction: column;
   width: 100%;
 }
+
+.btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  width: 100%;
+}
+
+mat-progress-spinner circle, mat-spinner circle {
+  stroke: var(--primary) !important;
+}

@@ -1,65 +1,67 @@
 <main class="main">
   <div class="certificates">
     <div class="header">
-      <h3 class="header_text">Certificates</h3>
+      <h3 class="header_text">Sustainability Certificates</h3>
       <div class="options">
         <mat-form-field appearance="outline">
           <mat-label>Search</mat-label>
-          <input matInput placeholder="Search...">
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search...">
           <button mat-icon-button matSuffix aria-label="Search">
             <mat-icon>search</mat-icon>
           </button>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Select an option</mat-label>
-          <mat-select [(value)]="selected" (selectionChange)="updateTable()">
-            <mat-option value="all_certificates">All certificates</mat-option>
-            <mat-option value="quality">Quality</mat-option>
-            <mat-option value="sustainability">Sustainability</mat-option>
-            <mat-option value="origin">Origin</mat-option>
-          </mat-select>
         </mat-form-field>
       </div>
     </div>
 
     <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource">
-
-        <ng-container matColumnDef="emitter">
-          <th mat-header-cell *matHeaderCellDef> Emitter </th>
-          <td mat-cell *matCellDef="let element"> {{element.emitter}} </td>
-        </ng-container>
+      <table mat-table  [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="receiver">
-          <th mat-header-cell *matHeaderCellDef> Receiver </th>
-          <td mat-cell *matCellDef="let element"> {{element.receiver}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Receiver </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef> Type </th>
-          <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+        <ng-container matColumnDef="scpType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> SCP type </th>
+          <td mat-cell *matCellDef="let element"> {{element.supplyChainPartnerType.name}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="product">
-          <th mat-header-cell *matHeaderCellDef> Product </th>
-          <td mat-cell *matCellDef="let element"> {{element.product}} </td>
+        <ng-container matColumnDef="attachments">
+          <th mat-header-cell *matHeaderCellDef class="attachment_th"> Attachment </th>
+          <td mat-cell *matCellDef="let element">
+            <div [ngClass]="{'attachment-container': scpType.type === 'CA'}">
+              <button *ngIf="scpType.type === 'CA'" mat-icon-button class="attachment_button" (click)="attachCertificate(element.id)" matTooltip="Upload">
+                <mat-icon>upload_file</mat-icon>
+              </button>
+              @if(element.receivedSupplyChainPartnerCertificate !== null){
+                <a target="_blank" href="https://teststoragedocum.blob.core.windows.net/certificates/d94bdf27-6469-4356-be04-2a6e76c7aec1.pdf" >
+                  <button mat-icon-button class="attachment_button download" matTooltip="Download">
+                    <span class="material-symbols-outlined">file_save</span>
+                  </button>
+                </a>
+                <button *ngIf="scpType.type === 'CA'" mat-icon-button class="attachment_button delete" matTooltip="Delete">
+                  <span class="material-symbols-outlined">scan_delete</span>
+                </button>
+              }
+            </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef class="attachment_th"> Attachment </th>
-          <td mat-cell *matCellDef="let row">
-            <button mat-icon-button class="attachment_button"><mat-icon>attach_file</mat-icon></button>
+          <th mat-header-cell *matHeaderCellDef class="attachment_th"> Action </th>
+          <td mat-cell *matCellDef="let element">
+            <button [routerLink]="'./details/' + element.id" mat-button class="action_button">Details</button>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-
-      <mat-paginator [pageSizeOptions]="[5, 10, 15]"
-                    showFirstLastButtons
-                    aria-label="Select page of periodic elements">
-      </mat-paginator>
     </div>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      showFirstLastButtons
+      (page)="onPageChange($event)">
+    </mat-paginator>
   </div>
 </main>

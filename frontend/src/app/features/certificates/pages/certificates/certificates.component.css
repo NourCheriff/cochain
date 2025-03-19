@@ -1,5 +1,5 @@
 .main {
-  height: 100vh;
+  height: 85vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,9 +14,32 @@
   padding-top: 20px;
 }
 
+.mat-elevation-z8 {
+  width: 100%;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
 table {
   width: 100%;
   background-color: white;
+  table-layout: fixed;
+}
+
+
+.attachment-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.attachment-container:nth-child(2) {
+  background-color: blue !important;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
 }
 
 mat-paginator {
@@ -25,7 +48,9 @@ mat-paginator {
 
 .attachment_th {
   text-align: center;
+  white-space: nowrap;
 }
+
 
 .attachment_button {
   background-color: var(--btn-ternary);
@@ -40,7 +65,34 @@ mat-paginator {
   margin: auto;
 }
 
-.header{
+.attachment_button.download {
+  background-color: var(--btn-secondary);
+}
+
+.attachment_button.delete {
+  background-color: red;
+}
+
+.action_button {
+  background-color: var(--btn-ternary);
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+  margin: auto;
+}
+
+
+.action_button a {
+  text-decoration: none;
+  color: white;
+}
+
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;

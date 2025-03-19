@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>Edit Product</h2>
+<mat-dialog-content class="dialog">
+  <form [formGroup]="modifiedProductForm">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <mat-select formControlName="name" [(value)]="modifiedProductForm.value.name">
+        @for (product of products; track $index) {
+          <mat-option [value]="product.value"> {{ product.displayValue }} </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label> Expiration date </mat-label>
+      <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" formControlName="date" [value]="modifiedProductForm.value.date">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
+    </mat-form-field>
+
+    <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients"> Has ingredients </mat-slide-toggle></p>
+      <div [class.hidden]="!modifiedProductForm.value.hasIngredients">
+        <mat-form-field appearance="outline">
+          <mat-label> Choose ingredients </mat-label>
+          <mat-chip-grid #chipGrid aria-label="insert ingredients" formControlName="ingredients">
+            @for (ingredient of ingredients(); track $index) {
+              <mat-chip-row (removed)="remove(ingredient)">
+                {{ ingredient }}
+                <button matChipRemove [attr.aria-label]="'remove ' + ingredient">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </mat-chip-grid>
+          <input
+            name="currentIngredient"
+            placeholder="New ingredient..."
+            #ingredientInput
+            [matChipInputFor]="chipGrid"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); ingredientInput.value = ''">
+            @for (ingredient of filteredIngredients(); track ingredient) {
+              <mat-option [value]="ingredient">{{ingredient}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <label for="originUp">Upload origin certificate</label>
+        <input class="file_button" #fileInput type="file" id="originUp" (change)="onSelectFile($event)"/>
+        <button mat-icon-button class="reset_button" type="button" (click)="reset()"><mat-icon>delete_outline</mat-icon></button>
+      </div>
+      <div class="btn-container">
+        <button mat-flat-button class="btn-primary w-75" [disabled]="!modifiedProductForm.valid || !uploadEnabled" (click)="modifyProduct()">Modify product</button>
+      </div>
+  </form>
+
+</mat-dialog-content>

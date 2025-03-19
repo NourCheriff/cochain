@@ -8,9 +8,6 @@ namespace CochainAPI.Model.Authentication
         public required string Username { get; set; }
 
         [DefaultValue("System")]
-        public required string UserId { get; set; }
-
-        [DefaultValue("System")]
         public required string Password { get; set; }
     }
 }

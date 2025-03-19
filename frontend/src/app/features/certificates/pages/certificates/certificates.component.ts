@@ -1,90 +1,87 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { RouterLink } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common'; // Add this import for NgClass
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { FileInputComponent } from '../../components/file-input/file-input.component';
+import { CertificatesService } from '../../service/certificates.service';
+import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
+
 @Component({
   selector: 'app-certificates',
-  imports: [MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
+  imports: [CommonModule,MatSortModule,RouterLink, MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './certificates.component.html',
-  styleUrl: './certificates.component.css'
+  styleUrl: './certificates.component.css',
 })
+export class CertificatesComponent implements OnInit {
+  readonly dialog = inject(MatDialog);
 
-export class CertificatesComponent implements AfterViewInit {
-  displayedColumns: string[] = ['emitter', 'receiver', 'type', 'product'];
-  dataSource = new MatTableDataSource<Certificate>(certificates);
+  private certificateService = inject(CertificatesService);
 
-  selected = 'all_certificates';
+  scpType: SCPType = {
+    "type": "CA"
+  }
+
+  displayedColumns: string[] = ['receiver', 'scpType', 'attachments', 'actions'];
+  dataSource = new MatTableDataSource<SupplyChainPartner>([]);
+  supplyChainPartners: SupplyChainPartner[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  ngOnInit(): void {
+    this.getSupplyChainPartners()
   }
 
-  updateTable() {
+  getSupplyChainPartners(){
+    this.certificateService.getSupplyChainPartners().subscribe({
+      next: (response) => {
+        this.supplyChainPartners = response
+        this.dataSource = new MatTableDataSource<SupplyChainPartner>(this.supplyChainPartners);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (error) => { console.log(error) }
+    })
+  }
 
-    const BACKUP_DATA = certificates;
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
-    var SELECTED_DATA: Certificate[] = [];
+  deleteCertificate(id: string){
+    this.certificateService.deleteCertificate(id).subscribe({
+      next: (response) => {
+        console.log(response)
+      },
+      error: (error) => { console.log(error) }
+    })
+  }
 
-    switch(this.selected){
-      case 'all_certificates':
-        SELECTED_DATA = BACKUP_DATA;
-      break;
+  attachCertificate(scpReceiverId: string) {
+    this.dialog.open(FileInputComponent,{
+      data: {
+        scpReceiverId: scpReceiverId,
+        documentType: 'sustainability'
+      }
+    });
+  }
 
-      case 'quality':
-        SELECTED_DATA = BACKUP_DATA.filter(item => item.type == 'Quality');
-      break;
-
-      case 'sustainability':
-        SELECTED_DATA = BACKUP_DATA.filter(item => item.type == 'Sustainability');
-      break;
-
-      case 'origin':
-        SELECTED_DATA = BACKUP_DATA.filter(item => item.type == 'Origin');
-      break;
-    }
-
-    this.dataSource = new MatTableDataSource<Certificate>(SELECTED_DATA);
-    this.dataSource.paginator = this.paginator;
+  onPageChange(event: PageEvent){
+    console.log('Cambiata la pagina:', event.pageIndex);
+    console.log('Elementi per pagina:', event.pageSize);
   }
 
 }
 
-export interface Certificate {
-  emitter: string;
-  receiver: string;
-  type: string;
-  product: string
+export interface SCPType {
+  type: string
 }
-
-const certificates: Certificate[] = [
-  {
-    emitter: "Company A",
-    receiver: "John Doe",
-    type: "Origin",
-    product: "P2",
-  },
-  {
-    emitter: "Institute B",
-    receiver: "Jane Smith",
-    type: "Sustainability",
-    product: "P3",
-  },
-  {
-    emitter: "University C",
-    receiver: "Carlos Ruiz",
-    type: "Sustainability",
-    product: "P2",
-  },
-  {
-    emitter: "Organization D",
-    receiver: "Emily Davis",
-    type: "Quality",
-    product: "P1",
-  },
-];
