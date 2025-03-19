@@ -8,6 +8,12 @@ contract Activity is ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
+    struct Document {
+        uint256 timestamp;
+        bytes32 documentHash;
+        string documentType;
+    }
+
     struct Activity {
         uint256 timestamp;
         string categoryId;
@@ -17,9 +23,10 @@ contract Activity is ERC721 {
 
     struct Product {
         string productId;
-        string creationDate;
+        uint256 creationDate;
         uint256 expirationDate;
         address scp;
+        Document[] document;
         Activity[] lifecycle;
     }
 
@@ -30,19 +37,17 @@ contract Activity is ERC721 {
 
     event ProductCreated(uint256 tokenId, string productId, address scp);
     event ActivityAdded(uint256 tokenId, string activityType, address scp);
+    event DocumentAdded(uint256 tokenId, string documentType);
     event SupplyChainPartnerAuthorized(address scp);
     event SupplyChainPartnerRevoked(address scp);
 
-    constructor() ERC721("CarbonCredits", "CC"){
-        // Il creatore del contratto è autorizzato per default
-        authorizedOperators[msg.sender] = true;
-    }
+    constructor() ERC721("CarbonCredits", "CC") {}
 
     function createProduct(
         address scp,
         string memory productId,
         uint256 expirationDate
-    ) returns (uint256) {
+    ) public returns (uint256) {
         _tokenIds.increment();
         uint256 newTokenId = _tokenIds.current();
 
@@ -62,10 +67,11 @@ contract Activity is ERC721 {
     }
 
     function addActivity(
+        uint256 tokenId,
         string categoryId,
         address scp,
         uint256 emissions
-    ) {
+    ) public {
         require(_exists(tokenId), "Product does not exist");
 
         // Crea una nuova attività
@@ -83,28 +89,83 @@ contract Activity is ERC721 {
         emit ActivityAdded(tokenId, categoryId, scp);
     }
 
-    function getActivityByTokenId(
+    function addDocument(
         uint256 tokenId,
+        bytes32 documentHash,
+        string documentType
+    ) public {
+        require(_exists(tokenId), "Product does not exist");
+
+        // Crea un nuova documento
+        Document memory newDocument = Document({
+            timestamp: block.timestamp,
+            documentType: documentType,
+            documentHash: documentHash
+        });
+
+        // Aggiungi il documento al prodotto
+        products[tokenId].document.push(newDocument);
+
+        emit DocumentAdded(tokenId, documentType);
+    }
+
+    function getActivitiesByTokenId(
+        uint256 tokenId
     )
         public
         view
         returns (
-            uint256 timestamp,
-            string memory categoryId,
-            address scp,
-            uint256 emissions,
+            uint256[] memory timestamps,
+            string[] memory categoryIds,
+            address[] memory scps,
+            uint256[] memory emissions
         )
     {
         require(_exists(tokenId), "Product does not exist");
 
-        Activity storage activity = products[tokenId];
+        uint256 length = products[tokenId].lifecycle.length;
+        timestamps = new uint256[](length);
+        categoryIds = new string[](length);
+        scps = new address[](length);
+        emissions = new uint256[](length);
 
-        return (
-            activity.timestamp,
-            activity.categoryId,
-            activity.scp,
-            activity.emissions,
-        );
+        for (uint256 i = 0; i < length; i++) {
+            Activity storage act = products[tokenId].lifecycle[i];
+            timestamps[i] = act.timestamp;
+            categoryIds[i] = act.categoryId;
+            scps[i] = act.scp;
+            emissions[i] = act.emissions;
+        }
+
+        return (timestamps, categoryIds, scps, emissions);
+    }
+
+    function getDocumentsByTokenId(
+        uint256 tokenId
+    )
+        public
+        view
+        returns (
+            uint256[] memory timestamps,
+            bytes32[] memory documentHashes,
+            string[] memory documentTypes
+        )
+    {
+        require(_exists(tokenId), "Product does not exist");
+
+        uint256 length = products[tokenId].document.length;
+        timestamps = new uint256[](length);
+        documentHashes = new bytes32[](length);
+        documentTypes = new string[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            Document storage doc = products[tokenId].document[i];
+            timestamps[i] = doc.timestamp;
+            documentHashes[i] = doc.documentHash;
+            documentTypes[i] = doc.documentType;
+        }
+
+        return (timestamps, documentHashes, documentTypes);
     }
 
     function getEmissionsBySCP(address scp) public view returns (uint256) {
@@ -120,7 +181,8 @@ contract Activity is ERC721 {
             string memory productId,
             uint256 expirationDate,
             address scp,
-            Lifecycle memory lifecycle
+            Lifecycle memory lifecycle,
+            Document memory document
         )
     {
         require(_exists(tokenId), "Product does not exist");
@@ -131,11 +193,8 @@ contract Activity is ERC721 {
             product.productId,
             product.expirationDate,
             product.scp,
-            product.lifecycle
+            product.lifecycle,
+            product.document
         );
-    }
-
-    function isAuthorized(address scp) public view returns (bool) {
-      return authorizedSupplyChainPartners[scp];
     }
 }
