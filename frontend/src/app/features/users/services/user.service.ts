@@ -13,7 +13,7 @@ export class UserService {
 
   getUsersByCompanyId(companyId: string, companyType: CompanyType): Observable<User[]> {
     let params = { companyType: companyType };
-    return this.apiService.getAll(`api/Users/company/${companyId}`, params);
+    return this.apiService.getAll(`api/Users/company/${companyId}`, { params });
   }
 
   addUser(newUser: User): Observable<User> {

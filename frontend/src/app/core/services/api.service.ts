@@ -1,17 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-//import { AuthService } from './auth.service';
 import { environment } from 'src/environments/environment';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BaseHttpService {
 
-  protected http = inject(HttpClient)
-  //protected authService = inject(AuthService)
+  protected http = inject(HttpClient);
 
   private readonly API_BASE_URL = environment.baseUrl;
   private readonly header = new HttpHeaders({

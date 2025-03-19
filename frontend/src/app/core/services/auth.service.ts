@@ -60,19 +60,19 @@ export class AuthService {
     this.router.navigateByUrl('/login');
   }
 
-  public isAdmin(): boolean {
+  public get userRole(): Role | null {
     if (!this.token)
-      return false;
+      return null;
 
     try {
       let decodedJwt: Jwt = jwtDecode<Jwt>(this.token);
-      return decodedJwt['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === Role.SysAdmin;
+      return decodedJwt['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] as Role;
     } catch (err) {
-      return false;
+      return null;
     }
   }
 
-  public getUsername(): string | null {
+  public get username(): string | null {
     if (!this.token)
       return null;
 
