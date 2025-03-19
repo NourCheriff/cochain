@@ -3,9 +3,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Activity is ERC721, Ownable {
+contract Activity is ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
@@ -26,8 +25,6 @@ contract Activity is ERC721, Ownable {
 
     // Mappatura da tokenId a Product
     mapping(uint256 => Product) public products;
-    // Mappatura degli scp autorizzati
-    mapping(address => bool) public authorizedSupplyChainPartners;
     // Mappatura delle emissioni totali per attività
     mapping(address => uint256) public totalEmissionBalances;
 
@@ -36,31 +33,16 @@ contract Activity is ERC721, Ownable {
     event SupplyChainPartnerAuthorized(address scp);
     event SupplyChainPartnerRevoked(address scp);
 
-    constructor() ERC721("ProductTracker", "PROD") Ownable(msg.sender) {
+    constructor() ERC721("CarbonCredits", "CC"){
         // Il creatore del contratto è autorizzato per default
         authorizedOperators[msg.sender] = true;
-    }
-
-    modifier onlyAuthorized() {
-        require(authorizedOperators[msg.sender], "Not authorized");
-        _;
-    }
-
-    function authorizeSupplyChainPartners(address scp) public onlyOwner {
-        authorizedSupplyChainPartners[scp] = true;
-        emit SupplyChainPartnerAuthorized(scp);
-    }
-
-    function revokeSupplyChainPartner(address scp) public onlyOwner {
-        authorizedOperators[scp] = false;
-        emit SupplyChainPartnerRevoked(scp);
     }
 
     function createProduct(
         address scp,
         string memory productId,
         uint256 expirationDate
-    ) public onlyAuthorized returns (uint256) {
+    ) returns (uint256) {
         _tokenIds.increment();
         uint256 newTokenId = _tokenIds.current();
 
@@ -83,7 +65,7 @@ contract Activity is ERC721, Ownable {
         string categoryId,
         address scp,
         uint256 emissions
-    ) public onlyAuthorized {
+    ) {
         require(_exists(tokenId), "Product does not exist");
 
         // Crea una nuova attività
