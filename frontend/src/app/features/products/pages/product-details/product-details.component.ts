@@ -14,7 +14,8 @@ import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
-import {MatTable} from '@angular/material/table'
+import { MatTable } from '@angular/material/table'
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-product-details',
   imports: [
@@ -33,7 +34,7 @@ import {MatTable} from '@angular/material/table'
 })
 export class ProductDetailsComponent implements OnInit {
 
-  constructor(private productService: ProductService){}
+  constructor(private route: ActivatedRoute, private productService: ProductService){}
 
   readonly dialog = inject(MatDialog);
 
@@ -48,15 +49,25 @@ export class ProductDetailsComponent implements OnInit {
   lifeCyclesList: ProductLifeCycle[] = [];
 
   ngOnInit(): void {
-    this.productService.selectedProduct.subscribe(data => {
-      this.productInfo = data;
+    this.productService.selectedProduct.subscribe((data) => this.loadDetails(data));
 
-      this.lifeCyclesList = this.productInfo.productLifeCycles!;
-      this.lifeCycleSource = new MatTableDataSource<ProductLifeCycle>(this.lifeCyclesList);
-      this.lifeCycleSource.paginator = this.paginator;
+    if(this.productInfo == null){
+      let productId = this.route.snapshot.paramMap.get('id')!;
+      this.productService.getProductInfoById(productId).subscribe({
+        next: (response) => this.loadDetails(response),
+        error: (error) => console.log(error)
+      })
+    }
+  }
 
-      this.loadProductIngredients();
-    });
+  loadDetails(data: ProductInfo){
+    this.productInfo = data;
+
+    this.lifeCyclesList = this.productInfo.productLifeCycles!;
+    this.lifeCycleSource = new MatTableDataSource<ProductLifeCycle>(this.lifeCyclesList);
+    this.lifeCycleSource.paginator = this.paginator;
+
+    this.loadProductIngredients();
   }
 
   sendProduct(product: ProductInfo) {
