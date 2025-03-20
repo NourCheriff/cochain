@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Documents;
+using CochainAPI.Model.Transaction;
 
 namespace CochainAPI.Model.Product
 {
@@ -9,7 +10,8 @@ namespace CochainAPI.Model.Product
         public DateTime Timestamp { get; set; }
         public float Emissions { get; set; }
         public bool IsEmissionProcessed { get; set; }
-        public string? EmissionTransactionId { get; set; }
+        public string EmissionTransactionId { get; set; }
+        public EmissionTransaction EmissionTransaction { get; set; }
         public Guid ProductLifeCycleCategoryId { get; set; }
         public ProductLifeCycleCategory ProductLifeCycleCategory { get; set; }
         public Guid SupplyChainPartnerId { get; set; }
