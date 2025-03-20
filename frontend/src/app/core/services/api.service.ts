@@ -41,6 +41,14 @@ export class BaseHttpService {
     });
   }
 
+  getByIds<T>(endpoint: string, ids: string[]): Observable<T[]>{
+    console.log(endpoint, ids)
+     return this.http.post<T[]>(`${this.API_BASE_URL}/${endpoint}`, ids, {
+      headers: this.header
+    });
+  }
+
+
   add<T>(endpoint: string, data: T): Observable<T>{
     console.log(endpoint, data)
      return this.http.post<T>(`${this.API_BASE_URL}/${endpoint}`, data, {
