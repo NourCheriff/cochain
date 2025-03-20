@@ -1,8 +1,11 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Helper;
 using CochainAPI.Model.Product;
+using CochainAPI.Model.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
@@ -19,6 +22,18 @@ namespace CochainAPI.Data.Sql.Repositories
             var savedProductInfo = await dbContext.ProductInfo.AddAsync(productInfo);
             await dbContext.SaveChangesAsync();
             productInfo.Id = savedProductInfo.Entity.Id;
+            var log = new Log()
+            {
+                Name = "Add Product Info",
+                Severity = "Info",
+                Entity = "ProductInfo",
+                EntityId = productInfo.Id.ToString(),
+                Action = "Insert",
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                Timestamp = DateTime.UtcNow,
+                Message = ""
+            };
+            await logRepository.AddLog(log);
             return productInfo;
         }
 
@@ -34,6 +49,18 @@ namespace CochainAPI.Data.Sql.Repositories
                 return await dbContext.Product.Where(x => x.CategoryId == categoryId)
                 .ToListAsync();
             }
+            var log = new Log()
+            {
+                Name = "Get Generic Products",
+                Severity = "Warn",
+                Entity = "Product",
+                EntityId = id.ToString(),
+                Action = "Read",
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                Timestamp = DateTime.UtcNow,
+                Message = "The product category does not exist."
+            };
+            await logRepository.AddLog(log);
 
             return null;
         }
