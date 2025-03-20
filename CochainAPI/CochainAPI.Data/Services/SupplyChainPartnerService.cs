@@ -2,6 +2,7 @@ using CochainAPI.Data.Helpers;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
+using CochainAPI.Model.Helper;
 
 namespace CochainAPI.Data.Services
 {
@@ -28,7 +29,7 @@ namespace CochainAPI.Data.Services
             return await _supplyChainPartnerRepository.GetTypes();
         }
 
-        public async Task<List<SupplyChainPartner>> GetSupplyChainPartners(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<SupplyChainPartner>> GetSupplyChainPartners(string? queryParam, int? pageNumber, int? pageSize)
         {
             int? size = null;
             int? number = null;

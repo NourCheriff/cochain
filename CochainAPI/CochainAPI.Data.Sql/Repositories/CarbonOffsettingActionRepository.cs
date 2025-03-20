@@ -1,6 +1,7 @@
 ﻿using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CarbonOffset;
 using Microsoft.AspNetCore.Http;
+using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
@@ -21,9 +22,11 @@ namespace CochainAPI.Data.Sql.Repositories
             return action;
         }
 
-        public async Task<List<CarbonOffsettingAction>> GetCarbonOffsettingActions(string? scpId, string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<CarbonOffsettingAction>> GetCarbonOffsettingActions(string? scpId, string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.CarbonOffsettingAction.Where(x => (x.SupplyChainPartner != null && x.SupplyChainPartner.Name != null && (queryParam == null || x.SupplyChainPartner.Name.Contains(queryParam))) && (x.SupplyChainPartnerId != null && (scpId == null || x.SupplyChainPartnerId.ToString().Contains(scpId))));
+
+            var totalSize = await query.CountAsync();
 
             if (pageNumber.HasValue && pageSize.HasValue)
             {
@@ -31,7 +34,11 @@ namespace CochainAPI.Data.Sql.Repositories
                 .Take(pageSize.Value);
             }
 
-            return await query.ToListAsync();
+            return new Page<CarbonOffsettingAction>
+            {
+                Items = await query.ToListAsync(),
+                TotalSize = totalSize 
+            };
         }
 
         public async Task<List<CarbonOffsettingAction>> GetOffsettingActionsToBeProcessed()

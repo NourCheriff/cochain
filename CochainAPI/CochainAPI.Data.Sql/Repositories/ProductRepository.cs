@@ -1,4 +1,5 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
+using CochainAPI.Model.Helper;
 using CochainAPI.Model.Product;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -37,9 +38,11 @@ namespace CochainAPI.Data.Sql.Repositories
             return null;
         }
 
-        public async Task<List<ProductInfo>> GetProducts(string? productName, string? scpName, int? pageNumber, int? pageSize)
+        public async Task<Page<ProductInfo>> GetProducts(string? productName, string? scpName, int? pageNumber, int? pageSize)
         {
             var query = dbContext.ProductInfo.Include(x => x.SupplyChainPartner).Where(x =>  (productName == null || (x.Name != null && x.Name.Contains(productName))) && (scpName == null || (x.SupplyChainPartner != null && x.SupplyChainPartner.Name != null && x.SupplyChainPartner.Name.Contains(scpName))));
+
+            var totalSize = await query.CountAsync();
 
             if (int.TryParse(pageSize?.ToString(), out int size) && int.TryParse(pageNumber?.ToString(), out int number))
             {
@@ -53,8 +56,11 @@ namespace CochainAPI.Data.Sql.Repositories
                         .Include(x => x.ProductDocuments)
                         .Include(x => x.Product!.Category);
 
-            
-            return await queryComplete.ToListAsync();
+            return new Page<ProductInfo>
+            {
+                Items = await queryComplete.ToListAsync(),
+                TotalSize = totalSize
+            };
         }
 
         public async Task<List<ProductInfo>?> GetProductById(Guid id)
@@ -67,9 +73,11 @@ namespace CochainAPI.Data.Sql.Repositories
                     .ToListAsync();
         }
 
-        public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id, string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<ProductInfo>?> GetProductsOfSCP(Guid id, string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.ProductInfo.Where(x => x.SupplyChainPartnerId == id && x.Name != null && (queryParam == null || x.Name!.Contains(queryParam)));
+
+            var totalSize = await query.CountAsync();
 
             if (int.TryParse(pageSize?.ToString(), out int size) && int.TryParse(pageNumber?.ToString(), out int number))
             {
@@ -82,8 +90,12 @@ namespace CochainAPI.Data.Sql.Repositories
                                     .Include(x => x.ProductLifeCycles)
                                     .Include(x => x.Product!.Category)
                                     .Include(x => x.ProductDocuments);
-
-            return await queryComplete.ToListAsync();
+ 
+            return new Page<ProductInfo>
+            {
+                Items = await queryComplete.ToListAsync(),
+                TotalSize = totalSize
+            };
         }
     }
 }

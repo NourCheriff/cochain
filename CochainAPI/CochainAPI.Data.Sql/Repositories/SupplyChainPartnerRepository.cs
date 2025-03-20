@@ -1,6 +1,7 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
 using Microsoft.AspNetCore.Http;
+using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
@@ -23,9 +24,11 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.SupplyChainPartnerType.ToListAsync();
         }
 
-        public async Task<List<SupplyChainPartner>> GetSupplyChainPartners(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<SupplyChainPartner>> GetSupplyChainPartners(string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.SupplyChainPartner.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)));
+
+            var size = await query.CountAsync();
 
             if (pageNumber.HasValue && pageSize.HasValue)
             {
@@ -34,8 +37,13 @@ namespace CochainAPI.Data.Sql.Repositories
             }
 
             query = query.Include(x => x.SupplyChainPartnerType);
+            var items = await query.ToListAsync();
 
-            return await query.ToListAsync();
+            return new Page<SupplyChainPartner>
+            {
+                Items = items,
+                TotalSize = size
+            };
         }
 
         public async Task<SupplyChainPartner?> AddSupplyChainPartner(SupplyChainPartner supplyChainPartner)

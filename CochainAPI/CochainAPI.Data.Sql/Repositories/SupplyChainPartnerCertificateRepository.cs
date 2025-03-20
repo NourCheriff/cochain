@@ -1,6 +1,7 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Documents;
 using Microsoft.AspNetCore.Http;
+using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
@@ -38,9 +39,11 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.SupplyChainPartnerCertificate.FirstOrDefaultAsync(c => c.Id.ToString() == id);
         }
 
-        public async Task<List<SupplyChainPartnerCertificate>> GetSustainabilityCertificates(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<SupplyChainPartnerCertificate>> GetSustainabilityCertificates(string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.SupplyChainPartnerCertificate.Where(x => x.SupplyChainPartnerReceiver!.Name != null && (queryParam == null || x.SupplyChainPartnerReceiver.Name.Contains(queryParam)));
+
+            var totalSize = await query.CountAsync();
 
             if (pageNumber.HasValue && pageSize.HasValue)
             {
@@ -48,7 +51,11 @@ namespace CochainAPI.Data.Sql.Repositories
                 .Take(pageSize.Value);
             }
 
-            return await query.ToListAsync();
+            return new Page<SupplyChainPartnerCertificate>
+            {
+                Items = await query.ToListAsync(),
+                TotalSize = totalSize 
+            };
         }
     }
 }
