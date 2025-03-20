@@ -61,8 +61,9 @@ namespace CochainAPI.Data.Sql.Repositories
                     .Include(x => x.Ingredients)
                     .Include(x => x.Product)
                     .Include(x => x.Product!.Category)
-                    .Include(x => x.ProductLifeCycles)
                     .Include(x => x.ProductDocuments)
+                    .Include(x => x.ProductLifeCycles!.AsQueryable())
+                             .ThenInclude(y => y.ProductLifeCycleCategory)
                     .FirstOrDefaultAsync();
         }
 
