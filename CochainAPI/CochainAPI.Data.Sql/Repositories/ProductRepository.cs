@@ -4,7 +4,6 @@ using CochainAPI.Model.Product;
 using CochainAPI.Model.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace CochainAPI.Data.Sql.Repositories
