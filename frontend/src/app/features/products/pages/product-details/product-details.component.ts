@@ -55,7 +55,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
         this.productInfo.ingredients.forEach(element => {
           this.productService.getProductInfoById(element.ingredientId!).subscribe({
             next: (response) => {
-              this.ingredients.push(response.at(0)!)
+              this.ingredients.push(response)
             },
             error: (error) => console.log(error)
           })

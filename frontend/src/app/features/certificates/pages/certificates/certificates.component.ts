@@ -13,6 +13,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { FileInputComponent } from '../../components/file-input/file-input.component';
 import { CertificatesService } from '../../service/certificates.service';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
+import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
 
 @Component({
   selector: 'app-certificates',
@@ -28,23 +29,22 @@ export class CertificatesComponent implements OnInit {
   scpType: SCPType = {
     "type": "CA"
   }
-
+  totalRecords = 0;
   displayedColumns: string[] = ['receiver', 'scpType', 'attachments', 'actions'];
   dataSource = new MatTableDataSource<SupplyChainPartner>([]);
-  supplyChainPartners: SupplyChainPartner[] = [];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
     this.getSupplyChainPartners()
   }
 
-  getSupplyChainPartners(){
-    this.certificateService.getSupplyChainPartners().subscribe({
+  getSupplyChainPartners(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
+    this.certificateService.getSupplyChainPartners(pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
-        this.supplyChainPartners = response
-        this.dataSource = new MatTableDataSource<SupplyChainPartner>(this.supplyChainPartners);
+        this.totalRecords = response.totalSize
+        this.dataSource = new MatTableDataSource<SupplyChainPartner>(response.items!);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
@@ -76,8 +76,7 @@ export class CertificatesComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent){
-    console.log('Cambiata la pagina:', event.pageIndex);
-    console.log('Elementi per pagina:', event.pageSize);
+    this.getSupplyChainPartners(event.pageIndex, event.pageSize)
   }
 
 }

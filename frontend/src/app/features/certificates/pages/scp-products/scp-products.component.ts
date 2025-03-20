@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CertificatesService } from '../../service/certificates.service';
 import { ProductInfo } from 'src/models/product/product-info.model';
+import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
 @Component({
   selector: 'app-scp-products',
   imports: [CommonModule,MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
@@ -32,24 +33,23 @@ export class ScpProductsComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'category', 'expirationDate', 'attachments'];
   dataSource = new MatTableDataSource<ProductInfo>([]);
-  scpProducts: ProductInfo[] = [];
+  totalRecord = 0;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
     this.getScpProducts()
   }
 
-  getScpProducts(pageSize: number = 5, pageNumber: number = 0){
+  getScpProducts(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
     const id = this.route.snapshot.paramMap.get('id')!;
     this.certificateService.getScpProducts(id,pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
         console.log(response)
-        this.scpProducts = response
-        this.dataSource = new MatTableDataSource<ProductInfo>(this.scpProducts)
+        this.dataSource = new MatTableDataSource<ProductInfo>(response.items!)
+        this.totalRecord = response.totalSize;
         this.dataSource.sort = this.sort;
-      //  this.paginator.length = 10
         this.dataSource.paginator = this.paginator;
       },
 
@@ -62,7 +62,7 @@ export class ScpProductsComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-   deleteCertificate(id: string){
+  deleteCertificate(id: string){
     this.certificateService.deleteCertificate(id).subscribe({
       next: (response) => {
         console.log(response)

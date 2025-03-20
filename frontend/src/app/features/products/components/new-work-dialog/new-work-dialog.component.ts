@@ -81,7 +81,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     })
   }
 
-  //QUESTA API NON VA BENE, SERVE UNA PER PRENDERE GLI SCP, NON LE CATEGORIE
+
   getAllSupplyChainPartner(){
     this.productService.getAllSupplyChainPartner().subscribe({
       next: (response) => {

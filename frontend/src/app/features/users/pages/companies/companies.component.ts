@@ -1,5 +1,5 @@
 import { OnInit, Component, ViewChild, inject } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +14,7 @@ import { CompanyService } from '../../services/company.service';
 import { CertificationAuthority } from 'src/models/company-entities/certification-authority.model';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { CompanyType } from 'src/types/company.enum';
+import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
 
 @Component({
   selector: 'app-companies',
@@ -47,7 +48,7 @@ export class CompaniesComponent implements OnInit {
 
   scpSource: any;
   caSource:  any;
-
+  totalRecords = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private companyService: CompanyService){}
@@ -59,20 +60,22 @@ export class CompaniesComponent implements OnInit {
       this.getCertificationAuthorities();
   }
 
-  getCertificationAuthorities(): void {
-    this.companyService.getAllCertificationAuthorities().subscribe({
+  getCertificationAuthorities(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber): void {
+    this.companyService.getAllCertificationAuthorities(pageSize.toString(),pageNumber.toString()).subscribe({
       next: (certificationAuthorities) => {
-        this.certificationAuthorities = certificationAuthorities;
+        this.certificationAuthorities = certificationAuthorities.items!;
+        this.totalRecords = certificationAuthorities.totalSize;
         this.showCertificationAuthorities();
       },
       error: (error) => console.error(error)
     })
   }
 
-  getSupplyChainPartners(): void {
-    this.companyService.getAllSupplyChainPartners().subscribe({
+  getSupplyChainPartners(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber): void {
+    this.companyService.getAllSupplyChainPartners(pageSize.toString(),pageNumber.toString()).subscribe({
       next: (supplyChainPartners) => {
-        this.supplyChainPartners = supplyChainPartners;
+        this.supplyChainPartners = supplyChainPartners.items!;
+        this.totalRecords = supplyChainPartners.totalSize;
         this.showSupplyChainPartners();
       },
       error: (error) => console.error(error)
@@ -114,5 +117,12 @@ export class CompaniesComponent implements OnInit {
     this.displayedColumns = ['name', 'email', 'phone', 'action'];
     this.caSource = new MatTableDataSource<CertificationAuthority>(this.certificationAuthorities);
     this.caSource.paginator = this.paginator;
+  }
+
+  onPageChange(event: PageEvent){
+    this.selected === CompanyType.SupplyChainPartner ?
+      this.getSupplyChainPartners(event.pageSize,event.pageIndex)
+    :
+      this.getCertificationAuthorities(event.pageSize,event.pageIndex)
   }
 }

@@ -10,6 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ContractService } from '../../service/contract.service';
 import { Contract } from 'src/models/documents/contract.model';
 import { CommonModule } from '@angular/common';
+import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
+import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-contracts-section',
   templateUrl: './contracts-section.component.html',
@@ -18,41 +20,34 @@ import { CommonModule } from '@angular/common';
 })
 export class ContractsSectionComponent implements OnInit {
   readonly dialog = inject(MatDialog);
-
-  user: User = {
-    "id": "3542da56-0de3-4797-a059-effff257f63d",
-    "supplyChainPartner": "Prova company",// qui ci va il supply chain partner, quando l'utente effettua il login
-    "role": "User"
-  };
-
   displayedColumns: string[] = ['emitter', 'receiver', 'workType', 'attachment'];
+
+  private authService = inject(AuthService)
+  private contractService = inject(ContractService)
+
   dataSource = new MatTableDataSource<Contract>([]);
-  contracts: Contract[] = [];
+  totalRecords = 0;
 
   selected = 'received_contracts';
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
-
-  constructor(private contractService: ContractService){}
 
   ngOnInit() {
     if (this.isAdmin()) {
       this.displayedColumns.push('action');
     }
-    this.getContracts(5,1)
+    this.getContracts()
   }
 
   onPageChange(event: PageEvent){
-    console.log('Cambiata la pagina:', event.pageIndex);
-    console.log('Elementi per pagina:', event.pageSize);
     this.getContracts(event.pageSize, event.pageIndex)
   }
 
-  getContracts(pageSize: number = 5, pageNumber: number = 1){
-    const currentSCPId = this.user.id
+  getContracts(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
+    const currentSCPId = this.authService.userId!
     this.contractService.getContracts(currentSCPId,this.selected,pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
-        this.contracts = response
-        this.dataSource.data = this.contracts;
+        this.dataSource = new MatTableDataSource<Contract>(response.items!);
+        this.totalRecords = response.totalSize;
         this.dataSource.paginator = this.paginator;
       },
       error: (error) => console.log(error)
@@ -65,7 +60,7 @@ export class ContractsSectionComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.user.role === 'Admin';
+    return this.authService.userRole === 'Admin';
   }
 
   deleteCertificate(id: string){
@@ -82,9 +77,4 @@ export class ContractsSectionComponent implements OnInit {
   }
 }
 
-export interface User {
-  id: string,
-  supplyChainPartner: string;
-  role: string;
-}
 

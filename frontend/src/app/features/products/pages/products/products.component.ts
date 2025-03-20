@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,6 +15,8 @@ import { RouterLink } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
 @Component({
   selector: 'app-products',
   imports: [MatTableModule,
@@ -34,11 +36,7 @@ import { ProductService } from '../../services/product.service';
 
 })
 export class ProductsComponent implements OnInit {
-
-  user: User = {
-    "supplyChainPartner": "Prova company", // qui ci va il supply chain partner, quando l'utente effettua il login
-    "role": "Admin"
-  };
+  private authService = inject(AuthService)
 
   productInfo: ProductInfo[] = [];
 
@@ -52,25 +50,27 @@ export class ProductsComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  dataSource: any;
+  dataSource = new MatTableDataSource<ProductInfo>([]);
+  totalRecords = 0;
 
   constructor(private productService: ProductService){}
 
   ngOnInit(): void {
     this.getAllProductInfo()
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   sendProduct(product: ProductInfo) {
     this.productService.passProduct(product);
   }
 
-  getAllProductInfo(){
-    this.productService.getAllProductInfo().subscribe({
+  getAllProductInfo(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
+    this.productService.getAllProductInfo(pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
-        this.productInfo = response
+        this.productInfo = response.items!;
         this.dataSource = new MatTableDataSource<ProductInfo>(this.productInfo);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.totalRecords = response.totalSize;
       },
       error: (error) => console.log(error)
     })
@@ -94,18 +94,19 @@ export class ProductsComponent implements OnInit {
     let SELECTED_DATA: ProductInfo[] = [];
 
     SELECTED_DATA = !this.isChecked ? BACKUP_DATA :
-    BACKUP_DATA.filter(item => item.supplyChainPartner?.name === this.user.supplyChainPartner)
+
+    BACKUP_DATA.filter(item => item.supplyChainPartner?.email === this.authService.username)
 
     this.dataSource = new MatTableDataSource<ProductInfo>(SELECTED_DATA);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
+  onPageChange(event: PageEvent){
+    this.getAllProductInfo(event.pageSize, event.pageIndex)
+  }
+
   addProduct() {
     this.dialog.open(ProductDialogComponent);
   }
-}
-export interface User {
-  supplyChainPartner: string;
-  role: string;
 }

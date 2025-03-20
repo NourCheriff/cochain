@@ -51,9 +51,12 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
-    <mat-paginator [pageSizeOptions]="[5, 10, 15]"
-                    showFirstLastButtons
-                    aria-label="Select page of sustainability certificates">
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      [length]="totalRecords"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+      aria-label="Select page of sustainability certificates">
     </mat-paginator>
   </div>
 </main>
