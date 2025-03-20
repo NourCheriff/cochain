@@ -7,6 +7,7 @@ using CochainAPI.Model.Product;
 using CochainAPI.Model.CarbonOffset;
 using CochainAPI.Model.Documents;
 using CochainAPI.Model.Utils;
+using CochainAPI.Model.Transaction;
 
 namespace CochainAPI.Data.Sql
 {
@@ -31,6 +32,7 @@ namespace CochainAPI.Data.Sql
         public DbSet<ProductLifeCycleDocument> ProductLifeCycleDocument { get; set; }
         public DbSet<SupplyChainPartnerCertificate> SupplyChainPartnerCertificate { get; set; }
         public DbSet<Log> Log { get; set; }
+        public DbSet<EmissionTransaction> EmissionTransaction { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,10 +72,12 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<ProductInfo>().HasMany(x => x.ProductLifeCycles).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
             modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.ProductLifeCycleCategory).WithMany().HasForeignKey(x => x.ProductLifeCycleCategoryId);
             modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
+            modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.EmissionTransaction).WithMany().HasForeignKey(x => x.EmissionTransactionId);
+            
             modelBuilder.Entity<ProductLifeCycle>()
                         .Property(c => c.IsEmissionProcessed)
                         .HasDefaultValue(false);
-
+            
             modelBuilder.Entity<ProductIngredient>(entity =>
             {
                 entity.HasKey(r => new { r.ProductInfoId, r.IngredientId });
@@ -117,6 +121,18 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<CarbonOffsettingAction>()
                         .Property(c => c.IsProcessed)
                         .HasDefaultValue(false);
+
+            modelBuilder.Entity<EmissionTransaction>()
+                        .HasOne<SupplyChainPartner>()
+                        .WithMany()
+                        .HasForeignKey(t => t.WalletIdEmitter)
+                        .HasPrincipalKey(c => c.WalletId);
+
+            modelBuilder.Entity<EmissionTransaction>()
+                        .HasOne<SupplyChainPartner>()
+                        .WithMany()
+                        .HasForeignKey(t => t.WalletIdReceiver)
+                        .HasPrincipalKey(c => c.WalletId);
 
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
@@ -176,7 +192,18 @@ namespace CochainAPI.Data.Sql
                     Email = "company@prova.com",
                     Phone = "33309090909",
                     Credits = 0,
-                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87")
+                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                    WalletId = "0x3a9f1b7c5d2e8a4f6c0e7d3b5a2f9c1"
+                },
+                new SupplyChainPartner
+                {
+                    Id = new Guid("3a9f1b7c-5d2e-4a4f-8a6c-0e7d3b5a2f9c"),
+                    Name = "Prova company2",
+                    Email = "company2@prova.com",
+                    Phone = "3669045897",
+                    Credits = 0,
+                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                    WalletId = "0x7c5d1a3f9b2e6f0d8c4a7e3b5c2f9d1"
                 }
             );
 
@@ -302,6 +329,14 @@ namespace CochainAPI.Data.Sql
                     Id = new Guid("eaae7124-761e-4515-9aa0-bda3fc7aee87"),
                     Name = "Grossista",
                     Baseline = 1000.0f
+                });
+
+            modelBuilder.Entity<EmissionTransaction>().HasData(
+                new EmissionTransaction
+                {
+                    TransactionHash = "0x9f2a1b3c7d8e6f4a5b9c2d1e0a7f3b6d4c8e5a2f1b7d9c3e6a0f2b8d5c1e4a7",
+                    WalletIdEmitter = "0x3a9f1b7c5d2e8a4f6c0e7d3b5a2f9c1",
+                    WalletIdReceiver = "0x7c5d1a3f9b2e6f0d8c4a7e3b5c2f9d1"  
                 });
         }
 
