@@ -45,7 +45,7 @@ export class ProductDetailsComponent implements OnInit {
   userRole: string = "SCP";
   productInfo!: ProductInfo;
   ingredients:ProductInfo[] = [];
-  lifeCycleSource: any;
+  lifeCycleSource = new MatTableDataSource<ProductLifeCycle>([]);
   lifeCyclesList: ProductLifeCycle[] = [];
 
   ngOnInit(): void {
@@ -63,9 +63,11 @@ export class ProductDetailsComponent implements OnInit {
   loadDetails(data: ProductInfo){
     this.productInfo = data;
 
-    this.lifeCyclesList = this.productInfo.productLifeCycles!;
-    this.lifeCycleSource = new MatTableDataSource<ProductLifeCycle>(this.lifeCyclesList);
-    this.lifeCycleSource.paginator = this.paginator;
+    if (this.lifeCycleSource != null) {
+      this.lifeCyclesList = this.productInfo.productLifeCycles!;
+      this.lifeCycleSource.data = this.lifeCyclesList;
+      this.lifeCycleSource.paginator = this.paginator;
+    }
 
     this.loadProductIngredients();
   }
@@ -79,8 +81,7 @@ export class ProductDetailsComponent implements OnInit {
 
     currentDialog.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        let updatedData = [result.newWork, ...this.lifeCycleSource.data];
-        this.lifeCycleSource.data = updatedData;
+        this.lifeCycleSource.data = (this.lifeCycleSource != null) ? [result.newWork, ...this.lifeCycleSource.data] : result.newWork;
         this.lifeCycleSource.paginator = this.paginator;
         this.table.renderRows();
       }
