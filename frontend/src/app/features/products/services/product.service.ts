@@ -61,4 +61,8 @@ export class ProductService {
   getProductInfoById(product: string): Observable<ProductInfo[]> {
     return this.apiService.getById('api/Product', product)
   }
+
+  getProductsInfoByIds(ids: string[]): Observable<ProductInfo[]> {
+    return this.apiService.getByIds('api/Product/products', ids);
+  }
 }
