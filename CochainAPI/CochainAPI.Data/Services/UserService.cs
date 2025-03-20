@@ -189,7 +189,8 @@ namespace CochainAPI.Data.Services
                     User = user,
                     Password = randomPassword,
                     ExpirationDate = DateTime.UtcNow.AddMinutes(5),
-                    IsUsed = false
+                    IsUsed = false,
+                    Attempts = 0
                 };
                 await _userRepository.AddTemporaryPassword(temporaryPassword);
                 _emailService.EmailPasswordTemporanea(user.UserName!, randomPassword);
