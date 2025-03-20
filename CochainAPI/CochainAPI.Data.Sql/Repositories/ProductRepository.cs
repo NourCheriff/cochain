@@ -46,8 +46,8 @@ namespace CochainAPI.Data.Sql.Repositories
 
             var queryComplete = query.Include(x => x.Ingredients)
                         .Include(x => x.Product)
-                        .Include(x => x.ProductDocuments)
                         .Include(x => x.Product!.Category)
+                        .Include(x => x.ProductDocuments)
                         .Include(x => x.ProductLifeCycles!.AsQueryable())
                              .ThenInclude(y => y.ProductLifeCycleCategory);
 
@@ -60,6 +60,7 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.ProductInfo.Where(x => x.Id == id)
                     .Include(x => x.Ingredients)
                     .Include(x => x.Product)
+                    .Include(x => x.Product!.Category)
                     .Include(x => x.ProductLifeCycles)
                     .Include(x => x.ProductDocuments)
                     .FirstOrDefaultAsync();

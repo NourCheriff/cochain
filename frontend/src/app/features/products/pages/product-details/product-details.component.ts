@@ -53,16 +53,7 @@ export class ProductDetailsComponent implements OnInit {
       this.lifeCycleSource = new MatTableDataSource<ProductLifeCycle>(this.lifeCyclesList);
       this.lifeCycleSource.paginator = this.paginator;
 
-      const ingredientIds: string[] = this.productInfo.ingredients!.map(ingredient => ingredient.ingredientId);
-
-      if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
-          this.productService.getProductsInfoByIds(ingredientIds).subscribe({
-            next: (response) => {
-              this.ingredients = response;
-            },
-            error: (error) => console.log(error)
-          })
-      }
+      this.loadProductIngredients();
     });
   }
 
@@ -72,15 +63,29 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addWork(){
-    this.dialog.open(NewWorkDialogComponent,
-      {data: {product: this.productInfo}}
-    )
+    this.dialog.open(NewWorkDialogComponent,{data: {product: this.productInfo}});
   }
 
   modifyProduct(){
-    this.dialog.open(EditProductDialogComponent,
-      {data: {product: this.productInfo, ingredients: this.ingredients}}
-    );
+    let currentDialog = this.dialog.open(EditProductDialogComponent, {data: {product: this.productInfo, ingredients: this.ingredients}});
+
+    currentDialog.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.productInfo = result.modifiedProduct;
+        this.loadProductIngredients();
+      }
+    });
+  }
+
+  loadProductIngredients(){
+    const ingredientIds: string[] = this.productInfo.ingredients!.map(ingredient => ingredient.ingredientId);
+
+    if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
+        this.productService.getProductsInfoByIds(ingredientIds).subscribe({
+          next: (response) => this.ingredients = response,
+          error: (error) => console.log(error)
+        })
+    }
   }
 
   isAdmin(): boolean{

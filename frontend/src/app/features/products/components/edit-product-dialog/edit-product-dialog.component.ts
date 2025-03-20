@@ -58,8 +58,8 @@ export class EditProductDialogComponent implements OnInit{
     }
   }
 
-  readonly ingredients = signal<string[]>([]);
   readonly allIngredients: string[] = [];
+  readonly ingredients = signal<string[]>([]);
   readonly announcer = inject(LiveAnnouncer);
   readonly dialogRef = inject(MatDialogRef<EditProductDialogComponent>);
 
@@ -77,44 +77,7 @@ export class EditProductDialogComponent implements OnInit{
     this.loadProductCategories();
   }
 
-  readonly filteredIngredients = computed(() => {
-    return this.ingredients().length === 0
-      ? this.allIngredients
-      : this.allIngredients.filter((ingredient: string) =>
-          !this.ingredients().includes(ingredient)
-      );
-    });
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      this.ingredients.update(ingredients => [...ingredients, value]);
-    }
-  }
-
-  remove(ingredient: string): void {
-    this.ingredients.update(ingredients => {
-      const index = ingredients.indexOf(ingredient);
-      if (index < 0) {
-        return ingredients;
-      }
-
-      ingredients.splice(index, 1);
-      this.announcer.announce(`Removed ${ingredient}`);
-      return [...ingredients];
-    });
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.ingredients.update(ingredients => [...ingredients, event.option.viewValue]);
-    event.option.deselect();
-  }
-
-  dateFilter = (d: Date | null): boolean => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return d ? d >= today : false;
-  };
 
   private loadProductCategories(): void {
     this.productService.getProductCategories().subscribe({
@@ -160,7 +123,6 @@ export class EditProductDialogComponent implements OnInit{
       });
   }
 
-
   modifyProduct(){
     const ingredientsValue = this.ingredients();
 
@@ -176,16 +138,62 @@ export class EditProductDialogComponent implements OnInit{
       id: this.data.product.id,
       name: this.modifiedProductForm.value.name!,
       productId: this.modifiedProductForm.value.product!,
-      supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+      product: {
+        id: this.genericProducts.find(x => x.id === this.modifiedProductForm.value.product!)?.id,
+        name: this.genericProducts.find(x => x.id === this.modifiedProductForm.value.product!)?.name,
+        description: this.genericProducts.find(x => x.id === this.modifiedProductForm.value.product!)?.description,
+        categoryId : this.modifiedProductForm.value.category!,
+        category : this.productCategories.find(x => x.id === this.modifiedProductForm.value.category!),
+      },
+      supplyChainPartnerId: this.data.product.supplyChainPartnerId,
       expirationDate: formattedDate!,
       ingredients: productIngredients,
     }
 
     this.productService.updateProductInfo(modifiedProduct).subscribe({
-      next: (response) => console.log(response),
+      next: (response) => this.dialogRef.close({ modifiedProduct: modifiedProduct }),
       error: (error) => console.error(error),
     })
   }
+
+  readonly filteredIngredients = computed(() => {
+    return this.ingredients().length === 0
+      ? this.allIngredients
+      : this.allIngredients.filter((ingredient: string) =>
+          !this.ingredients().includes(ingredient)
+      );
+    });
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.ingredients.update(ingredients => [...ingredients, value]);
+    }
+  }
+
+  remove(ingredient: string): void {
+    this.ingredients.update(ingredients => {
+      const index = ingredients.indexOf(ingredient);
+      if (index < 0) {
+        return ingredients;
+      }
+
+      ingredients.splice(index, 1);
+      this.announcer.announce(`Removed ${ingredient}`);
+      return [...ingredients];
+    });
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.ingredients.update(ingredients => [...ingredients, event.option.viewValue]);
+    event.option.deselect();
+  }
+
+  dateFilter = (d: Date | null): boolean => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return d ? d >= today : false;
+  };
 
   onSelectFile(event : Event){
     const input = event.target as HTMLInputElement;
@@ -201,15 +209,10 @@ export class EditProductDialogComponent implements OnInit{
     }
   }
 
-   reset(){
+  reset(){
     this.fileInput.nativeElement.value = null
     this.uploadEnabled = false
   }
-}
-
-interface Option {
-  value: string;
-  displayValue: string;
 }
 
 interface ProductForm {
