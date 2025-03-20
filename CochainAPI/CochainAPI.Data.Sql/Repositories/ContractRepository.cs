@@ -1,13 +1,16 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Documents;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
     public class ContractRepository : SqlRepository, IContractRepository
     {
-        public ContractRepository(CochainDBContext dbContext) : base(dbContext)
+        private readonly ILogRepository logRepository;
+        public ContractRepository(CochainDBContext dbContext, ILogRepository logRepository, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
         {
+            this.logRepository = logRepository;
         }
 
         public async Task<Contract> AddDocument(Contract documentObj)

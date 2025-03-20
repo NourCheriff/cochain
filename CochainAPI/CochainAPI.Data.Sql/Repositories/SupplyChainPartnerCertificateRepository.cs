@@ -1,13 +1,16 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Documents;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
     public class SupplyChainPartnerCertificateRepository : SqlRepository, ISupplyChainPartnerCertificateRepository
     {
-        public SupplyChainPartnerCertificateRepository(CochainDBContext dbContext) : base(dbContext)
+        private readonly ILogRepository logRepository;
+        public SupplyChainPartnerCertificateRepository(CochainDBContext dbContext, ILogRepository logRepository, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
         {
+            this.logRepository = logRepository;
         }
 
         public async Task<SupplyChainPartnerCertificate?> AddDocument(SupplyChainPartnerCertificate documentObj)

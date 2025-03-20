@@ -1,13 +1,16 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Product;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
     public class ProductRepository : SqlRepository, IProductRepository
     {
-        public ProductRepository(CochainDBContext dbContext) : base(dbContext)
+        private readonly ILogRepository logRepository;
+        public ProductRepository(CochainDBContext dbContext, ILogRepository logRepository, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
         {
+            this.logRepository = logRepository;
         }
 
         public async Task<ProductInfo> AddProductInfo(ProductInfo productInfo)

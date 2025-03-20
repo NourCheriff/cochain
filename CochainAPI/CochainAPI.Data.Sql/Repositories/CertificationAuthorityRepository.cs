@@ -1,6 +1,7 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Documents;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -8,8 +9,10 @@ namespace CochainAPI.Data.Sql.Repositories
 {
     public class CertificationAuthorityRepository : SqlRepository, ICertificationAuthorityRepository
     {
-        public CertificationAuthorityRepository(CochainDBContext dbContext) : base(dbContext)
+        private readonly ILogRepository logRepository;
+        public CertificationAuthorityRepository(CochainDBContext dbContext, ILogRepository logRepository, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
         {
+            this.logRepository = logRepository;
         }
 
         private async Task<SupplyChainPartnerCertificate?> Get(Guid documentId)

@@ -89,6 +89,7 @@ builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddSingleton<IProductLifeCycleService, ProductLifeCycleService>();
 builder.Services.AddSingleton<ICertificationAuthorityService, CertificationAuthorityService>();
 builder.Services.AddSingleton<ICarbonOffsettingActionService, CarbonOffsettingActionService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerRepository, SupplyChainPartnerRepository>();

@@ -1,13 +1,16 @@
 ﻿using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CarbonOffset;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
     public class CarbonOffsettingActionRepository : SqlRepository, ICarbonOffsettingActionRepository
     {
-        public CarbonOffsettingActionRepository(CochainDBContext dbContext) : base(dbContext)
+        private readonly ILogRepository logRepository;
+        public CarbonOffsettingActionRepository(CochainDBContext dbContext, ILogRepository logRepository, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
         {
+            this.logRepository = logRepository;
         }
 
         public async Task<CarbonOffsettingAction> AddCarbonOffsettingAction(CarbonOffsettingAction action)
