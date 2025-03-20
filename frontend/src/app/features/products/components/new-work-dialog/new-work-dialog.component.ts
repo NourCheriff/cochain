@@ -82,14 +82,13 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
 
   createWork(): void {
     const datepipe: DatePipe = new DatePipe('en-US')
-    let formattedDate = datepipe.transform(this.newWorkForm.value.workDate, 'YYYY-MM-dd');
+    let formattedDate = datepipe.transform(this.newWorkForm.value.workDate, 'YYYY-MM-dd') + "T00:00:00Z";
 
     const newProductLifeCycle: ProductLifeCycle = {
       timestamp: formattedDate!,
       emissions: this.emissionsValue,
       isEmissionsProcessed: false,
       productLifeCycleCategoryId: this.newWorkForm.value.work!,
-      //productLifeCycleCategory:
       supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
       productInfoId: this.data.product.id!,
     }
