@@ -50,19 +50,18 @@ export class ProductDetailsComponent implements OnInit {
       this.productInfo = data;
 
       this.lifeCyclesList = this.productInfo.productLifeCycles!;
-      console.log(this.productInfo.productLifeCycles!);
       this.lifeCycleSource = new MatTableDataSource<ProductLifeCycle>(this.lifeCyclesList);
       this.lifeCycleSource.paginator = this.paginator;
 
+      const ingredientIds: string[] = this.productInfo.ingredients!.map(ingredient => ingredient.ingredientId);
+
       if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
-        this.productInfo.ingredients.forEach(element => {
-          this.productService.getProductInfoById(element.ingredientId!).subscribe({
+          this.productService.getProductsInfoByIds(ingredientIds).subscribe({
             next: (response) => {
-              this.ingredients.push(response.at(0)!)
+              this.ingredients = response;
             },
             error: (error) => console.log(error)
           })
-        });
       }
     });
   }
