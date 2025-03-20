@@ -14,6 +14,7 @@ import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
+import {MatTable} from '@angular/material/table'
 @Component({
   selector: 'app-product-details',
   imports: [
@@ -36,6 +37,7 @@ export class ProductDetailsComponent implements OnInit {
 
   readonly dialog = inject(MatDialog);
 
+  @ViewChild(MatTable) table!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['workType', 'emissions', 'workDate', 'attachments'];
@@ -63,7 +65,16 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addWork(){
-    this.dialog.open(NewWorkDialogComponent,{data: {product: this.productInfo}});
+    let currentDialog = this.dialog.open(NewWorkDialogComponent,{data: {product: this.productInfo}});
+
+    currentDialog.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        let updatedData = [result.newWork, ...this.lifeCycleSource.data];
+        this.lifeCycleSource.data = updatedData;
+        this.lifeCycleSource.paginator = this.paginator;
+        this.table.renderRows();
+      }
+    });
   }
 
   modifyProduct(){

@@ -96,13 +96,13 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     if(this.isTransportDocument){
       const receiver = this.newWorkForm.value.receiver
       this.productService.addProductLifeCycleTransport(newProductLifeCycle).subscribe({
-        next: (response) => console.log(response),
+        next: (response) => this.dialogRef.close({ newWork: response }),
         error: (error) => console.error(error),
       })
     }
     else{
       this.productService.addProductLifeCycleGeneric(newProductLifeCycle).subscribe({
-        next: (response) => console.log(response),
+        next: (response) => this.dialogRef.close({ newWork: response }),
         error: (error) => console.error(error),
       })
     }
