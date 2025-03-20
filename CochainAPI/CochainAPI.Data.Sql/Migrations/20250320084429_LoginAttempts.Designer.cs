@@ -3,6 +3,7 @@ using System;
 using CochainAPI.Data.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CochainAPI.Data.Sql.Migrations
 {
     [DbContext(typeof(CochainDBContext))]
-    partial class CochainDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250320084429_LoginAttempts")]
+    partial class LoginAttempts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

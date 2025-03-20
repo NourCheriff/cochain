@@ -169,7 +169,7 @@ namespace CochainAPI.Data.Services
                 {
                     User = user,
                     Password = randomPassword,
-                    ExpirationDate = DateTime.UtcNow.AddHours(2),
+                    ExpirationDate = DateTime.UtcNow.AddMinutes(5),
                     IsUsed = false
                 };
                 await _userRepository.AddTemporaryPassword(temporaryPassword);
