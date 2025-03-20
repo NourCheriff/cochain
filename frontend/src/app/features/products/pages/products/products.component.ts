@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
+import {MatTable} from '@angular/material/table'
 @Component({
   selector: 'app-products',
   imports: [MatTableModule,
@@ -35,26 +36,26 @@ import { ProductService } from '../../services/product.service';
 })
 export class ProductsComponent implements OnInit {
 
+  constructor(private productService: ProductService){}
+
+  readonly dialog = inject(MatDialog);
+  private _liveAnnouncer = inject(LiveAnnouncer);
+
+  @ViewChild(MatTable) table!: MatTable<any>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  isChecked = false;
+  newProduct!: ProductInfo;
+  productInfo: ProductInfo[] = [];
+  dataSource: any;
+  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'sustainability_certificate', 'action'];
+
   user: User = {
-    "supplyChainPartner": "Prova company", // qui ci va il supply chain partner, quando l'utente effettua il login
+    "supplyChainPartner": "Prova company", // here goes the scp of the logged user
     "role": "Admin"
   };
 
-  productInfo: ProductInfo[] = [];
-
-  readonly dialog = inject(MatDialog);
-
-  isChecked = false;
-
-  private _liveAnnouncer = inject(LiveAnnouncer);
-
-  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'sustainability_certificate', 'action'];
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  dataSource: any;
-
-  constructor(private productService: ProductService){}
 
   ngOnInit(): void {
     this.getAllProductInfo()
@@ -102,7 +103,17 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-    this.dialog.open(ProductDialogComponent);
+    let currentDialog = this.dialog.open(ProductDialogComponent);
+
+    currentDialog.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        let updatedData = [result.newProduct, ...this.dataSource.data];
+        this.dataSource.data = updatedData;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.table.renderRows();
+      }
+    });
   }
 }
 export interface User {

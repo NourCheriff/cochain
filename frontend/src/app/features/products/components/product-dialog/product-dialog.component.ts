@@ -19,7 +19,6 @@ import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
 import { DatePipe } from '@angular/common';
-
 @Component({
   selector: 'app-product-dialog',
   imports: [
@@ -44,8 +43,23 @@ import { DatePipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDialogComponent implements OnInit {
+
+  constructor(private productService: ProductService) {}
+
   readonly dialogRef = inject(MatDialogRef<ProductDialogComponent>);
+  readonly announcer = inject(LiveAnnouncer);
+  readonly ingredients = signal<string[]>([]);
+  readonly allIngredients: string[] = [];
+
+  @ViewChild("fileInput") fileInput!: ElementRef
+  fileUploaded!: File
+  uploadEnabled: boolean = false;
+
+  alreadyLoaded: boolean = false;
   hasIngredients: boolean = false;
+  genericProducts: Product[] = [];
+  allIngredientsRes: ProductInfo[] = [];
+  productCategories: ProductCategory[] = [];
 
   newProductForm = new FormGroup({
     category: new FormControl('', [Validators.required]),
@@ -55,24 +69,6 @@ export class ProductDialogComponent implements OnInit {
     hasIngredients: new FormControl(false),
     ingredients: new FormControl('')
   });
-
-  @ViewChild("fileInput") fileInput!: ElementRef
-  fileUploaded!: File
-  uploadEnabled: boolean = false;
-
-  readonly announcer = inject(LiveAnnouncer);
-
-  productCategories: ProductCategory[] = [];
-
-  allIngredientsRes: ProductInfo[] = [];
-
-  genericProducts: Product[] = [];
-  readonly ingredients = signal<string[]>([]);
-  readonly allIngredients: string[] = [];
-  alreadyLoaded: boolean = false;
-
-
-  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.loadProductCategories();
@@ -117,7 +113,6 @@ export class ProductDialogComponent implements OnInit {
   }
 
   createProduct(){
-
     const ingredientsValue = this.ingredients();
 
     const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
@@ -137,22 +132,9 @@ export class ProductDialogComponent implements OnInit {
     }
 
     this.productService.addProductInfo(newProduct).subscribe({
-      next: (response) => console.log(response),
+      next: (response) => this.dialogRef.close({ newProduct: response }),
       error: (error) => console.error(error),
     })
-
-
-    // const reader = new FileReader();
-    // reader.onload = () => {
-    //   const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
-
-      // this.fileUploadService.uploadFile(doc).subscribe({
-      //   next: (response) => console.log('File uploaded successfully', response),
-      //   error: (error) => console.error('File upload failed', error),
-      // });
-    //};
-
-    //reader.readAsDataURL(this.fileUploaded);
   }
 
 
