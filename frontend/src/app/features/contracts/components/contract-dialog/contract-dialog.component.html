@@ -4,18 +4,18 @@
   <mat-dialog-content class="dialog">
     <mat-form-field appearance="outline">
       <mat-label>Receiver</mat-label>
-      <mat-select [(value)]="selectedReceiver" formControlName="receiver">
+      <mat-select [(value)]="selectedReceiverId" formControlName="receiver">
         @for (supplyChainPartner of supplyChainPartners; track $index) {
-          <mat-option [value]="supplyChainPartner.name"> {{ supplyChainPartner.name }} </mat-option>
+          <mat-option [value]="supplyChainPartner.id"> {{ supplyChainPartner.name }} </mat-option>
         }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Work Type</mat-label>
-      <mat-select [(value)]="selectedWorkType" formControlName="work">
+      <mat-select formControlName="work" [(value)]="selecteCategoryId">
         @for (productLifeCycleCategory of productLifeCycleCategories; track $index) {
-          <mat-option [value]="productLifeCycleCategory.name"> {{ productLifeCycleCategory.name }} </mat-option>
+          <mat-option [value]="productLifeCycleCategory.id"> {{ productLifeCycleCategory.name }} </mat-option>
         }
       </mat-select>
     </mat-form-field>

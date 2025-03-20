@@ -32,21 +32,20 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<User?> GetById(string id)
         {
-            return await dbContext.Users.FirstOrDefaultAsync(c => c.Id == id);
+            return await dbContext.Users.FirstOrDefaultAsync(c => c.Id == id && c.IsActive == true);
         }
 
-        public async Task<List<User>?> GetUsersByCompanyId(Guid id)
+        public async Task<List<User>?> GetUsersByCompanyId(Guid id, string companyType)
         {
-            if (Guid.TryParse(id.ToString(), out Guid companyId))
-            {
-            return await dbContext.Users.Where(x => x.SupplyChainPartnerId == companyId).ToListAsync();
-            }
-            return null;
+            if (companyType == "scp")
+                return await dbContext.Users.Where(x => x.SupplyChainPartnerId == id && x.IsActive == true).ToListAsync();
+
+            return await dbContext.Users.Where(x => x.CertificationAuthorityId == id && x.IsActive == true).ToListAsync();
         }
 
         public async Task<User?> GetByUserName(string userName)
         {
-            return await dbContext.Users.FirstOrDefaultAsync(c => c.UserName == userName);
+            return await dbContext.Users.FirstOrDefaultAsync(c => c.UserName == userName && c.IsActive == true);
         }
 
         public async Task<List<IdentityRole>> GetRolesByUserId(string userId)

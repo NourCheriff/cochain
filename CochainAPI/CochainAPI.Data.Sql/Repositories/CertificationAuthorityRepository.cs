@@ -68,5 +68,13 @@ namespace CochainAPI.Data.Sql.Repositories
         {            
             return await dbContext.CertificationAuthority.FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<CertificationAuthority?> AddCertificationAuthority(CertificationAuthority certificationAuthority)
+        {
+            var savedCertificationAuthority = await dbContext.CertificationAuthority.AddAsync(certificationAuthority);
+            await dbContext.SaveChangesAsync();
+            certificationAuthority.Id = savedCertificationAuthority.Entity.Id;
+            return certificationAuthority;
+        }
     }
 }

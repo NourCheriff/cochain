@@ -21,6 +21,7 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("CochainDB")!;
+//string blockchainURL = "http://13.73.227.222:8545";
 
 builder.Services.Configure<Jwt>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
@@ -55,6 +56,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("WriteSCP", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("AddUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
     options.AddPolicy("ReadUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
+    options.AddPolicy("RemoveUser", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("ReadDocuments", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteContracts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("WriteInvoices", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));

@@ -1,5 +1,8 @@
-﻿using CochainAPI.Data.Services.Interfaces;
+using CochainAPI.Data.Services.Interfaces;
 using Quartz;
+using Nethereum.Web3;
+using Nethereum.Web3.Accounts;
+using Nethereum.Web3.Accounts.Managed;
 
 namespace CochainAPI.Jobs
 {
@@ -8,24 +11,34 @@ namespace CochainAPI.Jobs
         private readonly IProductLifeCycleService _lifeCycleService;
         private readonly ISupplyChainPartnerService _supplyChainPartnerService;
         private readonly ICarbonOffsettingActionService _actionService;
+        private readonly string _blockchainURL;
 
-        public TokenProcessor(IProductLifeCycleService lifeCycleService, ISupplyChainPartnerService supplyChainPartnerService, ICarbonOffsettingActionService actionService)
+        public TokenProcessor(IProductLifeCycleService lifeCycleService, ISupplyChainPartnerService supplyChainPartnerService, ICarbonOffsettingActionService actionService, string blockchainURL)
         {
             _lifeCycleService = lifeCycleService;
             _supplyChainPartnerService = supplyChainPartnerService;
             _actionService = actionService;
+            _blockchainURL = blockchainURL;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var productLifeCycle = await _lifeCycleService.GetProductLifeCyclesToBeProcessed();
-            foreach (var item in productLifeCycle)
+            var productLifeCycles = await _lifeCycleService.GetProductLifeCyclesToBeProcessed();
+
+            foreach (var item in productLifeCycles)
             {
+                var walletId = item.SupplyChainPartner.WalletId;
+                var account = new Account(walletId);
+                var web3 = new Web3(account, _blockchainURL);
                 var credits = item.SupplyChainPartner.SupplyChainPartnerType.Baseline - item.Emissions;
-                //transaction with blockchain
-                var transactionId = "";
+                var transaction = await web3.Eth.GetEtherTransferService()
+                .TransferEtherAndWaitForReceiptAsync(walletId, (decimal)credits);
+
+                var transactionId = transaction.TransactionHash;
                 item.EmissionTransactionId = transactionId;
+
                 var updateResult = await _supplyChainPartnerService.UpdateScpCredits(item.SupplyChainPartnerId, credits);
+
                 if (!updateResult)
                 {
                     item.IsEmissionProcessed = true;
@@ -34,12 +47,18 @@ namespace CochainAPI.Jobs
             }
 
             var offsettingActions = await _actionService.GetOffsettingActionsToBeProcessed();
-            foreach(var item in offsettingActions)
+            foreach (var item in offsettingActions)
             {
-                //transaction with blockchain item.Offset
-                var transactionId = "";
+                var walletId = item.SupplyChainPartner.WalletId;
+                var account = new Account(walletId);
+                var web3 = new Web3(account, _blockchainURL);
+                var transaction = await web3.Eth.GetEtherTransferService()
+                .TransferEtherAndWaitForReceiptAsync(walletId, (decimal)item.Offset);
+                var transactionId = transaction.TransactionHash;
                 item.EmissionTransactionId = transactionId;
+
                 var updateResult = await _supplyChainPartnerService.UpdateScpCredits(item.SupplyChainPartnerId, item.Offset);
+
                 if (!updateResult)
                 {
                     item.IsProcessed = true;

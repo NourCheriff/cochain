@@ -13,6 +13,8 @@ import { RouterLink } from '@angular/router';
 import { CompanyService } from '../../services/company.service';
 import { CertificationAuthority } from 'src/models/company-entities/certification-authority.model';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
+import { CompanyType } from 'src/types/company.enum';
+
 @Component({
   selector: 'app-companies',
   imports: [
@@ -24,27 +26,24 @@ import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-par
     MatSelectModule,
     FormsModule,
     MatInputModule,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './companies.component.html',
   styleUrl: './companies.component.css'
 
 })
-export class CompaniesComponent implements  OnInit {
-
-  user: User = {
-    "supplyChainPartner": "Alpha",
-    "role": "Admin"
-  };
+export class CompaniesComponent implements OnInit {
 
   readonly dialog = inject(MatDialog);
+  CompanyType = CompanyType;
 
-  selected = 'supply_chain_partner';
+  selected = CompanyType.SupplyChainPartner;
 
-  scpList: SupplyChainPartner[] = [];
-  caList: CertificationAuthority[] = [];
+  // cache lists for faster access on client side
+  supplyChainPartners: SupplyChainPartner[] = [];
+  certificationAuthorities: CertificationAuthority[] = [];
 
-  displayedColumns: string[] = ['name', 'email', 'phone', 'type', 'wallet_id', 'action'];
+  displayedColumns: string[] = [];
 
   scpSource: any;
   caSource:  any;
@@ -54,61 +53,66 @@ export class CompaniesComponent implements  OnInit {
   constructor(private companyService: CompanyService){}
 
   ngOnInit(): void {
-    this.getAllSupplyChainPartners();
+    if (this.selected === CompanyType.SupplyChainPartner)
+      this.getSupplyChainPartners();
+    else
+      this.getCertificationAuthorities();
   }
 
-  getAllCertificationAuthorities(){
+  getCertificationAuthorities(): void {
     this.companyService.getAllCertificationAuthorities().subscribe({
-      next: (response) => {
-        this.caList = response
-        this.caSource = new MatTableDataSource<CertificationAuthority>(this.caList);
-        this.caSource.paginator = this.paginator;
+      next: (certificationAuthorities) => {
+        this.certificationAuthorities = certificationAuthorities;
+        this.showCertificationAuthorities();
       },
-      error: (error) => console.log(error)
+      error: (error) => console.error(error)
     })
   }
 
-  getAllSupplyChainPartners(){
+  getSupplyChainPartners(): void {
     this.companyService.getAllSupplyChainPartners().subscribe({
-      next: (response) => {
-        this.scpList = response
-        this.scpSource = new MatTableDataSource<SupplyChainPartner>(this.scpList);
-        this.scpSource.paginator = this.paginator;
+      next: (supplyChainPartners) => {
+        this.supplyChainPartners = supplyChainPartners;
+        this.showSupplyChainPartners();
       },
-      error: (error) => console.log(error)
+      error: (error) => console.error(error)
     })
   }
 
-  updateTable() {
-    if(this.caList.length == 0){
-      this.getAllCertificationAuthorities();
+  updateTable(): void {
+    if (this.selected === CompanyType.CertificationAuthority && this.certificationAuthorities.length === 0) {
+      this.getCertificationAuthorities();
+    }
+    if (this.selected === CompanyType.SupplyChainPartner && this.supplyChainPartners.length === 0) {
+      this.getSupplyChainPartners();
     }
 
-    if(this.selected == "supply_chain_partner"){
-      this.displayedColumns = ['name', 'email', 'phone', 'type', 'wallet_id', 'action'];
-      this.scpSource = new MatTableDataSource<SupplyChainPartner>(this.scpList);
-      this.scpSource.paginator = this.paginator;
-    }
-    else{
-      this.displayedColumns = ['name', 'email', 'phone', 'action'];
-      this.caSource = new MatTableDataSource<CertificationAuthority>(this.caList);
-      this.caSource.paginator = this.paginator;
-    }
+    if (this.selected === CompanyType.SupplyChainPartner)
+      this.showSupplyChainPartners();
+    else
+      this.showCertificationAuthorities();
   }
 
-  sendCompany(companyId: string) {
-    this.companyService.passCompany(companyId, this.selected);
-  }
-
-  addCompany() {
-    this.dialog.open(
+  addCompany(): void {
+    const dialogRef = this.dialog.open(
       CompanyDialogComponent,
-      {data: {company: this.selected}}
+      { data: { companyType: this.selected } }
     );
+    dialogRef.afterClosed().subscribe(result => {
+      if(result && result.reloadContent)
+        result.isSCP ? this.getSupplyChainPartners() : this.getCertificationAuthorities()
+    });
   }
-}
 
-export interface User {
-  supplyChainPartner: string;
-  role: string;
+  private showSupplyChainPartners(): void {
+    this.displayedColumns = ['name', 'email', 'phone', 'type', 'wallet_id', 'action'];
+    this.scpSource = new MatTableDataSource<SupplyChainPartner>(this.supplyChainPartners);
+    this.scpSource.paginator = this.paginator;
+  }
+
+  private showCertificationAuthorities(): void {
+    this.displayedColumns = ['name', 'email', 'phone', 'action'];
+    this.caSource = new MatTableDataSource<CertificationAuthority>(this.certificationAuthorities);
+    this.caSource.paginator = this.paginator;
+  }
 }

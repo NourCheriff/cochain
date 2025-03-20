@@ -2,27 +2,27 @@
   <div class="companies_div">
     <div>
       <h3 class="header_text">
-        {{ selected === 'supply_chain_partner' ? 'Supply Chain Partner' : 'Certification Authority' }}
+        {{ selected === CompanyType.SupplyChainPartner ? 'Supply Chain Partner' : 'Certification Authority' }}
       </h3>
         <section class="header_options">
           <mat-form-field appearance="outline">
             <mat-label>Select a company type</mat-label>
             <mat-select [(value)]="selected" (selectionChange)="updateTable()">
-              <mat-option value="supply_chain_partner">Supply Chain Partner</mat-option>
-              <mat-option value="certification_authority">Certification Authority</mat-option>
+              <mat-option [value]="CompanyType.SupplyChainPartner">Supply Chain Partner</mat-option>
+              <mat-option [value]="CompanyType.CertificationAuthority">Certification Authority</mat-option>
             </mat-select>
           </mat-form-field>
 
           <button mat-flat-button class="header_button" (click)="addCompany()">
             <mat-icon>add</mat-icon>
-            {{ selected === 'supply_chain_partner' ? 'Add Supply Chain Partner' : 'Add Certification Authority' }}
+            {{ selected === CompanyType.SupplyChainPartner ? 'Add Supply Chain Partner' : 'Add Certification Authority' }}
         </button>
       </section>
     </div>
 
     <div class="mat-elevation-z8">
 
-      <table mat-table [dataSource]="selected === 'supply_chain_partner' ? scpSource : caSource">
+      <table mat-table [dataSource]="selected === CompanyType.SupplyChainPartner ? scpSource : caSource">
 
 
         <ng-container matColumnDef="name">
@@ -53,7 +53,9 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef class="action_th" mat-sort-header> Action </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-button class="action_button" [routerLink]="'./' + element.name + '/users'" (click)="sendCompany(element.id)">See users</button>
+            <button mat-button class="action_button" [routerLink]="[element.id, 'users']" [queryParams]="{ type: selected }">
+              See users
+            </button>
           </td>
         </ng-container>
 

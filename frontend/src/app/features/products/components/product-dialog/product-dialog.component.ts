@@ -12,7 +12,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { Product } from 'src/models/product/product.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
@@ -116,26 +115,34 @@ export class ProductDialogComponent implements OnInit {
     // reader.onload = () => {
     //   const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
 
-    const category: ProductCategory = {
-      description: productCategory!
-    }
+    // const category: ProductCategory = {
+    //   description: productCategory!
+    // }
 
+    // const product: Product = {
+    //   description: 'prova',
+    //   category: category,
+    // }
+    /*
     const product: Product = {
       description: 'prova',
       category: category,
     }
 
-    const productInfo: ProductInfo = {
-      product: product,
-      expirationDate: date!,
-     // supplyChainPartner: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095'
-    }
+    // const productInfo: ProductInfo = {
+    //   product: product,
+    //   expirationDate: date!,
+    //   productId: '',
+    //   supplyChainPartnerId: ''
+    //  // supplyChainPartner: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095'
+    // }
 
-    this.productService.addProductInfo(productInfo).subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.error(error),
-    })
+    // this.productService.addProductInfo(productInfo).subscribe({
+    //   next: (response) => console.log(response),
+    //   error: (error) => console.error(error),
+    // })
 
+    */
       // this.fileUploadService.uploadFile(doc).subscribe({
       //   next: (response) => console.log('File uploaded successfully', response),
       //   error: (error) => console.error('File upload failed', error),
