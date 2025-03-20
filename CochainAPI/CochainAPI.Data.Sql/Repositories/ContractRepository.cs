@@ -1,5 +1,6 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Documents;
+using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace CochainAPI.Data.Sql.Repositories
@@ -35,30 +36,42 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.Contract.FirstOrDefaultAsync(c => c.Id.ToString() == id);
         }
 
-        public async Task<List<Contract>> GetEmittedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<Contract>> GetEmittedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.Contract.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)) && x.UserEmitterId == userId);
 
+            var totalSize = await query.CountAsync();
+
             if (pageNumber.HasValue && pageSize.HasValue)
             {
                 query = query.Skip(pageSize.Value * pageNumber.Value)
                 .Take(pageSize.Value);
             }
 
-            return await query.ToListAsync();
+            return new Page<Contract>
+            {
+                Items = await query.ToListAsync(),
+                TotalSize = totalSize 
+            };
         }
 
-        public async Task<List<Contract>> GetReceivedContracts(Guid scpId, string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<Contract>> GetReceivedContracts(Guid scpId, string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.Contract.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)) && x.SupplyChainPartnerReceiverId == scpId);
 
+            var totalSize = await query.CountAsync();
+
             if (pageNumber.HasValue && pageSize.HasValue)
             {
                 query = query.Skip(pageSize.Value * pageNumber.Value)
                 .Take(pageSize.Value);
             }
 
-            return await query.ToListAsync();
+            return new Page<Contract>
+            {
+                Items = await query.ToListAsync(),
+                TotalSize = totalSize 
+            };
         }
     }
 }

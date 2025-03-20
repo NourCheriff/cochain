@@ -1,6 +1,7 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Documents;
+using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -51,9 +52,11 @@ namespace CochainAPI.Data.Sql.Repositories
             }
         }
 
-        public async Task<List<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.CertificationAuthority.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)));
+
+            var totalSize = await query.CountAsync();
 
             if (pageNumber.HasValue && pageSize.HasValue)
             {
@@ -61,7 +64,11 @@ namespace CochainAPI.Data.Sql.Repositories
                 .Take(pageSize.Value);
             }
 
-            return await query.ToListAsync();
+            return new Page<CertificationAuthority>
+            {
+                Items = await query.ToListAsync(),
+                TotalSize = totalSize 
+            };
         }
 
         public async Task<CertificationAuthority?> GetCertificationAuthorityById(Guid id)

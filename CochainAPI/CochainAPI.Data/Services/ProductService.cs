@@ -1,5 +1,6 @@
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
+using CochainAPI.Model.Helper;
 using CochainAPI.Model.Product;
 using Microsoft.AspNetCore.Http;
 
@@ -40,12 +41,12 @@ namespace CochainAPI.Data.Services
             return null;
         }
 
-        public async Task<List<ProductInfo>> GetProducts(string? queryParam, string? scpName, int? pageNumber, int? pageSize)
+        public async Task<Page<ProductInfo>> GetProducts(string? queryParam, string? scpName, int? pageNumber, int? pageSize)
         {
             return await _productRepository.GetProducts(queryParam, scpName, pageNumber, pageSize);
         }
 
-        public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id, string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<ProductInfo>?> GetProductsOfSCP(Guid id, string? queryParam, int? pageNumber, int? pageSize)
         {
             if (Guid.TryParse(id.ToString(), out Guid scpId))
             {
