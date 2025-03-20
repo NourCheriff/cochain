@@ -75,6 +75,18 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
+        [HttpPost("products")]
+        //[Authorize(Policy = "ReadProducts")]
+        public async Task<IActionResult> GetProductsByIds(Guid[] ids)
+        {
+            var response = await _productService.GetProductsByIds(ids);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Products infos not found" });
+            }
+            return Ok(response);
+        }
+
         [HttpPost("UpdateProduct")]
         public async Task<IActionResult> UpdateProduct([FromBody] ProductInfo productObj)
         {

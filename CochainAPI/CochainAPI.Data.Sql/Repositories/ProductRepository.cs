@@ -65,6 +65,16 @@ namespace CochainAPI.Data.Sql.Repositories
                     .ToListAsync();
         }
 
+        public async Task<List<ProductInfo>?> GetProductsByIds(Guid[] ids)
+        {
+            return await dbContext.ProductInfo.Where(x => ids.Contains(x.Id))
+                    .Include(x => x.Ingredients)
+                    .Include(x => x.Product)
+                    .Include(x => x.ProductLifeCycles)
+                    .Include(x => x.ProductDocuments)
+                    .ToListAsync();
+        }
+
         public async Task<List<ProductInfo>?> GetProductsOfSCP(Guid id, string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.ProductInfo.Where(x => x.SupplyChainPartnerId == id && x.Name != null && (queryParam == null || x.Name!.Contains(queryParam)));
