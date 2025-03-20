@@ -58,7 +58,7 @@ echo "" >> toEncode.json
 echo "]" >> toEncode.json
 
 EXTRA_DATA=$(besu rlp encode --from=toEncode.json)
-echo $EXTRA_DATA > EXTRA_DATA
+echo $EXTRA_DATA > .env
 
 echo ""
 echo "Creating nodes..."
