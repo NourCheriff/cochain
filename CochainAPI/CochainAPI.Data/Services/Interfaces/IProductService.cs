@@ -7,7 +7,7 @@ namespace CochainAPI.Data.Services.Interfaces
         Task<ProductInfo> AddProductInfo(ProductInfo productInfo);
         Task<List<ProductCategory>> GetCategories();
         Task<List<Product>?> GetGenericProducts(Guid id);
-        Task<List<ProductInfo>?> GetProductById(Guid id);
+        Task<ProductInfo?> GetProductById(Guid id);
         Task<List<ProductInfo>?> GetProductsByIds(Guid[] id);
         Task<ProductInfo?> UpdateProduct(ProductInfo productObj);
         Task<List<ProductInfo>?> GetProductsOfSCP(Guid id, string? queryParam, int? pageNumber, int? pageSize);

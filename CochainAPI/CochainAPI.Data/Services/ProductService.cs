@@ -30,7 +30,7 @@ namespace CochainAPI.Data.Services
             return await _productRepository.GetGenericProducts(id);
         }
 
-        public async Task<List<ProductInfo>?> GetProductById(Guid id)
+        public async Task<ProductInfo?> GetProductById(Guid id)
         {
             if (Guid.TryParse(id.ToString(), out var productId))
             {
@@ -72,11 +72,11 @@ namespace CochainAPI.Data.Services
                 var obj = await _productRepository.GetProductById(productObj.Id);
                 if (obj != null)
                 {
-                    obj[0].Name = productObj.Name;
-                    obj[0].ProductId = productObj.ProductId;
-                    obj[0].ExpirationDate = productObj.ExpirationDate;
-                    obj[0].Ingredients = productObj.Ingredients;
-                    isSuccess = await _productRepository.UpdateProduct(obj[0]);
+                    obj.Name = productObj.Name;
+                    obj.ProductId = productObj.ProductId;
+                    obj.ExpirationDate = productObj.ExpirationDate;
+                    obj.Ingredients = productObj.Ingredients;
+                    isSuccess = await _productRepository.UpdateProduct(obj);
                 }
             }
 
