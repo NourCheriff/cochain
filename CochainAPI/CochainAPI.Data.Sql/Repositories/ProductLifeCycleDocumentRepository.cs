@@ -29,7 +29,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Insert",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return documentObj;
@@ -52,7 +54,9 @@ namespace CochainAPI.Data.Sql.Repositories
                     Action = "Delete",
                     UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                     Timestamp = DateTime.UtcNow,
-                    Message = ""
+                    Message = "",
+                    URL = httpContextAccessor.HttpContext?.Request.Path,
+                    QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
                 };
                 await logRepository.AddLog(log);
                 return res > 0;
@@ -66,7 +70,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Delete",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = "Trying to delete not existing document"
+                Message = "Trying to delete not existing document",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return false;

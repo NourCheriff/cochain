@@ -28,7 +28,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Insert",
                 UserId = tempPW.Entity.UserId,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return await dbContext.SaveChangesAsync() > 0;
@@ -48,7 +50,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Insert",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return userObj;
@@ -66,7 +70,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Read",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return res;
@@ -84,7 +90,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Read",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return res;
@@ -101,7 +109,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Read",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = "The entity id refers to the company"
+                Message = "The entity id refers to the company",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             if (companyType == "scp")
@@ -122,7 +132,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Read",
                 UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                 Timestamp = DateTime.UtcNow,
-                Message = "The entity id field refers to the user name"
+                Message = "The entity id field refers to the user name",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return res;
@@ -158,7 +170,9 @@ namespace CochainAPI.Data.Sql.Repositories
                         Action = "Read",
                         UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                         Timestamp = DateTime.UtcNow,
-                        Message = "The entity id refers to the username used"
+                        Message = "The entity id refers to the username used",
+                        URL = httpContextAccessor.HttpContext?.Request.Path,
+                        QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
                     };
                     await logRepository.AddLog(log);
                     return tempPw;
@@ -173,7 +187,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Read",
                 UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                 Timestamp = DateTime.UtcNow,
-                Message = "The entity id refers to the username used"
+                Message = "The entity id refers to the username used",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return null;
@@ -191,7 +207,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Update",
                 UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return await dbContext.SaveChangesAsync() > 0;
@@ -209,7 +227,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Update",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return await dbContext.SaveChangesAsync() > 0;
