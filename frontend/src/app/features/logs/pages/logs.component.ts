@@ -24,7 +24,7 @@ export class LogsComponent implements OnInit {
     private logsService = inject(LogsService)
 
     severityLevels = Object.values(Severity);
-    selected = '';
+    selected: Severity = Severity.Info;
     totalRecords = 0;
     displayedColumns: string[] = ['severity', 'entity', 'action', 'message', 'timestamp'];
     dataSource = new MatTableDataSource<Log>([]);
@@ -41,7 +41,6 @@ export class LogsComponent implements OnInit {
     getLogs(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber, severity?: Severity){
       this.logsService.getLogs(pageSize.toString(),pageNumber.toString(),severity).subscribe({
         next: (response) => {
-          console.log(response)
           this.dataSource = new MatTableDataSource<Log>(response.items!);
           this.totalRecords = response.totalSize
         },
@@ -50,7 +49,7 @@ export class LogsComponent implements OnInit {
     }
 
     updateTable() {
-      //this.getLogs(severity = this.selected)
+      this.getLogs(DefaultPagination.defaultPageSize,DefaultPagination.defaultPageNumber,this.selected)
     }
 
     onPageChange(event: PageEvent){
