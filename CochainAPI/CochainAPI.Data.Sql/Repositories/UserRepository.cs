@@ -4,7 +4,7 @@ using CochainAPI.Model.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
@@ -46,7 +46,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "User",
                 EntityId = userObj.Id.ToString(),
                 Action = "Insert",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
                 Message = ""
             };
@@ -64,7 +64,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "User",
                 EntityId = "",
                 Action = "Read",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
                 Message = ""
             };
@@ -82,7 +82,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "User",
                 EntityId = id,
                 Action = "Read",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
                 Message = ""
             };
@@ -99,7 +99,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "User",
                 EntityId = id.ToString(),
                 Action = "Read",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
                 Message = "The entity id refers to the company"
             };
@@ -120,7 +120,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "User",
                 EntityId = userName,
                 Action = "Read",
-                UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
+                UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                 Timestamp = DateTime.UtcNow,
                 Message = "The entity id field refers to the user name"
             };
@@ -156,7 +156,7 @@ namespace CochainAPI.Data.Sql.Repositories
                         Entity = "UserTemporaryPassword",
                         EntityId = model.Username,
                         Action = "Read",
-                        UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
+                        UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                         Timestamp = DateTime.UtcNow,
                         Message = "The entity id refers to the username used"
                     };
@@ -171,7 +171,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "UserTemporaryPassword",
                 EntityId = model.Username,
                 Action = "Read",
-                UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
+                UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                 Timestamp = DateTime.UtcNow,
                 Message = "The entity id refers to the username used"
             };
@@ -189,7 +189,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "UserTemporaryPassword",
                 EntityId = temporaryPassword.Id.ToString(),
                 Action = "Update",
-                UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.NameId)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
+                UserId = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                 Timestamp = DateTime.UtcNow,
                 Message = ""
             };
@@ -207,7 +207,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "User",
                 EntityId = userObj.Id.ToString(),
                 Action = "Update",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
                 Message = ""
             };
