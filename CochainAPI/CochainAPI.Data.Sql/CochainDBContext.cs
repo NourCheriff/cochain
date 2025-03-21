@@ -187,6 +187,7 @@ namespace CochainAPI.Data.Sql
                     FirstName = "System",
                     LastName = "System",
                     UserName = "admin@cochain.com",
+                    SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                     IsActive = true
                 },
                 new User
