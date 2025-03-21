@@ -17,7 +17,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = "ReadProducts")]
+        [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetCategories()
         {
             var response = await _productLifeCycleService.GetCategories();

@@ -17,7 +17,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("AddContractDocument")]
-        //[Authorize(Policy = "WriteContracts")]
+        [Authorize(Policy = "WriteContracts")]
         public async Task<IActionResult> AddContractDocument([FromBody] Contract documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);

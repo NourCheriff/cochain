@@ -65,7 +65,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("AddCA")]
-        //[Authorize(Policy = "WriteCA")]
+        [Authorize(Policy = "WriteCA")]
         public async Task<IActionResult> AddCertificationAuthority([FromBody] CertificationAuthority certificationAuthority)
         {
             var response = await _certificationAuthorityService.AddCertificationAuthority(certificationAuthority);
