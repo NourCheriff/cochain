@@ -30,7 +30,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Insert",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return productInfo;
@@ -57,7 +59,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Read",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = "The product category does not exist."
+                Message = "The product category does not exist.",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
 

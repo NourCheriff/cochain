@@ -62,7 +62,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Insert",
                 UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return supplyChainPartner;
@@ -83,7 +85,9 @@ namespace CochainAPI.Data.Sql.Repositories
                 Action = "Update",
                 UserId = "5e4b0ca8-aa85-417a-af23-035ac1b555cd",
                 Timestamp = DateTime.UtcNow,
-                Message = $"Credits amount: {credits}"
+                Message = $"Credits amount: {credits}",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return res;
