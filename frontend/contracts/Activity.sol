@@ -9,12 +9,11 @@ contract Activity is ERC721 {
     struct Document {
         uint256 timestamp;
         bytes32 documentHash;
-        string documentType;
     }
 
     struct ActivityStruct {
         uint256 timestamp;
-        string activityCategoryId;
+        string activityId;
         address scp;
         uint256 emissions;
     }
@@ -34,12 +33,8 @@ contract Activity is ERC721 {
     mapping(address => uint256) public totalEmissionBalances;
 
     event ProductCreated(uint256 tokenId, string productId, address scp);
-    event ActivityAdded(
-        uint256 tokenId,
-        string activityCategoryId,
-        address scp
-    );
-    event DocumentAdded(uint256 tokenId, string documentType, address scp);
+    event ActivityAdded(uint256 tokenId, string activityId, address scp);
+    event DocumentAdded(uint256 tokenId, bytes32 documentHash, address scp);
     event DocumentRemoved(uint256 tokenId, bytes32 documentHash, address scp);
 
     constructor() ERC721("Activity", "ACTY") {}
@@ -74,7 +69,7 @@ contract Activity is ERC721 {
 
     function addActivity(
         uint256 tokenId,
-        string memory activityCategoryId,
+        string memory activityId,
         uint256 emissions
     ) public {
         require(_exists(tokenId), "Product does not exist");
@@ -82,7 +77,7 @@ contract Activity is ERC721 {
         // Crea una nuova attività
         ActivityStruct memory newActivity = ActivityStruct({
             timestamp: block.timestamp,
-            activityCategoryId: activityCategoryId,
+            activityId: activityId,
             scp: msg.sender,
             emissions: emissions
         });
@@ -91,37 +86,32 @@ contract Activity is ERC721 {
         products[tokenId].activity.push(newActivity);
         totalEmissionBalances[msg.sender] += emissions;
 
-        emit ActivityAdded(tokenId, activityCategoryId, msg.sender);
+        emit ActivityAdded(tokenId, activityId, msg.sender);
     }
 
-    function addDocument(
-        uint256 tokenId,
-        bytes32 documentHash,
-        string memory documentType
-    ) public {
+    function addDocument(uint256 tokenId, bytes32 documentHash) public {
         require(_exists(tokenId), "Product does not exist");
 
         // Crea un nuova documento
         Document memory newDocument = Document({
             timestamp: block.timestamp,
-            documentType: documentType,
             documentHash: documentHash
         });
 
         // Aggiungi il documento al prodotto
         products[tokenId].document.push(newDocument);
 
-        emit DocumentAdded(tokenId, documentType, msg.sender);
+        emit DocumentAdded(tokenId, documentHash, msg.sender);
     }
 
-    function getActivitiesByTokenId(
+    function getActivities(
         uint256 tokenId
     )
         public
         view
         returns (
             uint256[] memory timestamps,
-            string[] memory activityCategoryId,
+            string[] memory activityId,
             address[] memory scps,
             uint256[] memory emissions
         )
@@ -130,47 +120,98 @@ contract Activity is ERC721 {
 
         uint256 length = products[tokenId].activity.length;
         timestamps = new uint256[](length);
-        activityCategoryId = new string[](length);
+        activityId = new string[](length);
         scps = new address[](length);
         emissions = new uint256[](length);
 
         for (uint256 i = 0; i < length; i++) {
             ActivityStruct memory act = products[tokenId].activity[i];
             timestamps[i] = act.timestamp;
-            activityCategoryId[i] = act.activityCategoryId;
+            activityId[i] = act.activityId;
             scps[i] = act.scp;
             emissions[i] = act.emissions;
         }
 
-        return (timestamps, activityCategoryId, scps, emissions);
+        return (timestamps, activityId, scps, emissions);
     }
 
-    function getDocumentsByTokenId(
-        uint256 tokenId
+    function getActivity(
+        uint256 tokenId,
+        string memory activityId
     )
         public
         view
         returns (
-            uint256[] memory timestamps,
-            bytes32[] memory documentHashes,
-            string[] memory documentTypes
+            uint256 timestamp,
+            string memory id,
+            address scp,
+            uint256 emissions
         )
+    {
+        require(_exists(tokenId), "Product does not exist");
+
+        ActivityStruct[] storage activities = products[tokenId].activity;
+        bool found = false;
+
+        for (uint256 i = 0; i < activities.length; i++) {
+            if (
+                keccak256(bytes(activities[i].activityId)) ==
+                keccak256(bytes(activityId))
+            ) {
+                timestamp = activities[i].timestamp;
+                id = activities[i].activityId;
+                scp = activities[i].scp;
+                emissions = activities[i].emissions;
+                found = true;
+                break;
+            }
+        }
+
+        require(found, "Activity not found");
+        return (timestamp, id, scp, emissions);
+    }
+
+    function getDocument(
+        uint256 tokenId,
+        bytes32 documentHashToFind
+    ) public view returns (uint256 timestamp, bytes32 documentHash) {
+        require(_exists(tokenId), "Product does not exist");
+        Document[] storage documents = products[tokenId].document;
+        bool found = false;
+
+        for (uint256 i = 0; i < documents.length; i++) {
+            if (documents[i].documentHash == documentHashToFind) {
+                timestamp = documents[i].timestamp;
+                documentHash = documents[i].documentHash;
+                found = true;
+                break;
+            }
+        }
+
+        require(found, "Document not found");
+        return (timestamp, documentHash);
+    }
+
+    function getDocuments(
+        uint256 tokenId
+    )
+        public
+        view
+        returns (uint256[] memory timestamps, bytes32[] memory documentHashes)
     {
         require(_exists(tokenId), "Product does not exist");
 
         uint256 length = products[tokenId].document.length;
         timestamps = new uint256[](length);
         documentHashes = new bytes32[](length);
-        documentTypes = new string[](length);
 
         for (uint256 i = 0; i < length; i++) {
             Document memory doc = products[tokenId].document[i];
             timestamps[i] = doc.timestamp;
             documentHashes[i] = doc.documentHash;
-            documentTypes[i] = doc.documentType;
         }
 
-        return (timestamps, documentHashes, documentTypes);
+        return (timestamps, documentHashes);
     }
 
     function removeDocument(
