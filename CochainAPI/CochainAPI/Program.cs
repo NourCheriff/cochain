@@ -90,6 +90,7 @@ builder.Services.AddSingleton<IProductLifeCycleService, ProductLifeCycleService>
 builder.Services.AddSingleton<ICertificationAuthorityService, CertificationAuthorityService>();
 builder.Services.AddSingleton<ICarbonOffsettingActionService, CarbonOffsettingActionService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<ITransactionService, TransactionService>();
 
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerRepository, SupplyChainPartnerRepository>();
@@ -101,6 +102,7 @@ builder.Services.AddSingleton<IProductLifeCycleDocumentRepository, ProductLifeCy
 builder.Services.AddSingleton<ISupplyChainPartnerCertificateRepository, SupplyChainPartnerCertificateRepository>();
 builder.Services.AddSingleton<ICarbonOffsettingActionRepository, CarbonOffsettingActionRepository>();
 builder.Services.AddSingleton<ILogRepository, LogRepository>();
+builder.Services.AddSingleton<ITransactionRepository, TransactionRepository>();
 
 builder.Services.AddSwaggerGen(swagger =>
 {
