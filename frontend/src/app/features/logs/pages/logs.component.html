@@ -4,7 +4,7 @@
       <h3 class="header_text">System Logs</h3>
       <section class="header_options">
           <mat-form-field appearance="outline">
-            <mat-label>Select a company type</mat-label>
+            <mat-label>Select a severity</mat-label>
             <mat-select [(value)]="selected" (selectionChange)="updateTable()">
               @for (item of severityLevels; track $index) {
                 <mat-option [value]="item">{{ item }}</mat-option>

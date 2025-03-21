@@ -20,7 +20,7 @@ export class NavbarComponent {
   userRole: Role = this.authService.userRole!;
 
   private pagePermissions: { [key: string]: Role[] } = {
-    wallet: [Role.AdminSCP, Role.UserSCP],
+    wallet: [Role.SysAdmin, Role.AdminCA, Role.UserCA, Role.AdminSCP, Role.UserSCP],
     products: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
     certificates: [Role.AdminCA, Role.UserCA, Role.AdminSCP, Role.UserSCP],
     contracts: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
