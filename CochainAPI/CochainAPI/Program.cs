@@ -17,6 +17,7 @@ using CochainAPI.Data.Sql.Repositories;
 using Quartz;
 using CochainAPI.Jobs;
 using System.Security.Claims;
+using CochainAPI.Model.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -85,6 +86,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISupplyChainPartnerService, SupplychainPartnerService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDocumentService, DocumentService>();
+builder.Services.AddSingleton<ILogService, LogService>();
 builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddSingleton<IProductLifeCycleService, ProductLifeCycleService>();
 builder.Services.AddSingleton<ICertificationAuthorityService, CertificationAuthorityService>();
