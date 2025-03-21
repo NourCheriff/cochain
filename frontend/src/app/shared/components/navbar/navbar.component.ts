@@ -16,8 +16,22 @@ export class NavbarComponent {
   private router = inject(Router);
   private authService = inject(AuthService)
 
-  isAdmin = this.authService.userRole === Role.SysAdmin;
   username = this.authService.username;
+  userRole: Role = this.authService.userRole!;
+
+  private pagePermissions: { [key: string]: Role[] } = {
+    wallet: [Role.AdminSCP, Role.UserSCP],
+    products: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
+    certificates: [Role.AdminCA, Role.UserCA, Role.AdminSCP, Role.UserSCP],
+    contracts: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
+    companies: [Role.SysAdmin],
+    logs: [Role.SysAdmin]
+  };
+
+  hasAccess(page: string): boolean {
+    return this.pagePermissions[page]?.includes(this.userRole) ?? false;
+  }
+
   isWalletRoute(): boolean {
     return this.router.url === '/';
   }
