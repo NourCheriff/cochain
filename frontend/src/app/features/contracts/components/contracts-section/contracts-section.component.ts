@@ -36,6 +36,7 @@ export class ContractsSectionComponent implements OnInit {
       this.displayedColumns.push('action');
     }
     this.getContracts()
+    this.dataSource.paginator = this.paginator;
   }
 
   onPageChange(event: PageEvent){
@@ -48,7 +49,6 @@ export class ContractsSectionComponent implements OnInit {
       next: (response) => {
         this.dataSource = new MatTableDataSource<Contract>(response.items!);
         this.totalRecords = response.totalSize;
-        this.dataSource.paginator = this.paginator;
       },
       error: (error) => console.log(error)
     })

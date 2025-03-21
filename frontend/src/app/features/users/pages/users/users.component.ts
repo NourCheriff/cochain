@@ -40,7 +40,6 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   userSource: any;
-  users: User[] = [];
   companyId: string | null = null;
   companyType: CompanyType | null = null;
   displayedColumns: string[] = ['firstName', 'lastName', 'email', 'phone', 'role', 'action'];
@@ -94,8 +93,7 @@ export class UsersComponent implements OnInit {
   private getUsers(): void {
     this.userService.getUsersByCompanyId(this.companyId!, this.companyType!).subscribe({
       next: (users) => {
-        this.users = users;
-        this.userSource = new MatTableDataSource<User>(this.users);
+        this.userSource = new MatTableDataSource<User>(users);
         this.userSource.paginator = this.paginator;
       },
       error: (error) => console.error(error)

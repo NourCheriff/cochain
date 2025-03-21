@@ -33,20 +33,20 @@ export class CertificatesComponent implements OnInit {
   displayedColumns: string[] = ['receiver', 'scpType', 'attachments', 'actions'];
   dataSource = new MatTableDataSource<SupplyChainPartner>([]);
 
-  @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
     this.getSupplyChainPartners()
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   getSupplyChainPartners(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
     this.certificateService.getSupplyChainPartners(pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
-        this.totalRecords = response.totalSize
         this.dataSource = new MatTableDataSource<SupplyChainPartner>(response.items!);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.totalRecords = response.totalSize
       },
       error: (error) => { console.log(error) }
     })
@@ -76,7 +76,7 @@ export class CertificatesComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent){
-    this.getSupplyChainPartners(event.pageIndex, event.pageSize)
+    this.getSupplyChainPartners(event.pageSize, event.pageIndex)
   }
 
 }
