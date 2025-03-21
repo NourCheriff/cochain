@@ -35,31 +35,28 @@ export class ScpProductsComponent implements OnInit {
   dataSource = new MatTableDataSource<ProductInfo>([]);
   totalRecord = 0;
 
-  @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
     this.getScpProducts()
+    this.dataSource.paginator = this.paginator;
   }
 
   getScpProducts(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
     const id = this.route.snapshot.paramMap.get('id')!;
     this.certificateService.getScpProducts(id,pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
-        console.log(response)
         this.dataSource = new MatTableDataSource<ProductInfo>(response.items!)
         this.totalRecord = response.totalSize;
         this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
       },
-
       error: (error) => { console.log(error) }
     })
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter() {
+      //api call queryString
   }
 
   deleteCertificate(id: string){
