@@ -120,7 +120,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "User",
                 EntityId = userName,
                 Action = "Read",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext?.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                 Timestamp = DateTime.UtcNow,
                 Message = "The entity id field refers to the user name"
             };
@@ -156,7 +156,7 @@ namespace CochainAPI.Data.Sql.Repositories
                         Entity = "UserTemporaryPassword",
                         EntityId = model.Username,
                         Action = "Read",
-                        UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                        UserId = httpContextAccessor.HttpContext?.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                         Timestamp = DateTime.UtcNow,
                         Message = "The entity id refers to the username used"
                     };
@@ -171,7 +171,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "UserTemporaryPassword",
                 EntityId = model.Username,
                 Action = "Read",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext?.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                 Timestamp = DateTime.UtcNow,
                 Message = "The entity id refers to the username used"
             };
@@ -189,7 +189,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "UserTemporaryPassword",
                 EntityId = temporaryPassword.Id.ToString(),
                 Action = "Update",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext?.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value ?? "ad00648b-a031-432d-b007-6a0829cf5292",
                 Timestamp = DateTime.UtcNow,
                 Message = ""
             };
