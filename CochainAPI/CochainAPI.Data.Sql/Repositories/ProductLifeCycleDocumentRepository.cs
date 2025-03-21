@@ -3,7 +3,7 @@ using CochainAPI.Model.Documents;
 using CochainAPI.Model.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
@@ -27,7 +27,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "ProductLifeCycleDocument",
                 EntityId = documentObj.Id.ToString(),
                 Action = "Insert",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
                 Message = ""
             };
@@ -50,7 +50,7 @@ namespace CochainAPI.Data.Sql.Repositories
                     Entity = "ProductLifeCycleDocument",
                     EntityId = id.ToString(),
                     Action = "Delete",
-                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                     Timestamp = DateTime.UtcNow,
                     Message = ""
                 };
@@ -64,7 +64,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "ProductLifeCycleDocument",
                 EntityId = id.ToString(),
                 Action = "Delete",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
                 Message = "Trying to delete not existing document"
             };

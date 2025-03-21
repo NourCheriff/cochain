@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
 using CochainAPI.Model.Utils;
-using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
@@ -28,7 +28,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "CarbonOffsettingAction",
                 EntityId = action.Id.ToString(),
                 Action = "Insert",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
                 Message = ""
             };

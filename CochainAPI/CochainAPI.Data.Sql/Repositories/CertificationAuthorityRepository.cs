@@ -4,10 +4,8 @@ using CochainAPI.Model.Documents;
 using Microsoft.AspNetCore.Http;
 using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using CochainAPI.Model.Utils;
-using System;
-using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
@@ -44,7 +42,7 @@ namespace CochainAPI.Data.Sql.Repositories
                     Entity = "SupplyChainPartnerCertificate",
                     EntityId = documentId.ToString(),
                     Action = "Delete",
-                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                     Timestamp = DateTime.UtcNow,
                     Message = ""
                 };
@@ -60,7 +58,7 @@ namespace CochainAPI.Data.Sql.Repositories
                     Entity = "SupplyChainPartnerCertificate",
                     EntityId = documentId.ToString(),
                     Action = "Delete",
-                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                     Timestamp = DateTime.UtcNow,
                     Message = "Trying to delete not existing document"
                 };
@@ -83,7 +81,7 @@ namespace CochainAPI.Data.Sql.Repositories
                     Entity = "SupplyChainPartnerCertificate",
                     EntityId = documentId.ToString(),
                     Action = "Update",
-                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                     Timestamp = DateTime.UtcNow,
                     Message = ""
                 };
@@ -99,7 +97,7 @@ namespace CochainAPI.Data.Sql.Repositories
                     Entity = "SupplyChainPartnerCertificate",
                     EntityId = documentId.ToString(),
                     Action = "Update",
-                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                     Timestamp = DateTime.UtcNow,
                     Message = "Trying to update not existing document"
                 };
@@ -144,7 +142,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "CertificationAuthority",
                 EntityId = certificationAuthority.Id.ToString(),
                 Action = "Insert",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
                 Message = ""
             };
