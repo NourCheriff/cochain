@@ -71,7 +71,7 @@ export class ContractsSectionComponent implements OnInit {
   deleteContract(id: string){
     this.contractService.deleteContract(id, DocumentType.Contract).subscribe({
       next: (response) => {
-        this.toasterService.error(`Removed contract ${response.name}`, 'Info');
+        this.toasterService.info(`Removed contract ${response.name}`, 'Info');
         this.getContracts()
       },
       error: (error) => { console.log(error) }
@@ -81,6 +81,7 @@ export class ContractsSectionComponent implements OnInit {
   addContractDialog() {
     this.dialog.open(ContractDialogComponent);
   }
+
 }
 
 

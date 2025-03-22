@@ -14,6 +14,11 @@ import { CommonModule } from '@angular/common';
 import { CertificatesService } from '../../service/certificates.service';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
+import { ToastrService } from 'ngx-toastr';
+import { DocumentType } from 'src/types/document.enum';
+import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
+import { Role } from 'src/types/roles.enum';
+import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-scp-products',
   imports: [CommonModule,MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
@@ -25,11 +30,9 @@ export class ScpProductsComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   private route = inject(ActivatedRoute);
+  private authService = inject(AuthService)
   private certificateService = inject(CertificatesService);
-
-  scpType: SCPType = {
-      "type": "CA"
-  }
+  private toastrService =  inject(ToastrService);
 
   displayedColumns: string[] = ['name', 'category', 'expirationDate', 'attachments'];
   dataSource = new MatTableDataSource<ProductInfo>([]);
@@ -59,10 +62,11 @@ export class ScpProductsComponent implements OnInit {
       //api call queryString
   }
 
-  deleteCertificate(id: string){
+ deleteCertificate(id: string){
     this.certificateService.deleteCertificate(id).subscribe({
       next: (response) => {
         console.log(response)
+        this.toastrService.info(`Removed certificate ${response.name}`, 'info')
       },
       error: (error) => { console.log(error) }
     })
@@ -72,16 +76,22 @@ export class ScpProductsComponent implements OnInit {
     this.dialog.open(FileInputComponent,{
       data: {
         scpReceiverId: scpReceiverId,
-        documentType: 'quality'
+        documentType: DocumentType.Quality
       }
     });
+  }
+
+  isCertificationAuthority(): boolean {
+    return this.authService.userRole === (Role.AdminCA || Role.UserCA)
+  }
+
+  getQualityCertificate(receivedSupplyChainPartnerCertificates: SupplyChainPartnerCertificate[]): SupplyChainPartnerCertificate | null {
+    if (!receivedSupplyChainPartnerCertificates?.length) return null;
+
+    return receivedSupplyChainPartnerCertificates.find(doc => doc.type === DocumentType.Sustainability) || null;
   }
 
   onPageChange(event: PageEvent){
     this.getScpProducts(event.pageSize, event.pageIndex)
   }
-}
-
-export interface SCPType {
-  type: string
 }

@@ -14,6 +14,11 @@ import { FileInputComponent } from '../../components/file-input/file-input.compo
 import { CertificatesService } from '../../service/certificates.service';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Role } from 'src/types/roles.enum';
+import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
+import { DocumentType } from 'src/types/document.enum';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-certificates',
@@ -25,10 +30,9 @@ export class CertificatesComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   private certificateService = inject(CertificatesService);
+  private authService = inject(AuthService)
+  private toastrService =  inject(ToastrService)
 
-  scpType: SCPType = {
-    "type": "CA"
-  }
   totalRecords = 0;
   displayedColumns: string[] = ['receiver', 'scpType', 'attachments', 'actions'];
   dataSource = new MatTableDataSource<SupplyChainPartner>([]);
@@ -61,6 +65,7 @@ export class CertificatesComponent implements OnInit {
     this.certificateService.deleteCertificate(id).subscribe({
       next: (response) => {
         console.log(response)
+        this.toastrService.info(`Removed certificate ${response.name}`, 'info')
       },
       error: (error) => { console.log(error) }
     })
@@ -70,7 +75,7 @@ export class CertificatesComponent implements OnInit {
     this.dialog.open(FileInputComponent,{
       data: {
         scpReceiverId: scpReceiverId,
-        documentType: 'sustainability'
+        documentType: DocumentType.Sustainability
       }
     });
   }
@@ -79,8 +84,14 @@ export class CertificatesComponent implements OnInit {
     this.getSupplyChainPartners(event.pageSize, event.pageIndex)
   }
 
-}
+  isCertificationAuthority(): boolean {
+    return this.authService.userRole === (Role.AdminCA || Role.UserCA)
+  }
 
-export interface SCPType {
-  type: string
+  getSustainabilityCertificate(receivedSupplyChainPartnerCertificates: SupplyChainPartnerCertificate[]): SupplyChainPartnerCertificate | null {
+    if (!receivedSupplyChainPartnerCertificates?.length) return null;
+
+    return receivedSupplyChainPartnerCertificates.find(doc => doc.type === DocumentType.Sustainability) || null;
+  }
+
 }
