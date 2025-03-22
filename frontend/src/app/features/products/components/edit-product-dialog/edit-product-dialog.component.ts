@@ -47,7 +47,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditProductDialogComponent implements OnInit{
-  
+
   private authService = inject(AuthService)
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo, ingredients: ProductInfo[]}, private productService: ProductService) {
@@ -162,7 +162,7 @@ export class EditProductDialogComponent implements OnInit{
       next: (response) => {
         let originDocument = response.productDocuments!.find(x => x.type === DocumentType.Origin);
 
-        this.productService.deleteOriginDocument(originDocument!.id!, DocumentType.Origin).subscribe({
+        this.productService.deleteDocument(originDocument!.id!, DocumentType.Origin).subscribe({
           next: (response) => {},
           error: (error) => console.error(error),
         })
@@ -236,7 +236,8 @@ export class EditProductDialogComponent implements OnInit{
         hash: hashedBase64Document,
         fileString: base64String,
         productInfoId: productInfoId,
-        supplyChainPartnerReceiverId: this.authService.userId!,
+        userEmitterId: this.authService.userId!,
+        supplyChainPartnerReceiverId: this.data.product.supplyChainPartnerId,
         type: DocumentType.Origin,
       };
 

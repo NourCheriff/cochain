@@ -130,7 +130,7 @@ export class ProductDialogComponent implements OnInit {
     const newProduct: ProductInfo = {
       name: this.newProductForm.value.name!,
       productId: this.newProductForm.value.product!,
-      supplyChainPartnerId: this.authService.userId!,
+      supplyChainPartnerId: '',
       expirationDate: formattedDate!,
       ingredients: productIngredients,
     }
@@ -209,7 +209,8 @@ export class ProductDialogComponent implements OnInit {
         hash: hashedBase64Contract,
         fileString: base64String,
         productInfoId: productInfoId,
-        supplyChainPartnerReceiverId: this.authService.userId!,
+        userEmitterId: this.authService.userId!,
+        supplyChainPartnerReceiverId: '',
         type: DocumentType.Origin,
       };
 
