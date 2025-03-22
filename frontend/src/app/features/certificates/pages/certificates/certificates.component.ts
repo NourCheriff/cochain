@@ -13,7 +13,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { FileInputComponent } from '../../components/file-input/file-input.component';
 import { CertificatesService } from '../../service/certificates.service';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
-import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 
 @Component({
   selector: 'app-certificates',

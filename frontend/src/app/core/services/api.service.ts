@@ -27,11 +27,11 @@ export class BaseHttpService {
     return httpParams;
   }
 
- getAll<T>(endpoint: string, options?: { params?: { [key: string]: any }, id?: string }): Observable<T[]> {
+  getAll<T>(endpoint: string, options?: { params?: { [key: string]: any }, id?: string }): Observable<T[]> {
     let url = `${this.API_BASE_URL}/${endpoint}`;
 
     if (options?.id) {
-      url += `/${options.id}`;
+      url += `/${encodeURIComponent(options.id)}`;
     }
 
     return this.http.get<T | T[]>(url, {
@@ -66,7 +66,4 @@ export class BaseHttpService {
       headers: this.header
     });
   }
-
-
-
 }

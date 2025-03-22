@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ContractService } from '../../service/contract.service';
 import { Contract } from 'src/models/documents/contract.model';
 import { CommonModule } from '@angular/common';
-import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-contracts-section',

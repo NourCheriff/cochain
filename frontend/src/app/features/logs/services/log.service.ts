@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { BaseHttpService } from "src/app/core/services/api.service";
-import { PaginationResponse } from "src/app/core/utilities/paginationResponse";
+import { PaginationResponse } from "src/app/core/utilities/pagination-response";
 import { Log } from "src/models/log";
 import { Severity } from "src/types/severity.enum";
 

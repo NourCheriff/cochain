@@ -1,5 +1,5 @@
-export interface PaginationResponse<T>{
-  items?: T[],
+export interface PaginationResponse<T> {
+  items?: T[];
   totalSize: number
 }
 

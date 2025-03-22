@@ -78,7 +78,7 @@ export const routes: Routes = [
     title:'System Logs',
     component: LogsComponent,
     data: { breadcrumb: 'System Logs' },
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path:'**',
