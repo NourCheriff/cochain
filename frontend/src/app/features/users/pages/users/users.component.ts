@@ -1,7 +1,6 @@
-
 import { Component, ViewChild, inject, OnInit } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule, MatTable } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,8 +10,10 @@ import { FormsModule }   from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { CompanyService } from '../../services/company.service';
 import { User } from 'src/models/auth/user.model';
+import { CompanyType } from 'src/types/company.enum';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-users',
   imports: [
@@ -29,36 +30,74 @@ import { User } from 'src/models/auth/user.model';
 
 })
 export class UsersComponent implements OnInit {
-
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private toasterService: ToastrService
+  ) {}
 
   readonly dialog = inject(MatDialog);
-  constructor(private route: ActivatedRoute, private userService: UserService, private companyService: CompanyService) {}
-
-  @ViewChild(MatTable) myTable!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   userSource: any;
-  usersList: User[] = [];
   companyId: string | null = null;
-  companyId2: string | null = null;
+  companyType: CompanyType | null = null;
   displayedColumns: string[] = ['firstName', 'lastName', 'email', 'phone', 'role', 'action'];
 
   ngOnInit(): void {
-    this.companyId2 = this.route.snapshot.paramMap.get('id');// to get SCP/CA name for query
+    this.companyId = this.route.snapshot.paramMap.get('id');
+    this.companyType = this.route.snapshot.queryParamMap.get('type') as CompanyType | null;
+    if (!this.companyId || !this.companyType)
+      return;
 
-    this.companyId = this.companyService.getCurrentCompanyId();
-    this.userService.getUsersByCompanyId(this.companyId!).subscribe({
-      next: (response) => {
-        this.usersList = response;
-        this.userSource = new MatTableDataSource<User>(this.usersList);
+    this.getUsers();
+  }
+
+  addUser(): void {
+    let dialogData = {
+      id: this.companyId,
+      type: this.companyType,
+    };
+
+    const dialogRef = this.dialog.open(UserDialogComponent, { data: dialogData });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result && result.reloadContent)
+        this.getUsers()
+    });
+  }
+
+  deleteUser(id: string): void {
+    this.userService.deleteUser(id).subscribe((response) => {
+      if (!response) {
+        this.showToast('Error in removing user', 'error');
+        return;
+      }
+      this.showToast('User deleted successfully!', 'success');
+      this.getUsers();
+    });
+  }
+
+  private showToast(message: string, severity: string | undefined) {
+    switch(severity) {
+      case 'success':
+        this.toasterService.success(message, 'Success');
+        break;
+      case 'error':
+        this.toasterService.error(message, 'Error');
+        break;
+      default:
+        this.toasterService.info(message, 'Info');
+    }
+  }
+
+  private getUsers(): void {
+    this.userService.getUsersByCompanyId(this.companyId!, this.companyType!).subscribe({
+      next: (users) => {
+        this.userSource = new MatTableDataSource<User>(users);
         this.userSource.paginator = this.paginator;
       },
-      error: (error) => console.log(error)
+      error: (error) => console.error(error)
     })
-  }
-  addUser() {
-    this.dialog.open(UserDialogComponent,
-      {data: {company: this.companyId}});
   }
 }
 

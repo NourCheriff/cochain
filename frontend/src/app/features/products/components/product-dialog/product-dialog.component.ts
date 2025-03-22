@@ -93,8 +93,7 @@ export class ProductDialogComponent implements OnInit {
     if(this.allIngredientsRes != null)
       this.productService.getAllProductInfo().subscribe({
         next: (response) => {
-
-          this.allIngredientsRes = response
+          this.allIngredientsRes = response.items!
           console.log(this.allIngredientsRes)
           this.allIngredientsRes.forEach(ingredient =>{
             this.allIngredients.push(ingredient.name!)
@@ -139,6 +138,7 @@ export class ProductDialogComponent implements OnInit {
         },
       error: (error) => console.error(error),
     })
+
   }
 
 

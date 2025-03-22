@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-//import { AuthService } from './auth.service';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -9,12 +8,12 @@ import { environment } from 'src/environments/environment';
 })
 export class BaseHttpService {
 
+  protected http = inject(HttpClient);
+
   private readonly API_BASE_URL = environment.baseUrl;
   private readonly header = new HttpHeaders({
       'Content-Type': 'application/json'
   });
-
-  constructor(protected http: HttpClient, /*protected authService: AuthService*/) {}
 
   private createParams(params?: { [key: string]: any }): HttpParams {
     let httpParams = new HttpParams();
@@ -28,12 +27,21 @@ export class BaseHttpService {
     return httpParams;
   }
 
-  getAll<T>(endpoint: string, params?: { [key: string]: any } ) : Observable<T[]>{
-    return this.http.get<T[]>(`${this.API_BASE_URL}/${endpoint}`,{
+  getAll<T>(endpoint: string, options?: { params?: { [key: string]: any }, id?: string }): Observable<T[]> {
+    let url = `${this.API_BASE_URL}/${endpoint}`;
+    
+    if (options?.id) {
+      url += `/${encodeURIComponent(options.id)}`;
+    }
+
+    return this.http.get<T | T[]>(url, {
       headers: this.header,
-      params: this.createParams(params)
-    });
+      params: this.createParams(options?.params),
+    }).pipe(
+      map((response: T | T[]) => Array.isArray(response) ? response : [response])
+    );
   }
+
 
   getById<T>(endpoint: string, id: string) : Observable<T>{
     return this.http.get<T>(`${this.API_BASE_URL}/${endpoint}/${id}`,{
@@ -49,7 +57,7 @@ export class BaseHttpService {
 
 
   add<T>(endpoint: string, data: T): Observable<T>{
-     return this.http.post<T>(`${this.API_BASE_URL}/${endpoint}`, data, {
+    return this.http.post<T>(`${this.API_BASE_URL}/${endpoint}`, data, {
       headers: this.header
     });
   }
@@ -59,6 +67,7 @@ export class BaseHttpService {
       headers: this.header
     });
   }
+
 
   delete<T>(endpoint: string, id: string, documentType?:string): Observable<T>{
     let url = `${this.API_BASE_URL}/${endpoint}`;
@@ -73,4 +82,5 @@ export class BaseHttpService {
       headers: this.header
     });
   }
+
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CochainAPI.Data.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using CochainAPI.Model.CompanyEntities;
 
 namespace CochainAPI.Controllers
 {
@@ -61,6 +62,19 @@ namespace CochainAPI.Controllers
                 return BadRequest(new { message = "Cannot delete certificate not found" });
             }
             return Ok(response);
+        }
+
+        [HttpPost("AddCA")]
+        [Authorize(Policy = "WriteCA")]
+        public async Task<IActionResult> AddCertificationAuthority([FromBody] CertificationAuthority certificationAuthority)
+        {
+            var response = await _certificationAuthorityService.AddCertificationAuthority(certificationAuthority);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Error on certification authority insertion" });
+            }
+            return Ok(response);
+
         }
     }
 }

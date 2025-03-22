@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseHttpService } from 'src/app/core/services/api.service';
 import { ProductCategory } from 'src/models/product/product-category.model';
@@ -9,6 +9,8 @@ import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-
 import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycle-document.model';
+import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
+
 
 @Injectable({
   providedIn: 'root'
@@ -48,8 +50,16 @@ export class ProductService {
     return this.apiService.getById('api/Product', productId)
   }
 
-  getAllProductInfo(): Observable<ProductInfo[]> {
-    return this.apiService.getAll('api/Product/allproducts');
+  getAllProductInfo(pageSize?: string, pageNumber?: string): Observable<PaginationResponse<ProductInfo>> {
+    return this.apiService.getAll('api/Product/allproducts', { params: { pageNumber, pageSize} } ).pipe(
+      map((response: any) => {
+        const paginationResponse: PaginationResponse<ProductInfo> = {
+          items: response[0].items || [],
+          totalSize: response[0].totalSize || 0
+        };
+        return paginationResponse;
+      })
+    );
   }
 
   getAllProductLifeCycleCategories(): Observable<ProductLifeCycleCategory[]>{
@@ -57,11 +67,11 @@ export class ProductService {
   }
 
   getAllGenericProducts(categoryId: string): Observable<Product[]>{
-    return this.apiService.getAll('api/Product/generic', {'categoryId' :categoryId})
+    return this.apiService.getAll('api/Product/generic', { id :categoryId })
   }
 
-  getProductInfoById(product: string): Observable<ProductInfo> {
-    return this.apiService.getById('api/Product', product)
+  getProductInfoById(productId: string): Observable<ProductInfo> {
+    return this.apiService.getById('api/Product', productId)
   }
 
   getProductsInfoByIds(ids: string[]): Observable<ProductInfo[]> {
@@ -75,7 +85,7 @@ export class ProductService {
   deleteOriginDocument(documentId: string, documentType: string): Observable<ProductDocument>{
     return this.apiService.delete('api/Document', documentId, documentType);
   }
-
+  
   uploadLifeCycleDocument(lifeCycleDocument: ProductLifeCycleDocument): Observable<ProductLifeCycleDocument>{
     let url = `api/Document/`;
 

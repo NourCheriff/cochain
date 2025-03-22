@@ -8,19 +8,30 @@
     <div class="options">
       <nav class="nav-link">
         <ul>
-          <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">Wallet</a></li>
-          @if (isAdmin) {
+          @if(hasAccess('wallet')){
+            <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">Wallet</a></li>
+          }
+          @if(hasAccess('products')){
+            <li><a routerLink="products" routerLinkActive="active" class="nav-item">Products</a></li>
+          }
+          @if(hasAccess('certificates')){
+            <li><a routerLink="certificates" routerLinkActive="active" class="nav-item">Certificates</a></li>
+          }
+          @if(hasAccess('contracts')){
+            <li><a routerLink="contracts" routerLinkActive="active" class="nav-item">Contracts</a></li>
+          }
+          @if(hasAccess('companies')){
             <li><a routerLink="companies" routerLinkActive="active" class="nav-item">Companies</a></li>
           }
-          <li><a routerLink="products" routerLinkActive="active" class="nav-item">Products</a></li>
-          <li><a routerLink="certificates" routerLinkActive="active" class="nav-item">Certificates</a></li>
-          <li><a routerLink="contracts" routerLinkActive="active" class="nav-item">Contracts</a></li>
+          @if(hasAccess('logs')){
+            <li><a routerLink="logs" routerLinkActive="active" class="nav-item">Logs</a></li>
+          }
         </ul>
       </nav>
       <div class="btn-container">
           <button class="button" mat-button disabled appearance="outline">
               <mat-icon>person</mat-icon>
-              Ciao, {{ username }}
+              Hi, {{ username }}
           </button>
           <button class="btn-primary" mat-flat-button (click)="logout()">
               <mat-icon>logout</mat-icon>

@@ -4,6 +4,8 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using CochainAPI.Data.Helpers;
+using CochainAPI.Model.Helper;
 
 namespace CochainAPI.Data.Services
 {
@@ -56,7 +58,7 @@ namespace CochainAPI.Data.Services
             }
         }
 
-        public async Task<List<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
         {
             int? size = null;
             int? number = null;
@@ -81,6 +83,14 @@ namespace CochainAPI.Data.Services
                 return await _certificationAuthorityRepository.GetCertificationAuthorityById(caId);
             }
             return null;
+        }
+
+        public async Task<CertificationAuthority?> AddCertificationAuthority(CertificationAuthority certificationAuthority)
+        {
+            if (!certificationAuthority.Email.IsValidEmail())
+                return null;
+            
+            return await _certificationAuthorityRepository.AddCertificationAuthority(certificationAuthority);
         }
     }
 }

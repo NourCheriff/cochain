@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { BaseHttpService } from 'src/app/core/services/api.service';
+import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { Contract } from 'src/models/documents/contract.model';
+import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 
 @Injectable({
@@ -16,15 +18,32 @@ export class ContractService {
     return this.apiService.add('api/Document/AddContractDocument', conctact)
   }
 
-  getAllContracts(): Observable<Contract[]>{
-    return this.apiService.getAll('api/Document/')
+  getContracts(scpId: string, type: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<Contract>> {
+    const queryParam = {'text': 'sjfjsd'}
+    const endpoint = type === "received_contracts"
+      ? 'api/Document/ReceivedContracts'
+      : 'api/Document/EmittedContracts';
+
+    return this.apiService.getAll(endpoint, { params: { pageNumber, pageSize, scpId, queryParam } }).pipe(
+      map((response: any) => {
+        const paginationResponse: PaginationResponse<Contract> = {
+          items: response[0].items || [],
+          totalSize: response[0].totalSize || 0
+        };
+        return paginationResponse;
+      })
+    );
   }
 
   getAllProductLifeCycleCategories(): Observable<ProductLifeCycleCategory[]>{
     return this.apiService.getAll('api/ProductLifeCycle')
   }
 
-  getAllSupplyChainPartner(): Observable<SupplyChainPartner[]>{
-    return this.apiService.getAll('api/SupplyChainPartner/categories')
+  getAllSupplyChainPartner(): Observable<SupplyChainPartner[]> {
+    return this.apiService.getAll('api/SupplyChainPartner');
+  }
+
+  deleteContract(id: string, type: string): Observable<Contract>{
+    return this.apiService.delete('api/Document',id, type)
   }
 }

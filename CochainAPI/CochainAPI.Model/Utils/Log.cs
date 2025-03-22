@@ -10,9 +10,9 @@ namespace CochainAPI.Model.Utils
         public string Action { get; set; }
         public string Message { get; set; }
         public DateTime Timestamp { get; set; }
-        public string URL { get; set; }
-        public string QueryString { get; set; }
-        public string Cookies { get; set; }
+        public string? URL { get; set; }
+        public string? QueryString { get; set; }
+        public string? Cookies { get; set; }
         public User User { get; set; }
         public string UserId { get; set; }
     }

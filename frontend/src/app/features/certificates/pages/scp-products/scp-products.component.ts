@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, ViewChild,inject} from '@angular/core';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {Component, OnInit, ViewChild,inject} from '@angular/core';
+import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -9,76 +9,89 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { FileInputComponent } from '../../components/file-input/file-input.component';
 import {MatSort, MatSortModule} from '@angular/material/sort';
-
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { CertificatesService } from '../../service/certificates.service';
+import { ProductInfo } from 'src/models/product/product-info.model';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
+import { ToastrService } from 'ngx-toastr';
+import { DocumentType } from 'src/types/document.enum';
+import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
+import { Role } from 'src/types/roles.enum';
+import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-scp-products',
-  imports: [MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
+  imports: [CommonModule,MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './scp-products.component.html',
   styleUrl: './scp-products.component.css'
 })
-export class ScpProductsComponent implements AfterViewInit {
+export class ScpProductsComponent implements OnInit {
 
   readonly dialog = inject(MatDialog);
-  displayedColumns: string[] = ['name', 'category', 'expirationDate', 'attachments'];
-  dataSource = new MatTableDataSource<SCPProducts>(scpProducts);
-  certificateId: number | null = null;
 
-  selected = 'name';
+  private route = inject(ActivatedRoute);
+  private authService = inject(AuthService)
+  private certificateService = inject(CertificatesService);
+  private toastrService =  inject(ToastrService);
+
+  displayedColumns: string[] = ['name', 'category', 'expirationDate', 'attachments'];
+  dataSource = new MatTableDataSource<ProductInfo>([]);
+  totalRecord = 0;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
+  ngOnInit(): void {
+    this.getScpProducts()
     this.dataSource.paginator = this.paginator;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  getScpProducts(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
+    const id = this.route.snapshot.paramMap.get('id')!;
+    this.certificateService.getScpProducts(id,pageSize.toString(),pageNumber.toString()).subscribe({
+      next: (response) => {
+        this.dataSource = new MatTableDataSource<ProductInfo>(response.items!)
+        this.totalRecord = response.totalSize;
+        this.dataSource.sort = this.sort;
+      },
+      error: (error) => { console.log(error) }
+    })
   }
 
-  attachCertificate() {
-    this.dialog.open(FileInputComponent);
+  applyFilter() {
+      //api call queryString
+  }
+
+ deleteCertificate(id: string){
+    this.certificateService.deleteCertificate(id).subscribe({
+      next: (response) => {
+        console.log(response)
+        this.toastrService.info(`Removed certificate ${response.name}`, 'info')
+      },
+      error: (error) => { console.log(error) }
+    })
+  }
+
+  attachCertificate(scpReceiverId: string) {
+    this.dialog.open(FileInputComponent,{
+      data: {
+        scpReceiverId: scpReceiverId,
+        documentType: DocumentType.Quality
+      }
+    });
+  }
+
+  isCertificationAuthority(): boolean {
+    return this.authService.userRole === (Role.AdminCA || Role.UserCA)
+  }
+
+  getQualityCertificate(receivedSupplyChainPartnerCertificates: SupplyChainPartnerCertificate[]): SupplyChainPartnerCertificate | null {
+    if (!receivedSupplyChainPartnerCertificates?.length) return null;
+
+    return receivedSupplyChainPartnerCertificates.find(doc => doc.type === DocumentType.Sustainability) || null;
+  }
+
+  onPageChange(event: PageEvent){
+    this.getScpProducts(event.pageSize, event.pageIndex)
   }
 }
-
-export interface SCPProducts {
-  name: string;
-  category: string;
-  expirationDate: string;
-}
-
-
-const scpProducts: SCPProducts[] = [
-  {
-    'name':'ProductA',
-    'category': 'CategoryA',
-    'expirationDate':'17-04-2025'
-  },
-  {
-    'name':'ProductB',
-    'category': 'CategoryC',
-    'expirationDate':'17-04-2025'
-  },
-  {
-    'name':'ProductB',
-    'category': 'CategoryA',
-    'expirationDate':'15-04-2025'
-  },
-  {
-    'name':'ProductC',
-    'category': 'CategoryC',
-    'expirationDate':'17-03-2025'
-  },
-  {
-    'name':'ProductD',
-    'category': 'CategoryD',
-    'expirationDate':'01-08-2025'
-  },
-  {
-    'name':'ProductA',
-    'category': 'CategoryB',
-    'expirationDate':'03-04-2025'
-  },
-
-]

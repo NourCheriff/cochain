@@ -16,6 +16,10 @@ import { RouterLink } from '@angular/router';
 import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
 import { MatTable } from '@angular/material/table'
 import { ActivatedRoute } from '@angular/router';
+import { Role } from 'src/types/roles.enum';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { ProductDocument } from 'src/models/documents/product-document.model';
+
 @Component({
   selector: 'app-product-details',
   imports: [
@@ -35,7 +39,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private productService: ProductService){}
-
+ private authService = inject(AuthService)
   readonly dialog = inject(MatDialog);
 
   @ViewChild(MatTable) table!: MatTable<any>;
@@ -50,7 +54,7 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.productService.selectedProduct.subscribe((data) => this.loadDetails(data));
-
+ 
     if(this.productInfo == null){
       let productId = this.route.snapshot.paramMap.get('id')!;
       this.productService.getProductInfoById(productId).subscribe({
@@ -112,7 +116,12 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
+  deleteDocument() {
+
+  }
+
   isAdmin(): boolean{
-    return this.userRole === "Admin";
+    //this.authService.userRole === Role.SysAdmin
+    return true ;
   }
 }

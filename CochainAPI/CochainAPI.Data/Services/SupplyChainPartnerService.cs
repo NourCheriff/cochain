@@ -1,6 +1,8 @@
+using CochainAPI.Data.Helpers;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
+using CochainAPI.Model.Helper;
 
 namespace CochainAPI.Data.Services
 {
@@ -27,7 +29,7 @@ namespace CochainAPI.Data.Services
             return await _supplyChainPartnerRepository.GetTypes();
         }
 
-        public async Task<List<SupplyChainPartner>> GetSupplyChainPartners(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<SupplyChainPartner>> GetSupplyChainPartners(string? queryParam, int? pageNumber, int? pageSize)
         {
             int? size = null;
             int? number = null;
@@ -45,6 +47,22 @@ namespace CochainAPI.Data.Services
             return await _supplyChainPartnerRepository.GetSupplyChainPartners(queryParam, number, size);            
         }
 
+        public async Task<SupplyChainPartner?> AddSupplyChainPartner(SupplyChainPartner supplyChainPartner)
+        {
+            if (!supplyChainPartner.Email.IsValidEmail())
+                return null;
+            
+            var supplyChainPartnerTypes = await _supplyChainPartnerRepository.GetTypes();
+            if (!supplyChainPartnerTypes.Exists(x => x.Id == supplyChainPartner.SupplyChainPartnerTypeId))
+                return null;
+
+            supplyChainPartner.Credits = 0.0F;
+
+            
+
+            return await _supplyChainPartnerRepository.AddSupplyChainPartner(supplyChainPartner);
+        }
+        
         public async Task<bool> UpdateScpCredits(Guid scpId, float credits)
         {
             if (Guid.TryParse(scpId.ToString(), out var id) && float.TryParse(credits.ToString(), out var deltaCredits))

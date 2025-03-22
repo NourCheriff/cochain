@@ -4,6 +4,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import { sha256 } from "js-sha256";
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
@@ -14,6 +15,8 @@ import { Contract } from 'src/models/documents/contract.model';
 import { ContractService } from '../../service/contract.service';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 
 @Component({
   selector: 'app-contract-dialog',
@@ -31,10 +34,9 @@ import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-par
   styleUrl: './contract-dialog.component.css'
 })
 export class ContractDialogComponent implements OnInit {
-  readonly dialogRef = inject(MatDialogRef<ContractDialogComponent>);
+  private authService = inject(AuthService)
 
-  selectedReceiver = null;
-  selectedWorkType = null;
+  readonly dialogRef = inject(MatDialogRef<ContractDialogComponent>);
 
   @ViewChild("fileInput") fileInput!: ElementRef
   fileUploaded!: File
@@ -47,25 +49,31 @@ export class ContractDialogComponent implements OnInit {
 
   supplyChainPartners: SupplyChainPartner[] = []
   productLifeCycleCategories: ProductLifeCycleCategory[] = [];
+  selecteCategoryId = '';
+  selectedReceiverId = '';
 
   constructor(private contractService: ContractService) {}
 
   ngOnInit(): void {
-    this.getAllProductLifeCycleCategories()
     this.getAllSupplyChainPartner()
   }
 
   getAllProductLifeCycleCategories(){
     this.contractService.getAllProductLifeCycleCategories().subscribe({
-      next: (response) => { this.productLifeCycleCategories = response },
-      error: (error) => console.error('Errore nel recupero dei prodotti:', error)
+      next: (response) => {
+        this.productLifeCycleCategories = response
+      },
+      error: (error) => console.error('Error fetching product life cycle categories:', error)
     });
   }
 
   getAllSupplyChainPartner(){
     this.contractService.getAllSupplyChainPartner().subscribe({
-      next: (response) => { this.supplyChainPartners = response },
-      error: (error) => console.error('Errore nel recupero dei prodotti:', error)
+      next: (response) => {
+        this.supplyChainPartners = response
+        this.getAllProductLifeCycleCategories()
+       },
+      error: (error) => console.error('Error fetching supply chain partners:', error)
     });
   }
 
@@ -77,7 +85,6 @@ export class ContractDialogComponent implements OnInit {
         alert("Only PDF allowed")
         return
       }
-      console.log(this.fileUploaded)
       this.uploadEnabled = true
     }else{
       alert("Upload a file!")
@@ -85,26 +92,25 @@ export class ContractDialogComponent implements OnInit {
   }
 
   createContract(): void {
-    //handle other input field
-    const receiver = this.newContractForm.value.receiver
-    const workType = this.newContractForm.value.work
-
     const reader = new FileReader();
+
     reader.onload = () => {
-      const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
+      const base64String = reader.result?.toString().split(',')[1]!;
+      const hashedBase64Contract = sha256(base64String)
 
-      // const contract: Contract = {
-      //   productLifeCycleCategory: this.newContractForm.value.work,
-      //   fileString: base64String,
-      //   supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
-      //   userEmitterId: '3542da56-0de3-4797-a059-effff257f63d',
-      //   type: 'contract',
-      // };
+      const contract: Contract = {
+        fileString: base64String,
+        hash: hashedBase64Contract,
+        supplyChainPartnerReceiverId: this.selectedReceiverId,
+        userEmitterId: this.authService.userId!,
+        type: 'contract',
+        productLifeCycleCategoryId: this.selecteCategoryId
+      };
 
-      // this.contractService.addContract(contract).subscribe({
-      //   next: (response) => console.log('Contract uploaded successfully', response),
-      //   error: (error) => console.error('Contract upload failed', error),
-      // });
+      this.contractService.addContract(contract).subscribe({
+        next: (response) => console.log('Contract uploaded successfully', response),
+        error: (error) => console.error('Contract upload failed', error),
+      });
 
     };
 

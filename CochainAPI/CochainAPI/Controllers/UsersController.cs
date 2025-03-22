@@ -66,12 +66,24 @@ namespace CochainAPI.Controllers
 
         [HttpGet("company/{companyId}")]
         [Authorize(Roles = "SystemAdmin")]
-        public async Task<IActionResult> GetUsersByCompanyId(Guid companyId)
+        public async Task<IActionResult> GetUsersByCompanyId(Guid companyId, [FromQuery] string? companyType)
         {
-            var response = await _userService.GetUsersByCompanyId(companyId);
+            var response = await _userService.GetUsersByCompanyId(companyId, companyType);
             if (response == null)
             {
                 return BadRequest(new { message = "Users not found" });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("DeleteUser/{id}")]
+        [Authorize(Policy = "RemoveUser")]
+        public async Task<IActionResult> DeleteUserById(Guid id)
+        {
+            var response = await _userService.DeleteById(id);
+            if (!response)
+            {
+                return BadRequest(new { message = "User not found" });
             }
             return Ok(response);
         }

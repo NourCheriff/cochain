@@ -17,10 +17,12 @@ using CochainAPI.Data.Sql.Repositories;
 using Quartz;
 using CochainAPI.Jobs;
 using System.Security.Claims;
+using CochainAPI.Model.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("CochainDB")!;
+//string blockchainURL = "http://13.73.227.222:8545";
 
 builder.Services.Configure<Jwt>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
@@ -55,6 +57,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("WriteSCP", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("AddUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
     options.AddPolicy("ReadUser", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA"));
+    options.AddPolicy("RemoveUser", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("ReadDocuments", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteContracts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("WriteInvoices", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
@@ -83,10 +86,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISupplyChainPartnerService, SupplychainPartnerService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDocumentService, DocumentService>();
+builder.Services.AddSingleton<ILogService, LogService>();
 builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddSingleton<IProductLifeCycleService, ProductLifeCycleService>();
 builder.Services.AddSingleton<ICertificationAuthorityService, CertificationAuthorityService>();
 builder.Services.AddSingleton<ICarbonOffsettingActionService, CarbonOffsettingActionService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerRepository, SupplyChainPartnerRepository>();
@@ -97,7 +102,7 @@ builder.Services.AddSingleton<IContractRepository, ContractRepository>();
 builder.Services.AddSingleton<IProductLifeCycleDocumentRepository, ProductLifeCycleDocumentRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerCertificateRepository, SupplyChainPartnerCertificateRepository>();
 builder.Services.AddSingleton<ICarbonOffsettingActionRepository, CarbonOffsettingActionRepository>();
-
+builder.Services.AddSingleton<ILogRepository, LogRepository>();
 
 builder.Services.AddSwaggerGen(swagger =>
 {

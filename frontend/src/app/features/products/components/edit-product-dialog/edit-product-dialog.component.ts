@@ -91,6 +91,7 @@ export class EditProductDialogComponent implements OnInit{
     });
   }
 
+
   loadGenericProducts(){
     this.productService.getAllGenericProducts(this.modifiedProductForm.getRawValue().category!).subscribe({
       next: (response) => {

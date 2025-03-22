@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -9,87 +9,79 @@ import { ContractDialogComponent } from '../contract-dialog/contract-dialog.comp
 import { MatDialog } from '@angular/material/dialog';
 import { ContractService } from '../../service/contract.service';
 import { Contract } from 'src/models/documents/contract.model';
+import { CommonModule } from '@angular/common';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Role } from 'src/types/roles.enum';
+import { DocumentType } from 'src/types/document.enum';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-contracts-section',
   templateUrl: './contracts-section.component.html',
   styleUrl: './contracts-section.component.css',
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule]
+  imports: [CommonModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule]
 })
 export class ContractsSectionComponent implements OnInit {
   readonly dialog = inject(MatDialog);
-
-  user: User = {
-    "supplyChainPartner": "Prova company",// qui ci va il supply chain partner, quando l'utente effettua il login
-    "role": "User"
-  };
-
   displayedColumns: string[] = ['emitter', 'receiver', 'workType', 'attachment'];
 
-  dataSource: any;
-  contracts: Contract[] = [];
+  private authService = inject(AuthService)
+  private contractService = inject(ContractService)
+  private toasterService = inject(ToastrService)
 
-  selected = 'all_contracts';
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  dataSource = new MatTableDataSource<Contract>([]);
+  totalRecords = 0;
 
-  constructor(private contractService: ContractService){}
+  selected = 'received_contracts';
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   ngOnInit() {
     if (this.isAdmin()) {
       this.displayedColumns.push('action');
     }
-    //this.getAllContracts()
+    this.getContracts()
+    this.dataSource.paginator = this.paginator;
   }
 
-  getAllContracts(){
-    this.contractService.getAllContracts().subscribe({
+  onPageChange(event: PageEvent){
+    this.getContracts(event.pageSize, event.pageIndex)
+  }
+
+  getContracts(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
+    const currentSCPId = this.authService.userId!
+    this.contractService.getContracts(currentSCPId,this.selected,pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
-        this.contracts = response
-        this.dataSource = new MatTableDataSource<Contract>(this.contracts);
-        this.dataSource.paginator = this.paginator;
+        this.dataSource = new MatTableDataSource<Contract>(response.items!);
+        this.totalRecords = response.totalSize;
       },
       error: (error) => console.log(error)
     })
   }
 
-  updateTable() {
-
-    const BACKUP_DATA = this.contracts;
-    let SELECTED_DATA: Contract[] = [];
-
-    switch(this.selected){
-      case 'all_contracts':
-        SELECTED_DATA = BACKUP_DATA;
-      break;
-
-      case 'received_contracts':
-       // SELECTED_DATA = BACKUP_DATA.filter(item => item.supplyChainPartnerReceiver?.name == this.user.supplyChainPartner);
-      break;
-
-      case 'emitted_contracts':
-       // SELECTED_DATA = BACKUP_DATA.filter(item => item.userEmitter?.supplyChainPartner.name == this.user.supplyChainPartner);
-      break;
-    }
-
-    this.dataSource = new MatTableDataSource<Contract>(SELECTED_DATA);
-    this.dataSource.paginator = this.paginator;
+  updateSelected(event: any){
+    this.selected = event.value
+    this.getContracts()
   }
 
   isAdmin(): boolean {
-    return this.user.role == "Admin";
+    return this.authService.userRole === Role.SysAdmin;
   }
 
-  addContract() {
-    this.openDialog();
+  deleteContract(id: string){
+    this.contractService.deleteContract(id, DocumentType.Contract).subscribe({
+      next: (response) => {
+        this.toasterService.info(`Removed contract ${response.name}`, 'Info');
+        this.getContracts()
+      },
+      error: (error) => { console.log(error) }
+    })
   }
 
-  openDialog() {
+  addContractDialog() {
     this.dialog.open(ContractDialogComponent);
   }
+
 }
 
-export interface User {
-  supplyChainPartner: string;
-  role: string;
-}
 
