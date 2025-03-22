@@ -14,6 +14,9 @@ import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
+import { Role } from 'src/types/roles.enum';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { ProductDocument } from 'src/models/documents/product-document.model';
 @Component({
   selector: 'app-product-details',
   imports: [
@@ -40,6 +43,8 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
   dataSource: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  private authService = inject(AuthService)
 
   constructor(private productService: ProductService){}
 
@@ -83,8 +88,13 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
     );
   }
 
+  deleteDocument() {
+
+  }
+
   isAdmin(): boolean{
-    return this.userRole === "Admin";
+    //this.authService.userRole === Role.SysAdmin
+    return true ;
   }
 }
 

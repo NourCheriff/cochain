@@ -7,6 +7,14 @@
   padding: 30px;
 }
 
+.deleteIcon{
+  margin-left: 10px;
+}
+
+.deleteIcon > .icon{
+  color: red;
+}
+
 table{
   background-color: transparent;
 }

@@ -41,7 +41,10 @@
           <mat-icon class="icon download">picture_as_pdf</mat-icon>
           <p class="file">origin.pdf</p>
           @if(isAdmin()){
-            <mat-icon class="icon delete">delete</mat-icon>
+            <button mat-icon-button class="deleteIcon" >
+              <!-- (click)="deleteDocument(productInfo.productDocuments)" -->
+              <mat-icon class="icon">delete</mat-icon>
+            </button>
           }
         </div>
       </div>
@@ -92,8 +95,12 @@
               <div class="row">
                 <mat-icon>picture_as_pdf</mat-icon>
                 {{element.attachments}}
+                <!-- {{element.productLifeCycleDocuments}} -->
+                 <!-- (click)="deleteDocument(element.productLifeCycleDocuments)" -->
                 @if(isAdmin()){
-                  <mat-icon class="icon delete">delete</mat-icon>
+                 <button mat-icon-button class="deleteIcon" >
+                    <mat-icon class="icon">delete</mat-icon>
+                  </button>
                 }
               </div>
             </td>
