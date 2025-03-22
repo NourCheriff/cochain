@@ -291,25 +291,31 @@ export class BlockchainService {
     const etherScan = new ethers.EtherscanProvider();
 
     try {
-      const res: any[] = await lastValueFrom(this.apiService.get(endpoint, params));
+      if (this.account && this.provider) {
+        const res: any[] = await lastValueFrom(this.apiService.getAll("api/Transaction/transactions", { id: this.account }));
 
-      const transactions: Transaction[] = await Promise.all(
-        res.map(async (transaction) => {
-          const tx = await etherScan.getTransaction(transaction.hash);
-          if (!tx) return null;
+        const transactions: Transaction[] = await Promise.all(
+          res.map(async (transaction) => {
+            const tx = await etherScan.getTransaction(transaction.hash);
+            if (!tx) return null;
 
-          const block = await etherScan.getBlock(tx.blockNumber!);
-          return {
-            id: tx.hash,
-            sender: tx.from,
-            receiver: tx.to ?? '',
-            amount: tx.value,
-            date: new Date(block!!.timestamp * 1000).toISOString(),
-          };
-        })
-      );
+            const block = await etherScan.getBlock(tx.blockNumber!);
+            transaction = {
+              id: tx.hash,
+              sender: tx.from,
+              receiver: tx.to ?? '',
+              amount: tx.value,
+              date: new Date(block!!.timestamp * 1000).toISOString(),
+            }
+            return transaction;
+          })
+        );
 
-      return transactions.filter((tx) => tx !== null);
+        return transactions.filter((tx) => tx !== null);
+      }
+      else {
+        return [];
+      }
     } catch (error) {
       console.error('Errore nel recupero delle transazioni:', error);
       return [];
