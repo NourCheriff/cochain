@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace CochainAPI.Model.CompanyEntities
 {
@@ -7,8 +8,10 @@ namespace CochainAPI.Model.CompanyEntities
     {
         public string TransactionHash { get; set; }
         public string WalletIdEmitter { get; set; }
+        [JsonIgnore]
         public SupplyChainPartner? supplyChainPartnerEmitter { get; set; }
         public string WalletIdReceiver { get; set; }
+        [JsonIgnore]
         public SupplyChainPartner? supplyChainPartnerReceiver { get; set; }
     }
 }
