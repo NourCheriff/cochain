@@ -37,8 +37,6 @@ import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 
 })
 export class ProductsComponent implements OnInit {
-
-
   constructor(private productService: ProductService){}
 
   private authService = inject(AuthService)
@@ -54,8 +52,7 @@ export class ProductsComponent implements OnInit {
   isChecked = false;
   newProduct!: ProductInfo;
   productInfo: ProductInfo[] = [];
-  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'sustainability_certificate', 'action'];
-  //displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'action'];
+  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'action'];
   dataSource = new MatTableDataSource<ProductInfo>([]);
   totalRecords = 0;
 
@@ -113,7 +110,6 @@ export class ProductsComponent implements OnInit {
 
   addProduct() {
     let currentDialog = this.dialog.open(ProductDialogComponent);
-
     currentDialog.afterClosed().subscribe(result => {
       if (result !== undefined) {
         let updatedData = [result.newProduct, ...this.dataSource.data];

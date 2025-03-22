@@ -20,6 +20,9 @@ import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ProductService } from '../../services/product.service';
 import { DatePipe } from '@angular/common';
 import { sha256 } from 'js-sha256';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Role } from 'src/types/roles.enum';
+import { DocumentType } from 'src/types/document.enum';
 @Component({
   selector: 'app-product-dialog',
   imports: [
@@ -46,6 +49,7 @@ import { sha256 } from 'js-sha256';
 export class ProductDialogComponent implements OnInit {
 
   constructor(private productService: ProductService) {}
+  private authService = inject(AuthService)
 
   readonly dialogRef = inject(MatDialogRef<ProductDialogComponent>);
   readonly announcer = inject(LiveAnnouncer);
@@ -126,7 +130,7 @@ export class ProductDialogComponent implements OnInit {
     const newProduct: ProductInfo = {
       name: this.newProductForm.value.name!,
       productId: this.newProductForm.value.product!,
-      supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+      supplyChainPartnerId: this.authService.userId!,
       expirationDate: formattedDate!,
       ingredients: productIngredients,
     }
@@ -205,8 +209,8 @@ export class ProductDialogComponent implements OnInit {
         hash: hashedBase64Contract,
         fileString: base64String,
         productInfoId: productInfoId,
-        supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
-        type: 'origin',
+        supplyChainPartnerReceiverId: this.authService.userId!,
+        type: DocumentType.Origin,
       };
 
       this.productService.uploadOriginDocument(originDocument).subscribe({
