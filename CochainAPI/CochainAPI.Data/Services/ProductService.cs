@@ -51,16 +51,6 @@ namespace CochainAPI.Data.Services
             return null;
         }
 
-        public async Task<Page<ProductInfo>?> GetProductsByIds(Guid[] ids)
-        {
-            if (ids != null && ids.Any())
-            {
-                return await _productRepository.GetProductsByIds(ids);
-            }
-
-            return null;
-        }
-
         public async Task<Page<ProductInfo>> GetProducts(string? queryParam, string? scpName, int? pageNumber, int? pageSize)
         {
             return await _productRepository.GetProducts(queryParam, scpName, pageNumber, pageSize);
