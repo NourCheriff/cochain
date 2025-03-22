@@ -3,10 +3,12 @@
     <mat-card-header>
       <div class="header">
         <h2>Product details</h2>
-        <button mat-fab extended class="btn-secondary" (click)="modifyProduct()">
-          <mat-icon>edit</mat-icon>
-          Edit product
-        </button>
+        @if(isMyProduct()){
+          <button mat-fab extended class="btn-secondary" (click)="modifyProduct()">
+            <mat-icon>edit</mat-icon>
+            Edit product
+          </button>
+        }
       </div>
     </mat-card-header>
     <mat-card-content class="content">
@@ -40,7 +42,7 @@
               <mat-icon class="icon download">picture_as_pdf</mat-icon>
               <p class="file">{{document.name}}</p>
                @if(document.type === "origin" && isAdmin()){
-                <button mat-icon-button class="deleteIcon" (click)="deleteDocument(document.id!)">
+                <button mat-icon-button class="deleteIcon" (click)="deleteDocument(document.id!, 'origin')">
                   <mat-icon class="icon">delete</mat-icon>
                 </button>
               }
@@ -99,7 +101,7 @@
                     <p class="file">{{document.name}}</p>
                   </a>
                    @if(isAdmin()){
-                    <button mat-icon-button class="deleteIcon" (click)="deleteDocument(document.id!)">
+                    <button mat-icon-button class="deleteIcon" (click)="deleteDocument(document.id!, document.type)">
                       <mat-icon class="icon">delete</mat-icon>
                     </button>
                   }

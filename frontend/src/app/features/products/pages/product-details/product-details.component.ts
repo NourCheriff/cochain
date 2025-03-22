@@ -19,6 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/types/roles.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ProductDocument } from 'src/models/documents/product-document.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-details',
@@ -40,6 +41,8 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private productService: ProductService){}
   private authService = inject(AuthService)
+  private toastrService =  inject(ToastrService)
+
   readonly dialog = inject(MatDialog);
 
   @ViewChild(MatTable) table!: MatTable<any>;
@@ -108,19 +111,27 @@ export class ProductDetailsComponent implements OnInit {
     this.ingredients = [];
 
     if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
-        this.productService.getProductsInfoByIds(ingredientIds).subscribe({
-          next: (response) => this.ingredients = response,
-          error: (error) => console.log(error)
-        })
+      this.productService.getProductsInfoByIds(ingredientIds).subscribe({
+        next: (response) => this.ingredients = response,
+        error: (error) => console.error(error)
+      })
     }
   }
 
-  deleteDocument(id: string) {
-
+  deleteDocument(id: string, documentType: string) {
+    this.productService.deleteDocument(id, documentType).subscribe({
+      next: (response) => {
+        this.toastrService.info(`Removed ${response.type} ${response.name}`, 'Info')
+      },
+      error: (error) => console.error(error)
+    })
   }
 
   isAdmin(): boolean{
-    //this.authService.userRole === Role.SysAdmin
-    return true ;
+    return this.authService.userRole === Role.SysAdmin
+  }
+
+  isMyProduct(): boolean{
+    return this.authService.userId === this.productInfo.supplyChainPartnerId
   }
 }
