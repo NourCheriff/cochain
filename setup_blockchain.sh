@@ -50,8 +50,7 @@ echo "Copying output files to host..."
 echo "==============================================="
 echo ""
 
-docker container cp besu:/tmp/output ./data
-
+docker container cp besu:/tmp/output $PWD/data
 
 echo ""
 echo "==============================================="
@@ -67,9 +66,17 @@ echo "Setting up genesis.json..."
 echo "==============================================="
 echo ""
 
-export $(cat $PWD/data/.env)
+EXTRA_DATA=$(cat $PWD/data/.env | cut -d'=' -f2)
+sed -i 's/"extraData":.*,/"extraData": "'"$EXTRA_DATA"'",/' $PWD/genesis.json
 
-sed -i 's/"extraData":.*,/"extraData": "'"$EXTRA_DATA"'",/' ./genesis.json
+echo ""
+echo "==============================================="
+echo "Setting up docker-compose.yml..."
+echo "==============================================="
+echo ""
+
+BOOTNODE_ADDRESS=$(cat $PWD/data/keys/validator1/key.pub | cut -c 3-)
+sed -i 's/"--bootnodes=enode:\/\/.*@/"--bootnodes=enode:\/\/'"$BOOTNODE_ADDRESS"'@/g' $PWD/docker-compose.yml
 
 # compile and deploy smart contracts to the chain
 # GO GO GO GO!

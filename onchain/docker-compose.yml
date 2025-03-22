@@ -1,11 +1,11 @@
 services:
   validator1:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.2.1
     container_name: validator1
     volumes:
       - ./genesis.json:/config/genesis.json
-      - ./validator1:/data
-      - ./keys/validator1:/opt/besu/keys
+      - ./data/validator1:/data
+      - ./data/keys/validator1:/opt/besu/keys
     ports:
       - "8545:8545"
       - "8546:8546"
@@ -28,12 +28,12 @@ services:
       ]
 
   validator2:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.2.1
     container_name: validator2
     volumes:
       - ./genesis.json:/config/genesis.json
-      - ./validator2:/data
-      - ./keys/validator2:/opt/besu/keys
+      - ./data/validator2:/data
+      - ./data/keys/validator2:/opt/besu/keys
     ports:
       - "8547:8545"
       - "8548:8546"
@@ -52,7 +52,7 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://0290a857cf55555d1e9b79f01f539ad6490b6af0a21fe14b2911be2c00523ed3eb01f5272f738b371fb68ad4b851542b2e5bf93f0bed5db4bc3f646603b3d4f7@172.18.0.2:30303",
+        "--bootnodes=enode://@172.18.0.2:30303",
         "--node-private-key-file=/opt/besu/keys/key",
       ]
     depends_on:
@@ -60,12 +60,12 @@ services:
         condition: service_healthy
 
   validator3:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.2.1
     container_name: validator3
     volumes:
       - ./genesis.json:/config/genesis.json
-      - ./validator3:/data
-      - ./keys/validator3:/opt/besu/keys
+      - ./data/validator3:/data
+      - ./data/keys/validator3:/opt/besu/keys
     ports:
       - "8549:8545"
       - "8550:8546"
@@ -84,7 +84,7 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://0290a857cf55555d1e9b79f01f539ad6490b6af0a21fe14b2911be2c00523ed3eb01f5272f738b371fb68ad4b851542b2e5bf93f0bed5db4bc3f646603b3d4f7@172.18.0.2:30303",
+        "--bootnodes=enode://@172.18.0.2:30303",
         "--node-private-key-file=/opt/besu/keys/key",
       ]
     depends_on:
@@ -92,12 +92,12 @@ services:
         condition: service_healthy
 
   validator4:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.2.1
     container_name: validator4
     volumes:
       - ./genesis.json:/config/genesis.json
-      - ./validator4:/data
-      - ./keys/validator4:/opt/besu/keys
+      - ./data/validator4:/data
+      - ./data/keys/validator4:/opt/besu/keys
     ports:
       - "8551:8545"
       - "8552:8546"
@@ -116,7 +116,7 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://0290a857cf55555d1e9b79f01f539ad6490b6af0a21fe14b2911be2c00523ed3eb01f5272f738b371fb68ad4b851542b2e5bf93f0bed5db4bc3f646603b3d4f7@172.18.0.2:30303",
+        "--bootnodes=enode://@172.18.0.2:30303",
         "--node-private-key-file=/opt/besu/keys/key",
       ]
     depends_on:
@@ -124,11 +124,11 @@ services:
         condition: service_healthy
 
   node1:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.2.1
     container_name: node1
     volumes:
       - ./genesis.json:/config/genesis.json
-      - ./node1:/data
+      - ./data/node1:/data
     ports:
       - "8553:8545"
       - "8554:8546"
@@ -147,18 +147,18 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://0290a857cf55555d1e9b79f01f539ad6490b6af0a21fe14b2911be2c00523ed3eb01f5272f738b371fb68ad4b851542b2e5bf93f0bed5db4bc3f646603b3d4f7@172.18.0.2:30303",
+        "--bootnodes=enode://@172.18.0.2:30303",
       ]
     depends_on:
       validator4:
         condition: service_healthy
 
   node2:
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.2.1
     container_name: node2
     volumes:
       - ./genesis.json:/config/genesis.json
-      - ./node2:/data
+      - ./data/node2:/data
     ports:
       - "8555:8545"
       - "8556:8546"
@@ -177,7 +177,7 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://0290a857cf55555d1e9b79f01f539ad6490b6af0a21fe14b2911be2c00523ed3eb01f5272f738b371fb68ad4b851542b2e5bf93f0bed5db4bc3f646603b3d4f7@172.18.0.2:30303",
+        "--bootnodes=enode://@172.18.0.2:30303",
       ]
     depends_on:
       node1:
