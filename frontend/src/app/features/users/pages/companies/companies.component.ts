@@ -14,7 +14,7 @@ import { CompanyService } from '../../services/company.service';
 import { CertificationAuthority } from 'src/models/company-entities/certification-authority.model';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { CompanyType } from 'src/types/company.enum';
-import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 
 @Component({
   selector: 'app-companies',

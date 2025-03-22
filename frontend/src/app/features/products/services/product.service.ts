@@ -7,7 +7,7 @@ import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { Product } from 'src/models/product/product.model';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
-import { PaginationResponse } from 'src/app/core/utilities/paginationResponse';
+import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
 
 @Injectable({
   providedIn: 'root'

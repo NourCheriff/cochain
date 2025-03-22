@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CertificatesService } from '../../service/certificates.service';
 import { ProductInfo } from 'src/models/product/product-info.model';
-import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 @Component({
   selector: 'app-scp-products',
   imports: [CommonModule,MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],

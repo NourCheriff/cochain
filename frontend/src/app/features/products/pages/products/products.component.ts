@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 @Component({
   selector: 'app-products',
   imports: [MatTableModule,

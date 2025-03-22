@@ -16,7 +16,7 @@ import { ContractService } from '../../service/contract.service';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 
 @Component({
   selector: 'app-contract-dialog',

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseHttpService } from 'src/app/core/services/api.service';
-import { PaginationResponse } from 'src/app/core/utilities/paginationResponse';
+import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
 import { CertificationAuthority } from 'src/models/company-entities/certification-authority.model';
 import { SupplyChainPartnerType } from 'src/models/company-entities/supply-chain-partner-type.model';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';

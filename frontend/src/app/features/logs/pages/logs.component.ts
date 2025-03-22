@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common'; // Add this import for NgClass
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Log } from 'src/models/log';
-import { DefaultPagination } from 'src/app/core/utilities/paginationResponse';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 import { LogsService } from '../services/log.service';
 import { Severity } from 'src/types/severity.enum';
 
