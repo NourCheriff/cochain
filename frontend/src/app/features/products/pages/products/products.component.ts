@@ -52,15 +52,14 @@ export class ProductsComponent implements OnInit {
   isChecked = false;
   newProduct!: ProductInfo;
   productInfo: ProductInfo[] = [];
+  myProductInfo: ProductInfo[] = [];
   displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'action'];
   dataSource = new MatTableDataSource<ProductInfo>([]);
   totalRecords = 0;
 
-
   ngOnInit(): void {
     this.getAllProductInfo()
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   sendProduct(product: ProductInfo) {
@@ -86,25 +85,30 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
 
-  updateTable() {
-    const BACKUP_DATA = this.productInfo;
-    let SELECTED_DATA: ProductInfo[] = [];
+  updateTable(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber) {
+    let data: ProductInfo[] = []
+    if(this.isChecked){
+        // this.productService.getMyProductsInfo(, pageSize.toString(), pageNumber.toString()).subscribe({
+        //   next: (response) => {
+        //     console.log(response.items)
+        //     this.myProductInfo = response.items!;
+        //     data = this.myProductInfo;
+        //     this.totalRecords = response.totalSize;
+        //   },
+        //   error: (error) => console.log(error)
+        // })
+    }else{
+      data = this.productInfo
+    }
 
-    SELECTED_DATA = !this.isChecked ? BACKUP_DATA :
-
-    BACKUP_DATA.filter(item => item.supplyChainPartner?.email === this.authService.username)
-
-    this.dataSource = new MatTableDataSource<ProductInfo>(SELECTED_DATA);
+    this.dataSource = new MatTableDataSource<ProductInfo>(data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   onPageChange(event: PageEvent){
+    this.isChecked ? this.updateTable(event.pageSize, event.pageIndex) :
     this.getAllProductInfo(event.pageSize, event.pageIndex)
   }
 

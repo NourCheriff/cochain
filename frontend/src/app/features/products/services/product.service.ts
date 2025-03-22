@@ -50,6 +50,18 @@ export class ProductService {
     return this.apiService.getById('api/Product', productId)
   }
 
+  getMyProductsInfo(scpId: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<ProductInfo>> {
+    return this.apiService.getAll(`api/Product/scp/${scpId}`, { params: { pageNumber, pageSize} }).pipe(
+      map((response: any) => {
+        const paginationResponse: PaginationResponse<ProductInfo> = {
+          items: response[0].items || [],
+          totalSize: response[0].totalSize || 0
+        };
+        return paginationResponse;
+      })
+    );
+  }
+
   getAllProductInfo(pageSize?: string, pageNumber?: string): Observable<PaginationResponse<ProductInfo>> {
     return this.apiService.getAll('api/Product/allproducts', { params: { pageNumber, pageSize} } ).pipe(
       map((response: any) => {
@@ -82,10 +94,10 @@ export class ProductService {
     return this.apiService.add('api/Document/AddOriginDocument', originDocument);
   }
 
-  deleteOriginDocument(documentId: string, documentType: string): Observable<ProductDocument>{
+  deleteDocument(documentId: string, documentType: string): Observable<ProductDocument>{
     return this.apiService.delete('api/Document', documentId, documentType);
   }
-  
+
   uploadLifeCycleDocument(lifeCycleDocument: ProductLifeCycleDocument): Observable<ProductLifeCycleDocument>{
     let url = `api/Document/`;
 
