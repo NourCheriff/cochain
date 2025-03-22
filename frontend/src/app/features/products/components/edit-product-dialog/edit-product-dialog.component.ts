@@ -13,14 +13,15 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Product } from 'src/models/product/product.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
+import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ProductService } from '../../services/product.service';
 import { DatePipe } from '@angular/common';
+import { sha256 } from 'js-sha256';
 @Component({
   selector: 'app-edit-product-dialog',
   imports: [
@@ -45,7 +46,7 @@ import { DatePipe } from '@angular/common';
 })
 export class EditProductDialogComponent implements OnInit{
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo, ingredients: ProductInfo[]}, private fileUploadService: FileUploadService, private productService: ProductService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo, ingredients: ProductInfo[]}, private productService: ProductService) {
     const INGREDIENTS = this.data.ingredients.map(ingredient => ingredient.name).filter((name): name is string => name !== undefined);
     this.modifiedProductForm.addControl('name', new FormControl<string>(this.data.product.name!, Validators.required));
     this.modifiedProductForm.addControl('product', new FormControl<string>(this.data.product.product?.id!, Validators.required));
@@ -72,6 +73,7 @@ export class EditProductDialogComponent implements OnInit{
   productCategories: ProductCategory[] = [];
   allIngredientsRes: ProductInfo[] = [];
   alreadyLoaded: boolean = false;
+  hashedOriginDocument: string = "";
 
   ngOnInit(): void {
     this.loadProductCategories();
@@ -154,7 +156,16 @@ export class EditProductDialogComponent implements OnInit{
     }
 
     this.productService.updateProductInfo(modifiedProduct).subscribe({
-      next: (response) => this.dialogRef.close({ modifiedProduct: modifiedProduct }),
+      next: (response) => {
+        let originDocument = response.productDocuments!.find(x => x.type === "origin");
+
+        this.productService.deleteOriginDocument(originDocument!.id!, "origin").subscribe({
+          next: (response) => {},
+          error: (error) => console.error(error),
+        })
+
+        this.uploadFile(response.id!);
+        this.dialogRef.close({ modifiedProduct: modifiedProduct });},
       error: (error) => console.error(error),
     })
   }
@@ -210,6 +221,29 @@ export class EditProductDialogComponent implements OnInit{
     }else{
       alert("Upload a file!")
     }
+  }
+
+  uploadFile(productInfoId: string): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result?.toString().split(',')[1]!;
+      const hashedBase64Document= sha256(base64String!)
+
+      let originDocument: ProductDocument = {
+        hash: hashedBase64Document,
+        fileString: base64String,
+        productInfoId: productInfoId,
+        supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+        type: 'origin',
+      };
+
+      this.productService.uploadOriginDocument(originDocument).subscribe({
+        next: (response) => console.log('File uploaded successfully', response),
+        error: (error) => console.error('File upload failed', error),
+      });
+    };
+
+    reader.readAsDataURL(this.fileUploaded);
   }
 
   reset(){
