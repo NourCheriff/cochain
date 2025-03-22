@@ -43,8 +43,7 @@ export class ContractService {
     return this.apiService.getAll('api/SupplyChainPartner');
   }
 
-  //ENDPOINT COULD BE CHANGED
-  deleteCertificate(id: string): Observable<SupplyChainPartnerCertificate>{
-    return this.apiService.delete('api/Document/RemoveCertificate',id)
+  deleteContract(id: string, type: string): Observable<Contract>{
+    return this.apiService.delete('api/Document',id, type)
   }
 }

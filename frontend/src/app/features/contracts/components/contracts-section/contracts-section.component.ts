@@ -12,6 +12,10 @@ import { Contract } from 'src/models/documents/contract.model';
 import { CommonModule } from '@angular/common';
 import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { Role } from 'src/types/roles.enum';
+import { DocumentType } from 'src/types/document.enum';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-contracts-section',
   templateUrl: './contracts-section.component.html',
@@ -24,6 +28,7 @@ export class ContractsSectionComponent implements OnInit {
 
   private authService = inject(AuthService)
   private contractService = inject(ContractService)
+  private toasterService = inject(ToastrService)
 
   dataSource = new MatTableDataSource<Contract>([]);
   totalRecords = 0;
@@ -60,13 +65,14 @@ export class ContractsSectionComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.authService.userRole === 'Admin';
+    return this.authService.userRole === Role.SysAdmin;
   }
 
-  deleteCertificate(id: string){
-    this.contractService.deleteCertificate(id).subscribe({
+  deleteContract(id: string){
+    this.contractService.deleteContract(id, DocumentType.Contract).subscribe({
       next: (response) => {
-        console.log(response)
+        this.toasterService.error(`Removed contract ${response.name}`, 'Info');
+        this.getContracts()
       },
       error: (error) => { console.log(error) }
     })
