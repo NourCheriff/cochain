@@ -29,7 +29,7 @@ export class BaseHttpService {
 
   getAll<T>(endpoint: string, options?: { params?: { [key: string]: any }, id?: string }): Observable<T[]> {
     let url = `${this.API_BASE_URL}/${endpoint}`;
-    
+
     if (options?.id) {
       url += `/${encodeURIComponent(options.id)}`;
     }
@@ -50,11 +50,10 @@ export class BaseHttpService {
   }
 
   getByIds<T>(endpoint: string, ids: string[]): Observable<T[]>{
-     return this.http.post<T[]>(`${this.API_BASE_URL}/${endpoint}`, ids, {
+    return this.http.post<T[]>(`${this.API_BASE_URL}/${endpoint}`, ids, {
       headers: this.header
     });
   }
-
 
   add<T>(endpoint: string, data: T): Observable<T>{
     return this.http.post<T>(`${this.API_BASE_URL}/${endpoint}`, data, {
@@ -67,7 +66,6 @@ export class BaseHttpService {
       headers: this.header
     });
   }
-
 
   delete<T>(endpoint: string, id: string, documentType?:string): Observable<T>{
     let url = `${this.API_BASE_URL}/${endpoint}`;
