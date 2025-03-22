@@ -12,13 +12,14 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FileUploadService } from 'src/app/core/services/fileUpload.service';
 import { Product } from 'src/models/product/product.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
+import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ProductService } from '../../services/product.service';
 import { DatePipe } from '@angular/common';
+import { sha256 } from 'js-sha256';
 @Component({
   selector: 'app-product-dialog',
   imports: [
@@ -132,7 +133,10 @@ export class ProductDialogComponent implements OnInit {
     }
 
     this.productService.addProductInfo(newProduct).subscribe({
-      next: (response) => this.dialogRef.close({ newProduct: response }),
+      next: (response) => {
+        this.uploadFile(response.id!);
+        this.dialogRef.close({ newProduct: response });
+        },
       error: (error) => console.error(error),
     })
   }
@@ -189,6 +193,29 @@ export class ProductDialogComponent implements OnInit {
     }else{
       alert("Upload a file!")
     }
+  }
+
+  uploadFile(productInfoId: string): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result?.toString().split(',')[1]!;
+      const hashedBase64Contract = sha256(base64String!)
+
+      let originDocument: ProductDocument = {
+        hash: hashedBase64Contract,
+        fileString: base64String,
+        productInfoId: productInfoId,
+        supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+        type: 'origin',
+      };
+
+      this.productService.uploadOriginDocument(originDocument).subscribe({
+        next: (response) => console.log('File uploaded successfully', response),
+        error: (error) => console.error('File upload failed', error),
+      });
+    };
+
+    reader.readAsDataURL(this.fileUploaded);
   }
 
   reset(){
