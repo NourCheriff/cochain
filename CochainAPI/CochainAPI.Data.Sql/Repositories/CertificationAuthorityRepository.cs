@@ -54,5 +54,10 @@ namespace CochainAPI.Data.Sql.Repositories
             await logRepository.AddLog(log);
             return certificationAuthority;
         }
+
+        public async Task<CertificationAuthority?> GetCertificationAuthorityById(Guid id)
+        {            
+            return await dbContext.CertificationAuthority.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }
