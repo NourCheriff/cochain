@@ -264,7 +264,7 @@ export class BlockchainService {
       }
   }
 
-  public getwalletId(): string | null {
+  public get walletId(): string | null {
     if (this.provider && this.account)
       return this.account;
 

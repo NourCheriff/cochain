@@ -44,7 +44,7 @@ import { DatePipe } from '@angular/common';
 })
 export class EditProductDialogComponent implements OnInit{
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo, ingredients: ProductInfo[]}, private fileUploadService: FileUploadService, private productService: ProductService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo, ingredients: ProductInfo[]}, private productService: ProductService) {
     const INGREDIENTS = this.data.ingredients.map(ingredient => ingredient.name).filter((name): name is string => name !== undefined);
     this.modifiedProductForm.addControl('name', new FormControl<string>(this.data.product.name!, Validators.required));
     this.modifiedProductForm.addControl('product', new FormControl<string>(this.data.product.product?.id!, Validators.required));

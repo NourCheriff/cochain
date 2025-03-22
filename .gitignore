@@ -1,8 +1,5 @@
 .DS_Store
 
-onchain/node*/
-onchain/validator*/
+onchain/data/
 
-onchain/keys/validator*/
-
-onchain/toEncode.json
+.env
