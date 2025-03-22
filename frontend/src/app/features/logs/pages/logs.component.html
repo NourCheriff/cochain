@@ -27,14 +27,24 @@
           <td mat-cell *matCellDef="let element"> {{element.entity}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="message">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Message </th>
+          <td mat-cell *matCellDef="let element">{{element.message || "No messages"}}</td>
+        </ng-container>
+
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
           <td mat-cell *matCellDef="let element">{{element.action}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="message">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Message </th>
-          <td mat-cell *matCellDef="let element">{{element.message || "No messages"}}</td>
+        <ng-container matColumnDef="url">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> URL </th>
+          <td mat-cell *matCellDef="let element"> {{element.URL || "No url"}} </td>
+        </ng-container>
+
+         <ng-container matColumnDef="queryString">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Query string </th>
+          <td mat-cell *matCellDef="let element"> {{element.queryString || "No query params"}} </td>
         </ng-container>
 
         <ng-container matColumnDef="timestamp">

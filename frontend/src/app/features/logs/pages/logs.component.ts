@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, RESPONSE_INIT, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
@@ -26,7 +26,7 @@ export class LogsComponent implements OnInit {
     severityLevels = Object.values(Severity);
     selected: Severity = Severity.Info;
     totalRecords = 0;
-    displayedColumns: string[] = ['severity', 'entity', 'action', 'message', 'timestamp'];
+    displayedColumns: string[] = ['severity', 'entity', 'message', 'action', 'url', 'queryString', 'timestamp'];
     dataSource = new MatTableDataSource<Log>([]);
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -41,6 +41,7 @@ export class LogsComponent implements OnInit {
     getLogs(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber, severity?: Severity){
       this.logsService.getLogs(pageSize.toString(),pageNumber.toString(),severity).subscribe({
         next: (response) => {
+          console.log(RESPONSE_INIT)
           this.dataSource = new MatTableDataSource<Log>(response.items!);
           this.totalRecords = response.totalSize
         },
