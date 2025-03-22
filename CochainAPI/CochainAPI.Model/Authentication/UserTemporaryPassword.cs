@@ -12,5 +12,6 @@ namespace CochainAPI.Model.Authentication
         public string Password { get; set; }
         public DateTime ExpirationDate { get; set; }
         public bool IsUsed { get; set; }
+        public int Attempts { get; set; }
     }
 }

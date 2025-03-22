@@ -1,4 +1,5 @@
 ﻿using CochainAPI.Model.CarbonOffset;
+using CochainAPI.Model.Helper;
 
 namespace CochainAPI.Data.Sql.Repositories.Interfaces
 {
@@ -7,6 +8,6 @@ namespace CochainAPI.Data.Sql.Repositories.Interfaces
         public Task<List<CarbonOffsettingAction>> GetOffsettingActionsToBeProcessed();
         public Task<CarbonOffsettingAction> AddCarbonOffsettingAction(CarbonOffsettingAction action);
         public Task<bool> SaveCarbonOffsettingAction(CarbonOffsettingAction carbonOffsettingAction);
-        public Task<List<CarbonOffsettingAction>> GetCarbonOffsettingActions(string? scpId, string? queryParam, int? pageNumber, int? pageSize);
+        public Task<Page<CarbonOffsettingAction>> GetCarbonOffsettingActions(string? scpId, string? queryParam, int? pageNumber, int? pageSize);
     }
 }

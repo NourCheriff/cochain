@@ -14,5 +14,7 @@ namespace CochainAPI.Model.CompanyEntities
         public List<ProductLifeCycleDocument>? ReceivedProductLifeCycleDocument { get; set; }
         public List<SupplyChainPartnerCertificate>? ReceivedSupplyChainPartnerCertificate { get; set; }
         public List<CarbonOffsettingAction>? CarbonOffsettingActions { get; set; }
+        public List<Transaction>? EmittedTransactions { get; set; }
+        public List<Transaction>? ReceivedTransactions { get; set; }
     }
 }

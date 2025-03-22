@@ -5,6 +5,7 @@ using Azure.Storage.Blobs;
 using Azure.Identity;
 using Azure.Storage.Blobs.Models;
 using CochainAPI.Model.Authentication;
+using CochainAPI.Model.Helper;
 
 namespace CochainAPI.Data.Services
 {
@@ -168,12 +169,12 @@ namespace CochainAPI.Data.Services
             };
         }
 
-        public async Task<List<SupplyChainPartnerCertificate>> GetSustainabilityCertificates(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<SupplyChainPartnerCertificate>> GetSustainabilityCertificates(string? queryParam, int? pageNumber, int? pageSize)
         {
             return await _supplyChainPartnerCertificate.GetSustainabilityCertificates(queryParam, pageNumber, pageSize);
         }
 
-        public async Task<List<Contract>?> GetEmittedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<Contract>?> GetEmittedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
         {
             if (!string.IsNullOrEmpty(userId))
             {
@@ -183,7 +184,7 @@ namespace CochainAPI.Data.Services
             return null;
         }
 
-        public async Task<List<Contract>?> GetReceivedContracts(string scpId, string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<Contract>?> GetReceivedContracts(string scpId, string? queryParam, int? pageNumber, int? pageSize)
         {
             if (Guid.TryParse(scpId, out var id))
             {

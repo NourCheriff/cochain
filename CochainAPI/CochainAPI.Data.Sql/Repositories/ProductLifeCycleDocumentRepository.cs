@@ -1,13 +1,18 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Documents;
+using CochainAPI.Model.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
     public class ProductLifeCycleDocumentRepository : SqlRepository, IProductLifeCycleDocumentRepository
     {
-        public ProductLifeCycleDocumentRepository(CochainDBContext dbContext) : base(dbContext)
+        private readonly ILogRepository logRepository;
+        public ProductLifeCycleDocumentRepository(CochainDBContext dbContext, ILogRepository logRepository, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
         {
+            this.logRepository = logRepository;
         }
 
         public async Task<ProductLifeCycleDocument?> AddDocument(ProductLifeCycleDocument documentObj)
@@ -15,18 +20,55 @@ namespace CochainAPI.Data.Sql.Repositories
             var savedDocument = await dbContext.ProductLifeCycleDocument.AddAsync(documentObj);
             await dbContext.SaveChangesAsync();
             documentObj.Id = savedDocument.Entity.Id;
+            var log = new Log()
+            {
+                Name = "Add product document",
+                Severity = "Info",
+                Entity = "ProductLifeCycleDocument",
+                EntityId = documentObj.Id.ToString(),
+                Action = "Insert",
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                Timestamp = DateTime.UtcNow,
+                Message = ""
+            };
+            await logRepository.AddLog(log);
             return documentObj;
         }
 
         public async Task<bool> DeleteDocumentById(Guid id)
         {
+            Log log;
             var productLifeCycleDocument = await dbContext.ProductLifeCycleDocument.FirstOrDefaultAsync(x => x.Id == id);
             if (productLifeCycleDocument != null)
             {
                 dbContext.ProductLifeCycleDocument.Remove(productLifeCycleDocument);
                 var res = await dbContext.SaveChangesAsync();
+                log = new Log()
+                {
+                    Name = "Delete product document",
+                    Severity = "Warn",
+                    Entity = "ProductLifeCycleDocument",
+                    EntityId = id.ToString(),
+                    Action = "Delete",
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    Timestamp = DateTime.UtcNow,
+                    Message = ""
+                };
+                await logRepository.AddLog(log);
                 return res > 0;
             }
+            log = new Log()
+            {
+                Name = "Delete product document",
+                Severity = "Alert",
+                Entity = "ProductLifeCycleDocument",
+                EntityId = id.ToString(),
+                Action = "Delete",
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                Timestamp = DateTime.UtcNow,
+                Message = "Trying to delete not existing document"
+            };
+            await logRepository.AddLog(log);
             return false;
         }
 

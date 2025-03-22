@@ -31,6 +31,7 @@ namespace CochainAPI.Data.Sql
         public DbSet<ProductLifeCycleDocument> ProductLifeCycleDocument { get; set; }
         public DbSet<SupplyChainPartnerCertificate> SupplyChainPartnerCertificate { get; set; }
         public DbSet<Log> Log { get; set; }
+        public DbSet<Transaction> Transaction { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,10 +71,11 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<ProductInfo>().HasMany(x => x.ProductLifeCycles).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
             modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.ProductLifeCycleCategory).WithMany().HasForeignKey(x => x.ProductLifeCycleCategoryId);
             modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
+
             modelBuilder.Entity<ProductLifeCycle>()
                         .Property(c => c.IsEmissionProcessed)
                         .HasDefaultValue(false);
-
+            
             modelBuilder.Entity<ProductIngredient>(entity =>
             {
                 entity.HasKey(r => new { r.ProductInfoId, r.IngredientId });
@@ -117,6 +119,9 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<CarbonOffsettingAction>()
                         .Property(c => c.IsProcessed)
                         .HasDefaultValue(false);
+
+            modelBuilder.Entity<Transaction>().HasOne(x => x.supplyChainPartnerEmitter).WithMany(x => x.EmittedTransactions).HasForeignKey(x => x.WalletIdEmitter).HasPrincipalKey(x => x.WalletId);
+            modelBuilder.Entity<Transaction>().HasOne(x => x.supplyChainPartnerReceiver).WithMany(x => x.ReceivedTransactions).HasForeignKey(x => x.WalletIdReceiver).HasPrincipalKey(x => x.WalletId);
 
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
@@ -176,7 +181,18 @@ namespace CochainAPI.Data.Sql
                     Email = "company@prova.com",
                     Phone = "33309090909",
                     Credits = 0,
-                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87")
+                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                    WalletId = "0x3a9f1b7c5d2e8a4f6c0e7d3b5a2f9c1"
+                },
+                new SupplyChainPartner
+                {
+                    Id = new Guid("3a9f1b7c-5d2e-4a4f-8a6c-0e7d3b5a2f9c"),
+                    Name = "Prova company2",
+                    Email = "company2@prova.com",
+                    Phone = "3669045897",
+                    Credits = 0,
+                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                    WalletId = "0x7c5d1a3f9b2e6f0d8c4a7e3b5c2f9d1"
                 }
             );
 

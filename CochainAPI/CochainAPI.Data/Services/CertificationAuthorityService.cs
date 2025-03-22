@@ -5,6 +5,7 @@ using CochainAPI.Model.CompanyEntities;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using CochainAPI.Data.Helpers;
+using CochainAPI.Model.Helper;
 
 namespace CochainAPI.Data.Services
 {
@@ -57,7 +58,7 @@ namespace CochainAPI.Data.Services
             }
         }
 
-        public async Task<List<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
         {
             int? size = null;
             int? number = null;

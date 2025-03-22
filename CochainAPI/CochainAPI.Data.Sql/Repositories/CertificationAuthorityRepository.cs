@@ -1,15 +1,22 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
 using CochainAPI.Model.Documents;
+using Microsoft.AspNetCore.Http;
+using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using CochainAPI.Model.Utils;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
     public class CertificationAuthorityRepository : SqlRepository, ICertificationAuthorityRepository
     {
-        public CertificationAuthorityRepository(CochainDBContext dbContext) : base(dbContext)
+        private readonly ILogRepository logRepository;
+        public CertificationAuthorityRepository(CochainDBContext dbContext, ILogRepository logRepository, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
         {
+            this.logRepository = logRepository;
         }
 
         private async Task<SupplyChainPartnerCertificate?> Get(Guid documentId)
@@ -23,37 +30,89 @@ namespace CochainAPI.Data.Sql.Repositories
         }
         public async Task<bool> DeleteSustainabilityCertificate(Guid documentId)
         {
+            Log log;
             SupplyChainPartnerCertificate? sustainabilityCertificate = dbContext.SupplyChainPartnerCertificate.SingleOrDefault(item => item.Id == documentId);
 
             if (sustainabilityCertificate != null)
             {
                 dbContext.SupplyChainPartnerCertificate.Remove(sustainabilityCertificate);
                 await dbContext.SaveChangesAsync();
+                log = new Log()
+                {
+                    Name = "Delete Sustainability Certificate",
+                    Severity = "Info",
+                    Entity = "SupplyChainPartnerCertificate",
+                    EntityId = documentId.ToString(),
+                    Action = "Delete",
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    Timestamp = DateTime.UtcNow,
+                    Message = ""
+                };
+                await logRepository.AddLog(log);
                 return true;
             }
             else
             {
+                log = new Log()
+                {
+                    Name = "Delete Sustainability Certificate",
+                    Severity = "Alert",
+                    Entity = "SupplyChainPartnerCertificate",
+                    EntityId = documentId.ToString(),
+                    Action = "Delete",
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    Timestamp = DateTime.UtcNow,
+                    Message = "Trying to delete not existing document"
+                };
+                await logRepository.AddLog(log);
                 return false;
             }
         }
         public async Task<SupplyChainPartnerCertificate?> UpdateSustainabilityCertificate(Guid documentId)
         {
+            Log log;
             SupplyChainPartnerCertificate? supplyChainPartnerCertificate = await Get(documentId);
             if (supplyChainPartnerCertificate != null)
             {
                 dbContext.SupplyChainPartnerCertificate.Update(supplyChainPartnerCertificate);
                 await dbContext.SaveChangesAsync();
+                log = new Log()
+                {
+                    Name = "Update Sustainability Certificate",
+                    Severity = "Info",
+                    Entity = "SupplyChainPartnerCertificate",
+                    EntityId = documentId.ToString(),
+                    Action = "Update",
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    Timestamp = DateTime.UtcNow,
+                    Message = ""
+                };
+                await logRepository.AddLog(log);
                 return await Get(documentId);
             }
             else
             {
+                log = new Log()
+                {
+                    Name = "Update Sustainability Certificate",
+                    Severity = "Alert",
+                    Entity = "SupplyChainPartnerCertificate",
+                    EntityId = documentId.ToString(),
+                    Action = "Update",
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    Timestamp = DateTime.UtcNow,
+                    Message = "Trying to update not existing document"
+                };
+                await logRepository.AddLog(log);
                 return null;
             }
         }
 
-        public async Task<List<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<CertificationAuthority>> GetCertificationAuthorities(string? queryParam, int? pageNumber, int? pageSize)
         {
             var query = dbContext.CertificationAuthority.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)));
+
+            var totalSize = await query.CountAsync();
 
             if (pageNumber.HasValue && pageSize.HasValue)
             {
@@ -61,7 +120,11 @@ namespace CochainAPI.Data.Sql.Repositories
                 .Take(pageSize.Value);
             }
 
-            return await query.ToListAsync();
+            return new Page<CertificationAuthority>
+            {
+                Items = await query.ToListAsync(),
+                TotalSize = totalSize 
+            };
         }
 
         public async Task<CertificationAuthority?> GetCertificationAuthorityById(Guid id)
@@ -74,6 +137,18 @@ namespace CochainAPI.Data.Sql.Repositories
             var savedCertificationAuthority = await dbContext.CertificationAuthority.AddAsync(certificationAuthority);
             await dbContext.SaveChangesAsync();
             certificationAuthority.Id = savedCertificationAuthority.Entity.Id;
+            var log = new Log()
+            {
+                Name = "Add CA",
+                Severity = "Info",
+                Entity = "CertificationAuthority",
+                EntityId = certificationAuthority.Id.ToString(),
+                Action = "Insert",
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                Timestamp = DateTime.UtcNow,
+                Message = ""
+            };
+            await logRepository.AddLog(log);
             return certificationAuthority;
         }
     }

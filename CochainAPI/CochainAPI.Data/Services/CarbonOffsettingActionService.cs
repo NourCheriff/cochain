@@ -1,6 +1,7 @@
 ﻿using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CarbonOffset;
+using CochainAPI.Model.Helper;
 
 namespace CochainAPI.Data.Services
 {
@@ -17,7 +18,7 @@ namespace CochainAPI.Data.Services
             return await _actionRepository.AddCarbonOffsettingAction(action);
         }
 
-        public async Task<List<CarbonOffsettingAction>> GetCarbonOffsettingActions(string? scpId, string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<CarbonOffsettingAction>> GetCarbonOffsettingActions(string? scpId, string? queryParam, int? pageNumber, int? pageSize)
         {
             return await _actionRepository.GetCarbonOffsettingActions(scpId, queryParam, pageNumber, pageSize);
         }
