@@ -12,6 +12,6 @@ export interface ProductInfo extends Base {
   supplyChainPartnerId: string;
   supplyChainPartner?: SupplyChainPartner;
   ingredients?: ProductIngredient[];
-  productLifeCycle?: ProductLifeCycle[];
+  productLifeCycles?: ProductLifeCycle[];
   productDocuments?: ProductDocument[];
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule, MatTable } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,6 +17,7 @@ import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
+
 @Component({
   selector: 'app-products',
   imports: [MatTableModule,
@@ -36,24 +37,28 @@ import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 
 })
 export class ProductsComponent implements OnInit {
+
+
+  constructor(private productService: ProductService){}
+
   private authService = inject(AuthService)
 
-  productInfo: ProductInfo[] = [];
-
   readonly dialog = inject(MatDialog);
-
-  isChecked = false;
-
   private _liveAnnouncer = inject(LiveAnnouncer);
 
-  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'action'];
 
+  @ViewChild(MatTable) table!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  isChecked = false;
+  newProduct!: ProductInfo;
+  productInfo: ProductInfo[] = [];
+  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'sustainability_certificate', 'action'];
+  //displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'action'];
   dataSource = new MatTableDataSource<ProductInfo>([]);
   totalRecords = 0;
 
-  constructor(private productService: ProductService){}
 
   ngOnInit(): void {
     this.getAllProductInfo()
@@ -107,6 +112,16 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-    this.dialog.open(ProductDialogComponent);
+    let currentDialog = this.dialog.open(ProductDialogComponent);
+
+    currentDialog.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        let updatedData = [result.newProduct, ...this.dataSource.data];
+        this.dataSource.data = updatedData;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.table.renderRows();
+      }
+    });
   }
 }

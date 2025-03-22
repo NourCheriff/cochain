@@ -1,23 +1,22 @@
-import { Component, inject, ChangeDetectionStrategy, ViewChild, ElementRef, OnInit, AfterViewInit} from '@angular/core';
-import {
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { Component, inject, Inject, ChangeDetectionStrategy, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
+import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators,AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { ProductService } from '../../services/product.service';
-import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
-
+import { ProductInfo } from 'src/models/product/product-info.model';
+import { DatePipe } from '@angular/common';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycle-document.model';
+import { sha256 } from 'js-sha256';
 @Component({
   selector: 'app-new-work-dialog',
     imports: [
@@ -39,20 +38,20 @@ import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 })
 export class NewWorkDialogComponent implements OnInit, AfterViewInit {
 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}, private productService: ProductService) {}
+
   readonly dialogRef = inject(MatDialogRef<NewWorkDialogComponent>);
 
   @ViewChild('billFile') billFile!: ElementRef;
   @ViewChild('transportFile') transportFile!: ElementRef;
   @ViewChild('emissions') emissions!: ElementRef;
 
-  selectedReceiver: string = '';
   selectedWorkType: string = '';
-  isReceiverVisible: boolean = false;
+  isTransportDocument: boolean = false;
 
   newWorkForm = new FormGroup({
     work: new FormControl('', Validators.required),
-    receiver: new FormControl('', this.receiverValidator()),
-    workDate: new FormControl(Date.now(),[Validators.required])
+    workDate: new FormControl(new Date(Date.now()),[Validators.required])
   });
 
   billFileUploaded!: File;
@@ -60,65 +59,58 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
   uploadEnabled: boolean = false;
 
   productLifeCycleCategories: ProductLifeCycleCategory[] = [];
-  supplyChainPartners: SupplyChainPartner[] = [];
-
-  constructor(private productService: ProductService) {}
-
-  ngAfterViewInit(): void {
-     this.emissions.nativeElement.textContent = `${this.getRandomInt(0, 100)}T CO2e `;
-  }
+  emissionsValue: any;
 
   ngOnInit(): void {
     this.getAllProductLifeCycleCategories()
   }
 
+  ngAfterViewInit(): void {
+    this.emissionsValue = this.getRandomInt(0, 100);
+    this.emissions.nativeElement.textContent = `${this.emissionsValue}T CO2e `;
+  }
+
   getAllProductLifeCycleCategories(){
     this.productService.getAllProductLifeCycleCategories().subscribe({
       next: (response) => {
-        this.productLifeCycleCategories = response
-      },
-      error: (error) => console.error(error)
-    })
-  }
-
-
-  getAllSupplyChainPartner(){
-    this.productService.getAllSupplyChainPartner().subscribe({
-      next: (response) => {
-        this.supplyChainPartners = response
+        this.productLifeCycleCategories = response;
       },
       error: (error) => console.error(error)
     })
   }
 
   createWork(): void {
-    if(this.isReceiverVisible){
-     const receiver = this.newWorkForm.value.receiver
+    const datepipe: DatePipe = new DatePipe('en-US')
+    let formattedDate = datepipe.transform(this.newWorkForm.value.workDate, 'YYYY-MM-dd') + "T00:00:00Z";
+
+    const newProductLifeCycle: ProductLifeCycle = {
+      timestamp: formattedDate!,
+      emissions: this.emissionsValue,
+      isEmissionsProcessed: false,
+      productLifeCycleCategoryId: this.newWorkForm.value.work!,
+      supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+      productInfoId: this.data.product.id!,
     }
 
-    const fileData = new FormData()
-    fileData.append('bill', this.billFileUploaded)
-    if(this.isReceiverVisible){
-      fileData.append('transport', this.transportFileUploaded)
+    if(this.isTransportDocument){
+      this.productService.addProductLifeCycleTransport(newProductLifeCycle).subscribe({
+        next: (response) => {
+          this.uploadFile(response.id!, true);
+          this.uploadFile(response.id!, false);
+          this.dialogRef.close({ newWork: response });
+        },
+        error: (error) => console.error(error),
+      })
     }
-
-    // const productLifeCycle: ProductLifeCycle = {
-    //   emissions: this.emissions.nativeElement.value,
-    //   timestamp: Date.now().toString(),
-    //   productLifeCycleCategory: this.newWorkForm.value.work,
-    //   productInfo: productId,
-    //   supplyChainPartner: receiver || currentUser
-    // }
-
-    // this.fileUploadService.uploadFile(file).subscribe({
-    //   next: (response) => {
-    //     console.log('File uploaded successfully', response);
-    //   },
-    //   error: (error) => {
-    //     console.error('File upload failed', error);
-    //   },
-    // });
-
+    else{
+      this.productService.addProductLifeCycleGeneric(newProductLifeCycle).subscribe({
+        next: (response) => {
+          this.uploadFile(response.id!, false);
+          this.dialogRef.close({ newWork: response });
+        },
+        error: (error) => console.error(error),
+      })
+    }
   }
 
   onSelectFile(event : Event){
@@ -135,11 +127,36 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     }
   }
 
+  uploadFile(newWorkId: string, isTransportDocument: boolean): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result?.toString().split(',')[1]!;
+      const hashedBase64Document= sha256(base64String!)
+
+      let lifeCycleDocument: ProductLifeCycleDocument = {
+        hash: hashedBase64Document,
+        fileString: base64String,
+        productLifeCycleId: newWorkId,
+        supplyChainPartnerReceiverId: this.data.product.supplyChainPartnerId,
+        userEmitterId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+        type: (isTransportDocument) ? 'transport' : 'invoice',
+      };
+
+      this.productService.uploadLifeCycleDocument(lifeCycleDocument).subscribe({
+        next: (response) => console.log('File uploaded successfully', response),
+        error: (error) => console.error('File upload failed', error),
+      });
+    };
+
+    reader.readAsDataURL((isTransportDocument) ? this.transportFileUploaded : this.billFileUploaded);
+  }
+
   reset(fileType: 'bill' | 'transport') {
     if(fileType === 'bill'){
       this.billFileUploaded = undefined!
       this.billFile.nativeElement.value = null;
-    }else{
+    }
+    else{
       this.transportFileUploaded = undefined!
       this.transportFile.nativeElement.value = null;
     }
@@ -149,36 +166,23 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     if (!this.newWorkForm.valid) {
       return false;
     }
-    return this.selectedWorkType === 'Transport' ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
+    const selectedCategory = this.productLifeCycleCategories.find(category => category.id === this.selectedWorkType);
+
+    return selectedCategory!.name === 'Transport' ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
   }
 
   onSelectionChange(value: string) {
-    this.selectedWorkType = value;
-    this.isReceiverVisible = value === 'Transport';
-    if (this.isReceiverVisible) {
-      this.getAllSupplyChainPartner();
+    const selectedCategory = this.productLifeCycleCategories.find(category => category.id === value);
+    if (selectedCategory) {
+      this.isTransportDocument = selectedCategory.name === 'Transport';
     }
+
   }
 
   private getRandomInt(min: number, max: number): number{
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
     return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
-  }
-
-  private receiverValidator(): ValidatorFn {
-    return (control:AbstractControl) : ValidationErrors | null => {
-
-      const value = control.value;
-      const workValue = this.newWorkForm?.value?.work;
-
-      // If the work value is "transport", receiver must be provided
-      if (workValue === "Transport" && (!value || value === '')) {
-        return { receiverRequired: true };
-      }
-
-      return null;
-    }
   }
 }
 

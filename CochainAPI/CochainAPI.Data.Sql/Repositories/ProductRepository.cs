@@ -82,9 +82,10 @@ namespace CochainAPI.Data.Sql.Repositories
 
             var queryComplete = query.Include(x => x.Ingredients)
                         .Include(x => x.Product)
-                        .Include(x => x.ProductLifeCycles)
+                        .Include(x => x.Product!.Category)
                         .Include(x => x.ProductDocuments)
-                        .Include(x => x.Product!.Category);
+                        .Include(x => x.ProductLifeCycles!.AsQueryable())
+                             .ThenInclude(y => y.ProductLifeCycleCategory);
 
             return new Page<ProductInfo>
             {
@@ -93,9 +94,21 @@ namespace CochainAPI.Data.Sql.Repositories
             };
         }
 
-        public async Task<List<ProductInfo>?> GetProductById(Guid id)
+        public async Task<ProductInfo?> GetProductById(Guid id)
         {
             return await dbContext.ProductInfo.Where(x => x.Id == id)
+                    .Include(x => x.Ingredients)
+                    .Include(x => x.Product)
+                    .Include(x => x.Product!.Category)
+                    .Include(x => x.ProductDocuments)
+                    .Include(x => x.ProductLifeCycles!.AsQueryable())
+                             .ThenInclude(y => y.ProductLifeCycleCategory)
+                    .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<ProductInfo>?> GetProductsByIds(Guid[] ids)
+        {
+            return await dbContext.ProductInfo.Where(x => ids.Contains(x.Id))
                     .Include(x => x.Ingredients)
                     .Include(x => x.Product)
                     .Include(x => x.ProductLifeCycles)
@@ -127,5 +140,13 @@ namespace CochainAPI.Data.Sql.Repositories
                 TotalSize = totalSize
             };
         }
+
+
+        public async Task<bool> UpdateProduct(ProductInfo productObj)
+        {
+            dbContext.ProductInfo.Update(productObj);
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
     }
 }

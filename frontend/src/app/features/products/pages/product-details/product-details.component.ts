@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -14,9 +14,12 @@ import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
+import { MatTable } from '@angular/material/table'
+import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/types/roles.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ProductDocument } from 'src/models/documents/product-document.model';
+
 @Component({
   selector: 'app-product-details',
   imports: [
@@ -33,59 +36,84 @@ import { ProductDocument } from 'src/models/documents/product-document.model';
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })
-export class ProductDetailsComponent implements OnInit, AfterViewInit {
+export class ProductDetailsComponent implements OnInit {
+
+  constructor(private route: ActivatedRoute, private productService: ProductService){}
+ private authService = inject(AuthService)
   readonly dialog = inject(MatDialog);
+
+  @ViewChild(MatTable) table!: MatTable<any>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   displayedColumns: string[] = ['workType', 'emissions', 'workDate', 'attachments'];
-  productLifeCycle: ProductLifeCycle[] = [];
   userRole: string = "SCP";
   productInfo!: ProductInfo;
   ingredients:ProductInfo[] = [];
-  dataSource: any;
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  private authService = inject(AuthService)
-
-  constructor(private productService: ProductService){}
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
+  lifeCycleSource = new MatTableDataSource<ProductLifeCycle>([]);
+  lifeCyclesList: ProductLifeCycle[] = [];
 
   ngOnInit(): void {
-    this.productService.selectedProduct.subscribe(data => {
-      this.productInfo = data
+    this.productService.selectedProduct.subscribe((data) => this.loadDetails(data));
+ 
+    if(this.productInfo == null){
+      let productId = this.route.snapshot.paramMap.get('id')!;
+      this.productService.getProductInfoById(productId).subscribe({
+        next: (response) => this.loadDetails(response),
+        error: (error) => console.log(error)
+      })
+    }
+  }
 
-      if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
-        this.productInfo.ingredients.forEach(element => {
-          this.productService.getProductInfoById(element.ingredientId!).subscribe({
-            next: (response) => {
-              this.ingredients.push(response)
-            },
-            error: (error) => console.log(error)
-          })
-        });
-      }
-    });
+  loadDetails(data: ProductInfo){
+    this.productInfo = data;
 
+    if (this.lifeCycleSource != null) {
+      this.lifeCyclesList = this.productInfo.productLifeCycles!;
+      this.lifeCycleSource.data = this.lifeCyclesList;
+      this.lifeCycleSource.paginator = this.paginator;
+    }
 
-    this.dataSource = new MatTableDataSource<WorkElement>(workElements);
-    this.dataSource.paginator = this.paginator;
+    this.loadProductIngredients();
   }
 
   sendProduct(product: ProductInfo) {
-    this.ingredients = [];
     this.productService.passProduct(product);
   }
 
   addWork(){
-    this.dialog.open(NewWorkDialogComponent)
+    let currentDialog = this.dialog.open(NewWorkDialogComponent,{data: {product: this.productInfo}});
+
+    currentDialog.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.lifeCycleSource.data = (this.lifeCycleSource != null) ? [result.newWork, ...this.lifeCycleSource.data] : result.newWork;
+        this.lifeCycleSource.paginator = this.paginator;
+        this.table.renderRows();
+      }
+    });
   }
 
   modifyProduct(){
-    this.dialog.open(EditProductDialogComponent,
-      {data: {product: this.productInfo}}
-    );
+    let currentDialog = this.dialog.open(EditProductDialogComponent, {data: {product: this.productInfo, ingredients: this.ingredients}});
+
+    currentDialog.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.productInfo = result.modifiedProduct;
+        this.loadProductIngredients();
+      }
+    });
+  }
+
+  loadProductIngredients(){
+    const ingredientIds: string[] = this.productInfo.ingredients!.map(ingredient => ingredient.ingredientId);
+
+    this.ingredients = [];
+
+    if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
+        this.productService.getProductsInfoByIds(ingredientIds).subscribe({
+          next: (response) => this.ingredients = response,
+          error: (error) => console.log(error)
+        })
+    }
   }
 
   deleteDocument() {
@@ -97,28 +125,3 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
     return true ;
   }
 }
-
-export interface WorkElement {
-  workType: string;
-  emissions: number;
-  workDate: number;
-  attachments: string;
-}
-
-const workElements: WorkElement[] = [
-  { workType: "Construction", emissions: 120, workDate: 1709481600000, attachments: "report1.pdf" },
-  { workType: "Transport", emissions: 85, workDate: 1709568000000, attachments: "logistics.pdf" },
-  { workType: "Manufacturing", emissions: 200, workDate: 1709654400000, attachments: "factory_report.pdf" },
-  { workType: "Agriculture", emissions: 150, workDate: 1709740800000, attachments: "soil_test.pdf" },
-  { workType: "Energy Production", emissions: 300, workDate: 1709827200000, attachments: "power_data.pdf" },
-  { workType: "Mining", emissions: 250, workDate: 1709913600000, attachments: "extraction_log.pdf" },
-  { workType: "Recycling", emissions: 50, workDate: 1710000000000, attachments: "waste_management.pdf" },
-  { workType: "Waste Disposal", emissions: 175, workDate: 1710086400000, attachments: "disposal_plan.pdf" },
-  { workType: "Logistics", emissions: 110, workDate: 1710172800000, attachments: "shipment_details.pdf" },
-  { workType: "Fishing", emissions: 90, workDate: 1710259200000, attachments: "catch_report.pdf" },
-  { workType: "Forestry", emissions: 130, workDate: 1710345600000, attachments: "deforestation.pdf" },
-  { workType: "Chemical Processing", emissions: 220, workDate: 1710432000000, attachments: "chemical_analysis.pdf" },
-  { workType: "Retail", emissions: 60, workDate: 1710518400000, attachments: "sales_data.pdf" },
-  { workType: "Construction", emissions: 140, workDate: 1710604800000, attachments: "building_permit.pdf" },
-  { workType: "Agriculture", emissions: 170, workDate: 1710691200000, attachments: "crop_rotation.pdf" }
-];

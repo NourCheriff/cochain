@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseHttpService } from 'src/app/core/services/api.service';
-import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { Product } from 'src/models/product/product.model';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
+import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
+import { ProductDocument } from 'src/models/documents/product-document.model';
+import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycle-document.model';
 import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
+
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +30,17 @@ export class ProductService {
     return this.apiService.add("api/Product", productInfo)
   }
 
-  // addProductLifeCycle(productLifeCycle: ProductLifeCycle): Observable<ProductLifeCycle>{
-  //   return this.apiService.add("api/ProductLifeCycle", productLifeCycle)
-  // }
+  updateProductInfo(productInfo: ProductInfo): Observable<ProductInfo>{
+    return this.apiService.add("api/Product/UpdateProduct", productInfo)
+  }
+
+  addProductLifeCycleGeneric(newWork: ProductLifeCycle): Observable<ProductLifeCycle>{
+    return this.apiService.add("api/ProductLifeCycle/LifeCycle/AddGeneric", newWork)
+  }
+
+  addProductLifeCycleTransport(newWork: ProductLifeCycle): Observable<ProductLifeCycle>{
+    return this.apiService.add("api/ProductLifeCycle/LifeCycle/AddTransport", newWork)
+  }
 
   getProductCategories(): Observable<ProductCategory[]> {
     return this.apiService.getAll('api/Product/categories');
@@ -63,8 +74,28 @@ export class ProductService {
     return this.apiService.getById('api/Product', productId)
   }
 
-  getAllSupplyChainPartner(): Observable<SupplyChainPartner[]> {
-    return this.apiService.getAll('api/SupplyChainPartner')
+  getProductsInfoByIds(ids: string[]): Observable<ProductInfo[]> {
+    return this.apiService.getByIds('api/Product/products', ids);
   }
 
+  uploadOriginDocument(originDocument: ProductDocument): Observable<ProductDocument>{
+    return this.apiService.add('api/Document/AddOriginDocument', originDocument);
+  }
+
+  deleteOriginDocument(documentId: string, documentType: string): Observable<ProductDocument>{
+    return this.apiService.delete('api/Document', documentId, documentType);
+  }
+  
+  uploadLifeCycleDocument(lifeCycleDocument: ProductLifeCycleDocument): Observable<ProductLifeCycleDocument>{
+    let url = `api/Document/`;
+
+    if(lifeCycleDocument.type == "invoice"){
+      url += `AddInvoicesDocument`;
+    }
+    else{
+      url += `AddTransportDocument`;
+    }
+
+    return this.apiService.add(url, lifeCycleDocument);
+  }
 }

@@ -11,12 +11,12 @@ namespace CochainAPI.Model.Product
         public bool IsEmissionProcessed { get; set; }
         public string? EmissionTransactionId { get; set; }
         public Guid ProductLifeCycleCategoryId { get; set; }
-        public ProductLifeCycleCategory ProductLifeCycleCategory { get; set; }
+        public ProductLifeCycleCategory? ProductLifeCycleCategory { get; set; }
         public Guid SupplyChainPartnerId { get; set; }
-        public SupplyChainPartner SupplyChainPartner { get; set; }
+        public SupplyChainPartner? SupplyChainPartner { get; set; }
         public Guid ProductInfoId { get; set; }
         [JsonIgnore]
-        public ProductInfo ProductInfo { get; set; }
+        public ProductInfo? ProductInfo { get; set; }
         public List<ProductLifeCycleDocument>? ProductLifeCycleDocuments { get; set; }
     }
 }
