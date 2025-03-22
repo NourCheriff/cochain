@@ -7,6 +7,8 @@ import { ProductInfo } from 'src/models/product/product-info.model';
 import { Product } from 'src/models/product/product.model';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
+import { ProductDocument } from 'src/models/documents/product-document.model';
+import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycle-document.model';
 
 @Injectable({
   providedIn: 'root'
@@ -64,5 +66,26 @@ export class ProductService {
 
   getProductsInfoByIds(ids: string[]): Observable<ProductInfo[]> {
     return this.apiService.getByIds('api/Product/products', ids);
+  }
+
+  uploadOriginDocument(originDocument: ProductDocument): Observable<ProductDocument>{
+    return this.apiService.add('api/Document/AddOriginDocument', originDocument);
+  }
+
+  deleteOriginDocument(documentId: string, documentType: string): Observable<ProductDocument>{
+    return this.apiService.delete('api/Document', documentId, documentType);
+  }
+
+  uploadLifeCycleDocument(lifeCycleDocument: ProductLifeCycleDocument): Observable<ProductLifeCycleDocument>{
+    let url = `api/Document/`;
+
+    if(lifeCycleDocument.type == "invoice"){
+      url += `AddInvoicesDocument`;
+    }
+    else{
+      url += `AddTransportDocument`;
+    }
+
+    return this.apiService.add(url, lifeCycleDocument);
   }
 }
