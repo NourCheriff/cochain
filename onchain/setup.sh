@@ -9,19 +9,21 @@ mkdir -p $OUTPUT_DIR && cd $OUTPUT_DIR
 echo ""
 echo "Creating validators..."
 echo ""
+
 for i in $(seq 1 $VALIDATORS); do	
 	mkdir ./validator$i
 	mkdir -p ./keys/validator$i
 done
 
 echo ""
-echo "Generating public keys..."
+echo "Generating keys..."
 echo ""
+
 for i in $(seq 1 $VALIDATORS); do
 	besu --data-path=./validator$i \
 		public-key \
 		export-address \
-		--to=./keys/validator$i/key.pub
+		--to=./keys/validator$i/address.pub
 done
 
 echo ""
@@ -33,13 +35,14 @@ for i in $(seq 1 $VALIDATORS); do
 done
 
 echo ""
-echo "Extracting public addresses from private keys..."
+echo "Exporting node ids (public keys)..."
 echo ""
 
 for i in $(seq 1 $VALIDATORS); do
-	besu public-key export-address \
+	besu --data-path=./validator$i \
+		public-key export \
 		--node-private-key-file=./keys/validator$i/key \
-		--to=./keys/validator$i/address.txt \
+		--to=./keys/validator$i/key.pub \
 		--ec-curve=secp256k1
 done
 
@@ -48,7 +51,7 @@ touch toEncode.json
 echo "[" >> toEncode.json
 
 for i in $(seq 1 $VALIDATORS); do
-	echo -n "\"$(cat ./keys/validator$i/address.txt)\"" >> toEncode.json
+	echo -n "\"$(cat ./keys/validator$i/address.pub)\"" >> toEncode.json
 	if [[ $i -ne $VALIDATORS ]]; then
 		echo "," >> toEncode.json
 	fi
