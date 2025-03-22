@@ -58,11 +58,7 @@ export class ScpProductsComponent implements OnInit {
     })
   }
 
-  applyFilter() {
-      //api call queryString
-  }
-
- deleteCertificate(id: string){
+  deleteCertificate(id: string){
     this.certificateService.deleteCertificate(id).subscribe({
       next: (response) => {
         console.log(response)

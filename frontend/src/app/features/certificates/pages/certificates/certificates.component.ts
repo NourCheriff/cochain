@@ -56,11 +56,6 @@ export class CertificatesComponent implements OnInit {
     })
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   deleteCertificate(id: string){
     this.certificateService.deleteCertificate(id).subscribe({
       next: (response) => {
