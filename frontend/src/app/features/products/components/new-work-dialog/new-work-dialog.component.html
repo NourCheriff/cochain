@@ -29,7 +29,7 @@
         </label>
         <div class="file_button">
           <input type="file" #billFile id="billUp" accept="application/pdf" (change)="onSelectFile($event)"/>
-          <button mat-icon-button class="reset_button" type="button" (click)="reset('bill')"><mat-icon>delete_outline</mat-icon></button>
+          <button mat-icon-button class="reset_button" type="button" (click)="reset('invoice')"><mat-icon>delete_outline</mat-icon></button>
         </div>
       </div>
       @if(isTransportDocument){
