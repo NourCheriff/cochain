@@ -22,6 +22,8 @@ import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ProductService } from '../../services/product.service';
 import { DatePipe } from '@angular/common';
 import { sha256 } from 'js-sha256';
+import { DocumentType } from 'src/types/document.enum';
+import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-edit-product-dialog',
   imports: [
@@ -45,6 +47,8 @@ import { sha256 } from 'js-sha256';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditProductDialogComponent implements OnInit{
+  
+  private authService = inject(AuthService)
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo, ingredients: ProductInfo[]}, private productService: ProductService) {
     const INGREDIENTS = this.data.ingredients.map(ingredient => ingredient.name).filter((name): name is string => name !== undefined);
@@ -79,8 +83,6 @@ export class EditProductDialogComponent implements OnInit{
     this.loadProductCategories();
   }
 
-
-
   private loadProductCategories(): void {
     this.productService.getProductCategories().subscribe({
       next: (response) => {
@@ -113,7 +115,7 @@ export class EditProductDialogComponent implements OnInit{
       this.productService.getAllProductInfo().subscribe({
         next: (response) => {
 
-          this.allIngredientsRes = response;
+          this.allIngredientsRes = response.items!;
           this.allIngredientsRes.forEach(ingredient =>{
 
             if (ingredient.id != this.data.product.id) {
@@ -158,9 +160,9 @@ export class EditProductDialogComponent implements OnInit{
 
     this.productService.updateProductInfo(modifiedProduct).subscribe({
       next: (response) => {
-        let originDocument = response.productDocuments!.find(x => x.type === "origin");
+        let originDocument = response.productDocuments!.find(x => x.type === DocumentType.Origin);
 
-        this.productService.deleteOriginDocument(originDocument!.id!, "origin").subscribe({
+        this.productService.deleteOriginDocument(originDocument!.id!, DocumentType.Origin).subscribe({
           next: (response) => {},
           error: (error) => console.error(error),
         })
@@ -234,8 +236,8 @@ export class EditProductDialogComponent implements OnInit{
         hash: hashedBase64Document,
         fileString: base64String,
         productInfoId: productInfoId,
-        supplyChainPartnerReceiverId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
-        type: 'origin',
+        supplyChainPartnerReceiverId: this.authService.userId!,
+        type: DocumentType.Origin,
       };
 
       this.productService.uploadOriginDocument(originDocument).subscribe({

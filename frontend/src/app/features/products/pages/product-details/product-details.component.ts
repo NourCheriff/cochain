@@ -39,14 +39,13 @@ import { ProductDocument } from 'src/models/documents/product-document.model';
 export class ProductDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private productService: ProductService){}
- private authService = inject(AuthService)
+  private authService = inject(AuthService)
   readonly dialog = inject(MatDialog);
 
   @ViewChild(MatTable) table!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['workType', 'emissions', 'workDate', 'attachments'];
-  userRole: string = "SCP";
   productInfo!: ProductInfo;
   ingredients:ProductInfo[] = [];
   lifeCycleSource = new MatTableDataSource<ProductLifeCycle>([]);
@@ -54,7 +53,7 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.productService.selectedProduct.subscribe((data) => this.loadDetails(data));
- 
+
     if(this.productInfo == null){
       let productId = this.route.snapshot.paramMap.get('id')!;
       this.productService.getProductInfoById(productId).subscribe({
@@ -116,7 +115,7 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  deleteDocument() {
+  deleteDocument(id: string) {
 
   }
 

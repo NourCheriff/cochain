@@ -17,6 +17,8 @@ import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycle-document.model';
 import { sha256 } from 'js-sha256';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { DocumentType } from 'src/types/document.enum';
 @Component({
   selector: 'app-new-work-dialog',
     imports: [
@@ -39,7 +41,7 @@ import { sha256 } from 'js-sha256';
 export class NewWorkDialogComponent implements OnInit, AfterViewInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}, private productService: ProductService) {}
-
+  private authService = inject(AuthService)
   readonly dialogRef = inject(MatDialogRef<NewWorkDialogComponent>);
 
   @ViewChild('billFile') billFile!: ElementRef;
@@ -88,7 +90,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
       emissions: this.emissionsValue,
       isEmissionsProcessed: false,
       productLifeCycleCategoryId: this.newWorkForm.value.work!,
-      supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+      supplyChainPartnerId: this.authService.userId!,
       productInfoId: this.data.product.id!,
     }
 
@@ -138,8 +140,8 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
         fileString: base64String,
         productLifeCycleId: newWorkId,
         supplyChainPartnerReceiverId: this.data.product.supplyChainPartnerId,
-        userEmitterId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
-        type: (isTransportDocument) ? 'transport' : 'invoice',
+        userEmitterId: this.authService.userId!,
+        type: (isTransportDocument) ? DocumentType.Transport : DocumentType.Invoice,
       };
 
       this.productService.uploadLifeCycleDocument(lifeCycleDocument).subscribe({
@@ -151,8 +153,8 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     reader.readAsDataURL((isTransportDocument) ? this.transportFileUploaded : this.billFileUploaded);
   }
 
-  reset(fileType: 'bill' | 'transport') {
-    if(fileType === 'bill'){
+  reset(fileType: 'invoice' | 'transport') {
+    if(fileType === DocumentType.Invoice){
       this.billFileUploaded = undefined!
       this.billFile.nativeElement.value = null;
     }
@@ -168,13 +170,13 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     }
     const selectedCategory = this.productLifeCycleCategories.find(category => category.id === this.selectedWorkType);
 
-    return selectedCategory!.name === 'Transport' ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
+    return selectedCategory!.name === DocumentType.Transport ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
   }
 
   onSelectionChange(value: string) {
     const selectedCategory = this.productLifeCycleCategories.find(category => category.id === value);
     if (selectedCategory) {
-      this.isTransportDocument = selectedCategory.name === 'Transport';
+      this.isTransportDocument = selectedCategory.name === DocumentType.Transport;
     }
 
   }
