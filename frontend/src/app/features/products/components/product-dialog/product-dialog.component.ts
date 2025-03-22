@@ -14,9 +14,10 @@ import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Product } from 'src/models/product/product.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
+import { ProductIngredient } from 'src/models/product/product-ingredient.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-product-dialog',
   imports: [
@@ -41,33 +42,32 @@ import { ProductService } from '../../services/product.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDialogComponent implements OnInit {
-  readonly dialogRef = inject(MatDialogRef<ProductDialogComponent>);
-  hasIngredients: boolean = false;
 
-  newProductForm = new FormGroup({
-    category: new FormControl('', [Validators.required]),
-    product: new FormControl('', [Validators.required]),
-    date: new FormControl('', [Validators.required]),
-    hasIngredients: new FormControl(false),
-    ingredients: new FormControl('')
-  });
+  constructor(private productService: ProductService) {}
+
+  readonly dialogRef = inject(MatDialogRef<ProductDialogComponent>);
+  readonly announcer = inject(LiveAnnouncer);
+  readonly ingredients = signal<string[]>([]);
+  readonly allIngredients: string[] = [];
 
   @ViewChild("fileInput") fileInput!: ElementRef
   fileUploaded!: File
   uploadEnabled: boolean = false;
 
-  readonly announcer = inject(LiveAnnouncer);
-
+  alreadyLoaded: boolean = false;
+  hasIngredients: boolean = false;
+  genericProducts: Product[] = [];
+  allIngredientsRes: ProductInfo[] = [];
   productCategories: ProductCategory[] = [];
 
-  allIngredientsRes: ProductInfo[] = [];
-
-  genericProducts: Product[] = [];
-  readonly ingredients = signal<string[]>([]);
-  readonly allIngredients: string[] = [];
-
-
-  constructor(private productService: ProductService) {}
+  newProductForm = new FormGroup({
+    category: new FormControl('', [Validators.required]),
+    product: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required]),
+    hasIngredients: new FormControl(false),
+    ingredients: new FormControl('')
+  });
 
   ngOnInit(): void {
     this.loadProductCategories();
@@ -80,7 +80,14 @@ export class ProductDialogComponent implements OnInit {
     });
   }
 
-  loadIngredients(): void {
+  loadIngredientsOnce(){
+    if(!this.alreadyLoaded){
+      this.loadIngredients();
+      this.alreadyLoaded = true;
+    }
+  }
+
+  private loadIngredients(): void {
     if(this.allIngredientsRes != null)
       this.productService.getAllProductInfo().subscribe({
         next: (response) => {
@@ -102,64 +109,41 @@ export class ProductDialogComponent implements OnInit {
       },
       error: (error) => console.error(error)
     });
-
   }
 
   createProduct(){
-    const productCategory = this.newProductForm.value.category
-    const genericProduct = this.newProductForm.value.product
-    const date = this.newProductForm.value.date
-    const ingredients = this.ingredients()
+    const ingredientsValue = this.ingredients();
 
-    // const reader = new FileReader();
-    // reader.onload = () => {
-    //   const base64String = reader.result?.toString().split(',')[1]; // Rimuove il prefisso 'data:...;base64,'
+    const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
+      const ingredient = this.allIngredientsRes.find(item => item.name === ingredientName);
+      return ingredient ? { ingredientId: ingredient.id }: null;
+    }).filter((ingredient): ingredient is ProductIngredient => ingredient !== null);
 
-    // const category: ProductCategory = {
-    //   description: productCategory!
-    // }
+    const datepipe: DatePipe = new DatePipe('en-US')
+    let formattedDate = datepipe.transform(this.newProductForm.value.date!, 'YYYY-MM-dd');
 
-    // const product: Product = {
-    //   description: 'prova',
-    //   category: category,
-    // }
-    /*
-    const product: Product = {
-      description: 'prova',
-      category: category,
+    const newProduct: ProductInfo = {
+      name: this.newProductForm.value.name!,
+      productId: this.newProductForm.value.product!,
+      supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+      expirationDate: formattedDate!,
+      ingredients: productIngredients,
     }
 
-    // const productInfo: ProductInfo = {
-    //   product: product,
-    //   expirationDate: date!,
-    //   productId: '',
-    //   supplyChainPartnerId: ''
-    //  // supplyChainPartner: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095'
-    // }
-
-    // this.productService.addProductInfo(productInfo).subscribe({
-    //   next: (response) => console.log(response),
-    //   error: (error) => console.error(error),
-    // })
-
-    */
-      // this.fileUploadService.uploadFile(doc).subscribe({
-      //   next: (response) => console.log('File uploaded successfully', response),
-      //   error: (error) => console.error('File upload failed', error),
-      // });
-    //};
-
-    //reader.readAsDataURL(this.fileUploaded);
+    this.productService.addProductInfo(newProduct).subscribe({
+      next: (response) => this.dialogRef.close({ newProduct: response }),
+      error: (error) => console.error(error),
+    })
   }
 
 
   readonly filteredIngredients = computed(() => {
-  return this.ingredients().length === 0
-    ? this.allIngredients
-    : this.allIngredients.filter((ingredient: string) =>
-        !this.ingredients().includes(ingredient)
-    );
-  });
+    return this.ingredients().length === 0
+      ? this.allIngredients
+      : this.allIngredients.filter((ingredient: string) =>
+          !this.ingredients().includes(ingredient)
+      );
+    });
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();

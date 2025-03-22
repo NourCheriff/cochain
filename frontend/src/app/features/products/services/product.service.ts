@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseHttpService } from 'src/app/core/services/api.service';
-import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { ProductCategory } from 'src/models/product/product-category.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { Product } from 'src/models/product/product.model';
@@ -27,9 +26,17 @@ export class ProductService {
     return this.apiService.add("api/Product", productInfo)
   }
 
-  // addProductLifeCycle(productLifeCycle: ProductLifeCycle): Observable<ProductLifeCycle>{
-  //   return this.apiService.add("api/ProductLifeCycle", productLifeCycle)
-  // }
+  updateProductInfo(productInfo: ProductInfo): Observable<ProductInfo>{
+    return this.apiService.add("api/Product/UpdateProduct", productInfo)
+  }
+
+  addProductLifeCycleGeneric(newWork: ProductLifeCycle): Observable<ProductLifeCycle>{
+    return this.apiService.add("api/ProductLifeCycle/LifeCycle/AddGeneric", newWork)
+  }
+
+  addProductLifeCycleTransport(newWork: ProductLifeCycle): Observable<ProductLifeCycle>{
+    return this.apiService.add("api/ProductLifeCycle/LifeCycle/AddTransport", newWork)
+  }
 
   getProductCategories(): Observable<ProductCategory[]> {
     return this.apiService.getAll('api/Product/categories');
@@ -51,12 +58,11 @@ export class ProductService {
     return this.apiService.getAll('api/Product/generic', { id :categoryId })
   }
 
-  getProductInfoById(product: string): Observable<ProductInfo[]> {
-    return this.apiService.getByIdWithParams('api/Product', {'id' :product})
+  getProductInfoById(product: string): Observable<ProductInfo> {
+    return this.apiService.getById('api/Product', product)
   }
 
-  getAllSupplyChainPartner(): Observable<SupplyChainPartner[]>{
-    return this.apiService.getAll('api/SupplyChainPartner/categories')
+  getProductsInfoByIds(ids: string[]): Observable<ProductInfo[]> {
+    return this.apiService.getByIds('api/Product/products', ids);
   }
-
 }

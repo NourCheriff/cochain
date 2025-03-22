@@ -5,21 +5,10 @@
       <mat-label>Work Type</mat-label>
       <mat-select [(value)]="selectedWorkType" formControlName="work" (selectionChange)="onSelectionChange($event.value)">
        @for (productLifeCycleCategory of productLifeCycleCategories; track $index) {
-          <mat-option [value]="productLifeCycleCategory.name"> {{ productLifeCycleCategory.name }} </mat-option>
+          <mat-option [value]="productLifeCycleCategory.id"> {{ productLifeCycleCategory.name }} </mat-option>
         }
       </mat-select>
     </mat-form-field>
-
-    @if(isReceiverVisible){
-      <mat-form-field appearance="outline">
-        <mat-label>Receiver</mat-label>
-        <mat-select [(value)]="selectedReceiver" formControlName="receiver">
-          @for (supplyChainPartner of supplyChainPartners; track $index) {
-          <mat-option [value]="supplyChainPartner.name"> {{ supplyChainPartner.name }} </mat-option>
-        }
-        </mat-select>
-      </mat-form-field>
-    }
 
     <mat-form-field appearance="outline" >
       <mat-label>Choose a date</mat-label>
@@ -43,7 +32,7 @@
           <button mat-icon-button class="reset_button" type="button" (click)="reset('bill')"><mat-icon>delete_outline</mat-icon></button>
         </div>
       </div>
-      @if(isReceiverVisible){
+      @if(isTransportDocument){
         <div class="transport">
           <label for="transportUp">
             Upload transport document

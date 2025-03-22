@@ -31,11 +31,31 @@ namespace CochainAPI.Data.Services
             return await _productRepository.GetGenericProducts(id);
         }
 
-        public async Task<List<ProductInfo>?> GetProductById(Guid id)
+        public async Task<ProductInfo?> GetProductById(Guid id)
         {
             if (Guid.TryParse(id.ToString(), out var productId))
             {
                 return await _productRepository.GetProductById(productId);
+            }
+
+            return null;
+        }
+
+        public async Task<List<ProductInfo>?> GetProductsByIds(Guid[] ids)
+        {
+            if (ids != null && ids.Any())
+            {
+                return await _productRepository.GetProductsByIds(ids);
+            }
+
+            return null;
+        }
+
+        public async Task<Page<ProductInfo>?> GetProductsByIds(Guid[] ids)
+        {
+            if (ids != null && ids.Any())
+            {
+                return await _productRepository.GetProductsByIds(ids);
             }
 
             return null;
@@ -53,6 +73,25 @@ namespace CochainAPI.Data.Services
                 return await _productRepository.GetProductsOfSCP(id, queryParam, pageNumber, pageSize);
             }
             return null;
+        }
+
+        public async Task<ProductInfo?> UpdateProduct(ProductInfo productObj)
+        {
+            bool isSuccess = false;
+            if (!string.IsNullOrEmpty(productObj.Id.ToString()))
+            {
+                var obj = await _productRepository.GetProductById(productObj.Id);
+                if (obj != null)
+                {
+                    obj.Name = productObj.Name;
+                    obj.ProductId = productObj.ProductId;
+                    obj.ExpirationDate = productObj.ExpirationDate;
+                    obj.Ingredients = productObj.Ingredients;
+                    isSuccess = await _productRepository.UpdateProduct(obj);
+                }
+            }
+
+            return isSuccess ? productObj : null;
         }
     }
 }

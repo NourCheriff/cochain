@@ -1,23 +1,20 @@
-import { Component, inject, ChangeDetectionStrategy, ViewChild, ElementRef, OnInit, AfterViewInit} from '@angular/core';
-import {
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { Component, inject, Inject, ChangeDetectionStrategy, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
+import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators,AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { ProductService } from '../../services/product.service';
-import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
-
+import { ProductInfo } from 'src/models/product/product-info.model';
+import { DatePipe } from '@angular/common';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-new-work-dialog',
     imports: [
@@ -39,6 +36,8 @@ import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 })
 export class NewWorkDialogComponent implements OnInit, AfterViewInit {
 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}, private productService: ProductService) {}
+
   readonly dialogRef = inject(MatDialogRef<NewWorkDialogComponent>);
 
   @ViewChild('billFile') billFile!: ElementRef;
@@ -47,12 +46,12 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
 
   selectedReceiver: string = '';
   selectedWorkType: string = '';
-  isReceiverVisible: boolean = false;
+  isTransportDocument: boolean = false;
 
   newWorkForm = new FormGroup({
     work: new FormControl('', Validators.required),
     receiver: new FormControl('', this.receiverValidator()),
-    workDate: new FormControl(Date.now(),[Validators.required])
+    workDate: new FormControl(new Date(Date.now()),[Validators.required])
   });
 
   billFileUploaded!: File;
@@ -60,12 +59,11 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
   uploadEnabled: boolean = false;
 
   productLifeCycleCategories: ProductLifeCycleCategory[] = [];
-  supplyChainPartners: SupplyChainPartner[] = [];
-
-  constructor(private productService: ProductService) {}
+  emissionsValue: any;
 
   ngAfterViewInit(): void {
-     this.emissions.nativeElement.textContent = `${this.getRandomInt(0, 100)}T CO2e `;
+    this.emissionsValue = this.getRandomInt(0, 100);
+    this.emissions.nativeElement.textContent = `${this.emissionsValue}T CO2e `;
   }
 
   ngOnInit(): void {
@@ -75,50 +73,38 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
   getAllProductLifeCycleCategories(){
     this.productService.getAllProductLifeCycleCategories().subscribe({
       next: (response) => {
-        this.productLifeCycleCategories = response
-      },
-      error: (error) => console.error(error)
-    })
-  }
-
-  //QUESTA API NON VA BENE, SERVE UNA PER PRENDERE GLI SCP, NON LE CATEGORIE
-  getAllSupplyChainPartner(){
-    this.productService.getAllSupplyChainPartner().subscribe({
-      next: (response) => {
-        this.supplyChainPartners = response
+        this.productLifeCycleCategories = response;
       },
       error: (error) => console.error(error)
     })
   }
 
   createWork(): void {
-    if(this.isReceiverVisible){
-     const receiver = this.newWorkForm.value.receiver
+    const datepipe: DatePipe = new DatePipe('en-US')
+    let formattedDate = datepipe.transform(this.newWorkForm.value.workDate, 'YYYY-MM-dd') + "T00:00:00Z";
+
+    const newProductLifeCycle: ProductLifeCycle = {
+      timestamp: formattedDate!,
+      emissions: this.emissionsValue,
+      isEmissionsProcessed: false,
+      productLifeCycleCategoryId: this.newWorkForm.value.work!,
+      supplyChainPartnerId: 'd65e685f-8bdd-470b-a6b8-c9a62e39f095',
+      productInfoId: this.data.product.id!,
     }
 
-    const fileData = new FormData()
-    fileData.append('bill', this.billFileUploaded)
-    if(this.isReceiverVisible){
-      fileData.append('transport', this.transportFileUploaded)
+    if(this.isTransportDocument){
+      const receiver = this.newWorkForm.value.receiver
+      this.productService.addProductLifeCycleTransport(newProductLifeCycle).subscribe({
+        next: (response) => this.dialogRef.close({ newWork: response }),
+        error: (error) => console.error(error),
+      })
     }
-
-    // const productLifeCycle: ProductLifeCycle = {
-    //   emissions: this.emissions.nativeElement.value,
-    //   timestamp: Date.now().toString(),
-    //   productLifeCycleCategory: this.newWorkForm.value.work,
-    //   productInfo: productId,
-    //   supplyChainPartner: receiver || currentUser
-    // }
-
-    // this.fileUploadService.uploadFile(file).subscribe({
-    //   next: (response) => {
-    //     console.log('File uploaded successfully', response);
-    //   },
-    //   error: (error) => {
-    //     console.error('File upload failed', error);
-    //   },
-    // });
-
+    else{
+      this.productService.addProductLifeCycleGeneric(newProductLifeCycle).subscribe({
+        next: (response) => this.dialogRef.close({ newWork: response }),
+        error: (error) => console.error(error),
+      })
+    }
   }
 
   onSelectFile(event : Event){
@@ -139,7 +125,8 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     if(fileType === 'bill'){
       this.billFileUploaded = undefined!
       this.billFile.nativeElement.value = null;
-    }else{
+    }
+    else{
       this.transportFileUploaded = undefined!
       this.transportFile.nativeElement.value = null;
     }
@@ -149,15 +136,11 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     if (!this.newWorkForm.valid) {
       return false;
     }
-    return this.selectedWorkType === 'Transport' ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
+    return this.selectedWorkType === '7a286d32-f89b-4e86-88bc-a6eb32fa2132' ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
   }
 
   onSelectionChange(value: string) {
-    this.selectedWorkType = value;
-    this.isReceiverVisible = value === 'Transport';
-    if (this.isReceiverVisible) {
-      this.getAllSupplyChainPartner();
-    }
+    this.isTransportDocument = value === '7a286d32-f89b-4e86-88bc-a6eb32fa2132';
   }
 
   private getRandomInt(min: number, max: number): number{
@@ -172,8 +155,8 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
       const value = control.value;
       const workValue = this.newWorkForm?.value?.work;
 
-      // If the work value is "transport", receiver must be provided
-      if (workValue === "Transport" && (!value || value === '')) {
+      // If the work value is "7a286d32-f89b-4e86-88bc-a6eb32fa2132", receiver must be provided
+      if (workValue === "7a286d32-f89b-4e86-88bc-a6eb32fa2132" && (!value || value === '')) {
         return { receiverRequired: true };
       }
 

@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild, AfterViewInit, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild, AfterViewInit, Inject, OnInit } from '@angular/core';
 import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +14,12 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/mat
 import { MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ProductInfo } from 'src/models/product/product-info.model'
+import { Product } from 'src/models/product/product.model';
+import { ProductCategory } from 'src/models/product/product-category.model';
+import { ProductIngredient } from 'src/models/product/product-ingredient.model';
+import { ProductInfo } from 'src/models/product/product-info.model';
+import { ProductService } from '../../services/product.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-edit-product-dialog',
   imports: [
@@ -37,44 +42,129 @@ import { ProductInfo } from 'src/models/product/product-info.model'
   styleUrl: './edit-product-dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditProductDialogComponent {
+export class EditProductDialogComponent implements OnInit{
 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo, ingredients: ProductInfo[]}, private fileUploadService: FileUploadService, private productService: ProductService) {
+    const INGREDIENTS = this.data.ingredients.map(ingredient => ingredient.name).filter((name): name is string => name !== undefined);
+    this.modifiedProductForm.addControl('name', new FormControl<string>(this.data.product.name!, Validators.required));
+    this.modifiedProductForm.addControl('product', new FormControl<string>(this.data.product.product?.id!, Validators.required));
+    this.modifiedProductForm.addControl('date', new FormControl<Date>(new Date(this.data.product.expirationDate), Validators.required));
+    this.modifiedProductForm.addControl('category', new FormControl<string>(this.data.product.product?.category?.id!, Validators.required));
+    this.modifiedProductForm.addControl('hasIngredients', new FormControl<boolean>((INGREDIENTS.length > 0)? true : false, Validators.required));
+    if(INGREDIENTS.length > 0){
+      this.loadIngredients(INGREDIENTS);
+      this.modifiedProductForm.addControl('ingredients', new FormControl<string>(""));
+    }
+  }
+
+  readonly allIngredients: string[] = [];
+  readonly ingredients = signal<string[]>([]);
+  readonly announcer = inject(LiveAnnouncer);
   readonly dialogRef = inject(MatDialogRef<EditProductDialogComponent>);
 
   @ViewChild("fileInput") fileInput!: ElementRef
   fileUploaded!: File
   uploadEnabled: boolean = false;
 
-  readonly announcer = inject(LiveAnnouncer);
+  modifiedProductForm = new FormGroup<ProductForm>({});
+  genericProducts: Product[] = [];
+  productCategories: ProductCategory[] = [];
+  allIngredientsRes: ProductInfo[] = [];
+  alreadyLoaded: boolean = false;
 
-  // get from API
-  readonly products: Option[] = [
-    { value: 'Uova', displayValue: 'Uova' },
-    { value: 'Farina', displayValue: 'Farina' },
-    { value: 'Pasta', displayValue: 'Pasta' },
-    { value: 'Pizza', displayValue: 'Pizza' },
-    { value: 'Mozzarella', displayValue: 'Mozzarella' },
-  ];
+  ngOnInit(): void {
+    this.loadProductCategories();
+  }
 
-  readonly ingredients = signal<string[]>([]);
-  // get from API
-  readonly allIngredients: string[] = ['Pizza', 'Pasta', 'Farina', 'Uova', 'Mozzarella'];
+
+
+  private loadProductCategories(): void {
+    this.productService.getProductCategories().subscribe({
+      next: (response) => {
+        this.productCategories = response;
+        this.loadGenericProducts();
+      },
+      error: (error) => console.error('Error during retrieval of products.', error)
+    });
+  }
+
+  loadGenericProducts(){
+    this.productService.getAllGenericProducts(this.modifiedProductForm.getRawValue().category!).subscribe({
+      next: (response) => {
+        this.genericProducts = response;
+      },
+      error: (error) => console.error(error)
+    });
+  }
+
+  loadIngredientsOnce(){
+    if(!this.alreadyLoaded){
+      this.loadIngredients(null);
+      this.alreadyLoaded = true;
+    }
+  }
+
+  private loadIngredients(ingredients: string[] | null): void {
+    if(this.allIngredientsRes != null)
+      this.productService.getAllProductInfo().subscribe({
+        next: (response) => {
+
+          this.allIngredientsRes = response;
+          this.allIngredientsRes.forEach(ingredient =>{
+
+            if (ingredient.id != this.data.product.id) {
+              this.allIngredients.push(ingredient.name!);
+            }
+          })
+
+          if(ingredients != null){
+            this.ingredients.set(ingredients);
+          }
+        },
+        error: (error) => console.error(error)
+      });
+  }
+
+  modifyProduct(){
+    const ingredientsValue = this.ingredients();
+
+    const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
+      const ingredient = this.allIngredientsRes.find(item => item.name === ingredientName);
+      return ingredient ? { ingredientId: ingredient.id }: null;
+    }).filter((ingredient): ingredient is ProductIngredient => ingredient !== null);
+
+    const datepipe: DatePipe = new DatePipe('en-US')
+    let formattedDate = datepipe.transform(this.modifiedProductForm.value.date!, 'YYYY-MM-dd');
+
+    const modifiedProduct: ProductInfo = {
+      id: this.data.product.id,
+      name: this.modifiedProductForm.value.name!,
+      productId: this.modifiedProductForm.value.product!,
+      product: {
+        id: this.genericProducts.find(x => x.id === this.modifiedProductForm.value.product!)?.id,
+        name: this.genericProducts.find(x => x.id === this.modifiedProductForm.value.product!)?.name,
+        description: this.genericProducts.find(x => x.id === this.modifiedProductForm.value.product!)?.description,
+        categoryId : this.modifiedProductForm.value.category!,
+        category : this.productCategories.find(x => x.id === this.modifiedProductForm.value.category!),
+      },
+      supplyChainPartnerId: this.data.product.supplyChainPartnerId,
+      expirationDate: formattedDate!,
+      ingredients: productIngredients,
+    }
+
+    this.productService.updateProductInfo(modifiedProduct).subscribe({
+      next: (response) => this.dialogRef.close({ modifiedProduct: modifiedProduct }),
+      error: (error) => console.error(error),
+    })
+  }
 
   readonly filteredIngredients = computed(() => {
     return this.ingredients().length === 0
       ? this.allIngredients
-      : this.allIngredients.filter((ingredient: string) => !this.ingredients().includes(ingredient));
-  });
-
-  modifiedProductForm = new FormGroup<ProductForm>({});
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}) {
-    //const INGREDIENTS = this.data.product.ingredients!.map(ingredient => ingredient.ingredient!.name).filter((name): name is string => name !== undefined);
-    this.modifiedProductForm.addControl('name', new FormControl<string>(data.product.name!, Validators.required));
-    this.modifiedProductForm.addControl('date', new FormControl<Date>(new Date(this.data.product.expirationDate), Validators.required));
-    //this.modifiedProductForm.addControl('hasIngredients', new FormControl<boolean>((INGREDIENTS.length > 0)? true : false, Validators.required));
-    //this.ingredients.set(INGREDIENTS);
-  }
+      : this.allIngredients.filter((ingredient: string) =>
+          !this.ingredients().includes(ingredient)
+      );
+    });
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -107,24 +197,6 @@ export class EditProductDialogComponent {
     return d ? d >= today : false;
   };
 
-
-  modifyProduct(){
-    const modifiedProductName = this.modifiedProductForm.value.name
-    const modifiedDate = this.modifiedProductForm.value.date
-    if(this.modifiedProductForm.value.hasIngredients){
-      const modifiedIngredients: string[] = this.ingredients()
-      console.log(modifiedIngredients)
-    }
-
-    const fileData = new FormData()
-    fileData.append('file',this.fileUploaded)
-
-    for (const pair of fileData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
-  }
-
-
   onSelectFile(event : Event){
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -139,19 +211,17 @@ export class EditProductDialogComponent {
     }
   }
 
-   reset(){
+  reset(){
     this.fileInput.nativeElement.value = null
     this.uploadEnabled = false
   }
 }
 
-interface Option {
-  value: string;
-  displayValue: string;
-}
-
 interface ProductForm {
   name?: FormControl<string | null>;
+  product?: FormControl<string | null>;
+  category?: FormControl<string | null>;
   date?: FormControl<Date | null>;
   hasIngredients?: FormControl<boolean | null>;
+  ingredients?: FormControl<string | null>;
 }
