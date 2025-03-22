@@ -8,8 +8,6 @@ echo "Setup blockchain..."
 echo "==============================================="
 echo ""
 
-cd onchain
-
 echo ""
 echo "==============================================="
 echo "Cleaning directories..."
@@ -20,7 +18,7 @@ if docker container inspect besu &>/dev/null; then
 	docker container stop besu &>/dev/null && docker container rm besu &>/dev/null
 fi
 
-rm -rf $PWD/data &>/dev/null
+rm -rf $PWD/onchain/data &>/dev/null
 
 echo ""
 echo "==============================================="
@@ -32,7 +30,7 @@ docker run -d \
 	--name besu \
 	hyperledger/besu:$BESU_VERSION
 
-docker container cp ./setup.sh besu:/tmp/
+docker container cp $PWD/onchain/setup.sh besu:/tmp/
 
 docker exec besu sh -c "chmod +x /tmp/setup.sh"
 
@@ -50,7 +48,7 @@ echo "Copying output files to host..."
 echo "==============================================="
 echo ""
 
-docker container cp besu:/tmp/output $PWD/data
+docker container cp besu:/tmp/output $PWD/onchain/data
 
 echo ""
 echo "==============================================="
@@ -66,8 +64,8 @@ echo "Setting up genesis.json..."
 echo "==============================================="
 echo ""
 
-EXTRA_DATA=$(cat $PWD/data/.env | cut -d'=' -f2)
-sed -i 's/"extraData":.*,/"extraData": "'"$EXTRA_DATA"'",/' $PWD/genesis.json
+EXTRA_DATA=$(cat $PWD/onchain/data/.env | cut -d'=' -f2)
+sed -i 's/"extraData":.*,/"extraData": "'"$EXTRA_DATA"'",/' $PWD/onchain/genesis.json
 
 echo ""
 echo "==============================================="
@@ -75,11 +73,8 @@ echo "Setting up docker-compose.yml..."
 echo "==============================================="
 echo ""
 
-BOOTNODE_ADDRESS=$(cat $PWD/data/keys/validator1/key.pub | cut -c 3-)
-sed -i 's/"--bootnodes=enode:\/\/.*@/"--bootnodes=enode:\/\/'"$BOOTNODE_ADDRESS"'@/g' $PWD/docker-compose.yml
-
-# compile and deploy smart contracts to the chain
-# GO GO GO GO!
+BOOTNODE_ADDRESS=$(cat $PWD/onchain/data/keys/validator1/key.pub | cut -c 3-)
+sed -i 's/"--bootnodes=enode:\/\/.*@/"--bootnodes=enode:\/\/'"$BOOTNODE_ADDRESS"'@/g' $PWD/onchain/docker-compose.yml
 
 echo ""
 echo "==============================================="
