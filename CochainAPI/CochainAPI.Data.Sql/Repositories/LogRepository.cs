@@ -14,7 +14,12 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<Page<Log>> GetLogs(string? severity, string? queryParam, int? pageNumber, int? pageSize)
         {
-            var query = dbContext.Log.Include(x => x.User).Where(x => (queryParam == null || (x.Name != null && x.Name.Contains(queryParam))) && (severity == null || x.Severity.Contains(severity)));
+            var query = dbContext.Log.Include(x => x.User)
+                .Where(
+                    x => (queryParam == null || (x.Name != null && x.Name.Contains(queryParam))) && (severity == null || x.Severity.Contains(severity))
+                )
+                .OrderByDescending(x => x.Timestamp)
+                .AsQueryable();
 
             var totalSize = await query.CountAsync();
 
