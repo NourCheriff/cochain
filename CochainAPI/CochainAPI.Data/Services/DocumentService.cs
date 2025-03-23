@@ -14,12 +14,14 @@ namespace CochainAPI.Data.Services
         private readonly IContractRepository _contractRepository;
         private readonly ISupplyChainPartnerCertificateRepository _supplyChainPartnerCertificate;
         private readonly IProductLifeCycleDocumentRepository _productLifeCycleRepository;
+        private readonly IProductDocumentRepository _productDocumentRepository;
 
-        public DocumentService(IContractRepository contractRepository, ISupplyChainPartnerCertificateRepository supplyChainPartnerCertificateRepository, IProductLifeCycleDocumentRepository productLifeCycleDocumentRepository)
+        public DocumentService(IContractRepository contractRepository, ISupplyChainPartnerCertificateRepository supplyChainPartnerCertificateRepository, IProductLifeCycleDocumentRepository productLifeCycleDocumentRepository, IProductDocumentRepository productDocumentRepository)
         {
             _contractRepository = contractRepository;
             _productLifeCycleRepository = productLifeCycleDocumentRepository;
             _supplyChainPartnerCertificate = supplyChainPartnerCertificateRepository;
+            _productDocumentRepository = productDocumentRepository;
             string blobAccountUrl = "https://teststoragedocum.blob.core.windows.net";
             _blobServiceClient = new BlobServiceClient(new Uri(blobAccountUrl), new DefaultAzureCredential());
         }
@@ -30,7 +32,8 @@ namespace CochainAPI.Data.Services
             {
                 Contract contract => await AddContract(contract),
                 SupplyChainPartnerCertificate scpCertificate => await AddCertificate(scpCertificate),
-                ProductLifeCycleDocument productDocument => await AddProductDocument(productDocument),
+                ProductLifeCycleDocument productLifeCycleDocument => await AddProductLifeCycleDocument(productLifeCycleDocument),
+                ProductDocument productDocument => await AddProductDocument(productDocument),
                 _ => null,
             };
         }
@@ -104,7 +107,7 @@ namespace CochainAPI.Data.Services
             return false;
         }
 
-        public async Task<BaseDocument?> AddProductDocument(ProductLifeCycleDocument productDocument)
+        public async Task<BaseDocument?> AddProductLifeCycleDocument(ProductLifeCycleDocument productDocument)
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient("prodlifecycle");
             await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
@@ -138,13 +141,30 @@ namespace CochainAPI.Data.Services
             return false;
         }
 
+        public async Task<BaseDocument?> AddProductDocument(ProductDocument productDocument)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient("prodlifecycle");
+            await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
+            string fileName = $"{productDocument.Id}.pdf";
+            var blobClient = containerClient.GetBlobClient(fileName);
+
+            using (var stream = new MemoryStream(productDocument.File))
+            {
+                await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = "application/pdf" });
+            }
+
+            productDocument.Path = blobClient.Uri.ToString();
+            return await _productDocumentRepository.AddDocument(productDocument);
+        }
+
         public async Task<BaseDocument?> GetById(string id, string Type)
         {
             return Type switch
             {
                 "contract" => await _contractRepository.GetById(id),
                 "sustainability" => await _supplyChainPartnerCertificate.GetById(id),
-                "invoice" or "transport" or "origin" or "quality" => await _productLifeCycleRepository.GetById(id),
+                "invoice" or "transport" => await _productLifeCycleRepository.GetById(id),
+                "origin" or "quality" => await _productDocumentRepository.GetById(id),
                 _ => null,
             };
         }
@@ -153,7 +173,7 @@ namespace CochainAPI.Data.Services
         {
             return Type switch
             {
-                "Contract" => await DeleteContract(id, filename),
+                "contract" => await DeleteContract(id, filename),
                 "invoice" or "transport" or "origin" or "quality" => await DeleteProductDocument(id, filename),
                 _ => false,
             };

@@ -103,6 +103,7 @@ builder.Services.AddSingleton<IProductLifeCycleDocumentRepository, ProductLifeCy
 builder.Services.AddSingleton<ISupplyChainPartnerCertificateRepository, SupplyChainPartnerCertificateRepository>();
 builder.Services.AddSingleton<ICarbonOffsettingActionRepository, CarbonOffsettingActionRepository>();
 builder.Services.AddSingleton<ILogRepository, LogRepository>();
+builder.Services.AddSingleton<IProductDocumentRepository, ProductDocumentRepository>();
 
 builder.Services.AddSwaggerGen(swagger =>
 {
