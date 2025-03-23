@@ -14,19 +14,22 @@ namespace CochainAPI.Data.Services
 
         public async Task<ProductLifeCycle?> AddProductLifeCycle(ProductLifeCycle productLifeCycle)
         {
-
-            if (productLifeCycle.ProductLifeCycleCategoryId.ToString().Equals("7a286d32-f89b-4e86-88bc-a6eb32fa2132"))
+            var productLifeCycleCategories = await _productLifeCycleRepository.GetCategories();
+            var transportCategory = productLifeCycleCategories.FirstOrDefault(x => x.Name == "Transport");
+            if (transportCategory == null || transportCategory.Id.ToString().Equals(productLifeCycle.ProductLifeCycleCategoryId.ToString()))
                 return null;
-            
+
             productLifeCycle.Timestamp = DateTimeOffset.Parse(productLifeCycle.Timestamp.ToString()).UtcDateTime;
 
             return await _productLifeCycleRepository.AddProductLifeCycle(productLifeCycle);
         }
 
-        public async Task<ProductLifeCycle?> AddProductLifeTransport(ProductLifeCycle productLifeCycle)
+        public async Task<ProductLifeCycle?> AddProductLifeCycleTransport(ProductLifeCycle productLifeCycle)
         {
 
-            if (!productLifeCycle.ProductLifeCycleCategoryId.ToString().Equals("7a286d32-f89b-4e86-88bc-a6eb32fa2132"))
+            var productLifeCycleCategories = await _productLifeCycleRepository.GetCategories();
+            var transportCategory = productLifeCycleCategories.FirstOrDefault(x => x.Name == "Transport");
+            if (transportCategory == null || !transportCategory.Id.ToString().Equals(productLifeCycle.ProductLifeCycleCategoryId.ToString()))
                 return null;
 
             productLifeCycle.Timestamp = DateTimeOffset.Parse(productLifeCycle.Timestamp.ToString()).UtcDateTime;
