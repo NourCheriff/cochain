@@ -60,21 +60,21 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.getAllProductInfo()
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   sendProduct(product: ProductInfo) {
     this.productService.passProduct(product);
   }
 
-  getAllProductInfo(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
-    this.productService.getAllProductInfo(pageSize.toString(),pageNumber.toString()).subscribe({
+  getAllProductInfo(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber) {
+    this.productService.getAllProductInfo(pageSize.toString(), pageNumber.toString()).subscribe({
       next: (response) => {
-        this.productInfo = response.items!;
-        this.dataSource = new MatTableDataSource<ProductInfo>(this.productInfo);
         this.totalRecords = response.totalSize;
+        this.setDataSource(response.items!);
       },
-      error: (error) => console.log(error)
-    })
+      error: (error) => console.error(error)
+    });
   }
 
   announceSortChange(sortState: Sort) {
@@ -87,24 +87,25 @@ export class ProductsComponent implements OnInit {
 
 
   updateTable(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber) {
-    let data: ProductInfo[] = []
-    if(this.isChecked){
-        // this.productService.getMyProductsInfo(, pageSize.toString(), pageNumber.toString()).subscribe({
-        //   next: (response) => {
-        //     console.log(response.items)
-        //     this.myProductInfo = response.items!;
-        //     data = this.myProductInfo;
-        //     this.totalRecords = response.totalSize;
-        //   },
-        //   error: (error) => console.log(error)
-        // })
-    }else{
-      data = this.productInfo
+    if (this.isChecked) {
+      this.productService.getMyProductsInfo(this.authService.userId!, pageSize.toString(), pageNumber.toString()).subscribe({
+        next: (response) => {
+          this.totalRecords = response.totalSize;
+          this.setDataSource(response.items!);
+        },
+        error: (error) => console.error(error)
+      });
+    } else {
+      this.getAllProductInfo(pageSize, pageNumber);
     }
+  }
 
-    this.dataSource = new MatTableDataSource<ProductInfo>(data);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  private setDataSource(data: ProductInfo[]) {
+    this.dataSource.data = data;
+
+    if (this.paginator) {
+      this.paginator.length = this.totalRecords;
+    }
   }
 
   onPageChange(event: PageEvent){
@@ -116,11 +117,12 @@ export class ProductsComponent implements OnInit {
     let currentDialog = this.dialog.open(ProductDialogComponent);
     currentDialog.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        let updatedData = [result.newProduct, ...this.dataSource.data];
-        this.dataSource.data = updatedData;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.table.renderRows();
+       const pageEvent: PageEvent = {
+        pageIndex: this.paginator.pageIndex,
+        pageSize: this.paginator.pageSize,
+        length: this.totalRecords
+        };
+        this.onPageChange(pageEvent);
       }
     });
   }

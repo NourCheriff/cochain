@@ -50,8 +50,8 @@ export class ProductService {
     return this.apiService.getById('api/Product', productId)
   }
 
-  getMyProductsInfo(scpId: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<ProductInfo>> {
-    return this.apiService.getAll(`api/Product/scp/${scpId}`, { params: { pageNumber, pageSize} }).pipe(
+  getMyProductsInfo(userId: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<ProductInfo>> {
+    return this.apiService.getAll(`api/Product/scp/${userId}`, { params: { pageNumber, pageSize} }).pipe(
       map((response: any) => {
         const paginationResponse: PaginationResponse<ProductInfo> = {
           items: response[0].items || [],
