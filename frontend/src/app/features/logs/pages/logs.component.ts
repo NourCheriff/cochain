@@ -41,7 +41,6 @@ export class LogsComponent implements OnInit {
     getLogs(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber, severity?: Severity){
       this.logsService.getLogs(pageSize.toString(),pageNumber.toString(),severity).subscribe({
         next: (response) => {
-          console.log(RESPONSE_INIT)
           this.dataSource = new MatTableDataSource<Log>(response.items!);
           this.totalRecords = response.totalSize
         },

@@ -14,16 +14,23 @@
   padding-top: 20px;
 }
 
+
 .mat-elevation-z8 {
   width: 100%;
   max-height: 300px !important;
   overflow-y: auto !important;
 }
 
+th,
+td {
+  width: auto !important;
+  white-space: nowrap !important;
+}
+
 table {
-  width: 100%;
+  width: auto !important;
   background-color: white;
-  table-layout: fixed;
+  table-layout: auto !important;
 }
 
 mat-paginator {

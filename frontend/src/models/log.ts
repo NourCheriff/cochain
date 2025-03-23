@@ -9,7 +9,7 @@ export interface Log extends Base{
   message: string;
   timestamp: Date;
   userId?: string;
-  URL?: string;
+  url?: string;
   queryString?: string;
   cookies?: string;
 }
