@@ -44,7 +44,7 @@ namespace CochainAPI.Controllers
         [Authorize(Policy = "WriteCertificationDocument")]
         public async Task<IActionResult> AddCertificationDocument([FromBody] SupplyChainPartnerCertificate documentObj)
         {
-            var response = await _documentService.AddDocument(documentObj);
+            var response = await _documentService.AddCertificate(documentObj);
             if (response == null)
             {
                 return BadRequest(new { message = "Document not found" });
