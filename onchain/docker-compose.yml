@@ -10,6 +10,9 @@ services:
       - "8545:8545"
       - "8546:8546"
       - "30303:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.2
     command:
       [
         "--data-path=/data",
@@ -38,6 +41,9 @@ services:
       - "8547:8545"
       - "8548:8546"
       - "30304:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.3
     command:
       [
         "--data-path=/data",
@@ -52,7 +58,7 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://@172.18.0.2:30303",
+        "--bootnodes=enode://@10.18.0.2:30303",
         "--node-private-key-file=/opt/besu/keys/key",
       ]
     depends_on:
@@ -70,6 +76,9 @@ services:
       - "8549:8545"
       - "8550:8546"
       - "30305:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.4
     command:
       [
         "--data-path=/data",
@@ -84,7 +93,7 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://@172.18.0.2:30303",
+        "--bootnodes=enode://@10.18.0.2:30303",
         "--node-private-key-file=/opt/besu/keys/key",
       ]
     depends_on:
@@ -102,6 +111,9 @@ services:
       - "8551:8545"
       - "8552:8546"
       - "30306:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.5
     command:
       [
         "--data-path=/data",
@@ -116,7 +128,7 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://@172.18.0.2:30303",
+        "--bootnodes=enode://@10.18.0.2:30303",
         "--node-private-key-file=/opt/besu/keys/key",
       ]
     depends_on:
@@ -133,6 +145,9 @@ services:
       - "8553:8545"
       - "8554:8546"
       - "30307:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.6
     command:
       [
         "--data-path=/data",
@@ -147,7 +162,7 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://@172.18.0.2:30303",
+        "--bootnodes=enode://@10.18.0.2:30303",
       ]
     depends_on:
       validator4:
@@ -163,6 +178,9 @@ services:
       - "8555:8545"
       - "8556:8546"
       - "30308:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.7
     command:
       [
         "--data-path=/data",
@@ -177,8 +195,16 @@ services:
         "--host-allowlist=*",
         "--min-gas-price=0",
         "--sync-min-peers=1",
-        "--bootnodes=enode://@172.18.0.2:30303",
+        "--bootnodes=enode://@10.18.0.2:30303",
       ]
     depends_on:
       node1:
         condition: service_healthy
+
+networks:
+  blockchain:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "10.18.0.0/16"
+          gateway: "10.18.0.1"
