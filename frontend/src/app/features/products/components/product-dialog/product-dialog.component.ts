@@ -21,7 +21,6 @@ import { ProductService } from '../../services/product.service';
 import { DatePipe } from '@angular/common';
 import { sha256 } from 'js-sha256';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { Role } from 'src/types/roles.enum';
 import { DocumentType } from 'src/types/document.enum';
 @Component({
   selector: 'app-product-dialog',
@@ -130,7 +129,6 @@ export class ProductDialogComponent implements OnInit {
     const newProduct: ProductInfo = {
       name: this.newProductForm.value.name!,
       productId: this.newProductForm.value.product!,
-      supplyChainPartnerId: '',
       expirationDate: formattedDate!,
       ingredients: productIngredients,
     }

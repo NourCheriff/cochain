@@ -237,7 +237,7 @@ export class EditProductDialogComponent implements OnInit{
         fileString: base64String,
         productInfoId: productInfoId,
         userEmitterId: this.authService.userId!,
-        supplyChainPartnerReceiverId: this.data.product.supplyChainPartnerId,
+        supplyChainPartnerReceiverId: this.data.product.supplyChainPartnerId!,
         type: DocumentType.Origin,
       };
 

@@ -3,6 +3,7 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Helper;
 using CochainAPI.Model.Product;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace CochainAPI.Data.Services
 {
@@ -10,14 +11,20 @@ namespace CochainAPI.Data.Services
     {
         private readonly IProductRepository _productRepository;
         private readonly IHttpContextAccessor _contextAccessor;
-        public ProductService(IProductRepository productRepository, IHttpContextAccessor contextAccessor)
+        private readonly IUserRepository _userRepository;
+        public ProductService(IProductRepository productRepository, IHttpContextAccessor contextAccessor, IUserRepository userRepository)
         {
             _productRepository = productRepository;
             _contextAccessor = contextAccessor;
+            _userRepository = userRepository;
         }
 
         public async Task<ProductInfo> AddProductInfo(ProductInfo productInfo)
         {
+            var userId = _contextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var user = await _userRepository.GetById(userId);
+            productInfo.SupplyChainPartnerId = user!.SupplyChainPartnerId.GetValueOrDefault();
+            
             return await _productRepository.AddProductInfo(productInfo);
         }
 
@@ -67,6 +74,7 @@ namespace CochainAPI.Data.Services
 
         public async Task<ProductInfo?> UpdateProduct(ProductInfo productObj)
         {
+            // update prodotto può essere fatto solo al proprio prodotto
             bool isSuccess = false;
             if (!string.IsNullOrEmpty(productObj.Id.ToString()))
             {

@@ -139,7 +139,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
         hash: hashedBase64Document,
         fileString: base64String,
         productLifeCycleId: newWorkId,
-        supplyChainPartnerReceiverId: this.data.product.supplyChainPartnerId,
+        supplyChainPartnerReceiverId: this.data.product.supplyChainPartnerId!,
         userEmitterId: this.authService.userId!,
         type: (isTransportDocument) ? DocumentType.Transport : DocumentType.Invoice,
       };
