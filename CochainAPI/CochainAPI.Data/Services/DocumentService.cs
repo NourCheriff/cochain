@@ -4,7 +4,6 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using Azure.Storage.Blobs;
 using Azure.Identity;
 using Azure.Storage.Blobs.Models;
-using CochainAPI.Model.Authentication;
 using CochainAPI.Model.Helper;
 
 namespace CochainAPI.Data.Services
@@ -32,9 +31,17 @@ namespace CochainAPI.Data.Services
             return documentObj switch
             {
                 Contract contract => await AddContract(contract),
-                SupplyChainPartnerCertificate scpCertificate => await AddCertificate(scpCertificate),
                 ProductLifeCycleDocument productLifeCycleDocument => await AddProductLifeCycleDocument(productLifeCycleDocument),
                 ProductDocument productDocument => await AddProductDocument(productDocument),
+                _ => null,
+            };
+        }
+        public async Task<BaseDocument?> AddCertificate(BaseDocument documentObj)
+        {
+            documentObj.Id = Guid.NewGuid();
+            return documentObj switch
+            {
+                SupplyChainPartnerCertificate scpCertificate => await AddCertificate(scpCertificate),               
                 _ => null,
             };
         }
@@ -103,6 +110,7 @@ namespace CochainAPI.Data.Services
                 }
 
                 await blobClient.DeleteAsync();
+                await _supplyChainPartnerCertificate.DeleteDocumentById(docId);
                 return true;
             }
             return false;
@@ -124,7 +132,7 @@ namespace CochainAPI.Data.Services
             return await _productLifeCycleRepository.AddDocument(productDocument);
         }
 
-        public async Task<bool> DeleteProductDocument(Guid id, string fileName)
+        public async Task<bool> DeleteProductLifeDocument(Guid id, string fileName)
         {
             if (Guid.TryParse(id.ToString(), out var docId))
             {
@@ -137,6 +145,7 @@ namespace CochainAPI.Data.Services
                 }
 
                 await blobClient.DeleteAsync();
+                await _productLifeCycleRepository.DeleteDocumentById(docId);
                 return true;
             }
             return false;
@@ -157,6 +166,24 @@ namespace CochainAPI.Data.Services
             productDocument.Path = blobClient.Uri.ToString();
             return await _productDocumentRepository.AddDocument(productDocument);
         }
+        public async Task<bool> DeleteProductDocument(Guid id, string fileName)
+        {
+            if (Guid.TryParse(id.ToString(), out var docId))
+            {
+                var containerClient = _blobServiceClient.GetBlobContainerClient("prodlifecycle");
+                var blobClient = containerClient.GetBlobClient(fileName);
+
+                if (!await blobClient.ExistsAsync())
+                {
+                    return false;
+                }
+
+                await blobClient.DeleteAsync();
+                await _productDocumentRepository.DeleteDocumentById(docId);
+                return true;
+            }
+            return false;
+        }
 
         public async Task<BaseDocument?> GetById(string id, string Type)
         {
@@ -175,7 +202,8 @@ namespace CochainAPI.Data.Services
             return Type switch
             {
                 "contract" => await DeleteContract(id, filename),
-                "invoice" or "transport" or "origin" or "quality" => await DeleteProductDocument(id, filename),
+                "invoice" or "transport" => await DeleteProductLifeDocument(id, filename),
+                "origin" or "quality" => await DeleteProductDocument(id, filename),
                 _ => false,
             };
         }
