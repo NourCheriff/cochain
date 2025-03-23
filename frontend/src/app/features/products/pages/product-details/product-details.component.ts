@@ -127,11 +127,11 @@ export class ProductDetailsComponent implements OnInit {
     })
   }
 
-  isAdmin(): boolean{
-    return this.authService.userRole === Role.SysAdmin
+  isAdmin(): boolean {
+    return this.authService.userRoles!.includes(Role.SysAdmin);
   }
 
-  isMyProduct(): boolean{
+  isMyProduct(): boolean {
     return this.authService.userId === this.productInfo.supplyChainPartnerId
   }
 }

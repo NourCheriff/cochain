@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { ContractDialogComponent } from '../contract-dialog/contract-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ContractService } from '../../service/contract.service';
@@ -65,7 +65,7 @@ export class ContractsSectionComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.authService.userRole === Role.SysAdmin;
+    return this.authService.userRoles!.includes(Role.SysAdmin);
   }
 
   deleteContract(id: string){

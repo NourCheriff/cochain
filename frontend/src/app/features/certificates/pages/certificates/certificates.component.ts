@@ -80,7 +80,7 @@ export class CertificatesComponent implements OnInit {
   }
 
   isCertificationAuthority(): boolean {
-    return this.authService.userRole === (Role.AdminCA || Role.UserCA)
+    return this.authService.userRoles!.includes(Role.AdminCA) || this.authService.userRoles!.includes(Role.UserCA)
   }
 
   getSustainabilityCertificate(receivedSupplyChainPartnerCertificates: SupplyChainPartnerCertificate[]): SupplyChainPartnerCertificate | null {
