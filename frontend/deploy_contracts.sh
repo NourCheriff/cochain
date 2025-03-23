@@ -16,3 +16,9 @@ echo "==============================================="
 echo ""
 
 npx hardhat deploy --network docker
+
+echo ""
+echo "==============================================="
+echo "Contracts deployed successfully!"
+echo "==============================================="
+echo ""
