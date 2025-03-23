@@ -162,10 +162,10 @@ namespace CochainAPI.Data.Services
         {
             return Type switch
             {
-                "Contract" => await _contractRepository.GetById(id),
-                "SCPCertificate" => await _supplyChainPartnerCertificate.GetById(id),
-                "ProductLifeCycleDocument" => await _productLifeCycleRepository.GetById(id),
-                "ProductDocument" => await _productDocumentRepository.GetById(id),
+                "contract" => await _contractRepository.GetById(id),
+                "sustainability" => await _supplyChainPartnerCertificate.GetById(id),
+                "invoice" or "transport" => await _productLifeCycleRepository.GetById(id),
+                "origin" or "quality" => await _productDocumentRepository.GetById(id),
                 _ => null,
             };
         }
@@ -174,8 +174,8 @@ namespace CochainAPI.Data.Services
         {
             return Type switch
             {
-                "Contract" => await DeleteContract(id, filename),
-                "ProductDocument" or "ProductLifeCycleDocument" => await DeleteProductDocument(id, filename),
+                "contract" => await DeleteContract(id, filename),
+                "invoice" or "transport" or "origin" or "quality" => await DeleteProductDocument(id, filename),
                 _ => false,
             };
         }
@@ -184,7 +184,7 @@ namespace CochainAPI.Data.Services
         {
             return Type switch
             {
-                "SCPCertificate" => await DeleteCertificate(id, filename),
+                "sustainability" => await DeleteCertificate(id, filename),
                 _ => false,
             };
         }
