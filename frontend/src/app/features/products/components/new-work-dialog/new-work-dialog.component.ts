@@ -61,7 +61,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
   uploadEnabled: boolean = false;
 
   productLifeCycleCategories: ProductLifeCycleCategory[] = [];
-  emissionsValue: any;
+  emissionsValue: number = 0;
 
   ngOnInit(): void {
     this.getAllProductLifeCycleCategories()
@@ -90,7 +90,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
       emissions: this.emissionsValue,
       isEmissionsProcessed: false,
       productLifeCycleCategoryId: this.newWorkForm.value.work!,
-      supplyChainPartnerId: this.authService.userId!,
+      supplyChainPartnerId: this.data.product.supplyChainPartnerId!,
       productInfoId: this.data.product.id!,
     }
 
@@ -170,15 +170,13 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     }
     const selectedCategory = this.productLifeCycleCategories.find(category => category.id === this.selectedWorkType);
 
-    return selectedCategory!.name === DocumentType.Transport ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
+    return selectedCategory!.name === "transport" ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
   }
 
   onSelectionChange(value: string) {
     const selectedCategory = this.productLifeCycleCategories.find(category => category.id === value);
-    if (selectedCategory) {
-      this.isTransportDocument = selectedCategory.name === DocumentType.Transport;
-    }
-
+    if(selectedCategory)
+      this.isTransportDocument = selectedCategory.name!.toLowerCase() === "transport";
   }
 
   private getRandomInt(min: number, max: number): number{
