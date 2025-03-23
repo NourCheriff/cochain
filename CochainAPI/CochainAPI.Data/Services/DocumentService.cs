@@ -4,7 +4,6 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using Azure.Storage.Blobs;
 using Azure.Identity;
 using Azure.Storage.Blobs.Models;
-using CochainAPI.Model.Authentication;
 using CochainAPI.Model.Helper;
 
 namespace CochainAPI.Data.Services
@@ -143,9 +142,9 @@ namespace CochainAPI.Data.Services
         {
             return Type switch
             {
-                "Contract" => await _contractRepository.GetById(id),
-                "SCPCertificate" => await _supplyChainPartnerCertificate.GetById(id),
-                "ProductDocument" => await _productLifeCycleRepository.GetById(id),
+                "contract" => await _contractRepository.GetById(id),
+                "sustainability" => await _supplyChainPartnerCertificate.GetById(id),
+                "invoice" or "transport" or "origin" or "quality" => await _productLifeCycleRepository.GetById(id),
                 _ => null,
             };
         }
@@ -155,7 +154,7 @@ namespace CochainAPI.Data.Services
             return Type switch
             {
                 "Contract" => await DeleteContract(id, filename),
-                "ProductDocument" => await DeleteProductDocument(id, filename),
+                "invoice" or "transport" or "origin" or "quality" => await DeleteProductDocument(id, filename),
                 _ => false,
             };
         }
@@ -164,7 +163,7 @@ namespace CochainAPI.Data.Services
         {
             return Type switch
             {
-                "SCPCertificate" => await DeleteCertificate(id, filename),
+                "sustainability" => await DeleteCertificate(id, filename),
                 _ => false,
             };
         }
