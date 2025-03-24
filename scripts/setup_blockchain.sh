@@ -65,7 +65,7 @@ echo "==============================================="
 echo ""
 
 EXTRA_DATA=$(cat $PWD/onchain/data/.env | cut -d'=' -f2)
-sed -i 's/"extraData":.*,/"extraData": "'"$EXTRA_DATA"'",/' $PWD/onchain/genesis.json
+sed -i '' 's/"extraData":.*,/"extraData": "'"$EXTRA_DATA"'",/' $PWD/onchain/genesis.json
 
 echo ""
 echo "==============================================="
@@ -74,7 +74,7 @@ echo "==============================================="
 echo ""
 
 BOOTNODE_ADDRESS=$(cat $PWD/onchain/data/keys/validator1/key.pub | cut -c 3-)
-sed -i 's/"--bootnodes=enode:\/\/.*@/"--bootnodes=enode:\/\/'"$BOOTNODE_ADDRESS"'@/g' $PWD/onchain/docker-compose.yml
+sed -i '' 's/"--bootnodes=enode:\/\/.*@/"--bootnodes=enode:\/\/'"$BOOTNODE_ADDRESS"'@/g' $PWD/onchain/docker-compose.yml
 
 echo ""
 echo "==============================================="
