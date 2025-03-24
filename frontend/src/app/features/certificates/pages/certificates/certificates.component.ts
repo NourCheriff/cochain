@@ -13,6 +13,12 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { FileInputComponent } from '../../components/file-input/file-input.component';
 import { CertificatesService } from '../../service/certificates.service';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Role } from 'src/types/roles.enum';
+import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
+import { DocumentType } from 'src/types/document.enum';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-certificates',
@@ -24,43 +30,37 @@ export class CertificatesComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   private certificateService = inject(CertificatesService);
+  private authService = inject(AuthService)
+  private toastrService =  inject(ToastrService)
 
-  scpType: SCPType = {
-    "type": "CA"
-  }
-
+  totalRecords = 0;
   displayedColumns: string[] = ['receiver', 'scpType', 'attachments', 'actions'];
   dataSource = new MatTableDataSource<SupplyChainPartner>([]);
-  supplyChainPartners: SupplyChainPartner[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
     this.getSupplyChainPartners()
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
-  getSupplyChainPartners(){
-    this.certificateService.getSupplyChainPartners().subscribe({
+  getSupplyChainPartners(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
+    this.certificateService.getSupplyChainPartners(pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
-        this.supplyChainPartners = response
-        this.dataSource = new MatTableDataSource<SupplyChainPartner>(this.supplyChainPartners);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.dataSource = new MatTableDataSource<SupplyChainPartner>(response.items!);
+        this.totalRecords = response.totalSize
       },
       error: (error) => { console.log(error) }
     })
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   deleteCertificate(id: string){
     this.certificateService.deleteCertificate(id).subscribe({
       next: (response) => {
         console.log(response)
+        this.toastrService.info(`Removed certificate ${response.name}`, 'info')
       },
       error: (error) => { console.log(error) }
     })
@@ -70,18 +70,23 @@ export class CertificatesComponent implements OnInit {
     this.dialog.open(FileInputComponent,{
       data: {
         scpReceiverId: scpReceiverId,
-        documentType: 'sustainability'
+        documentType: DocumentType.Sustainability
       }
     });
   }
 
   onPageChange(event: PageEvent){
-    console.log('Cambiata la pagina:', event.pageIndex);
-    console.log('Elementi per pagina:', event.pageSize);
+    this.getSupplyChainPartners(event.pageSize, event.pageIndex)
   }
 
-}
+  isCertificationAuthority(): boolean {
+    return this.authService.userRoles!.includes(Role.AdminCA) || this.authService.userRoles!.includes(Role.UserCA)
+  }
 
-export interface SCPType {
-  type: string
+  getSustainabilityCertificate(receivedSupplyChainPartnerCertificates: SupplyChainPartnerCertificate[]): SupplyChainPartnerCertificate | null {
+    if (!receivedSupplyChainPartnerCertificates?.length) return null;
+
+    return receivedSupplyChainPartnerCertificates.find(doc => doc.type === DocumentType.Sustainability) || null;
+  }
+
 }

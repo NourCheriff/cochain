@@ -64,9 +64,11 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
-    <mat-paginator [pageSizeOptions]="[5, 10, 15]"
-                    showFirstLastButtons
-                    aria-label="Select page of companies">
+    <mat-paginator
+    [pageSizeOptions]="[5, 10, 15]"
+    showFirstLastButtons
+    [length]="totalRecords"
+    (page)="onPageChange($event)">
     </mat-paginator>
   </div>
 </main>

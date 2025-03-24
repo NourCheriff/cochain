@@ -1,5 +1,5 @@
 import { OnInit, Component, ViewChild, inject } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +14,7 @@ import { CompanyService } from '../../services/company.service';
 import { CertificationAuthority } from 'src/models/company-entities/certification-authority.model';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { CompanyType } from 'src/types/company.enum';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
 
 @Component({
   selector: 'app-companies',
@@ -38,59 +39,53 @@ export class CompaniesComponent implements OnInit {
   CompanyType = CompanyType;
 
   selected = CompanyType.SupplyChainPartner;
-
-  // cache lists for faster access on client side
-  supplyChainPartners: SupplyChainPartner[] = [];
-  certificationAuthorities: CertificationAuthority[] = [];
-
   displayedColumns: string[] = [];
 
   scpSource: any;
   caSource:  any;
-
+  totalRecords = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private companyService: CompanyService){}
 
   ngOnInit(): void {
-    if (this.selected === CompanyType.SupplyChainPartner)
+    if (this.selected === CompanyType.SupplyChainPartner){
       this.getSupplyChainPartners();
-    else
+      this.showSupplyChainPartners()
+    }else{
       this.getCertificationAuthorities();
+      this.showCertificationAuthorities()
+    }
   }
 
-  getCertificationAuthorities(): void {
-    this.companyService.getAllCertificationAuthorities().subscribe({
+  getCertificationAuthorities(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber): void {
+    this.companyService.getAllCertificationAuthorities(pageSize.toString(),pageNumber.toString()).subscribe({
       next: (certificationAuthorities) => {
-        this.certificationAuthorities = certificationAuthorities;
-        this.showCertificationAuthorities();
+        this.caSource = new MatTableDataSource<CertificationAuthority>(certificationAuthorities.items!);
+        this.totalRecords = certificationAuthorities.totalSize;
       },
       error: (error) => console.error(error)
     })
   }
 
-  getSupplyChainPartners(): void {
-    this.companyService.getAllSupplyChainPartners().subscribe({
+  getSupplyChainPartners(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber): void {
+    this.companyService.getAllSupplyChainPartners(pageSize.toString(),pageNumber.toString()).subscribe({
       next: (supplyChainPartners) => {
-        this.supplyChainPartners = supplyChainPartners;
-        this.showSupplyChainPartners();
+        this.scpSource = new MatTableDataSource<SupplyChainPartner>(supplyChainPartners.items!);
+        this.totalRecords = supplyChainPartners.totalSize;
       },
       error: (error) => console.error(error)
     })
   }
 
   updateTable(): void {
-    if (this.selected === CompanyType.CertificationAuthority && this.certificationAuthorities.length === 0) {
-      this.getCertificationAuthorities();
+    if (this.selected === CompanyType.CertificationAuthority) {
+        this.getCertificationAuthorities();
+        this.showCertificationAuthorities();
+    } else if (this.selected === CompanyType.SupplyChainPartner) {
+        this.getSupplyChainPartners();
+        this.showSupplyChainPartners();
     }
-    if (this.selected === CompanyType.SupplyChainPartner && this.supplyChainPartners.length === 0) {
-      this.getSupplyChainPartners();
-    }
-
-    if (this.selected === CompanyType.SupplyChainPartner)
-      this.showSupplyChainPartners();
-    else
-      this.showCertificationAuthorities();
   }
 
   addCompany(): void {
@@ -106,13 +101,18 @@ export class CompaniesComponent implements OnInit {
 
   private showSupplyChainPartners(): void {
     this.displayedColumns = ['name', 'email', 'phone', 'type', 'wallet_id', 'action'];
-    this.scpSource = new MatTableDataSource<SupplyChainPartner>(this.supplyChainPartners);
     this.scpSource.paginator = this.paginator;
   }
 
   private showCertificationAuthorities(): void {
     this.displayedColumns = ['name', 'email', 'phone', 'action'];
-    this.caSource = new MatTableDataSource<CertificationAuthority>(this.certificationAuthorities);
     this.caSource.paginator = this.paginator;
+  }
+
+  onPageChange(event: PageEvent){
+    this.selected === CompanyType.SupplyChainPartner ?
+      this.getSupplyChainPartners(event.pageSize,event.pageIndex)
+    :
+      this.getCertificationAuthorities(event.pageSize,event.pageIndex)
   }
 }

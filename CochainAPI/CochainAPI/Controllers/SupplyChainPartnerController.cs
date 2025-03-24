@@ -17,7 +17,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("categories")]
-        //[Authorize(Policy = "ReadSCP")]
+        [Authorize(Policy = "ReadSCP")]
         public async Task<IActionResult> GetTypes()
         {
             var response = await _supplychainPartnerService.GetTypes();
@@ -29,7 +29,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize(Policy = "ReadSCP")]
+        [Authorize(Policy = "ReadSCP")]
         public async Task<IActionResult> Get(Guid id)
         {
             var response = await _supplychainPartnerService.GetTypes();
@@ -41,7 +41,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetSupplyChainPartner(string? queryparam, int? pageNumber, int? pageSize)
         {
             var response = await _supplychainPartnerService.GetSupplyChainPartners(queryparam, pageNumber, pageSize);
@@ -53,7 +53,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("addSCP")]
-        //[Authorize(Policy = "WriteSCP")]
+        [Authorize(Policy = "WriteSCP")]
         public async Task<IActionResult> AddSupplyChainPartner([FromBody] SupplyChainPartner supplyChainPartner)
         {
             var response = await _supplychainPartnerService.AddSupplyChainPartner(supplyChainPartner);

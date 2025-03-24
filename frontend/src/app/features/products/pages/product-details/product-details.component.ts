@@ -16,6 +16,11 @@ import { RouterLink } from '@angular/router';
 import { EditProductDialogComponent } from '../../components/edit-product-dialog/edit-product-dialog.component';
 import { MatTable } from '@angular/material/table'
 import { ActivatedRoute } from '@angular/router';
+import { Role } from 'src/types/roles.enum';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { ProductDocument } from 'src/models/documents/product-document.model';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-product-details',
   imports: [
@@ -35,6 +40,8 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private productService: ProductService){}
+  private authService = inject(AuthService)
+  private toastrService =  inject(ToastrService)
 
   readonly dialog = inject(MatDialog);
 
@@ -42,7 +49,6 @@ export class ProductDetailsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['workType', 'emissions', 'workDate', 'attachments'];
-  userRole: string = "SCP";
   productInfo!: ProductInfo;
   ingredients:ProductInfo[] = [];
   lifeCycleSource = new MatTableDataSource<ProductLifeCycle>([]);
@@ -105,14 +111,27 @@ export class ProductDetailsComponent implements OnInit {
     this.ingredients = [];
 
     if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
-        this.productService.getProductsInfoByIds(ingredientIds).subscribe({
-          next: (response) => this.ingredients = response,
-          error: (error) => console.log(error)
-        })
+      this.productService.getProductsInfoByIds(ingredientIds).subscribe({
+        next: (response) => this.ingredients = response,
+        error: (error) => console.error(error)
+      })
     }
   }
 
-  isAdmin(): boolean{
-    return this.userRole === "Admin";
+  deleteDocument(id: string, documentType: string) {
+    this.productService.deleteDocument(id, documentType).subscribe({
+      next: (response) => {
+        this.toastrService.info(`Removed ${response.type} ${response.name}`, 'Info')
+      },
+      error: (error) => console.error(error)
+    })
+  }
+
+  isAdmin(): boolean {
+    return this.authService.userRoles!.includes(Role.SysAdmin);
+  }
+
+  isMyProduct(): boolean {
+    return this.authService.userId === this.productInfo.supplyChainPartnerId
   }
 }

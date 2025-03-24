@@ -6,7 +6,7 @@ import { AuthRequest } from 'src/models/auth/auth-request.model';
 import { AuthResponse } from 'src/models/auth/auth-response.model';
 import { BaseResponse, RequestExecution } from 'src/models/auth/base-response.model';
 import { jwtDecode } from 'jwt-decode';
-import { Jwt } from 'src/models/auth/jwt-payload.model';
+import { Jwt, ROLES_KEY } from 'src/models/auth/jwt-payload.model';
 import { Router } from '@angular/router';
 import { Role } from 'src/types/roles.enum';
 
@@ -60,13 +60,16 @@ export class AuthService {
     this.router.navigateByUrl('/login');
   }
 
-  public get userRole(): Role | null {
+  public get userRoles(): Role[] | null {
     if (!this.token)
       return null;
 
     try {
       let decodedJwt: Jwt = jwtDecode<Jwt>(this.token);
-      return decodedJwt['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] as Role;
+      let roles = Array.isArray(decodedJwt[ROLES_KEY])
+        ? decodedJwt[ROLES_KEY]
+        : [decodedJwt[ROLES_KEY]];
+      return roles as Role[];
     } catch (err) {
       return null;
     }

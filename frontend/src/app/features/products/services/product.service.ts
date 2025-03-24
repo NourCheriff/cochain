@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { BaseHttpService } from 'src/app/core/services/api.service';
 import { ProductCategory } from 'src/models/product/product-category.model';
@@ -7,6 +7,10 @@ import { ProductInfo } from 'src/models/product/product-info.model';
 import { Product } from 'src/models/product/product.model';
 import { ProductLifeCycleCategory } from 'src/models/product/product-life-cycle-category.model';
 import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
+import { ProductDocument } from 'src/models/documents/product-document.model';
+import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycle-document.model';
+import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
+
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +50,28 @@ export class ProductService {
     return this.apiService.getById('api/Product', productId)
   }
 
-  getAllProductInfo(): Observable<ProductInfo[]> {
-    return this.apiService.getAll('api/Product/allproducts');
+  getMyProductsInfo(userId: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<ProductInfo>> {
+    return this.apiService.getAll(`api/Product/scp/${userId}`, { params: { pageNumber, pageSize} }).pipe(
+      map((response: any) => {
+        const paginationResponse: PaginationResponse<ProductInfo> = {
+          items: response[0].items || [],
+          totalSize: response[0].totalSize || 0
+        };
+        return paginationResponse;
+      })
+    );
+  }
+
+  getAllProductInfo(pageSize?: string, pageNumber?: string): Observable<PaginationResponse<ProductInfo>> {
+    return this.apiService.getAll('api/Product/allproducts', { params: { pageNumber, pageSize} } ).pipe(
+      map((response: any) => {
+        const paginationResponse: PaginationResponse<ProductInfo> = {
+          items: response[0].items || [],
+          totalSize: response[0].totalSize || 0
+        };
+        return paginationResponse;
+      })
+    );
   }
 
   getAllProductLifeCycleCategories(): Observable<ProductLifeCycleCategory[]>{
@@ -58,11 +82,32 @@ export class ProductService {
     return this.apiService.getAll('api/Product/generic', { id :categoryId })
   }
 
-  getProductInfoById(product: string): Observable<ProductInfo> {
-    return this.apiService.getById('api/Product', product)
+  getProductInfoById(productId: string): Observable<ProductInfo> {
+    return this.apiService.getById('api/Product', productId)
   }
 
   getProductsInfoByIds(ids: string[]): Observable<ProductInfo[]> {
     return this.apiService.getByIds('api/Product/products', ids);
+  }
+
+  uploadOriginDocument(originDocument: ProductDocument): Observable<ProductDocument>{
+    return this.apiService.add('api/Document/AddOriginDocument', originDocument);
+  }
+
+  deleteDocument(documentId: string, documentType: string): Observable<ProductDocument>{
+    return this.apiService.delete('api/Document', documentId, documentType);
+  }
+
+  uploadLifeCycleDocument(lifeCycleDocument: ProductLifeCycleDocument): Observable<ProductLifeCycleDocument>{
+    let url = `api/Document/`;
+
+    if(lifeCycleDocument.type == "invoice"){
+      url += `AddInvoicesDocument`;
+    }
+    else{
+      url += `AddTransportDocument`;
+    }
+
+    return this.apiService.add(url, lifeCycleDocument);
   }
 }

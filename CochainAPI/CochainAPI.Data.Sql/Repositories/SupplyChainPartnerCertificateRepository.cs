@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
 using CochainAPI.Model.Utils;
-using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
@@ -28,9 +28,11 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "SupplyChainPartnerCertificate",
                 EntityId = documentObj.Id.ToString(),
                 Action = "Insert",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return documentObj;
@@ -51,9 +53,11 @@ namespace CochainAPI.Data.Sql.Repositories
                     Entity = "SupplyChainPartnerCertificate",
                     EntityId = id.ToString(),
                     Action = "Delete",
-                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                    UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                     Timestamp = DateTime.UtcNow,
-                    Message = ""
+                    Message = "",
+                    URL = httpContextAccessor.HttpContext?.Request.Path,
+                    QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
                 };
                 await logRepository.AddLog(log);
                 return res > 0;
@@ -65,9 +69,11 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "SupplyChainPartnerCertificate",
                 EntityId = id.ToString(),
                 Action = "Delete",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = "Trying to delete not existing document"
+                Message = "Trying to delete not existing document",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return false;

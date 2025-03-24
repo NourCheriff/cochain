@@ -10,6 +10,7 @@ import { UsersComponent } from './features/users/pages/users/users.component';
 import { ProductDetailsComponent } from './features/products/pages/product-details/product-details.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
+import { LogsComponent } from './features/logs/pages/logs.component';
 
 export const routes: Routes = [
   {
@@ -71,6 +72,13 @@ export const routes: Routes = [
     component: ProductDetailsComponent,
     data: { breadcrumb: 'Product details' },
     canActivate: [AuthGuard],
+  },
+  {
+    path:'logs',
+    title:'System Logs',
+    component: LogsComponent,
+    data: { breadcrumb: 'System Logs' },
+    canActivate: [AuthGuard, RoleGuard],
   },
   {
     path:'**',

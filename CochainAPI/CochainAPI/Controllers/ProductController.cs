@@ -17,7 +17,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("scp/{id}")]
-        //[Authorize(Policy = "ReadProducts")]
+        [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProductsBySCP(Guid id, string? queryParam, int? pageNumber, int? pageSize)
         {
             var response = await _productService.GetProductsOfSCP(id, queryParam, pageNumber, pageSize);
@@ -29,7 +29,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("allproducts")]
-        //[Authorize(Policy = "ReadProducts")]
+        [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProductsInfo([FromQuery]string? productName, [FromQuery] string? scpName, [FromQuery]int? pageNumber, [FromQuery]int? pageSize)
         {
             var response = await _productService.GetProducts(productName, scpName, pageNumber, pageSize);
@@ -41,7 +41,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("categories")]
-        //[Authorize(Policy = "WriteProducts, ReadProducts")]
+        [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetCategories()
         {
             var response = await _productService.GetCategories();
@@ -52,8 +52,8 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("generic")]
-        //[Authorize(Policy = "WriteProducts, ReadProducts")]
+        [HttpGet("generic/{categoryId}")]
+        [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetGenericProducts(Guid categoryId)
         {
             var response = await _productService.GetGenericProducts(categoryId);
@@ -65,7 +65,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize(Policy = "ReadProducts")]
+        [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             var response = await _productService.GetProductById(id);
@@ -77,7 +77,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("products")]
-        //[Authorize(Policy = "ReadProducts")]
+        [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetProductsByIds(Guid[] ids)
         {
             var response = await _productService.GetProductsByIds(ids);
@@ -89,6 +89,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("UpdateProduct")]
+        [Authorize(Policy = "WriteProducts")]
         public async Task<IActionResult> UpdateProduct([FromBody] ProductInfo productObj)
         {
             var response = await _productService.UpdateProduct(productObj);
@@ -100,10 +101,9 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy = "WriteProducts")]
+        [Authorize(Policy = "WriteProducts")]
         public async Task<IActionResult> AddProductInfo(ProductInfo productInfo)
         {
-            //update prodotto può essere fatto solo al proprio prodotto
             var response = await _productService.AddProductInfo(productInfo);
             if (response == null)
             {

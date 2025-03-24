@@ -199,6 +199,15 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
+                    Id = Guid.Parse("ad00648b-a031-432d-b007-6a0829cf5292").ToString(),
+                    FirstName = "System",
+                    LastName = "System",
+                    UserName = "admin@cochain.com",
+                    SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                    IsActive = true
+                },
+                new User
+                {
                     Id = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd").ToString(),
                     FirstName = "Paolo",
                     LastName = "Roselli",
@@ -245,6 +254,11 @@ namespace CochainAPI.Data.Sql
             );
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    UserId = Guid.Parse("ad00648b-a031-432d-b007-6a0829cf5292").ToString(),
+                    RoleId = Guid.Parse("8e342ad6-78d9-4aee-abe5-245b1fae6c4a").ToString()
+                },
                 new IdentityUserRole<string>
                 {
                     UserId = Guid.Parse("5e4b0ca8-aa85-417a-af23-035ac1b555cd").ToString(),
