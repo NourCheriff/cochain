@@ -11,7 +11,7 @@ export class CarbonOffsettingService {
 
   private apiService = inject(BaseHttpService)
 
-  getCarbonOffsettingActions(pageSize: string, pageNumber: string): Observable<PaginationResponse<CarbonOffsettingAction>> {
+  public getCarbonOffsettingActions(pageSize: string, pageNumber: string): Observable<PaginationResponse<CarbonOffsettingAction>> {
     return this.apiService.getAll('api/CarbonOffsettingAction', { params: { pageNumber, pageSize } }).pipe(
       map((response: any) => {
         const paginationResponse: PaginationResponse<CarbonOffsettingAction> = {
@@ -21,5 +21,9 @@ export class CarbonOffsettingService {
         return paginationResponse;
       })
     );
+  }
+
+  public addCarbonOffsettingAction(action: CarbonOffsettingAction): Observable<CarbonOffsettingAction> {
+    return this.apiService.add('api/CarbonOffsettingAction', action);
   }
 }

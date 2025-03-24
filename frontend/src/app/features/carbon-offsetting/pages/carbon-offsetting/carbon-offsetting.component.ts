@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CarbonOffsettingAction } from 'src/models/carbon-offset/carbon-offsetting-actions.model';
 import { CarbonOffsettingService } from '../../services/carbon-offsetting.service';
 import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
+import { MatDialog } from '@angular/material/dialog';
+import { CarbonOffsettingDialogComponent } from '../../components/carbon-offsetting-dialog/carbon-offsetting-dialog.component';
 
 @Component({
   selector: 'app-carbon-offsetting',
@@ -31,13 +33,14 @@ export class CarbonOffsettingComponent {
   totalRecords = 0;
 
   private carbonOffsettingService = inject(CarbonOffsettingService);
+  readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.getCarbonOffsettingActions()
     this.dataSource.paginator = this.paginator;
   }
 
-  getCarbonOffsettingActions(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
+  public getCarbonOffsettingActions(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber): void {
     this.carbonOffsettingService.getCarbonOffsettingActions(pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
         this.dataSource = new MatTableDataSource<CarbonOffsettingAction>(response.items!);
@@ -47,7 +50,15 @@ export class CarbonOffsettingComponent {
     })
   }
 
-  onPageChange(event: PageEvent){
+  public addAction(): void {
+    const dialogRef = this.dialog.open(CarbonOffsettingDialogComponent);
+    dialogRef.afterClosed().subscribe(res => {
+      if (res)
+        this.getCarbonOffsettingActions();
+    });
+  }
+
+  public onPageChange(event: PageEvent): void {
     this.getCarbonOffsettingActions(event.pageSize, event.pageIndex)
   }
 

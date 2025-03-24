@@ -5,6 +5,6 @@ export interface CarbonOffsettingAction extends Base {
   offset: number;
   supplyChainPartnerId: string;
   supplyChainPartner?: SupplyChainPartner;
-  isProcessed: boolean;
+  isProcessed?: boolean;
   emissionTransactionId?: string;
 }
