@@ -11,14 +11,16 @@ namespace CochainAPI.Jobs
         private readonly IProductLifeCycleService _lifeCycleService;
         private readonly ISupplyChainPartnerService _supplyChainPartnerService;
         private readonly ICarbonOffsettingActionService _actionService;
+        private readonly IConfiguration _config;
         private readonly string _blockchainURL;
 
-        public TokenProcessor(IProductLifeCycleService lifeCycleService, ISupplyChainPartnerService supplyChainPartnerService, ICarbonOffsettingActionService actionService, string blockchainURL)
+        public TokenProcessor(IProductLifeCycleService lifeCycleService, ISupplyChainPartnerService supplyChainPartnerService, ICarbonOffsettingActionService actionService, IConfiguration config)
         {
+            _config = config;
             _lifeCycleService = lifeCycleService;
             _supplyChainPartnerService = supplyChainPartnerService;
             _actionService = actionService;
-            _blockchainURL = blockchainURL;
+            _blockchainURL = _config.GetValue<string>("BlockchainSettings:localhostURL")!;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -30,7 +32,7 @@ namespace CochainAPI.Jobs
                 var walletId = item.SupplyChainPartner.WalletId;
                 var account = new Account(walletId);
                 var web3 = new Web3(account, _blockchainURL);
-                var credits = item.SupplyChainPartner.SupplyChainPartnerType.Baseline - item.Emissions;
+                var credits = item.SupplyChainPartner.SupplyChainPartnerType!.Baseline - item.Emissions;
                 var transaction = await web3.Eth.GetEtherTransferService()
                 .TransferEtherAndWaitForReceiptAsync(walletId, (decimal)credits);
 
