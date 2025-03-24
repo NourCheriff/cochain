@@ -25,7 +25,8 @@ export class NavbarComponent {
     certificates: [Role.AdminCA, Role.UserCA, Role.AdminSCP, Role.UserSCP],
     contracts: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
     companies: [Role.SysAdmin],
-    logs: [Role.SysAdmin]
+    logs: [Role.SysAdmin],
+    offsettingActions: [Role.SysAdmin, Role.AdminCA, Role.UserCA],
   };
 
   hasAccess(page: string): boolean {

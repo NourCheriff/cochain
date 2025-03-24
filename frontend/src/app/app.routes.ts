@@ -11,6 +11,7 @@ import { ProductDetailsComponent } from './features/products/pages/product-detai
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { LogsComponent } from './features/logs/pages/logs.component';
+import { CarbonOffsettingComponent } from './features/carbon-offsetting/pages/carbon-offsetting/carbon-offsetting.component';
 
 export const routes: Routes = [
   {
@@ -79,6 +80,13 @@ export const routes: Routes = [
     component: LogsComponent,
     data: { breadcrumb: 'System Logs' },
     canActivate: [AuthGuard, RoleGuard],
+  },
+  {
+    path:'offsetting-actions',
+    title:'Offsetting Actions',
+    component: CarbonOffsettingComponent,
+    data: { breadcrumb: 'Offsetting Actions' },
+    canActivate: [AuthGuard],
   },
   {
     path:'**',

@@ -26,6 +26,9 @@
           @if(hasAccess('logs')){
             <li><a routerLink="logs" routerLinkActive="active" class="nav-item">Logs</a></li>
           }
+          @if(hasAccess('offsettingActions')){
+            <li><a routerLink="offsetting-actions" routerLinkActive="active" class="nav-item">Offsetting Actions</a></li>
+          }
         </ul>
       </nav>
       <div class="btn-container">
