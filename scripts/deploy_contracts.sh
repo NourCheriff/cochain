@@ -6,8 +6,10 @@ echo "Clearing the cache and deleting the artifacts..."
 echo "==============================================="
 echo ""
 
+cd $PWD/frontend
 npx -y hardhat clean
 rm -rf ./cache
+rm -rf ./deployments
 
 echo ""
 echo "==============================================="

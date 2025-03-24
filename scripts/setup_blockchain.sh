@@ -30,7 +30,7 @@ docker run -d \
 	--name besu \
 	hyperledger/besu:$BESU_VERSION
 
-docker container cp $PWD/onchain/setup.sh besu:/tmp/
+docker container cp $PWD/scripts/setup.sh besu:/tmp/
 
 docker exec besu sh -c "chmod +x /tmp/setup.sh"
 
