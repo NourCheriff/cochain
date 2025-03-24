@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { BlockchainService } from '../../services/blockchain.service';
+import { BaseHttpService } from 'src/app/core/services/api.service';
+import { Transaction } from '../../models/transaction.model';
 
 @Component({
   selector: 'app-transactions-dialog',
@@ -38,6 +40,7 @@ export class TransactionsDialogComponent {
   });
 
   private blockchainService = inject(BlockchainService);
+  private apiService = inject(BaseHttpService);
 
   // inject and get from a service
   options: Option[] = [
@@ -51,14 +54,28 @@ export class TransactionsDialogComponent {
     { value: 'SCP8 Address', displayValue: 'SCP8 ADDRESS - SCP Name'},
     { value: 'SCP9 Address', displayValue: 'SCP9 ADDRESS - SCP Name'},
     { value: 'SCP10 Address', displayValue: 'SCP10 ADDRESS - SCP Name'},
-    { value: 'SCP11 Address', displayValue: 'SCP11 ADDRESS - SCP Name'}
+    { value: 'SCP11 Address', displayValue: 'SCP11 ADDRESS - SCP Name' },
+    { value: '0xb95348283a9714737059b4fdf50926924bdb4655', displayValue: 'Samuele'}
   ]
 
   async onSubmit() {
     if (this.transactionForm.valid) {
       let receiver = this.transactionForm.value.receiver as string;
       let amount = this.transactionForm.value.amount as number;
-      await this.blockchainService.sendCarbonCredits(receiver, amount);
+      let receipt = await this.blockchainService.sendCarbonCredits(receiver, amount);
+
+      if (receipt) {
+        const newTransaction = {
+          transactionHash: receipt.hash!.toLowerCase(),
+          walletIdEmitter: receipt.from!.toLowerCase(),
+          walletIdReceiver: receiver.toLowerCase(),
+        }
+
+        this.apiService.add('api/Transaction/AddTransaction', newTransaction).subscribe({
+          next: (resp) => console.log(resp),
+        });
+
+      }
     }
   }
 

@@ -28,7 +28,7 @@ export class WalletComponent {
     });
 
     this.blockchainService.transferEvent.subscribe(event => {
-      //Chiamata backend per salvataggio transaction console.log("Trasferimento: ", event);
+      this.ngZone.run(() => this.showMessage("Transaction completed"));
     });
   }
 

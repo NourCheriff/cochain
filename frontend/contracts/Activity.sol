@@ -57,7 +57,7 @@ contract Activity is ERC721 {
         newProduct.scp = msg.sender;
 
         // Conia il token NFT
-        _mint(msg.sender, newTokenId);
+        _safeMint(msg.sender, newTokenId);
         unchecked {
             _tokenIdCounter++;
         }

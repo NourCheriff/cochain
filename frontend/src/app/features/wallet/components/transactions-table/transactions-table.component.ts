@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Transaction } from '../../models/transaction.model';
 import { TableHeaderComponent } from "../table-header/table-header.component";
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { BlockchainService } from '../../services/blockchain.service';
 
 @Component({
   selector: 'app-transactions-table',
@@ -13,16 +14,32 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 })
 export class TransactionsTableComponent implements AfterViewInit {
 
+  private blockchainService = inject(BlockchainService);
+
   displayedColumns: string[] = ['id', 'sender', 'receiver', 'amount', 'date']
-  dataSource = new MatTableDataSource<Transaction>(DATA);
-  user = 'SCP A'
+  dataSource = new MatTableDataSource<Transaction>([]);
+  user = this.blockchainService.getAccount();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit(): void {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+    this.loadTransactions();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  async loadTransactions() {
+    try {
+      const transactions = await this.blockchainService.getTransactions();
+      if (transactions) {
+        this.dataSource.data = transactions;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    } catch (error) {
+      console.error("Error while loading transactions", error);
+    }
   }
 
   filterData(filter: string) {
@@ -40,76 +57,3 @@ export class TransactionsTableComponent implements AfterViewInit {
     this.dataSource.filter = filter.trim().toLowerCase();
   }
 }
-
-const DATA: Transaction[] = [
-  {
-    id: '1',
-    sender: 'SCP A',
-    receiver: 'SCP B',
-    amount: 3,
-    date: '12 sep 2024, 12:30 AM',
-  },
-  {
-    id: '2',
-    sender: 'SCP A',
-    receiver: 'SCP B',
-    amount: 1,
-    date: '12 sep 2024, 12:30 AM',
-  },
-  {
-    id: '3',
-    sender: 'SCP B',
-    receiver: 'SCP A',
-    amount: 5,
-    date: '12 sep 2024, 12:30 AM',
-  },
-  {
-    id: '4',
-    sender: 'SCP B',
-    receiver: 'SCP A',
-    amount: 4,
-    date: '12 sep 2024, 12:30 AM',
-  },
-  {
-    id: '1',
-    sender: 'SCP A',
-    receiver: 'SCP B',
-    amount: 3,
-    date: '12 sep 2024, 12:30 AM',
-  },
-  {
-    id: '2',
-    sender: 'SCP A',
-    receiver: 'SCP B',
-    amount: 1,
-    date: '12 sep 2024, 12:30 AM',
-  },
-  {
-    id: '1',
-    sender: 'SCP A',
-    receiver: 'SCP B',
-    amount: 3,
-    date: '12 sep 2024, 12:30 AM',
-  },
-  {
-    id: '2',
-    sender: 'SCP A',
-    receiver: 'SCP B',
-    amount: 1,
-    date: '12 sep 2024, 12:30 AM',
-  },
-  {
-    id: '1',
-    sender: 'SCP A',
-    receiver: 'SCP B',
-    amount: 3,
-    date: '12 sep 2024, 12:30 AM',
-  },
-  {
-    id: '2',
-    sender: 'SCP A',
-    receiver: 'SCP B',
-    amount: 1,
-    date: '12 sep 2024, 12:30 AM',
-  },
-]
