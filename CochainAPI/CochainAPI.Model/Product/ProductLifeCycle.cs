@@ -4,12 +4,12 @@ using CochainAPI.Model.Documents;
 
 namespace CochainAPI.Model.Product
 {
-    public class ProductLifeCycle: Base
+    public class ProductLifeCycle : Base
     {
         public DateTime Timestamp { get; set; }
         public float Emissions { get; set; }
         public bool IsEmissionProcessed { get; set; }
-        public string EmissionTransactionId { get; set; }
+        public string? EmissionTransactionId { get; set; }
         public Guid ProductLifeCycleCategoryId { get; set; }
         public ProductLifeCycleCategory? ProductLifeCycleCategory { get; set; }
         public Guid SupplyChainPartnerId { get; set; }

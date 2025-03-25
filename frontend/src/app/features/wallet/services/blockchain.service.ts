@@ -62,7 +62,7 @@ export class BlockchainService {
     } catch (error) {
       console.error('Errore nella connessione del wallet:', error);
       this.connectionStatusSubject.next(false);
-      this.errorEvent.emit("Impossibile connettere il wallet: " + (error instanceof Error ? error.message : String(error)));
+      this.errorEvent.emit("Error while connecting wallet: " + (error instanceof Error ? error.message : String(error)));
       return false;
     }
   }
@@ -306,13 +306,13 @@ export class BlockchainService {
     if (accounts.length)
       return accounts[0];
 
-    this.errorEvent.emit('Impossibile recuperare il wallet ID dell\'account');
+    this.errorEvent.emit('Error while retrieving account\'s wallet ID');
     return null;
   }
 
   public async getBalance(): Promise<string | null> {
     if (!this.provider || !this.account) {
-      this.errorEvent.emit('Impossibile recuperare il balance dell\'account');
+      this.errorEvent.emit('Error while retrieving account\'s balance');
       return null;
     }
 

@@ -8,7 +8,7 @@ export interface BaseDocument extends Base {
   hash?: string;
   type?: string;
   userEmitterId?: string;
-  supplyChainPartnerReceiverId: string;
+  supplyChainPartnerReceiverId?: string;
   userEmitter?: User;
   supplyChainPartnerReceiver?: SupplyChainPartner;
   fileString?: string;
