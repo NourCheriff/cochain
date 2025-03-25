@@ -2,19 +2,29 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CarbonOffset;
 using CochainAPI.Model.Helper;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace CochainAPI.Data.Services
 {
     public class CarbonOffsettingActionService : ICarbonOffsettingActionService
     {
         private readonly ICarbonOffsettingActionRepository _actionRepository;
-        public CarbonOffsettingActionService(ICarbonOffsettingActionRepository actionService)
+        private readonly IUserRepository _userRepository;
+        private readonly IHttpContextAccessor _contextAccessor;
+        public CarbonOffsettingActionService(ICarbonOffsettingActionRepository actionService, IHttpContextAccessor contextAccessor, IUserRepository userRepository)
         {
             _actionRepository = actionService;
+            _contextAccessor = contextAccessor;
+            _userRepository = userRepository;
         }
 
         public async Task<CarbonOffsettingAction?> AddCarbonOffsettingAction(CarbonOffsettingAction action)
         {
+            var userId = _contextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var user = await _userRepository.GetById(userId);
+            action.SupplyChainPartnerId = user!.SupplyChainPartnerId.GetValueOrDefault();
+
             return await _actionRepository.AddCarbonOffsettingAction(action);
         }
 

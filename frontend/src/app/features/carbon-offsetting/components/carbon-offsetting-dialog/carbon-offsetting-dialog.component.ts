@@ -33,7 +33,7 @@ export class CarbonOffsettingDialogComponent {
 
   carbonOffsettingForm = new FormGroup<CarbonOffsettingForm>({
     action: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]),
-    offset: new FormControl(0, [Validators.required, Validators.pattern("^[0-9]*$")]),
+    offset: new FormControl(0, [Validators.required, Validators.pattern("^[0-9]*$"), Validators.min(0)]),
   });
 
   public addCarbonOffsettingAction(): void {
@@ -53,7 +53,7 @@ export class CarbonOffsettingDialogComponent {
         this.dialogRef.close(true);
       },
       error: (err) => {
-        this.showToast('Error on user insertion', 'error');
+        this.showToast('Error on action insertion', 'error');
       }
     });
   }
