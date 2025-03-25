@@ -18,6 +18,7 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.Transaction.Where(x => x.WalletIdEmitter == walletId || x.WalletIdReceiver == walletId)
                 .Include(x => x.SupplyChainPartnerReceiver)
                 .Include(x => x.SupplyChainPartnerEmitter)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
