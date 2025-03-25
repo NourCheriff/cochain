@@ -12,12 +12,7 @@ namespace CochainAPI.Data.Sql.Migrations
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DeleteData(
-                table: "SupplyChainPartner",
-                keyColumn: "Id",
-                keyValue: new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"));
-
+        {           
             migrationBuilder.AlterColumn<string>(
                 name: "WalletId",
                 table: "SupplyChainPartner",
@@ -27,6 +22,13 @@ namespace CochainAPI.Data.Sql.Migrations
                 oldClrType: typeof(string),
                 oldType: "text",
                 oldNullable: true);
+
+            migrationBuilder.UpdateData(
+                table: "SupplyChainPartner",
+                keyColumn: "Id",
+                keyValue: new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                columns: new[] { "WalletId" },
+                values: new object[] { "0x3a9f1b7c5d2e8a4f6c0e7d3b5a2f9c1" });
 
             migrationBuilder.AlterColumn<string>(
                 name: "EmissionTransactionId",
@@ -73,8 +75,7 @@ namespace CochainAPI.Data.Sql.Migrations
                 columns: new[] { "Id", "Credits", "Email", "Name", "Phone", "SupplyChainPartnerTypeId", "WalletId" },
                 values: new object[,]
                 {
-                    { new Guid("3a9f1b7c-5d2e-4a4f-8a6c-0e7d3b5a2f9c"), 0f, "company2@prova.com", "Prova company2", "3669045897", new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"), "0x7c5d1a3f9b2e6f0d8c4a7e3b5c2f9d1" },
-                    { new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"), 0f, "company@prova.com", "Prova company", "33309090909", new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"), "0x3a9f1b7c5d2e8a4f6c0e7d3b5a2f9c1" }
+                    { new Guid("3a9f1b7c-5d2e-4a4f-8a6c-0e7d3b5a2f9c"), 0f, "company2@prova.com", "Prova company2", "3669045897", new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"), "0x7c5d1a3f9b2e6f0d8c4a7e3b5c2f9d1" }
                 });
 
             migrationBuilder.UpdateData(

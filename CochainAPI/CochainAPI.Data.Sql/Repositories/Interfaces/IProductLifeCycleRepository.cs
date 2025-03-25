@@ -5,9 +5,10 @@ namespace CochainAPI.Data.Sql.Repositories.Interfaces
     public interface IProductLifeCycleRepository
     {
         Task<List<ProductLifeCycleCategory>> GetCategories();
-        public Task<List<ProductLifeCycle>> GetProductLifeCyclesByProductInfo(Guid productInfoId);
-        public Task<List<ProductLifeCycle>> GetProductLifeCyclesToBeProcessed();
-        public Task<ProductLifeCycle> AddProductLifeCycle(ProductLifeCycle productLifeCycle);
-        public Task<bool> SaveProductLife(ProductLifeCycle productLifeCycle);
+        Task<ProductLifeCycleCategory?> GetCategoryByName(string name);
+        Task<List<ProductLifeCycle>> GetProductLifeCyclesByProductInfo(Guid productInfoId);
+        Task<List<ProductLifeCycle>> GetProductLifeCyclesToBeProcessed();
+        Task<ProductLifeCycle> AddProductLifeCycle(ProductLifeCycle productLifeCycle);
+        Task<bool> SaveProductLife(ProductLifeCycle productLifeCycle);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using CochainAPI.Data.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CochainAPI.Data.Sql.Migrations
 {
     [DbContext(typeof(CochainDBContext))]
-    partial class CochainDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250325204058_ProductLifeCycleCategory")]
+    partial class ProductLifeCycleCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,14 +111,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "ad00648b-a031-432d-b007-6a0829cf5292",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7c847829-33da-4929-be42-e54d3509efa9",
+                            ConcurrencyStamp = "e475cd48-c416-4542-819f-3dfb9aec7b16",
                             EmailConfirmed = false,
                             FirstName = "System",
                             IsActive = true,
                             LastName = "System",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d3cf83b0-8ec5-4d3d-951f-35af9282128e",
+                            SecurityStamp = "da77e533-dcd4-4adb-9be7-d7e9349f0f86",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "admin@cochain.com"
@@ -124,14 +127,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "5e4b0ca8-aa85-417a-af23-035ac1b555cd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1a9f3bab-d803-4674-a3db-f8fecd961909",
+                            ConcurrencyStamp = "7f185257-ff78-4734-a1b3-9c3c7d02be72",
                             EmailConfirmed = false,
                             FirstName = "Paolo",
                             IsActive = true,
                             LastName = "Roselli",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "527312f8-0c37-4107-b835-9c7693a3df78",
+                            SecurityStamp = "2bf190e9-045a-4639-9d64-d26c6eec84dd",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "paolo.roselli02@gmail.com"
@@ -140,14 +143,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "0a317b04-2f87-4b08-8ad8-597103527584",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "37405a69-34a9-464d-bb90-80c11d125afc",
+                            ConcurrencyStamp = "e6414826-9c27-40dd-9a42-7f511091bb78",
                             EmailConfirmed = false,
                             FirstName = "Matteo",
                             IsActive = true,
                             LastName = "Spiga",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "20f41d95-4661-4b46-9daf-3bd8798ed937",
+                            SecurityStamp = "87b65384-3c80-488b-93da-f571593c05e2",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "matteospiga2002@gmail.com"
@@ -156,14 +159,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "a12c3708-0486-4603-b1a5-46d252e79082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c844b808-1114-4ccd-be89-6692debf9961",
+                            ConcurrencyStamp = "d24348d9-4cf3-457b-85a8-550f5deb0164",
                             EmailConfirmed = false,
                             FirstName = "Cherif",
                             IsActive = true,
                             LastName = "Nour",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "78b45438-07ac-4624-9c71-5467d95127f0",
+                            SecurityStamp = "65d88542-315e-4999-8d2c-a22615a10c58",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "nourcherif.pitos25@gmail.com"
@@ -172,14 +175,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "3542da56-0de3-4797-a059-effff257f63d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1b5318a6-5168-45ba-a1ce-71d4defa4149",
+                            ConcurrencyStamp = "ce7439e9-e866-4006-9af3-d1dacecdb75d",
                             EmailConfirmed = false,
                             FirstName = "Mattia",
                             IsActive = true,
                             LastName = "Mandorlini",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "05b33175-5ab0-4a42-8696-69e1307a1f9f",
+                            SecurityStamp = "16af89b8-1442-40e8-9687-b9824371f370",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "mando3228@gmail.com"
@@ -188,14 +191,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "f4242b5f-4b39-45fc-802e-391293414546",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "435599aa-177e-4abc-b522-babb60e2f572",
+                            ConcurrencyStamp = "1ee352e4-4a1f-4526-beee-162d80fe01f8",
                             EmailConfirmed = false,
                             FirstName = "Samuele",
                             IsActive = true,
                             LastName = "Sacchetti",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e19a4db3-2525-4e1a-8e16-01dd157c51ae",
+                            SecurityStamp = "d01cd4e3-f34e-4ad4-9ea9-ac1cf95a2a09",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "sacchettisamuele@gmail.com"
