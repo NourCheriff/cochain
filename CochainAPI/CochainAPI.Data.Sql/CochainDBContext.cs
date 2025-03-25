@@ -120,8 +120,8 @@ namespace CochainAPI.Data.Sql
                         .Property(c => c.IsProcessed)
                         .HasDefaultValue(false);
 
-            modelBuilder.Entity<Transaction>().HasOne(x => x.supplyChainPartnerEmitter).WithMany(x => x.EmittedTransactions).HasForeignKey(x => x.WalletIdEmitter).HasPrincipalKey(x => x.WalletId);
-            modelBuilder.Entity<Transaction>().HasOne(x => x.supplyChainPartnerReceiver).WithMany(x => x.ReceivedTransactions).HasForeignKey(x => x.WalletIdReceiver).HasPrincipalKey(x => x.WalletId);
+            modelBuilder.Entity<Transaction>().HasOne(x => x.SupplyChainPartnerEmitter).WithMany(x => x.EmittedTransactions).HasForeignKey(x => x.WalletIdEmitter).HasPrincipalKey(x => x.WalletId);
+            modelBuilder.Entity<Transaction>().HasOne(x => x.SupplyChainPartnerReceiver).WithMany(x => x.ReceivedTransactions).HasForeignKey(x => x.WalletIdReceiver).HasPrincipalKey(x => x.WalletId);
 
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole

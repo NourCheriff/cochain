@@ -2,7 +2,6 @@ using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.Documents;
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using Azure.Storage.Blobs;
-using Azure.Identity;
 using Azure.Storage.Blobs.Models;
 using CochainAPI.Model.Helper;
 
@@ -22,8 +21,9 @@ namespace CochainAPI.Data.Services
             _productLifeCycleRepository = productLifeCycleDocumentRepository;
             _supplyChainPartnerCertificate = supplyChainPartnerCertificateRepository;
             _productDocumentRepository = productDocumentRepository;
-            string blobAccountUrl = "https://teststoragedocum.blob.core.windows.net";
-            _blobServiceClient = new BlobServiceClient(new Uri(blobAccountUrl), new DefaultAzureCredential());
+            //string blobAccountUrl = "https://teststoragedocum.blob.core.windows.net";
+            //_blobServiceClient = new BlobServiceClient(new Uri(blobAccountUrl), new DefaultAzureCredential());
+            _blobServiceClient = new BlobServiceClient(Environment.GetEnvironmentVariable("BLOB_STORAGE_SECRET"));
         }
         public async Task<BaseDocument?> AddDocument(BaseDocument documentObj)
         {

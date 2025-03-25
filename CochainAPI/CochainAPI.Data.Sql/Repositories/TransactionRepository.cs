@@ -15,7 +15,10 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<List<Transaction>?> GetTransactionsByWalletId(string walletId)
         {
-            return await dbContext.Transaction.Where(x => x.WalletIdEmitter == walletId || x.WalletIdReceiver == walletId).ToListAsync();
+            return await dbContext.Transaction.Where(x => x.WalletIdEmitter == walletId || x.WalletIdReceiver == walletId)
+                .Include(x => x.SupplyChainPartnerReceiver)
+                .Include(x => x.SupplyChainPartnerEmitter)
+                .ToListAsync();
         }
 
         public async Task<Transaction?> AddTransaction(Transaction transactionObj)
