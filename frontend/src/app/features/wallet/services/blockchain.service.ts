@@ -32,7 +32,7 @@ export class BlockchainService {
   private carbonCreditsContract: ethers.Contract | null = null;
 
   private connectionStatusSubject = new BehaviorSubject<boolean>(false);
-  connectionStatus$ = this.connectionStatusSubject.asObservable();
+  public connectionStatus$ = this.connectionStatusSubject.asObservable();
 
   errorEvent = new EventEmitter<string>();
   transactionEvent = new EventEmitter<{ hash: string, status: string }>();
@@ -40,14 +40,13 @@ export class BlockchainService {
   productEvent = new EventEmitter<{ from: string, to: string, tokenId: number }>();
 
   constructor(private apiService: BaseHttpService) {
-    this.checkConnection();
-    this.setEventHandlers();
-    this.initializeContracts();
+    this.setup();
   }
 
   public isWalletConnected(): boolean {
     return this.account ? true : false;
   }
+
   // returns a boolean that indicates if the connection was successfull or not
   public async connectWallet(): Promise<boolean> {
     if (window.ethereum == null) {
@@ -311,7 +310,8 @@ export class BlockchainService {
   }
 
   public async getBalance(): Promise<string | null> {
-    if (!this.provider || !this.account) {
+    let accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    if (!this.provider || accounts.length === 0) {
       this.errorEvent.emit('Impossibile recuperare il balance dell\'account');
       return null;
     }
@@ -320,6 +320,7 @@ export class BlockchainService {
       await this.initializeContracts();
     }
 
+    this.account = accounts[0];
     let balance = await this.carbonCreditsContract!!['balanceOf'](this.account);
     return balance.toString();
   }
@@ -375,9 +376,6 @@ export class BlockchainService {
   }*/
 
   private async setupAccount(): Promise<void> {
-    this.provider = new ethers.BrowserProvider(window.ethereum);
-    this.signer = await this.provider.getSigner();
-
     let addEthereumChainResponse = await window.ethereum.request({
       "method": "wallet_addEthereumChain",
       "params": [
@@ -444,6 +442,18 @@ export class BlockchainService {
     const accounts = await  window.ethereum.request({ method: 'eth_accounts' });
     this.connectionStatusSubject.next(accounts.length !== 0)
     if (accounts.length !== 0)
-    this.account = accounts[0];
+      this.account = accounts[0];
+  }
+
+  private async setProviderAndSigner(): Promise<void> {
+    this.provider = new ethers.BrowserProvider(window.ethereum);
+    this.signer = await this.provider.getSigner();
+  }
+
+  private async setup(): Promise<void> {
+    await this.setProviderAndSigner();
+    await this.initializeContracts();
+    await this.checkConnection();
+    this.setEventHandlers();
   }
 }

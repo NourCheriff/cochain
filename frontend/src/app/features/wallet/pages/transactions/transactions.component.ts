@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, AfterViewInit } from '@angular/core';
 import { TransactionsTableComponent } from "../../components/transactions-table/transactions-table.component";
 import { ExpensesCardComponent } from "../../components/expenses-card/expenses-card.component";
 import { IncomesCardComponent } from "../../components/incomes-card/incomes-card.component";
@@ -11,13 +11,15 @@ import { BlockchainService } from '../../services/blockchain.service';
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css'
 })
-export class TransactionsComponent {
+export class TransactionsComponent implements AfterViewInit {
 
   private blockChainService = inject(BlockchainService);
   walletId: string | null = null;
   balance: string | null = null;
 
-  constructor() {
+  constructor() { }
+
+  ngAfterViewInit(): void {
     this.blockChainService.getWalletId().then((walletId) => this.walletId = walletId);
     this.blockChainService.getBalance().then((balance) => this.balance = balance);
   }
