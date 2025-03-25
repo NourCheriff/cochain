@@ -14,11 +14,11 @@ import { BlockchainService } from '../../services/blockchain.service';
 export class TransactionsComponent {
 
   private blockChainService = inject(BlockchainService);
-  walletId: string | null;
+  walletId: string | null = null;
   balance: string | null = null;
 
   constructor() {
-    this.walletId = this.blockChainService.walletId;
+    this.blockChainService.getWalletId().then((walletId) => this.walletId = walletId);
     this.blockChainService.getBalance().then((balance) => this.balance = balance);
   }
 }

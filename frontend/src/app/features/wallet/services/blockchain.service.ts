@@ -5,7 +5,7 @@ import ActivityDeployed from 'frontend/deployments/docker/Activity.json';
 import CarbonCreditsCompiled from 'frontend/artifacts/contracts/CarbonCredits.sol/CarbonCredits.json';
 import CarbonCreditsDeployed from 'frontend/deployments/docker/CarbonCredits.json';
 import { Transaction } from '../models/transaction.model';
-import { firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { BaseHttpService } from 'src/app/core/services/api.service';
 
 declare const window: any; // window object provided by the browser API
@@ -31,13 +31,17 @@ export class BlockchainService {
   private activityContract: ethers.Contract | null = null;
   private carbonCreditsContract: ethers.Contract | null = null;
 
-  isConnected = new EventEmitter<boolean>();
+  private connectionStatusSubject = new BehaviorSubject<boolean>(false);
+  connectionStatus$ = this.connectionStatusSubject.asObservable();
+
   errorEvent = new EventEmitter<string>();
   transactionEvent = new EventEmitter<{ hash: string, status: string }>();
   transferEvent = new EventEmitter<{ from: string, to: string, amount: number }>();
   productEvent = new EventEmitter<{ from: string, to: string, tokenId: number }>();
 
   constructor(private apiService: BaseHttpService) {
+    this.checkConnection();
+    this.setEventHandlers();
     this.initializeContracts();
   }
 
@@ -53,13 +57,11 @@ export class BlockchainService {
     }
     try {
       await this.setupAccount();
-      this.setEventHandlers();
       await this.initializeContracts();
-      this.isWalletConnected();
       return true
     } catch (error) {
       console.error('Errore nella connessione del wallet:', error);
-      this.isConnected.emit(false);
+      this.connectionStatusSubject.next(false);
       this.errorEvent.emit("Impossibile connettere il wallet: " + (error instanceof Error ? error.message : String(error)));
       return false;
     }
@@ -100,10 +102,7 @@ export class BlockchainService {
   }
 
   public getAccount(): string | null {
-    if (this.account)
-      return this.account
-    else
-      return null
+    return this.account;
   }
 
   public async sendCarbonCredits(receiverAddress: string, amount: number): Promise<ethers.TransactionReceipt | undefined | null> {
@@ -302,9 +301,10 @@ export class BlockchainService {
       }
   }
 
-  public get walletId(): string | null {
-    if (this.provider && this.account)
-      return this.account;
+  public async getWalletId(): Promise<string | null> {
+    let accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    if (accounts.length)
+      return accounts[0];
 
     this.errorEvent.emit('Impossibile recuperare il wallet ID dell\'account');
     return null;
@@ -312,7 +312,7 @@ export class BlockchainService {
 
   public async getBalance(): Promise<string | null> {
     if (!this.provider || !this.account) {
-      this.errorEvent.emit('Impossibile recuperare il wallet ID dell\'account');
+      this.errorEvent.emit('Impossibile recuperare il balance dell\'account');
       return null;
     }
 
@@ -411,7 +411,7 @@ export class BlockchainService {
 
     let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     this.account = accounts[0];
-    this.isConnected.emit(true);
+    this.connectionStatusSubject.next(true);
   }
 
   private setEventHandlers(): void {
@@ -437,6 +437,13 @@ export class BlockchainService {
     this.carbonCreditsAddress = null;
     this.activityContract = null;
     this.carbonCreditsContract = null;
-    this.isConnected.emit(false);
+    this.connectionStatusSubject.next(false);
+  }
+
+  private async checkConnection(): Promise<void> {
+    const accounts = await  window.ethereum.request({ method: 'eth_accounts' });
+    this.connectionStatusSubject.next(accounts.length !== 0)
+    if (accounts.length !== 0)
+    this.account = accounts[0];
   }
 }
