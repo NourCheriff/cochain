@@ -1,0 +1,38 @@
+//Results
+//BSCC1 -> 1.0
+//La proprietà è rispettata al 100%
+dtmc
+module LoginOTP
+
+s: [0..8] init 0;
+
+[n]			(s=0) -> (s'=1);
+[n]			(s=1) -> 0.05 : (s'=1) +
+		 			         0.95 : (s'=2);
+[n]			(s=2) -> 0.10 : (s'=7) +//s=7 è lo stato 2bis
+		 										         0.90 : (s'=8);//s=8 è lo stato 3bis
+[GenerateSendOTP] 	(s=7) -> (s'=2);
+[OTP]			(s=8) -> (s'=3);
+
+[n]			(s=3) -> 0.20 : (s'=8) +
+		 		         0.80 : (s'=4);
+[GenerateSendOTP]	(s=8) -> (s'=2);
+
+[n]				(s=4) -> 0.02 : (s'=5) +
+		 		         0.98 : (s'=6);
+[n]			(s=5) -> (s'=0);
+[n]			(s=6) -> (s'=6);
+endmodule
+
+module ResponseProperty
+q:[0..1] init 0;
+
+[n]			(q=0) -> (q'=0);
+[OTP]			(q=0) -> (q'=0);
+[GenerateSendOTP]	(q=0) -> (q'=1);
+
+[n]				(q=1) -> (q'=1);
+[GenerateSendOTP]	(q=1) -> (q'=1);
+[OTP]			(q=1) -> (q'=0);
+
+endmodule
