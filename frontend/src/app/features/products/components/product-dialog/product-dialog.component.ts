@@ -50,9 +50,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ProductDialogComponent implements OnInit {
 
   constructor(private productService: ProductService, private blockchainService: BlockchainService) {
-    this.blockchainService.productEvent.subscribe(event => {
-      this.updateProduct(event.tokenId, event.from, event.to);
-    });
+
   }
   private authService = inject(AuthService);
   private toasterService = inject(ToastrService);
@@ -104,7 +102,6 @@ export class ProductDialogComponent implements OnInit {
       this.productService.getAllProductInfo().subscribe({
         next: (response) => {
           this.allIngredientsRes = response.items!
-          console.log(this.allIngredientsRes)
           this.allIngredientsRes.forEach(ingredient =>{
             this.allIngredients.push(ingredient.name!)
           })
@@ -145,7 +142,11 @@ export class ProductDialogComponent implements OnInit {
         next: (response) => {
           this.uploadFile(response.id!);
           this.dialogRef.close({ newProduct: response });
-          this.blockchainService.createProduct(response.id!, response.expirationDate);
+          this.blockchainService.createProduct(response.id!, response.expirationDate).then((item) => {
+            const tokenId = Number(item!.logs[0].topics[3]);
+            this.updateProduct(response.id!, tokenId)
+            console.log("Prodott added correctly", item)
+          });
         },
         error: (error) => console.error(error),
       })
@@ -220,7 +221,6 @@ export class ProductDialogComponent implements OnInit {
         fileString: base64String,
         productInfoId: productInfoId,
         userEmitterId: this.authService.userId!,
-        supplyChainPartnerReceiverId: '',
         type: DocumentType.Origin,
       };
 
@@ -233,7 +233,7 @@ export class ProductDialogComponent implements OnInit {
     reader.readAsDataURL(this.fileUploaded);
   }
 
-  private updateProduct(tokenId: number, from: string, to: string) {
+  private updateProduct(productInfoId: string, tokenId: number) {
     const ingredientsValue = this.ingredients();
 
     const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
@@ -245,14 +245,15 @@ export class ProductDialogComponent implements OnInit {
     let formattedDate = datepipe.transform(this.newProductForm.value.date!, 'YYYY-MM-dd');
 
     const newProduct: ProductInfo = {
+      id: productInfoId,
       name: this.newProductForm.value.name!,
       productId: this.newProductForm.value.product!,
       expirationDate: formattedDate!,
       ingredients: productIngredients,
-      tokenId: tokenId,
+      tokenId: tokenId.toString(),
     }
 
-    this.productService.updateProductInfo(newProduct);
+    this.productService.updateProductInfo(newProduct).subscribe();
   }
 
   reset(){

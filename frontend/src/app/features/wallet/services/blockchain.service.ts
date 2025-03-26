@@ -96,7 +96,7 @@ export class BlockchainService {
         });
       });
     } catch (error) {
-      this.errorEvent.emit("Errore nell'inizializzazione dei contratti");
+      this.errorEvent.emit("Error while initializing contracts");
     }
   }
 
@@ -106,12 +106,12 @@ export class BlockchainService {
 
   public async sendCarbonCredits(receiverAddress: string, amount: number): Promise<ethers.TransactionReceipt | undefined | null> {
     if (!this.signer || !this.account || !this.carbonCreditsContract) {
-      this.errorEvent.emit('Wallet non connesso');
+      this.errorEvent.emit('Wallet not connected');
       return null;
     }
 
     if (!ethers.isAddress(receiverAddress)) {
-      this.errorEvent.emit('Indirizzo destinatario non valido');
+      this.errorEvent.emit('Receiver address not valid');
       return null;
     }
 
@@ -124,24 +124,27 @@ export class BlockchainService {
 
       return receipt;
     } catch (error) {
-      console.error('Errore nell\'invio dei carbon credits:', error);
-      this.errorEvent.emit('Transazione fallita: ' + (error instanceof Error ? error.message : String(error)));
+      console.error('Error while sending carbon credits:', error);
+      this.errorEvent.emit('Failed transaction: ' + (error instanceof Error ? error.message : String(error)));
       return null;
     }
   }
 
   public async createProduct(productId: string, expirationDate: string): Promise<ethers.TransactionReceipt | undefined | null> {
     if (!this.signer || !this.account || !this.activityContract) {
-      this.errorEvent.emit('Wallet non connesso');
+      this.errorEvent.emit('Wallet not connected');
       return null;
     }
 
     try {
-      const tx = await this.activityContract['createProduct'](productId, expirationDate);
+      const expirationDateFormatted = Math.floor(new Date(expirationDate).getTime() / 1000);
+      const tx = await this.activityContract['createProduct'](productId, expirationDateFormatted);
       this.transactionEvent.emit({ hash: tx.hash, status: 'pending' });
 
-      const receipt = await this.provider?.waitForTransaction(tx.hash);
+      const receipt = await tx.wait();
       this.transactionEvent.emit({ hash: tx.hash, status: 'confirmed' });
+
+      //const tokenId = receipt.logs[0].args[2];
 
       this.activityContract.on("Transfer", (from: string, to: string, tokenId: number) => {
         this.productEvent.emit({
@@ -153,15 +156,15 @@ export class BlockchainService {
 
       return receipt;
     }catch (error) {
-      console.error('Errore nell\'aggiungere il prodotto:', error);
-      this.errorEvent.emit('Transazione fallita: ' + (error instanceof Error ? error.message : String(error)));
+      console.error('Error while adding product:', error);
+      this.errorEvent.emit('Failed transaction: ' + (error instanceof Error ? error.message : String(error)));
       return null;
     }
   }
 
   public async addActivity(tokenId: number, activityId: string, emissions: number): Promise<ethers.TransactionReceipt | undefined | null> {
     if (!this.signer || !this.account || !this.activityContract){
-      this.errorEvent.emit('Wallet non connesso');
+      this.errorEvent.emit('Wallet not connected');
       return null;
     }
 
@@ -174,19 +177,22 @@ export class BlockchainService {
 
       return receipt
     } catch (error) {
-      console.error('Errore nell\'aggiungere l\'attività:', error);
-      this.errorEvent.emit('Transazione fallita: ' + (error instanceof Error ? error.message : String(error)));
+      console.error('Error while adding activity:', error);
+      this.errorEvent.emit('Failed transaction: ' + (error instanceof Error ? error.message : String(error)));
       return null;
     }
   }
 
   public async addDocument(tokenId: number, documentHash: string): Promise<ethers.TransactionReceipt | undefined | null> {
     if (!this.signer || !this.account || !this.activityContract){
-      this.errorEvent.emit('Wallet non connesso');
+      this.errorEvent.emit('Wallet not connected');
       return null;
     }
 
     try {
+      if (!documentHash.startsWith("0x")) {
+        documentHash = "0x" + documentHash;
+      }
       const tx = await this.activityContract['addDocument'](tokenId, documentHash);
       this.transactionEvent.emit({ hash: tx.hash, status: 'pending' });
 
@@ -195,15 +201,15 @@ export class BlockchainService {
 
       return receipt
     } catch (error) {
-      console.error('Errore nell\'aggiungere il documento:', error);
-      this.errorEvent.emit('Transazione fallita: ' + (error instanceof Error ? error.message : String(error)));
+      console.error('Error while adding document:', error);
+      this.errorEvent.emit('Failed transaction: ' + (error instanceof Error ? error.message : String(error)));
       return null;
       }
   }
 
   public async getActivity(tokenId: number, activityId: string): Promise<{ timestamp: number; id: string; scp: string; emissions: number } | null> {
     if (!this.provider || !this.account || !this.activityContract) {
-        this.errorEvent.emit('Wallet non connesso');
+        this.errorEvent.emit('Wallet not connected');
         return null;
     }
 
@@ -212,15 +218,15 @@ export class BlockchainService {
       const activity = {"timestamp": timestamp, "id": id, "scp": scp, "emissions": emissions}
       return activity;
     } catch (error) {
-      console.error("Errore nel recuperare l'attività: ", error);
-      this.errorEvent.emit("Errore nel recuperare l'attività: " + (error instanceof Error ? error.message : String(error)));
+      console.error("Error while retrieving the activity:", error);
+      this.errorEvent.emit("Error while retrieving the activity: " + (error instanceof Error ? error.message : String(error)));
       return null;
     }
   }
 
   public async getDocument(tokenId: number, documentHash: string): Promise<{ timestamp: number; documentHash: string } | null> {
     if (!this.provider || !this.account || !this.activityContract) {
-        this.errorEvent.emit('Wallet non connesso');
+        this.errorEvent.emit('Wallet not connected');
         return null;
     }
 
@@ -231,14 +237,14 @@ export class BlockchainService {
       return document;
     } catch (error) {
       console.error('Errore nel recuperare il documento: ', error);
-      this.errorEvent.emit('Errore nel recuperare il documento: ' + (error instanceof Error ? error.message : String(error)));
+      this.errorEvent.emit('Error while retrieving the document: ' + (error instanceof Error ? error.message : String(error)));
       return null;
     }
   }
 
   public async getActivities(tokenId: number): Promise<{ timestamp: number; activityId: string; scp: string; emissions: number }[] | null> {
     if (!this.provider || !this.account || !this.activityContract) {
-      this.errorEvent.emit('Wallet non connesso');
+      this.errorEvent.emit('Wallet not connected');
       return null;
     }
 
@@ -252,15 +258,15 @@ export class BlockchainService {
           emissions: emissions[index].toNumber(),
       }));
     } catch (error) {
-      console.error("Errore nel recuperare le attività: ", error);
-      this.errorEvent.emit("Errore nel recuperare le attività: " + (error instanceof Error ? error.message : String(error)));
+      console.error("Error while retrieving the activity: ", error);
+      this.errorEvent.emit("Error while retrieving activities: " + (error instanceof Error ? error.message : String(error)));
       return null;
     }
   }
 
   public async getDocuments(tokenId: number): Promise<{ timestamp: number; documentHash: string }[] | null> {
     if (!this.provider || !this.account || !this.activityContract) {
-      this.errorEvent.emit('Wallet non connesso');
+      this.errorEvent.emit('Wallet not connected');
       return null;
     }
 
@@ -272,32 +278,10 @@ export class BlockchainService {
           documentHash: documentHashes[index],
       }));
     } catch (error) {
-      console.error("Errore nel recuperare i documenti: ", error);
-      this.errorEvent.emit("Errore nel recuperare i documenti: " + (error instanceof Error ? error.message : String(error)));
+      console.error("Error while retrieving documents: ", error);
+      this.errorEvent.emit("Error while retrieving documents: " + (error instanceof Error ? error.message : String(error)));
       return null;
     }
-  }
-
-
-  public async removeDocument(tokenId: number, documentHashToRemove: string): Promise<ethers.TransactionReceipt | undefined | null> {
-    if (!this.provider || !this.account || !this.activityContract){
-      this.errorEvent.emit('Wallet non connesso');
-      return null;
-    }
-
-    try {
-      const tx = await this.activityContract['removeDocument'](tokenId, documentHashToRemove);
-      this.transactionEvent.emit({ hash: tx.hash, status: 'pending' });
-
-      const receipt = await this.provider?.waitForTransaction(tx.hash);
-      this.transactionEvent.emit({ hash: tx.hash, status: 'confirmed' });
-
-      return receipt
-    } catch (error) {
-      console.error('Errore nell\'eliminazione del documento: ', error);
-      this.errorEvent.emit('Transazione fallita: ' + (error instanceof Error ? error.message : String(error)));
-      return null;
-      }
   }
 
   public async getWalletId(): Promise<string | null> {
@@ -312,7 +296,7 @@ export class BlockchainService {
   public async getBalance(): Promise<string | null> {
     let accounts = await window.ethereum.request({ method: 'eth_accounts' });
     if (!this.provider || accounts.length === 0) {
-      this.errorEvent.emit('Impossibile recuperare il balance dell\'account');
+      this.errorEvent.emit('Error while retrieving account\'s balance');
       return null;
     }
 
@@ -404,7 +388,7 @@ export class BlockchainService {
       });
     }
     else {
-      this.errorEvent.emit('Errore nel collegamento con la network');
+      this.errorEvent.emit('Error while connecting to the network');
     }
 
     let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });

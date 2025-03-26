@@ -11,7 +11,7 @@ export interface ProductInfo extends Base {
   expirationDate: string;
   supplyChainPartnerId?: string;
   supplyChainPartner?: SupplyChainPartner;
-  tokenId?: number;
+  tokenId?: string;
   ingredients?: ProductIngredient[];
   productLifeCycles?: ProductLifeCycle[];
   productDocuments?: ProductDocument[];

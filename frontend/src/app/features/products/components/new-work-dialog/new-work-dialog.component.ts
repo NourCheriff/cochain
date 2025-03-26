@@ -96,6 +96,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
       productLifeCycleCategoryId: this.newWorkForm.value.work!,
       supplyChainPartnerId: this.data.product.supplyChainPartnerId!,
       productInfoId: this.data.product.id!,
+      productInfo: this.data.product
     }
 
     if (this.blockchainService.isWalletConnected()) {
@@ -105,6 +106,9 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
             this.uploadFile(response.id!, true);
             this.uploadFile(response.id!, false);
             this.dialogRef.close({ newWork: response });
+            this.blockchainService.addActivity(Number(newProductLifeCycle.productInfo?.tokenId), response.id!, response.emissions).then((item) => {
+              console.log("Activity added to the product", item)
+            })
           },
           error: (error) => console.error(error),
         })
@@ -114,6 +118,9 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
           next: (response) => {
             this.uploadFile(response.id!, false);
             this.dialogRef.close({ newWork: response });
+            this.blockchainService.addActivity(Number(newProductLifeCycle.productInfo?.tokenId), response.id!, response.emissions).then((item) => {
+              console.log("Activity added to the product", item)
+            })
           },
           error: (error) => console.error(error),
         })
@@ -158,7 +165,9 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
         error: (error) => console.error('File upload failed', error),
       });
 
-      this.blockchainService.addDocument(this.data.product.tokenId!, hashedBase64Document);
+      this.blockchainService.addDocument(Number(this.data.product.tokenId), hashedBase64Document).then((item) => {
+        console.log("Document added to the product", item);
+      });
     };
 
     reader.readAsDataURL((isTransportDocument) ? this.transportFileUploaded : this.billFileUploaded);

@@ -214,35 +214,6 @@ contract Activity is ERC721 {
         return (timestamps, documentHashes);
     }
 
-    function removeDocument(
-        uint256 tokenId,
-        bytes32 documentHashToRemove
-    ) public {
-        require(_exists(tokenId), "Product does not exist");
-        require(
-            ownerOf(tokenId) == msg.sender,
-            "Only the owner can remove documents"
-        );
-
-        Document[] storage documents = products[tokenId].document;
-        uint256 documentsLength = documents.length;
-        bool found = false;
-
-        for (uint256 i = 0; i < documentsLength; i++) {
-            if (documents[i].documentHash == documentHashToRemove) {
-                found = true;
-
-                documents[i] = documents[documentsLength - 1];
-                documents.pop();
-
-                emit DocumentRemoved(tokenId, documentHashToRemove, msg.sender);
-                break;
-            }
-        }
-
-        require(found, "Document not found");
-    }
-
     function getEmissionsBySCP(address scp) public view returns (uint256) {
         return totalEmissionBalances[scp];
     }

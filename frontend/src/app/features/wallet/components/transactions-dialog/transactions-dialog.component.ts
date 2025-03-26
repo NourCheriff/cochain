@@ -13,7 +13,6 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatButtonModule } from '@angular/material/button';
 import { BlockchainService } from '../../services/blockchain.service';
 import { BaseHttpService } from 'src/app/core/services/api.service';
-import { Transaction } from '../../models/transaction.model';
 
 @Component({
   selector: 'app-transactions-dialog',
@@ -72,7 +71,7 @@ export class TransactionsDialogComponent {
         }
 
         this.apiService.add('api/Transaction/AddTransaction', newTransaction).subscribe({
-          next: (resp) => console.log(resp),
+
         });
 
       }
