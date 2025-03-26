@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {ERC721} from "@openzeppelin/contracts/token/ERC721";
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract Activity is ERC721 {
     uint256 private _tokenIdCounter;
@@ -56,7 +56,7 @@ contract Activity is ERC721 {
         // Crea un nuovo prodotto
         Product storage newProduct = products[newTokenId];
         newProduct.productId = productId;
-        newProduct.blockNumber = block.number;
+        newProduct.blockNumber = newProduct.number;
         newProduct.expirationDate = expirationDate;
         newProduct.scp = msg.sender;
 
@@ -82,7 +82,7 @@ contract Activity is ERC721 {
 
         // Crea una nuova attività
         ActivityStruct memory newActivity = ActivityStruct({
-            blockNumber: block.number,
+            blockNumber: newActivity.blockNumber,
             activityId: activityId,
             scp: msg.sender,
             emissions: emissions
@@ -102,7 +102,7 @@ contract Activity is ERC721 {
 
         // Crea un nuova documento
         Document memory newDocument = Document({
-            blockNumber: block.number,
+            blockNumber: newDocument.number,
             documentHash: documentHash
         });
 
