@@ -79,23 +79,24 @@ export class CompanyDialogComponent {
   }
 
   insertCompanyAndUser() {
-    const companyUserSanitized = this.sanitizer.sanitizeForm(this.companyForm)
+    const sanitizedForm = this.sanitizer.sanitizeForm(this.companyForm)
 
     const companyData: Company = {
-      name: companyUserSanitized.nameCompany,
-      phone: companyUserSanitized.phoneCompany,
-      email: companyUserSanitized.emailCompany
+      name: sanitizedForm.nameCompany,
+      phone: sanitizedForm.phoneCompany,
+      email: sanitizedForm.emailCompany
     };
 
     const userData: User = {
-      firstName: companyUserSanitized.firstNameUser,
-      lastName: companyUserSanitized.lastNameUser,
-      userName: companyUserSanitized.emailUser,
-      phone: companyUserSanitized.phoneUser,
+      firstName: sanitizedForm.firstNameUser,
+      lastName: sanitizedForm.lastNameUser,
+      userName: sanitizedForm.emailUser,
+      phone: sanitizedForm.phoneUser,
       role: Role.Admin
     };
 
     if (this.isSupplyChainPartner()) {
+      companyData.walletId = this.sanitizer.sanitizeValue(this.companyForm.value.walletCompany);
       this.addSupplyChainPartner(companyData, userData);
     } else {
       this.addCertificationAuthority(companyData, userData);
