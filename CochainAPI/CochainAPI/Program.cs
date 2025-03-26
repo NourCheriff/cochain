@@ -70,6 +70,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("WriteProductLifeCycle", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("ReadProducts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteReadCarbonOffsett", policy => policy.RequireRole("SystemAdmin", "AdminCA", "UserCA"));
+    options.AddPolicy("ReadTransactions", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
+    options.AddPolicy("WriteTransaction", policy => policy.RequireRole("AdminSCP", "UserSCP"));
 });
 
 builder.Services.AddDbContext<CochainDBContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Singleton);

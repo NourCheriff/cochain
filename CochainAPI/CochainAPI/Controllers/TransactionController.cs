@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using CochainAPI.Data.Services.Interfaces;
 using CochainAPI.Model.CompanyEntities;
 
@@ -16,6 +17,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("transactions/{walletId}")]
+        [Authorize(Policy = "ReadTransactions")]
         public async Task<IActionResult> GetTransactionsByWalletId(string walletId)
         {
             var response = await _transactionService.GetTransactionsByWalletId(walletId);
@@ -27,6 +29,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpPost("AddTransaction")]
+        [Authorize(Policy = "WriteTransaction")]
         public async Task<IActionResult> AddTransaction([FromBody] Transaction transactionObj)
         {
             var response = await _transactionService.AddTransaction(transactionObj);
