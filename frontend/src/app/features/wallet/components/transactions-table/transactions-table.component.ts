@@ -5,10 +5,11 @@ import { Transaction } from '../../models/transaction.model';
 import { TableHeaderComponent } from "../table-header/table-header.component";
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { BlockchainService } from '../../services/blockchain.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-transactions-table',
-  imports: [MatTableModule, MatPaginatorModule, TableHeaderComponent, MatSortModule],
+  imports: [MatTableModule, MatPaginatorModule, TableHeaderComponent, MatSortModule, CommonModule],
   templateUrl: './transactions-table.component.html',
   styleUrl: './transactions-table.component.css'
 })

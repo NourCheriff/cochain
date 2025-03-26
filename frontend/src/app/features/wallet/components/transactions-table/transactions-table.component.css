@@ -1,3 +1,17 @@
 .mat-elevation-z8, .table, .paginator {
   background-color: #FFF;
 }
+
+.id-column {
+  width: 300px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.amount-column {
+  width: 100px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}

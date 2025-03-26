@@ -6,7 +6,7 @@
     <!-- Transaction ID Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Transaction ID"> Transaction ID </th>
-      <td mat-cell *matCellDef="let transaction"> {{ transaction.id }} </td>
+      <td mat-cell *matCellDef="let transaction" class="id-column"> {{ transaction.id }} </td>
     </ng-container>
 
     <!-- Sender Column -->
@@ -24,14 +24,15 @@
     <!-- Amount Column -->
     <ng-container matColumnDef="amount">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Amount"> Amount </th>
-      <td mat-cell *matCellDef="let transaction"> {{ transaction.amount }} FT </td>
+      <td mat-cell *matCellDef="let transaction" class="amount-column"> {{ transaction.amount }} FT </td>
     </ng-container>
 
     <!-- Date Column -->
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Date"> Date </th>
-      <td mat-cell *matCellDef="let transaction"> {{ transaction.date }} </td>
+      <td mat-cell *matCellDef="let transaction"> {{ transaction.date | date: 'dd/MM/yyyy' }} </td>
     </ng-container>
+
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

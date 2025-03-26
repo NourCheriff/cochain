@@ -333,8 +333,8 @@ export class BlockchainService {
 
             return {
               id: txHash.hash,
-              sender: txHash.from,
-              receiver: txHash.to ?? '',
+              sender: tx.supplyChainPartnerEmitterName ?? '',
+              receiver: tx.supplyChainPartnerReceiverName ?? '',
               amount: Number(txHash.value),
               date: new Date(block.timestamp * 1000).toISOString(),
             } as Transaction;
