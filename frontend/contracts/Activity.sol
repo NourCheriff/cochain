@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.24;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721" as ERC721;
 
 contract Activity is ERC721 {
     uint256 private _tokenIdCounter;
 
     struct Document {
-        uint256 timestamp;
+        uint256 blockNumber;
         bytes32 documentHash;
     }
 
     struct ActivityStruct {
-        uint256 timestamp;
+        uint256 blockNumber;
         string activityId;
         address scp;
         uint256 emissions;
@@ -20,7 +20,7 @@ contract Activity is ERC721 {
 
     struct Product {
         string productId;
-        uint256 creationDate;
+        uint256 blockNumber;
         uint256 expirationDate;
         address scp;
         Document[] document;
@@ -37,7 +37,11 @@ contract Activity is ERC721 {
     event DocumentAdded(uint256 tokenId, bytes32 documentHash, address scp);
     event DocumentRemoved(uint256 tokenId, bytes32 documentHash, address scp);
 
-    constructor() ERC721("Activity", "ACTY") {}
+    error ProductNotFound();
+    error DocumentNotFound();
+    error ActivityNotFound();
+
+    constructor() public ERC721("Activity", "ACTY") {}
 
     function _exists(uint256 tokenId) internal view returns (bool) {
         return ownerOf(tokenId) != address(0);
@@ -52,7 +56,7 @@ contract Activity is ERC721 {
         // Crea un nuovo prodotto
         Product storage newProduct = products[newTokenId];
         newProduct.productId = productId;
-        newProduct.creationDate = block.timestamp;
+        newProduct.blockNumber = block.number;
         newProduct.expirationDate = expirationDate;
         newProduct.scp = msg.sender;
 
@@ -72,11 +76,13 @@ contract Activity is ERC721 {
         string memory activityId,
         uint256 emissions
     ) public {
-        require(_exists(tokenId), "Product does not exist");
+        if (!_exists(tokenId)) {
+            revert ProductNotFound();
+        }
 
         // Crea una nuova attività
         ActivityStruct memory newActivity = ActivityStruct({
-            timestamp: block.timestamp,
+            blockNumber: block.number,
             activityId: activityId,
             scp: msg.sender,
             emissions: emissions
@@ -90,11 +96,13 @@ contract Activity is ERC721 {
     }
 
     function addDocument(uint256 tokenId, bytes32 documentHash) public {
-        require(_exists(tokenId), "Product does not exist");
+        if (!_exists(tokenId)) {
+            revert ProductNotFound();
+        }
 
         // Crea un nuova documento
         Document memory newDocument = Document({
-            timestamp: block.timestamp,
+            blockNumber: block.number,
             documentHash: documentHash
         });
 
@@ -116,7 +124,9 @@ contract Activity is ERC721 {
             uint256[] memory emissions
         )
     {
-        require(_exists(tokenId), "Product does not exist");
+        if (!_exists(tokenId)) {
+            revert ProductNotFound();
+        }
 
         uint256 length = products[tokenId].activity.length;
         timestamps = new uint256[](length);
@@ -148,7 +158,9 @@ contract Activity is ERC721 {
             uint256 emissions
         )
     {
-        require(_exists(tokenId), "Product does not exist");
+        if (!_exists(tokenId)) {
+            revert ProductNotFound();
+        }
 
         ActivityStruct[] storage activities = products[tokenId].activity;
         bool found = false;
@@ -167,7 +179,10 @@ contract Activity is ERC721 {
             }
         }
 
-        require(found, "Activity not found");
+        if (!found) {
+            revert ActivityNotFound();
+        }
+
         return (timestamp, id, scp, emissions);
     }
 
@@ -175,7 +190,10 @@ contract Activity is ERC721 {
         uint256 tokenId,
         bytes32 documentHashToFind
     ) public view returns (uint256 timestamp, bytes32 documentHash) {
-        require(_exists(tokenId), "Product does not exist");
+        if (!_exists(tokenId)) {
+            revert ProductNotFound();
+        }
+
         Document[] storage documents = products[tokenId].document;
         bool found = false;
 
@@ -188,7 +206,10 @@ contract Activity is ERC721 {
             }
         }
 
-        require(found, "Document not found");
+        if (!found) {
+            revert DocumentNotFound();
+        }
+
         return (timestamp, documentHash);
     }
 
@@ -199,7 +220,9 @@ contract Activity is ERC721 {
         view
         returns (uint256[] memory timestamps, bytes32[] memory documentHashes)
     {
-        require(_exists(tokenId), "Product does not exist");
+        if (!_exists(tokenId)) {
+            revert ProductNotFound();
+        }
 
         uint256 length = products[tokenId].document.length;
         timestamps = new uint256[](length);
