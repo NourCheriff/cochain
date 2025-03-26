@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@openzeppelin/contracts/token/ERC721" as ERC721;
+import {ERC721} from "@openzeppelin/contracts/token/ERC721";
 
 contract Activity is ERC721 {
     uint256 private _tokenIdCounter;
@@ -41,7 +41,7 @@ contract Activity is ERC721 {
     error DocumentNotFound();
     error ActivityNotFound();
 
-    constructor() public ERC721("Activity", "ACTY") {}
+    constructor() ERC721("Activity", "ACTY") {}
 
     function _exists(uint256 tokenId) internal view returns (bool) {
         return ownerOf(tokenId) != address(0);
@@ -118,7 +118,7 @@ contract Activity is ERC721 {
         public
         view
         returns (
-            uint256[] memory timestamps,
+            uint256[] memory blockNumber,
             string[] memory activityId,
             address[] memory scps,
             uint256[] memory emissions
@@ -129,20 +129,20 @@ contract Activity is ERC721 {
         }
 
         uint256 length = products[tokenId].activity.length;
-        timestamps = new uint256[](length);
+        blockNumber = new uint256[](length);
         activityId = new string[](length);
         scps = new address[](length);
         emissions = new uint256[](length);
 
         for (uint256 i = 0; i < length; i++) {
             ActivityStruct memory act = products[tokenId].activity[i];
-            timestamps[i] = act.timestamp;
+            blockNumber[i] = act.blockNumber;
             activityId[i] = act.activityId;
             scps[i] = act.scp;
             emissions[i] = act.emissions;
         }
 
-        return (timestamps, activityId, scps, emissions);
+        return (blockNumber, activityId, scps, emissions);
     }
 
     function getActivity(
@@ -152,7 +152,7 @@ contract Activity is ERC721 {
         public
         view
         returns (
-            uint256 timestamp,
+            uint256 blockNumber,
             string memory id,
             address scp,
             uint256 emissions
@@ -170,7 +170,7 @@ contract Activity is ERC721 {
                 keccak256(bytes(activities[i].activityId)) ==
                 keccak256(bytes(activityId))
             ) {
-                timestamp = activities[i].timestamp;
+                blockNumber = activities[i].blockNumber;
                 id = activities[i].activityId;
                 scp = activities[i].scp;
                 emissions = activities[i].emissions;
@@ -183,13 +183,13 @@ contract Activity is ERC721 {
             revert ActivityNotFound();
         }
 
-        return (timestamp, id, scp, emissions);
+        return (blockNumber, id, scp, emissions);
     }
 
     function getDocument(
         uint256 tokenId,
         bytes32 documentHashToFind
-    ) public view returns (uint256 timestamp, bytes32 documentHash) {
+    ) public view returns (uint256 blockNumber, bytes32 documentHash) {
         if (!_exists(tokenId)) {
             revert ProductNotFound();
         }
@@ -199,7 +199,7 @@ contract Activity is ERC721 {
 
         for (uint256 i = 0; i < documents.length; i++) {
             if (documents[i].documentHash == documentHashToFind) {
-                timestamp = documents[i].timestamp;
+                blockNumber = documents[i].blockNumber;
                 documentHash = documents[i].documentHash;
                 found = true;
                 break;
@@ -210,7 +210,7 @@ contract Activity is ERC721 {
             revert DocumentNotFound();
         }
 
-        return (timestamp, documentHash);
+        return (blockNumber, documentHash);
     }
 
     function getDocuments(
@@ -218,23 +218,23 @@ contract Activity is ERC721 {
     )
         public
         view
-        returns (uint256[] memory timestamps, bytes32[] memory documentHashes)
+        returns (uint256[] memory blockNumber, bytes32[] memory documentHashes)
     {
         if (!_exists(tokenId)) {
             revert ProductNotFound();
         }
 
         uint256 length = products[tokenId].document.length;
-        timestamps = new uint256[](length);
+        blockNumber = new uint256[](length);
         documentHashes = new bytes32[](length);
 
         for (uint256 i = 0; i < length; i++) {
             Document memory doc = products[tokenId].document[i];
-            timestamps[i] = doc.timestamp;
+            blockNumber[i] = doc.blockNumber;
             documentHashes[i] = doc.documentHash;
         }
 
-        return (timestamps, documentHashes);
+        return (blockNumber, documentHashes);
     }
 
     function getEmissionsBySCP(address scp) public view returns (uint256) {
