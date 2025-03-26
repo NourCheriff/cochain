@@ -76,7 +76,11 @@ namespace CochainAPI.Data.Services
 
         public async Task<ProductInfo?> UpdateProduct(ProductInfo productObj)
         {
-            // update prodotto può essere fatto solo al proprio prodotto
+            var userId = _contextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var user = await _userRepository.GetById(userId);
+            if (productObj.SupplyChainPartnerId != user!.SupplyChainPartnerId.GetValueOrDefault())
+                return null;
+
             bool isSuccess = false;
             if (!string.IsNullOrEmpty(productObj.Id.ToString()))
             {
