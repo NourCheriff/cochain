@@ -2,7 +2,6 @@ using CochainAPI.Data.Services.Interfaces;
 using Quartz;
 using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
-using Nethereum.Web3.Accounts.Managed;
 
 namespace CochainAPI.Jobs
 {
@@ -30,7 +29,7 @@ namespace CochainAPI.Jobs
                 var walletId = item.SupplyChainPartner.WalletId;
                 var account = new Account(walletId);
                 var web3 = new Web3(account, _blockchainURL);
-                var credits = item.SupplyChainPartner.SupplyChainPartnerType.Baseline - item.Emissions;
+                var credits = item.SupplyChainPartner.SupplyChainPartnerType!.Baseline - item.Emissions;
                 var transaction = await web3.Eth.GetEtherTransferService()
                 .TransferEtherAndWaitForReceiptAsync(walletId, (decimal)credits);
 

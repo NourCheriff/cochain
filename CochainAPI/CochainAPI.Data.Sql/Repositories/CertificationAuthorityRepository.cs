@@ -1,6 +1,5 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
-using CochainAPI.Model.Documents;
 using Microsoft.AspNetCore.Http;
 using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
@@ -133,11 +132,6 @@ namespace CochainAPI.Data.Sql.Repositories
             };
         }
 
-        public async Task<CertificationAuthority?> GetCertificationAuthorityById(Guid id)
-        {            
-            return await dbContext.CertificationAuthority.FirstOrDefaultAsync(x => x.Id == id);
-        }
-
         public async Task<CertificationAuthority?> AddCertificationAuthority(CertificationAuthority certificationAuthority)
         {
             var savedCertificationAuthority = await dbContext.CertificationAuthority.AddAsync(certificationAuthority);
@@ -158,6 +152,11 @@ namespace CochainAPI.Data.Sql.Repositories
             };
             await logRepository.AddLog(log);
             return certificationAuthority;
+        }
+
+        public async Task<CertificationAuthority?> GetCertificationAuthorityById(Guid id)
+        {            
+            return await dbContext.CertificationAuthority.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

@@ -1,0 +1,84 @@
+//Results
+//BSCC1 -> (6,0)=0.979998121297311
+//BSCC2 ->(6,2)=0.019599946397201726
+//BSCC3 ->(6,4)=3.9999890606534145E-4
+//La proprietà è rispettata se vengono raggiunte
+//BSCC1 o BSCC2 e la probabilità 0.99959806769 (99.959%)
+
+dtmc
+module LoginOTP
+
+s: [0..13] init 0;
+
+[email]			(s=0) -> 	(s'=1);
+[n]			(s=1) -> 0.05 : (s'=7) +//s=7 è lo stato 1bis
+		 	 	 0.95 : (s'=8);	//s=8 è lo stato 2bis
+[email] 		(s=7) -> (s'=1);
+[generateSendOTP] 	(s=8) -> (s'=2);
+
+[n]			(s=2) -> 0.10 : (s'=9) +//s=9 è lo stato 2tris
+		 										         0.90 : (s'=10);//s=10 è lo stato 3bis
+[generateSendOTP] 	(s=9) -> (s'=2);
+[OTP]			(s=10) -> (s'=3);
+
+[n]			(s=3) -> 0.20 : (s'=10) +
+		 			         0.80 : (s'=11);//s=11 è lo stato 4bis
+[generateSendOTP]	(s=10) -> (s'=2);
+[OTPValidation]		(s=11) -> (s'=4);
+
+[n]			(s=4) -> 0.02 : (s'=12) +//s=12 è lo stato 5bis
+		 			         0.98 : (s'=13);//s=13 è lo stato 6bis
+[fail]			(s=12) -> (s'=5);
+[succ]			(s=13) -> (s'=6);
+
+[fail]			(s=5) -> (s'=0);
+[succ]			(s=6) -> (s'=6);
+
+endmodule
+
+
+module SafetyProperty
+
+q: [0..4] init 0;
+
+[n]     			(q=0) -> (q'=0);
+[email]			(q=0) -> (q'=0);
+[generateSendOTP]	(q=0) -> (q'=0);
+[OTP]			(q=0) -> (q'=0);
+[OTPValidation]		(q=0) -> (q'=0);
+[succ]			(q=0) -> (q'=0);
+[fail] 			(q=0) -> (q'=1);
+
+[n]     			(q=1) -> (q'=1);
+[email]			(q=1) -> (q'=1);
+[generateSendOTP]	(q=1) -> (q'=1);
+[OTP]			(q=1) -> (q'=1);
+[OTPValidation]		(q=1) -> (q'=1);
+[succ]			(q=1) -> (q'=1);
+[fail] 			(q=1) -> (q'=2);
+
+[n]     			(q=2) -> (q'=2);
+[email]			(q=2) -> (q'=2);
+[generateSendOTP]	(q=2) -> (q'=2);
+[OTP]			(q=2) -> (q'=2);
+[OTPValidation]		(q=2) -> (q'=2);
+[succ]			(q=2) -> (q'=2);
+[fail] 				(q=2) -> (q'=3);
+
+[n]     			(q=3) -> (q'=3);
+[email]			(q=3) -> (q'=3);
+[generateSendOTP]	(q=3) -> (q'=3);
+[OTP]			(q=3) -> (q'=3);
+[OTPValidation]		(q=3) -> (q'=3);
+[succ]			(q=3) -> (q'=3);
+[fail] 			(q=3) -> (q'=4);
+
+[n]     			(q=4) -> (q'=4);
+[email]			(q=4) -> (q'=4);
+[generateSendOTP]	(q=4) -> (q'=4);
+[OTP]			(q=4) -> (q'=4);
+[OTPValidation]		(q=4) -> (q'=4);
+[succ]			(q=4) -> (q'=4);
+[fail] 			(q=4) -> (q'=4);
+
+endmodule

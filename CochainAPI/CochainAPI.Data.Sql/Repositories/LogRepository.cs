@@ -35,6 +35,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 TotalSize = totalSize
             };
         }
+
         public async Task<bool> AddLog(Log log)
         {
             await dbContext.AddAsync(log);

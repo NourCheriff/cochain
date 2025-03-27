@@ -8,25 +8,25 @@
     <div class="options">
       <nav class="nav-link">
         <ul>
-          @if(hasAccess('wallet')){
+          @if(hasAccess('wallet')) {
             <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">Wallet</a></li>
           }
-          @if(hasAccess('products')){
+          @if(hasAccess('products')) {
             <li><a routerLink="products" routerLinkActive="active" class="nav-item">Products</a></li>
           }
-          @if(hasAccess('certificates')){
+          @if(hasAccess('certificates')) {
             <li><a routerLink="certificates" routerLinkActive="active" class="nav-item">Certificates</a></li>
           }
-          @if(hasAccess('contracts')){
+          @if(hasAccess('contracts')) {
             <li><a routerLink="contracts" routerLinkActive="active" class="nav-item">Contracts</a></li>
           }
-          @if(hasAccess('companies')){
+          @if(hasAccess('companies')) {
             <li><a routerLink="companies" routerLinkActive="active" class="nav-item">Companies</a></li>
           }
-          @if(hasAccess('logs')){
+          @if(hasAccess('logs')) {
             <li><a routerLink="logs" routerLinkActive="active" class="nav-item">Logs</a></li>
           }
-          @if(hasAccess('offsettingActions')){
+          @if(hasAccess('offsettingActions')) {
             <li><a routerLink="offsetting-actions" routerLinkActive="active" class="nav-item">Offsetting Actions</a></li>
           }
         </ul>
