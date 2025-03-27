@@ -1,17 +1,15 @@
 <div>
   <h3 class="header_text">Contracts</h3>
-    @if (!isAdmin()) {
-      <section class="header_options">
-        <mat-form-field appearance="outline">
-          <mat-label>Select an option</mat-label>
-          <mat-select [(value)]="selected" (selectionChange)="updateSelected($event)">
-            <mat-option value="received_contracts">Received contracts</mat-option>
-            <mat-option value="emitted_contracts">Emitted contracts</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button mat-flat-button class="btn-secondary" (click)="addContractDialog()"><mat-icon>add</mat-icon>Add contract</button>
-      </section>
-    }
+    <section class="header_options">
+      <mat-form-field appearance="outline">
+        <mat-label>Select an option</mat-label>
+        <mat-select [(value)]="selected" (selectionChange)="updateSelected($event)">
+          <mat-option value="received_contracts">Received contracts</mat-option>
+          <mat-option value="emitted_contracts">Emitted contracts</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button class="btn-secondary" (click)="addContractDialog()"><mat-icon>add</mat-icon>Add contract</button>
+    </section>
 </div>
 
 <div class="mat-elevation-z8">
