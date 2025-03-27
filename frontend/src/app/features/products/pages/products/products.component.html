@@ -4,15 +4,7 @@
       <h3 class="header_text">Products</h3>
 
         <section class="header_options">
-          <mat-form-field appearance="outline">
-            <div class="search_filter">
-              <mat-icon class="search_icon">search</mat-icon>
-              <input matInput (keyup)="applyFilter($event)" placeholder="Search..." #input>
-            </div>
-          </mat-form-field>
-
           <p><mat-slide-toggle labelPosition="before" [(ngModel)]="isChecked" (change)="updateTable()">Show only my products</mat-slide-toggle></p>
-
           <button mat-flat-button class="header_button" (click)="addProduct()"><mat-icon>add</mat-icon>Add product</button>
         </section>
     </div>
@@ -51,9 +43,12 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
-    <mat-paginator [pageSizeOptions]="[5, 10, 15]"
-                    showFirstLastButtons
-                    aria-label="Select page of sustainability certificates">
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      [length]="totalRecords"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+      aria-label="Select page of sustainability certificates">
     </mat-paginator>
   </div>
 </main>

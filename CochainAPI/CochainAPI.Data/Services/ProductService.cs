@@ -3,6 +3,7 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.Helper;
 using CochainAPI.Model.Product;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace CochainAPI.Data.Services
 {
@@ -10,14 +11,20 @@ namespace CochainAPI.Data.Services
     {
         private readonly IProductRepository _productRepository;
         private readonly IHttpContextAccessor _contextAccessor;
-        public ProductService(IProductRepository productRepository, IHttpContextAccessor contextAccessor)
+        private readonly IUserRepository _userRepository;
+        public ProductService(IProductRepository productRepository, IHttpContextAccessor contextAccessor, IUserRepository userRepository)
         {
             _productRepository = productRepository;
             _contextAccessor = contextAccessor;
+            _userRepository = userRepository;
         }
 
         public async Task<ProductInfo> AddProductInfo(ProductInfo productInfo)
         {
+            var userId = _contextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var user = await _userRepository.GetById(userId);
+            productInfo.SupplyChainPartnerId = user!.SupplyChainPartnerId.GetValueOrDefault();
+            
             return await _productRepository.AddProductInfo(productInfo);
         }
 
@@ -31,11 +38,21 @@ namespace CochainAPI.Data.Services
             return await _productRepository.GetGenericProducts(id);
         }
 
-        public async Task<List<ProductInfo>?> GetProductById(Guid id)
+        public async Task<ProductInfo?> GetProductById(Guid id)
         {
             if (Guid.TryParse(id.ToString(), out var productId))
             {
                 return await _productRepository.GetProductById(productId);
+            }
+
+            return null;
+        }
+
+        public async Task<List<ProductInfo>?> GetProductsByIds(Guid[] ids)
+        {
+            if (ids != null && ids.Any())
+            {
+                return await _productRepository.GetProductsByIds(ids);
             }
 
             return null;
@@ -48,11 +65,33 @@ namespace CochainAPI.Data.Services
 
         public async Task<Page<ProductInfo>?> GetProductsOfSCP(Guid id, string? queryParam, int? pageNumber, int? pageSize)
         {
-            if (Guid.TryParse(id.ToString(), out Guid scpId))
+            if (Guid.TryParse(id.ToString(), out Guid userId))
             {
-                return await _productRepository.GetProductsOfSCP(id, queryParam, pageNumber, pageSize);
+                var user = await _userRepository.GetById(userId.ToString());
+                var scpId = user!.SupplyChainPartnerId.GetValueOrDefault();
+                return await _productRepository.GetProductsOfSCP(scpId, queryParam, pageNumber, pageSize);
             }
             return null;
+        }
+
+        public async Task<ProductInfo?> UpdateProduct(ProductInfo productObj)
+        {
+            // update prodotto può essere fatto solo al proprio prodotto
+            bool isSuccess = false;
+            if (!string.IsNullOrEmpty(productObj.Id.ToString()))
+            {
+                var obj = await _productRepository.GetProductById(productObj.Id);
+                if (obj != null)
+                {
+                    obj.Name = productObj.Name;
+                    obj.ProductId = productObj.ProductId;
+                    obj.ExpirationDate = productObj.ExpirationDate;
+                    obj.Ingredients = productObj.Ingredients;
+                    isSuccess = await _productRepository.UpdateProduct(obj);
+                }
+            }
+
+            return isSuccess ? productObj : null;
         }
     }
 }

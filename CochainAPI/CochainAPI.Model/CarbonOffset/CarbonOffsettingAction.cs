@@ -1,4 +1,5 @@
 
+using System.Text.Json.Serialization;
 using CochainAPI.Model.CompanyEntities;
 
 namespace CochainAPI.Model.CarbonOffset
@@ -7,7 +8,8 @@ namespace CochainAPI.Model.CarbonOffset
     {
         public float Offset { get; set; }
         public Guid SupplyChainPartnerId { get; set; }
-        public SupplyChainPartner SupplyChainPartner { get; set; }
+        [JsonIgnore]
+        public SupplyChainPartner? SupplyChainPartner { get; set; }
         public bool IsProcessed { get; set; }
         public string? EmissionTransactionId { get; set; }
     }

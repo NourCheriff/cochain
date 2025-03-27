@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -29,28 +29,29 @@ export class BaseHttpService {
 
   getAll<T>(endpoint: string, options?: { params?: { [key: string]: any }, id?: string }): Observable<T[]> {
     let url = `${this.API_BASE_URL}/${endpoint}`;
+
     if (options?.id) {
-      url += `/${options.id}`;
+      url += `/${encodeURIComponent(options.id)}`;
     }
 
-    return this.http.get<T[]>(url, {
+    return this.http.get<T | T[]>(url, {
       headers: this.header,
       params: this.createParams(options?.params),
-    });
+    }).pipe(
+      map((response: T | T[]) => Array.isArray(response) ? response : [response])
+    );
   }
 
-
-  //DA RIMUOVERE
-  getByIdWithParams<T>(endpoint: string, params?: { [key: string]: any } ) : Observable<T>{
-    return this.http.get<T>(`${this.API_BASE_URL}/${endpoint}`,{
-      headers: this.header,
-      params: this.createParams(params)
-    });
-  }
 
   getById<T>(endpoint: string, id: string) : Observable<T>{
     return this.http.get<T>(`${this.API_BASE_URL}/${endpoint}/${id}`,{
       headers: this.header,
+    });
+  }
+
+  getByIds<T>(endpoint: string, ids: string[]): Observable<T[]>{
+    return this.http.post<T[]>(`${this.API_BASE_URL}/${endpoint}`, ids, {
+      headers: this.header
     });
   }
 
@@ -66,12 +67,18 @@ export class BaseHttpService {
     });
   }
 
-  delete<T>(endpoint: string, id: string): Observable<T>{
-    return this.http.post<T>(`${this.API_BASE_URL}/${endpoint}/${id}`,{
+  delete<T>(endpoint: string, id: string, documentType?:string): Observable<T>{
+    let url = `${this.API_BASE_URL}/${endpoint}`;
+
+    if (documentType) {
+      url += `/${encodeURIComponent(documentType)}`;
+    }
+
+    url += `/${id}`;
+
+    return this.http.post<T>(url, {
       headers: this.header
     });
   }
-
-
 
 }

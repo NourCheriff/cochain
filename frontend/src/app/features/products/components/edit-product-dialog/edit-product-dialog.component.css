@@ -17,7 +17,8 @@ mat-slide-toggle{
 }
 
 .dialog{
-  height: 550;
+  max-height: 600;
+  overflow-y: auto;
   width: 500px;
 }
 

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule, MatTable } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -15,6 +15,9 @@ import { RouterLink } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { ProductInfo } from 'src/models/product/product-info.model';
 import { ProductService } from '../../services/product.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { DefaultPagination } from 'src/app/core/utilities/pagination-response';
+
 @Component({
   selector: 'app-products',
   imports: [MatTableModule,
@@ -34,46 +37,44 @@ import { ProductService } from '../../services/product.service';
 
 })
 export class ProductsComponent implements OnInit {
+  constructor(private productService: ProductService){}
 
-  user: User = {
-    "supplyChainPartner": "Prova company", // qui ci va il supply chain partner, quando l'utente effettua il login
-    "role": "Admin"
-  };
-
-  productInfo: ProductInfo[] = [];
+  private authService = inject(AuthService)
 
   readonly dialog = inject(MatDialog);
-
-  isChecked = false;
-
   private _liveAnnouncer = inject(LiveAnnouncer);
 
-  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'action'];
 
+  @ViewChild(MatTable) table!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  dataSource: any;
 
-  constructor(private productService: ProductService){}
+  isChecked = false;
+  newProduct!: ProductInfo;
+  productInfo: ProductInfo[] = [];
+  myProductInfo: ProductInfo[] = [];
+  displayedColumns: string[] = ['name', 'category', 'expiration_date', 'producer', 'action'];
+  dataSource = new MatTableDataSource<ProductInfo>([]);
+  totalRecords = 0;
 
   ngOnInit(): void {
     this.getAllProductInfo()
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   sendProduct(product: ProductInfo) {
     this.productService.passProduct(product);
   }
 
-  getAllProductInfo(){
-    this.productService.getAllProductInfo().subscribe({
+  getAllProductInfo(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber) {
+    this.productService.getAllProductInfo(pageSize.toString(), pageNumber.toString()).subscribe({
       next: (response) => {
-        this.productInfo = response
-        this.dataSource = new MatTableDataSource<ProductInfo>(this.productInfo);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.totalRecords = response.totalSize;
+        this.setDataSource(response.items!);
       },
-      error: (error) => console.log(error)
-    })
+      error: (error) => console.error(error)
+    });
   }
 
   announceSortChange(sortState: Sort) {
@@ -84,28 +85,45 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+  updateTable(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber) {
+    if (this.isChecked) {
+      this.productService.getMyProductsInfo(this.authService.userId!, pageSize.toString(), pageNumber.toString()).subscribe({
+        next: (response) => {
+          this.totalRecords = response.totalSize;
+          this.setDataSource(response.items!);
+        },
+        error: (error) => console.error(error)
+      });
+    } else {
+      this.getAllProductInfo(pageSize, pageNumber);
+    }
   }
 
-  updateTable() {
-    const BACKUP_DATA = this.productInfo;
-    let SELECTED_DATA: ProductInfo[] = [];
+  private setDataSource(data: ProductInfo[]) {
+    this.dataSource.data = data;
 
-    SELECTED_DATA = !this.isChecked ? BACKUP_DATA :
-    BACKUP_DATA.filter(item => item.supplyChainPartner?.name === this.user.supplyChainPartner)
+    if (this.paginator) {
+      this.paginator.length = this.totalRecords;
+    }
+  }
 
-    this.dataSource = new MatTableDataSource<ProductInfo>(SELECTED_DATA);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  onPageChange(event: PageEvent){
+    this.isChecked ? this.updateTable(event.pageSize, event.pageIndex) :
+    this.getAllProductInfo(event.pageSize, event.pageIndex)
   }
 
   addProduct() {
-    this.dialog.open(ProductDialogComponent);
+    let currentDialog = this.dialog.open(ProductDialogComponent);
+    currentDialog.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+       const pageEvent: PageEvent = {
+        pageIndex: this.paginator.pageIndex,
+        pageSize: this.paginator.pageSize,
+        length: this.totalRecords
+        };
+        this.onPageChange(pageEvent);
+      }
+    });
   }
-}
-export interface User {
-  supplyChainPartner: string;
-  role: string;
 }

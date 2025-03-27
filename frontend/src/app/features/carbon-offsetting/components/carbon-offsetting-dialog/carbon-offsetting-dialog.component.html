@@ -1,0 +1,17 @@
+<mat-dialog-content>
+  <form [formGroup]="carbonOffsettingForm" (ngSubmit)="addCarbonOffsettingAction()">
+    <h3>New Carbon Offsetting Action</h3>
+    <br>
+    <mat-form-field appearance="outline">
+      <mat-label>Action</mat-label>
+      <input matInput type="text" formControlName="action">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Offset ( Tons of CO2 equivalent)</mat-label>
+      <input matInput type="text" formControlName="offset">
+    </mat-form-field>
+
+    <button mat-flat-button class="btn-primary" [disabled]="!carbonOffsettingForm.valid">Add</button>
+  </form>
+</mat-dialog-content>

@@ -13,7 +13,7 @@ export class RoleGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): MaybeAsync<GuardResult> {
-      return this.authService.userRole === Role.SysAdmin;
+      return this.authService.userRoles?.includes(Role.SysAdmin) ?? false;
   }
 
 }

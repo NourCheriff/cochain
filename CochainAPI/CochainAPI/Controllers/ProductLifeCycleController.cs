@@ -17,7 +17,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = "ReadProducts")]
+        [Authorize(Policy = "ReadProducts")]
         public async Task<IActionResult> GetCategories()
         {
             var response = await _productLifeCycleService.GetCategories();
@@ -44,7 +44,7 @@ namespace CochainAPI.Controllers
         [Authorize(Policy = "WriteTransportDocument")]
         public async Task<IActionResult> AddProductLifeCycleTransport(ProductLifeCycle productLifeCycle)
         {
-            var response = await _productLifeCycleService.AddProductLifeTransport(productLifeCycle);
+            var response = await _productLifeCycleService.AddProductLifeCycleTransport(productLifeCycle);
             if (response == null)
             {
                 return BadRequest(new { message = "Product life cycle categories not found" });

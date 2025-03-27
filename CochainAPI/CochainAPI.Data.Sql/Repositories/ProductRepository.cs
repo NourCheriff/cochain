@@ -4,7 +4,7 @@ using CochainAPI.Model.Product;
 using CochainAPI.Model.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
@@ -28,9 +28,11 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "ProductInfo",
                 EntityId = productInfo.Id.ToString(),
                 Action = "Insert",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = ""
+                Message = "",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
             return productInfo;
@@ -55,9 +57,11 @@ namespace CochainAPI.Data.Sql.Repositories
                 Entity = "Product",
                 EntityId = id.ToString(),
                 Action = "Read",
-                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.NameId).Value,
+                UserId = httpContextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
                 Timestamp = DateTime.UtcNow,
-                Message = "The product category does not exist."
+                Message = "The product category does not exist.",
+                URL = httpContextAccessor.HttpContext?.Request.Path,
+                QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
 
@@ -78,9 +82,10 @@ namespace CochainAPI.Data.Sql.Repositories
 
             var queryComplete = query.Include(x => x.Ingredients)
                         .Include(x => x.Product)
-                        .Include(x => x.ProductLifeCycles)
+                        .Include(x => x.Product!.Category)
                         .Include(x => x.ProductDocuments)
-                        .Include(x => x.Product!.Category);
+                        .Include(x => x.ProductLifeCycles!.AsQueryable())
+                             .ThenInclude(y => y.ProductLifeCycleCategory);
 
             return new Page<ProductInfo>
             {
@@ -89,9 +94,21 @@ namespace CochainAPI.Data.Sql.Repositories
             };
         }
 
-        public async Task<List<ProductInfo>?> GetProductById(Guid id)
+        public async Task<ProductInfo?> GetProductById(Guid id)
         {
             return await dbContext.ProductInfo.Where(x => x.Id == id)
+                    .Include(x => x.Ingredients)
+                    .Include(x => x.Product)
+                    .Include(x => x.Product!.Category)
+                    .Include(x => x.ProductDocuments)
+                    .Include(x => x.ProductLifeCycles!.AsQueryable())
+                             .ThenInclude(y => y.ProductLifeCycleCategory)
+                    .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<ProductInfo>?> GetProductsByIds(Guid[] ids)
+        {
+            return await dbContext.ProductInfo.Where(x => ids.Contains(x.Id))
                     .Include(x => x.Ingredients)
                     .Include(x => x.Product)
                     .Include(x => x.ProductLifeCycles)
@@ -123,5 +140,13 @@ namespace CochainAPI.Data.Sql.Repositories
                 TotalSize = totalSize
             };
         }
+
+
+        public async Task<bool> UpdateProduct(ProductInfo productObj)
+        {
+            dbContext.ProductInfo.Update(productObj);
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
     }
 }
