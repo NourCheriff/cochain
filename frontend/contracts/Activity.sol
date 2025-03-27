@@ -56,7 +56,7 @@ contract Activity is ERC721 {
         // Crea un nuovo prodotto
         Product storage newProduct = products[newTokenId];
         newProduct.productId = productId;
-        newProduct.blockNumber = newProduct.number;
+        newProduct.blockNumber = block.number;
         newProduct.expirationDate = expirationDate;
         newProduct.scp = msg.sender;
 
@@ -82,7 +82,7 @@ contract Activity is ERC721 {
 
         // Crea una nuova attività
         ActivityStruct memory newActivity = ActivityStruct({
-            blockNumber: newActivity.blockNumber,
+            blockNumber: block.number,
             activityId: activityId,
             scp: msg.sender,
             emissions: emissions
@@ -102,7 +102,7 @@ contract Activity is ERC721 {
 
         // Crea un nuova documento
         Document memory newDocument = Document({
-            blockNumber: newDocument.number,
+            blockNumber: block.number,
             documentHash: documentHash
         });
 
