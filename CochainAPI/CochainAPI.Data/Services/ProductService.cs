@@ -24,7 +24,6 @@ namespace CochainAPI.Data.Services
             var userId = _contextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var user = await _userRepository.GetById(userId);
             productInfo.SupplyChainPartnerId = user!.SupplyChainPartnerId.GetValueOrDefault();
-            
             return await _productRepository.AddProductInfo(productInfo);
         }
 
@@ -91,6 +90,7 @@ namespace CochainAPI.Data.Services
                     obj.ProductId = productObj.ProductId;
                     obj.ExpirationDate = productObj.ExpirationDate;
                     obj.Ingredients = productObj.Ingredients;
+                    obj.TokenId = productObj.TokenId;
                     isSuccess = await _productRepository.UpdateProduct(obj);
                 }
             }
