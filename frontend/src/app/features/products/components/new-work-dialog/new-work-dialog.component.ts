@@ -19,6 +19,8 @@ import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycl
 import { sha256 } from 'js-sha256';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DocumentType } from 'src/types/document.enum';
+import { BlockchainService } from 'src/app/features/wallet/services/blockchain.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-new-work-dialog',
     imports: [
@@ -41,7 +43,9 @@ import { DocumentType } from 'src/types/document.enum';
 export class NewWorkDialogComponent implements OnInit, AfterViewInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {product: ProductInfo}, private productService: ProductService) {}
-  private authService = inject(AuthService)
+  private authService = inject(AuthService);
+  private blockchainService = inject(BlockchainService);
+  private toasterService = inject(ToastrService);
   readonly dialogRef = inject(MatDialogRef<NewWorkDialogComponent>);
 
   @ViewChild('billFile') billFile!: ElementRef;
@@ -92,26 +96,38 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
       productLifeCycleCategoryId: this.newWorkForm.value.work!,
       supplyChainPartnerId: this.data.product.supplyChainPartnerId!,
       productInfoId: this.data.product.id!,
+      productInfo: this.data.product
     }
 
-    if(this.isTransportDocument){
-      this.productService.addProductLifeCycleTransport(newProductLifeCycle).subscribe({
-        next: (response) => {
-          this.uploadFile(response.id!, true);
-          this.uploadFile(response.id!, false);
-          this.dialogRef.close({ newWork: response });
-        },
-        error: (error) => console.error(error),
-      })
+    if (this.blockchainService.isWalletConnected()) {
+      if (this.isTransportDocument) {
+        this.productService.addProductLifeCycleTransport(newProductLifeCycle).subscribe({
+          next: (response) => {
+            this.uploadFile(response.id!, true);
+            this.uploadFile(response.id!, false);
+            this.dialogRef.close({ newWork: response });
+            this.blockchainService.addActivity(Number(newProductLifeCycle.productInfo?.tokenId), response.id!, response.emissions).then((item) => {
+              console.log("Activity added to the product", item)
+            })
+          },
+          error: (error) => console.error(error),
+        })
+      }
+      else {
+        this.productService.addProductLifeCycleGeneric(newProductLifeCycle).subscribe({
+          next: (response) => {
+            this.uploadFile(response.id!, false);
+            this.dialogRef.close({ newWork: response });
+            this.blockchainService.addActivity(Number(newProductLifeCycle.productInfo?.tokenId), response.id!, response.emissions).then((item) => {
+              console.log("Activity added to the product", item)
+            })
+          },
+          error: (error) => console.error(error),
+        })
+      }
     }
-    else{
-      this.productService.addProductLifeCycleGeneric(newProductLifeCycle).subscribe({
-        next: (response) => {
-          this.uploadFile(response.id!, false);
-          this.dialogRef.close({ newWork: response });
-        },
-        error: (error) => console.error(error),
-      })
+    else {
+      this.toasterService.error("Wallet not connected", 'Error');
     }
   }
 
@@ -147,6 +163,10 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
       this.productService.uploadLifeCycleDocument(lifeCycleDocument).subscribe({
         next: (response) => console.log('File uploaded successfully', response),
         error: (error) => console.error('File upload failed', error),
+      });
+
+      this.blockchainService.addDocument(Number(this.data.product.tokenId), hashedBase64Document).then((item) => {
+        console.log("Document added to the product", item);
       });
     };
 

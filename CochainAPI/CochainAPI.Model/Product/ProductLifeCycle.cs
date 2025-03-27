@@ -4,7 +4,7 @@ using CochainAPI.Model.Documents;
 
 namespace CochainAPI.Model.Product
 {
-    public class ProductLifeCycle: Base
+    public class ProductLifeCycle : Base
     {
         public DateTime Timestamp { get; set; }
         public float Emissions { get; set; }

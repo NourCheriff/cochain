@@ -52,13 +52,18 @@ namespace CochainAPI.Data.Services
             if (!supplyChainPartner.Email.IsValidEmail())
                 return null;
             
-            var supplyChainPartnerTypes = await _supplyChainPartnerRepository.GetTypes();
-            if (!supplyChainPartnerTypes.Exists(x => x.Id == supplyChainPartner.SupplyChainPartnerTypeId))
+            if (supplyChainPartner.WalletId == null)
+                return null;
+            
+            var supplyChainPartnerType = await _supplyChainPartnerRepository.GetTypeById(supplyChainPartner.SupplyChainPartnerTypeId);
+            if (supplyChainPartnerType == null)
+                return null;
+
+            var result = await _supplyChainPartnerRepository.GetSupplyChainPartnerByWalletId(supplyChainPartner.WalletId);
+            if (result != null)
                 return null;
 
             supplyChainPartner.Credits = 0.0F;
-
-            
 
             return await _supplyChainPartnerRepository.AddSupplyChainPartner(supplyChainPartner);
         }

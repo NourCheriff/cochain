@@ -62,7 +62,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("WriteContracts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("WriteInvoices", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("WriteTransportDocument", policy => policy.RequireRole("SystemAdmin", "SCPTransporter"));
-    options.AddPolicy("WriteOriginDocument", policy => policy.RequireRole("SystemAdmin", "SCPRawMaterialt"));
+    options.AddPolicy("WriteOriginDocument", policy => policy.RequireRole("SystemAdmin", "SCPRawMaterial"));
     options.AddPolicy("WriteCertificationDocument", policy => policy.RequireRole("SystemAdmin", "AdminCA", "UserCA"));
     options.AddPolicy("RemoveCertificationDocument", policy => policy.RequireRole("SystemAdmin", "AdminCA"));
     options.AddPolicy("RemoveDocuments", policy => policy.RequireRole("SystemAdmin"));
@@ -70,6 +70,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("WriteProductLifeCycle", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("ReadProducts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
     options.AddPolicy("WriteReadCarbonOffsett", policy => policy.RequireRole("SystemAdmin", "AdminCA", "UserCA"));
+    options.AddPolicy("ReadTransactions", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
+    options.AddPolicy("WriteTransaction", policy => policy.RequireRole("AdminSCP", "UserSCP"));
 });
 
 builder.Services.AddDbContext<CochainDBContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Singleton);
@@ -92,6 +94,7 @@ builder.Services.AddSingleton<IProductLifeCycleService, ProductLifeCycleService>
 builder.Services.AddSingleton<ICertificationAuthorityService, CertificationAuthorityService>();
 builder.Services.AddSingleton<ICarbonOffsettingActionService, CarbonOffsettingActionService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<ITransactionService, TransactionService>();
 
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<ISupplyChainPartnerRepository, SupplyChainPartnerRepository>();
@@ -104,6 +107,7 @@ builder.Services.AddSingleton<ISupplyChainPartnerCertificateRepository, SupplyCh
 builder.Services.AddSingleton<ICarbonOffsettingActionRepository, CarbonOffsettingActionRepository>();
 builder.Services.AddSingleton<ILogRepository, LogRepository>();
 builder.Services.AddSingleton<IProductDocumentRepository, ProductDocumentRepository>();
+builder.Services.AddSingleton<ITransactionRepository, TransactionRepository>();
 
 builder.Services.AddSwaggerGen(swagger =>
 {

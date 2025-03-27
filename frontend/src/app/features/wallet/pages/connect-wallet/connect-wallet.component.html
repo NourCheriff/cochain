@@ -1,4 +1,8 @@
 <div class="container">
   <h3> Connect your Wallet Now! </h3>
-  <button mat-flat-button class="btn-primary" (click)="connectWallet()"> Connect Wallet </button>
+  @if (!isLoading) {
+    <button mat-flat-button class="btn-primary" (click)="connectWallet()"> Connect Wallet </button>
+  } @else {
+    <mat-spinner></mat-spinner>
+  }
 </div>

@@ -1,0 +1,210 @@
+services:
+  validator1:
+    image: hyperledger/besu:25.2.1
+    container_name: validator1
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./data/validator1:/data
+      - ./data/keys/validator1:/opt/besu/keys
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+      - "30303:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.2
+    command:
+      [
+        "--data-path=/data",
+        "--genesis-file=/config/genesis.json",
+        "--rpc-http-enabled",
+        "--rpc-http-api=ETH,NET,WEB3,ADMIN",
+        "--rpc-http-cors-origins=*",
+        "--rpc-http-host=0.0.0.0",
+        "--rpc-ws-enabled",
+        "--rpc-ws-host=0.0.0.0",
+        "--rpc-ws-api=ETH,NET,WEB3",
+        "--host-allowlist=*",
+        "--min-gas-price=0",
+        "--sync-min-peers=1",
+        "--node-private-key-file=/opt/besu/keys/key",
+      ]
+
+  validator2:
+    image: hyperledger/besu:25.2.1
+    container_name: validator2
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./data/validator2:/data
+      - ./data/keys/validator2:/opt/besu/keys
+    ports:
+      - "8547:8545"
+      - "8548:8546"
+      - "30304:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.3
+    command:
+      [
+        "--data-path=/data",
+        "--genesis-file=/config/genesis.json",
+        "--rpc-http-enabled",
+        "--rpc-http-api=ETH,NET,WEB3,ADMIN",
+        "--rpc-http-cors-origins=*",
+        "--rpc-http-host=0.0.0.0",
+        "--rpc-ws-enabled",
+        "--rpc-ws-host=0.0.0.0",
+        "--rpc-ws-api=ETH,NET,WEB3",
+        "--host-allowlist=*",
+        "--min-gas-price=0",
+        "--sync-min-peers=1",
+        "--bootnodes=enode://@10.18.0.2:30303",
+        "--node-private-key-file=/opt/besu/keys/key",
+      ]
+    depends_on:
+      validator1:
+        condition: service_healthy
+
+  validator3:
+    image: hyperledger/besu:25.2.1
+    container_name: validator3
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./data/validator3:/data
+      - ./data/keys/validator3:/opt/besu/keys
+    ports:
+      - "8549:8545"
+      - "8550:8546"
+      - "30305:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.4
+    command:
+      [
+        "--data-path=/data",
+        "--genesis-file=/config/genesis.json",
+        "--rpc-http-enabled",
+        "--rpc-http-api=ETH,NET,WEB3,ADMIN",
+        "--rpc-http-cors-origins=*",
+        "--rpc-http-host=0.0.0.0",
+        "--rpc-ws-enabled",
+        "--rpc-ws-host=0.0.0.0",
+        "--rpc-ws-api=ETH,NET,WEB3",
+        "--host-allowlist=*",
+        "--min-gas-price=0",
+        "--sync-min-peers=1",
+        "--bootnodes=enode://@10.18.0.2:30303",
+        "--node-private-key-file=/opt/besu/keys/key",
+      ]
+    depends_on:
+      validator2:
+        condition: service_healthy
+
+  validator4:
+    image: hyperledger/besu:25.2.1
+    container_name: validator4
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./data/validator4:/data
+      - ./data/keys/validator4:/opt/besu/keys
+    ports:
+      - "8551:8545"
+      - "8552:8546"
+      - "30306:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.5
+    command:
+      [
+        "--data-path=/data",
+        "--genesis-file=/config/genesis.json",
+        "--rpc-http-enabled",
+        "--rpc-http-api=ETH,NET,WEB3,ADMIN",
+        "--rpc-http-cors-origins=*",
+        "--rpc-http-host=0.0.0.0",
+        "--rpc-ws-enabled",
+        "--rpc-ws-host=0.0.0.0",
+        "--rpc-ws-api=ETH,NET,WEB3",
+        "--host-allowlist=*",
+        "--min-gas-price=0",
+        "--sync-min-peers=1",
+        "--bootnodes=enode://@10.18.0.2:30303",
+        "--node-private-key-file=/opt/besu/keys/key",
+      ]
+    depends_on:
+      validator3:
+        condition: service_healthy
+
+  node1:
+    image: hyperledger/besu:25.2.1
+    container_name: node1
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./data/node1:/data
+    ports:
+      - "8553:8545"
+      - "8554:8546"
+      - "30307:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.6
+    command:
+      [
+        "--data-path=/data",
+        "--genesis-file=/config/genesis.json",
+        "--rpc-http-enabled",
+        "--rpc-http-api=ETH,NET,WEB3,ADMIN",
+        "--rpc-http-cors-origins=*",
+        "--rpc-http-host=0.0.0.0",
+        "--rpc-ws-enabled",
+        "--rpc-ws-host=0.0.0.0",
+        "--rpc-ws-api=ETH,NET,WEB3",
+        "--host-allowlist=*",
+        "--min-gas-price=0",
+        "--sync-min-peers=1",
+        "--bootnodes=enode://@10.18.0.2:30303",
+      ]
+    depends_on:
+      validator4:
+        condition: service_healthy
+
+  node2:
+    image: hyperledger/besu:25.2.1
+    container_name: node2
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./data/node2:/data
+    ports:
+      - "8555:8545"
+      - "8556:8546"
+      - "30308:30303"
+    networks:
+      blockchain:
+        ipv4_address: 10.18.0.7
+    command:
+      [
+        "--data-path=/data",
+        "--genesis-file=/config/genesis.json",
+        "--rpc-http-enabled",
+        "--rpc-http-api=ETH,NET,WEB3,ADMIN",
+        "--rpc-http-cors-origins=*",
+        "--rpc-http-host=0.0.0.0",
+        "--rpc-ws-enabled",
+        "--rpc-ws-host=0.0.0.0",
+        "--rpc-ws-api=ETH,NET,WEB3",
+        "--host-allowlist=*",
+        "--min-gas-price=0",
+        "--sync-min-peers=1",
+        "--bootnodes=enode://@10.18.0.2:30303",
+      ]
+    depends_on:
+      node1:
+        condition: service_healthy
+
+networks:
+  blockchain:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "10.18.0.0/16"
+          gateway: "10.18.0.1"

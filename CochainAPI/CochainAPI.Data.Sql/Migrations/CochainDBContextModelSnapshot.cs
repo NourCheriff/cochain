@@ -100,7 +100,7 @@ namespace CochainAPI.Data.Sql.Migrations
 
                     b.ToTable("User", t =>
                         {
-                            t.HasCheckConstraint("CK_User_PartnerOrAuthority", "(\"SupplyChainPartnerId\" IS NOT NULL AND \"CertificationAuthorityId\" IS NULL)\n                    OR (\"SupplyChainPartnerId\" IS NULL AND \"CertificationAuthorityId\" IS NOT NULL)");
+                            t.HasCheckConstraint("CK_User_PartnerOrAuthority", "(\"SupplyChainPartnerId\" IS NOT NULL AND \"CertificationAuthorityId\" IS NULL)\r\n                    OR (\"SupplyChainPartnerId\" IS NULL AND \"CertificationAuthorityId\" IS NOT NULL)");
                         });
 
                     b.HasData(
@@ -108,14 +108,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "ad00648b-a031-432d-b007-6a0829cf5292",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "85d445b3-6c45-440a-91b6-4ef479d799a6",
+                            ConcurrencyStamp = "02fbcb6c-0220-431f-920e-95f3773ceeb0",
                             EmailConfirmed = false,
                             FirstName = "System",
                             IsActive = true,
                             LastName = "System",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b22f9512-bcff-4f97-b5dc-208a5e40db15",
+                            SecurityStamp = "f71733ba-bb32-4cf9-a4f3-416062f41c83",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "admin@cochain.com"
@@ -124,14 +124,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "5e4b0ca8-aa85-417a-af23-035ac1b555cd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "316c1607-43b8-4f93-96ab-6ce31cdefd99",
+                            ConcurrencyStamp = "82de85ba-29fb-4b4c-8062-b6830ed8e235",
                             EmailConfirmed = false,
                             FirstName = "Paolo",
                             IsActive = true,
                             LastName = "Roselli",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "967b5046-f7e9-43a3-b913-54dd86b546b6",
+                            SecurityStamp = "793c618e-33f2-4864-94e6-ae43f515b19d",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "paolo.roselli02@gmail.com"
@@ -140,14 +140,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "0a317b04-2f87-4b08-8ad8-597103527584",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0359f305-34a5-4f35-ba06-4179c5dae900",
+                            ConcurrencyStamp = "4477a6fe-6e97-42b2-821e-1a8e9e90e57d",
                             EmailConfirmed = false,
                             FirstName = "Matteo",
                             IsActive = true,
                             LastName = "Spiga",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d11406f3-efd9-459a-a127-2fe2d65b61e9",
+                            SecurityStamp = "0197b436-8934-4303-a76b-c08901a8a937",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "matteospiga2002@gmail.com"
@@ -156,14 +156,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "a12c3708-0486-4603-b1a5-46d252e79082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9f782138-3a9d-4423-b004-92dbd920ec20",
+                            ConcurrencyStamp = "76df9b7b-27ce-45c3-91e1-32ac697fc987",
                             EmailConfirmed = false,
                             FirstName = "Cherif",
                             IsActive = true,
                             LastName = "Nour",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8a304382-1b10-463d-b8ef-f6d483bb7bd5",
+                            SecurityStamp = "638b6bc3-24ba-40d0-a16c-606d14aa94e0",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "nourcherif.pitos25@gmail.com"
@@ -172,14 +172,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "3542da56-0de3-4797-a059-effff257f63d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ca09e44b-dab2-456f-8e6b-debe64745571",
+                            ConcurrencyStamp = "9acef675-7e18-4edb-a92d-0fa0f14d44ec",
                             EmailConfirmed = false,
                             FirstName = "Mattia",
                             IsActive = true,
                             LastName = "Mandorlini",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7dac4623-6f34-4c79-9a16-f6eb80d64005",
+                            SecurityStamp = "472c1738-2bde-4fe3-a565-46fb79923734",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "mando3228@gmail.com"
@@ -188,14 +188,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "f4242b5f-4b39-45fc-802e-391293414546",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "157bb555-d6a2-4a06-a928-9b74ebb9cb88",
+                            ConcurrencyStamp = "d14133fe-6de9-47c0-8c28-99f9f4e7ea9f",
                             EmailConfirmed = false,
                             FirstName = "Samuele",
                             IsActive = true,
                             LastName = "Sacchetti",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f8b77f53-8c75-4c76-bcdd-b49343dee146",
+                            SecurityStamp = "3c8c525a-b50e-41be-967e-351ea43f6e08",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "sacchettisamuele@gmail.com"
@@ -307,6 +307,7 @@ namespace CochainAPI.Data.Sql.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("WalletId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -323,7 +324,18 @@ namespace CochainAPI.Data.Sql.Migrations
                             Email = "company@prova.com",
                             Name = "Prova company",
                             Phone = "33309090909",
-                            SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87")
+                            SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                            WalletId = "0x3a9f1b7c5d2e8a4f6c0e7d3b5a2f9c1"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a9f1b7c-5d2e-4a4f-8a6c-0e7d3b5a2f9c"),
+                            Credits = 0f,
+                            Email = "company2@prova.com",
+                            Name = "Prova company2",
+                            Phone = "3669045897",
+                            SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                            WalletId = "0x7c5d1a3f9b2e6f0d8c4a7e3b5c2f9d1"
                         });
                 });
 
@@ -382,6 +394,28 @@ namespace CochainAPI.Data.Sql.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CochainAPI.Model.CompanyEntities.Transaction", b =>
+                {
+                    b.Property<string>("TransactionHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WalletIdEmitter")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("WalletIdReceiver")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("TransactionHash");
+
+                    b.HasIndex("WalletIdEmitter");
+
+                    b.HasIndex("WalletIdReceiver");
+
+                    b.ToTable("Transaction");
+                });
+
             modelBuilder.Entity("CochainAPI.Model.Documents.Contract", b =>
                 {
                     b.Property<Guid>("Id")
@@ -400,7 +434,7 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<Guid>("ProductLifeCycleCategoryId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SupplyChainPartnerReceiverId")
+                    b.Property<Guid?>("SupplyChainPartnerReceiverId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Type")
@@ -438,7 +472,7 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<Guid>("ProductInfoId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SupplyChainPartnerReceiverId")
+                    b.Property<Guid?>("SupplyChainPartnerReceiverId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Type")
@@ -476,7 +510,7 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<Guid>("ProductLifeCycleId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SupplyChainPartnerReceiverId")
+                    b.Property<Guid?>("SupplyChainPartnerReceiverId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Type")
@@ -514,7 +548,7 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Property<string>("QualityStandard")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("SupplyChainPartnerReceiverId")
+                    b.Property<Guid?>("SupplyChainPartnerReceiverId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Type")
@@ -588,6 +622,9 @@ namespace CochainAPI.Data.Sql.Migrations
 
                     b.Property<Guid>("SupplyChainPartnerId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("TokenId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -672,6 +709,86 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductLifeCycleCategory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ef94c672-c755-449b-8ee8-327a12bed7ef"),
+                            Description = "Trasporto del prodotto.",
+                            Name = "Trasporto"
+                        },
+                        new
+                        {
+                            Id = new Guid("a9d12b5f-1e2d-45c9-bb5d-3d8a7c2b4a33"),
+                            Description = "Attività di produzione del prodotto.",
+                            Name = "Produzione"
+                        },
+                        new
+                        {
+                            Id = new Guid("b1e2d3f4-5678-90ab-cdef-1234567890ab"),
+                            Description = "Attività di lavorazione della materia prima.",
+                            Name = "Lavorazione"
+                        },
+                        new
+                        {
+                            Id = new Guid("c1d2e3f4-6789-0abc-def1-234567890abc"),
+                            Description = "Attività di vendita del prodotto.",
+                            Name = "Vendita"
+                        },
+                        new
+                        {
+                            Id = new Guid("d2e3f4a5-7890-1bcd-ef12-34567890abcd"),
+                            Description = "Attività di assistenza post vendita.",
+                            Name = "Assistenza"
+                        },
+                        new
+                        {
+                            Id = new Guid("e3a18178-8db7-48f2-a76b-9ad329bba5f2"),
+                            Description = "Attività di aratura e lavorazione del suolo, con tecniche volte a minimizzare l'uso di macchinari pesanti per ridurre le emissioni.",
+                            Name = "Preparazione del Terreno"
+                        },
+                        new
+                        {
+                            Id = new Guid("f3b19128-0edc-4f59-8a27-6a8d3509876c"),
+                            Description = "Attività di semina utilizzando metodi di precisione per ottimizzare l'utilizzo di risorse e ridurre l'impatto ambientale.",
+                            Name = "Semina"
+                        },
+                        new
+                        {
+                            Id = new Guid("a4c2d7e6-6f5e-42f9-b7c1-1234567890ef"),
+                            Description = "Implementazione di sistemi di irrigazione efficienti per ridurre il consumo idrico e l'energia necessaria.",
+                            Name = "Irrigazione Sostenibile"
+                        },
+                        new
+                        {
+                            Id = new Guid("b5d3e8f7-7e6f-43d0-c8d2-0987654321ba"),
+                            Description = "Utilizzo di fertilizzanti naturali o a rilascio controllato per minimizzare le emissioni di gas serra.",
+                            Name = "Fertilizzazione a Basso Impatto"
+                        },
+                        new
+                        {
+                            Id = new Guid("c6e4f9a8-8f70-44e1-d9e3-1029384756cd"),
+                            Description = "Adozione di pratiche integrate per il controllo dei parassiti, riducendo l'uso di pesticidi chimici e l'impatto ambientale.",
+                            Name = "Gestione dei Parassiti"
+                        },
+                        new
+                        {
+                            Id = new Guid("d7f50ab9-9a81-45f2-eaf4-5647382910ef"),
+                            Description = "Processi di raccolta ottimizzati per minimizzare il consumo energetico e le emissioni dovute al trasporto interno.",
+                            Name = "Raccolta"
+                        },
+                        new
+                        {
+                            Id = new Guid("e8a61bca-ab92-46f3-fb05-6758493021f0"),
+                            Description = "Attività di selezione, lavaggio e conservazione con tecniche a basso impatto energetico per mantenere la qualità del prodotto.",
+                            Name = "Post-Raccolta e Conservazione"
+                        },
+                        new
+                        {
+                            Id = new Guid("f9b72cdb-bc03-47f4-0c16-78695a4132f1"),
+                            Description = "Utilizzo di materiali riciclabili e processi a basso impatto per ridurre la carbon footprint del packaging.",
+                            Name = "Imballaggio Eco-Sostenibile"
+                        });
                 });
 
             modelBuilder.Entity("CochainAPI.Model.Utils.Log", b =>
@@ -974,6 +1091,27 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Navigation("SupplyChainPartnerType");
                 });
 
+            modelBuilder.Entity("CochainAPI.Model.CompanyEntities.Transaction", b =>
+                {
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerEmitter")
+                        .WithMany("EmittedTransactions")
+                        .HasForeignKey("WalletIdEmitter")
+                        .HasPrincipalKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerReceiver")
+                        .WithMany("ReceivedTransactions")
+                        .HasForeignKey("WalletIdReceiver")
+                        .HasPrincipalKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SupplyChainPartnerEmitter");
+
+                    b.Navigation("SupplyChainPartnerReceiver");
+                });
+
             modelBuilder.Entity("CochainAPI.Model.Documents.Contract", b =>
                 {
                     b.HasOne("CochainAPI.Model.Product.ProductLifeCycleCategory", "ProductLifeCycleCategory")
@@ -984,9 +1122,7 @@ namespace CochainAPI.Data.Sql.Migrations
 
                     b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerReceiver")
                         .WithMany("ReceivedContract")
-                        .HasForeignKey("SupplyChainPartnerReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SupplyChainPartnerReceiverId");
 
                     b.HasOne("CochainAPI.Model.Authentication.User", "UserEmitter")
                         .WithMany("EmittedContract")
@@ -1009,9 +1145,7 @@ namespace CochainAPI.Data.Sql.Migrations
 
                     b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerReceiver")
                         .WithMany("ReceivedProductDocument")
-                        .HasForeignKey("SupplyChainPartnerReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SupplyChainPartnerReceiverId");
 
                     b.HasOne("CochainAPI.Model.Authentication.User", "UserEmitter")
                         .WithMany("EmittedProductDocument")
@@ -1034,9 +1168,7 @@ namespace CochainAPI.Data.Sql.Migrations
 
                     b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerReceiver")
                         .WithMany("ReceivedProductLifeCycleDocument")
-                        .HasForeignKey("SupplyChainPartnerReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SupplyChainPartnerReceiverId");
 
                     b.HasOne("CochainAPI.Model.Authentication.User", "UserEmitter")
                         .WithMany("EmittedProductLifeCycleDocument")
@@ -1053,9 +1185,7 @@ namespace CochainAPI.Data.Sql.Migrations
                 {
                     b.HasOne("CochainAPI.Model.CompanyEntities.SupplyChainPartner", "SupplyChainPartnerReceiver")
                         .WithMany("ReceivedSupplyChainPartnerCertificate")
-                        .HasForeignKey("SupplyChainPartnerReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SupplyChainPartnerReceiverId");
 
                     b.HasOne("CochainAPI.Model.Authentication.User", "UserEmitter")
                         .WithMany("EmittedSupplyChainPartnerCertificate")
@@ -1192,6 +1322,8 @@ namespace CochainAPI.Data.Sql.Migrations
                 {
                     b.Navigation("CarbonOffsettingActions");
 
+                    b.Navigation("EmittedTransactions");
+
                     b.Navigation("ReceivedContract");
 
                     b.Navigation("ReceivedProductDocument");
@@ -1199,6 +1331,8 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.Navigation("ReceivedProductLifeCycleDocument");
 
                     b.Navigation("ReceivedSupplyChainPartnerCertificate");
+
+                    b.Navigation("ReceivedTransactions");
                 });
 
             modelBuilder.Entity("CochainAPI.Model.Product.ProductInfo", b =>

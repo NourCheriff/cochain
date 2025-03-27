@@ -1,6 +1,6 @@
 <div class="container">
   <section class="card-container">
-    <app-wallet-info-card></app-wallet-info-card>
+    <app-wallet-info-card [walletID]="walletId ?? ''" [balance]="balance ?? ''"></app-wallet-info-card>
     <app-incomes-card></app-incomes-card>
     <app-expenses-card></app-expenses-card>
   </section>
@@ -11,4 +11,3 @@
     </section>
   </div>
 </div>
-

@@ -92,5 +92,15 @@ namespace CochainAPI.Data.Sql.Repositories
             await logRepository.AddLog(log);
             return res;
         }
+
+        public async Task<SupplyChainPartnerType?> GetTypeById(Guid id)
+        {
+            return await dbContext.SupplyChainPartnerType.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<SupplyChainPartner?> GetSupplyChainPartnerByWalletId(string id)
+        {
+            return await dbContext.SupplyChainPartner.FirstOrDefaultAsync(x => x.WalletId == id);
+        }
     }
 }

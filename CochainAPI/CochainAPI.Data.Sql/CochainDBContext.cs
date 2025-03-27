@@ -31,6 +31,7 @@ namespace CochainAPI.Data.Sql
         public DbSet<ProductLifeCycleDocument> ProductLifeCycleDocument { get; set; }
         public DbSet<SupplyChainPartnerCertificate> SupplyChainPartnerCertificate { get; set; }
         public DbSet<Log> Log { get; set; }
+        public DbSet<Transaction> Transaction { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,10 +71,11 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<ProductInfo>().HasMany(x => x.ProductLifeCycles).WithOne(x => x.ProductInfo).HasForeignKey(x => x.ProductInfoId);
             modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.ProductLifeCycleCategory).WithMany().HasForeignKey(x => x.ProductLifeCycleCategoryId);
             modelBuilder.Entity<ProductLifeCycle>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
+
             modelBuilder.Entity<ProductLifeCycle>()
                         .Property(c => c.IsEmissionProcessed)
                         .HasDefaultValue(false);
-
+            
             modelBuilder.Entity<ProductIngredient>(entity =>
             {
                 entity.HasKey(r => new { r.ProductInfoId, r.IngredientId });
@@ -117,6 +119,9 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<CarbonOffsettingAction>()
                         .Property(c => c.IsProcessed)
                         .HasDefaultValue(false);
+
+            modelBuilder.Entity<Transaction>().HasOne(x => x.SupplyChainPartnerEmitter).WithMany(x => x.EmittedTransactions).HasForeignKey(x => x.WalletIdEmitter).HasPrincipalKey(x => x.WalletId);
+            modelBuilder.Entity<Transaction>().HasOne(x => x.SupplyChainPartnerReceiver).WithMany(x => x.ReceivedTransactions).HasForeignKey(x => x.WalletIdReceiver).HasPrincipalKey(x => x.WalletId);
 
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
@@ -176,7 +181,18 @@ namespace CochainAPI.Data.Sql
                     Email = "company@prova.com",
                     Phone = "33309090909",
                     Credits = 0,
-                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87")
+                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                    WalletId = "0x3a9f1b7c5d2e8a4f6c0e7d3b5a2f9c1"
+                },
+                new SupplyChainPartner
+                {
+                    Id = new Guid("3a9f1b7c-5d2e-4a4f-8a6c-0e7d3b5a2f9c"),
+                    Name = "Prova company2",
+                    Email = "company2@prova.com",
+                    Phone = "3669045897",
+                    Credits = 0,
+                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
+                    WalletId = "0x7c5d1a3f9b2e6f0d8c4a7e3b5c2f9d1"
                 }
             );
 
@@ -316,6 +332,86 @@ namespace CochainAPI.Data.Sql
                     Id = new Guid("eaae7124-761e-4515-9aa0-bda3fc7aee87"),
                     Name = "Grossista",
                     Baseline = 1000.0f
+                });
+
+            modelBuilder.Entity<ProductLifeCycleCategory>().HasData(
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("ef94c672-c755-449b-8ee8-327a12bed7ef"),
+                    Name = "Trasporto",
+                    Description = "Trasporto del prodotto."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("a9d12b5f-1e2d-45c9-bb5d-3d8a7c2b4a33"),
+                    Name = "Produzione",
+                    Description = "Attività di produzione del prodotto."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("b1e2d3f4-5678-90ab-cdef-1234567890ab"),
+                    Name = "Lavorazione",
+                    Description = "Attività di lavorazione della materia prima."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("c1d2e3f4-6789-0abc-def1-234567890abc"),
+                    Name = "Vendita",
+                    Description = "Attività di vendita del prodotto."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("d2e3f4a5-7890-1bcd-ef12-34567890abcd"),
+                    Name = "Assistenza",
+                    Description = "Attività di assistenza post vendita."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("e3a18178-8db7-48f2-a76b-9ad329bba5f2"),
+                    Name = "Preparazione del Terreno",
+                    Description = "Attività di aratura e lavorazione del suolo, con tecniche volte a minimizzare l'uso di macchinari pesanti per ridurre le emissioni."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("f3b19128-0edc-4f59-8a27-6a8d3509876c"),
+                    Name = "Semina",
+                    Description = "Attività di semina utilizzando metodi di precisione per ottimizzare l'utilizzo di risorse e ridurre l'impatto ambientale."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("a4c2d7e6-6f5e-42f9-b7c1-1234567890ef"),
+                    Name = "Irrigazione Sostenibile",
+                    Description = "Implementazione di sistemi di irrigazione efficienti per ridurre il consumo idrico e l'energia necessaria."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("b5d3e8f7-7e6f-43d0-c8d2-0987654321ba"),
+                    Name = "Fertilizzazione a Basso Impatto",
+                    Description = "Utilizzo di fertilizzanti naturali o a rilascio controllato per minimizzare le emissioni di gas serra."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("c6e4f9a8-8f70-44e1-d9e3-1029384756cd"),
+                    Name = "Gestione dei Parassiti",
+                    Description = "Adozione di pratiche integrate per il controllo dei parassiti, riducendo l'uso di pesticidi chimici e l'impatto ambientale."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("d7f50ab9-9a81-45f2-eaf4-5647382910ef"),
+                    Name = "Raccolta",
+                    Description = "Processi di raccolta ottimizzati per minimizzare il consumo energetico e le emissioni dovute al trasporto interno."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("e8a61bca-ab92-46f3-fb05-6758493021f0"),
+                    Name = "Post-Raccolta e Conservazione",
+                    Description = "Attività di selezione, lavaggio e conservazione con tecniche a basso impatto energetico per mantenere la qualità del prodotto."
+                },
+                new ProductLifeCycleCategory
+                {
+                    Id = new Guid("f9b72cdb-bc03-47f4-0c16-78695a4132f1"),
+                    Name = "Imballaggio Eco-Sostenibile",
+                    Description = "Utilizzo di materiali riciclabili e processi a basso impatto per ridurre la carbon footprint del packaging."
                 });
         }
 

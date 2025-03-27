@@ -22,6 +22,8 @@ import { DatePipe } from '@angular/common';
 import { sha256 } from 'js-sha256';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DocumentType } from 'src/types/document.enum';
+import { BlockchainService } from 'src/app/features/wallet/services/blockchain.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-product-dialog',
   imports: [
@@ -47,8 +49,11 @@ import { DocumentType } from 'src/types/document.enum';
 })
 export class ProductDialogComponent implements OnInit {
 
-  constructor(private productService: ProductService) {}
-  private authService = inject(AuthService)
+  constructor(private productService: ProductService, private blockchainService: BlockchainService) {
+
+  }
+  private authService = inject(AuthService);
+  private toasterService = inject(ToastrService);
 
   readonly dialogRef = inject(MatDialogRef<ProductDialogComponent>);
   readonly announcer = inject(LiveAnnouncer);
@@ -97,7 +102,6 @@ export class ProductDialogComponent implements OnInit {
       this.productService.getAllProductInfo().subscribe({
         next: (response) => {
           this.allIngredientsRes = response.items!
-          console.log(this.allIngredientsRes)
           this.allIngredientsRes.forEach(ingredient =>{
             this.allIngredients.push(ingredient.name!)
           })
@@ -133,14 +137,23 @@ export class ProductDialogComponent implements OnInit {
       ingredients: productIngredients,
     }
 
-    this.productService.addProductInfo(newProduct).subscribe({
-      next: (response) => {
-        this.uploadFile(response.id!);
-        this.dialogRef.close({ newProduct: response });
+    if(this.blockchainService.isWalletConnected()) {
+      this.productService.addProductInfo(newProduct).subscribe({
+        next: (response) => {
+          this.uploadFile(response.id!);
+          this.dialogRef.close({ newProduct: response });
+          this.blockchainService.createProduct(response.id!, response.expirationDate).then((item) => {
+            const tokenId = Number(item!.logs[0].topics[3]);
+            this.updateProduct(response.id!, tokenId)
+            console.log("Prodott added correctly", item)
+          });
         },
-      error: (error) => console.error(error),
-    })
-
+        error: (error) => console.error(error),
+      })
+    }
+    else {
+      this.toasterService.error("Wallet not connected", 'Error');
+    }
   }
 
 
@@ -208,7 +221,6 @@ export class ProductDialogComponent implements OnInit {
         fileString: base64String,
         productInfoId: productInfoId,
         userEmitterId: this.authService.userId!,
-        supplyChainPartnerReceiverId: '',
         type: DocumentType.Origin,
       };
 
@@ -219,6 +231,29 @@ export class ProductDialogComponent implements OnInit {
     };
 
     reader.readAsDataURL(this.fileUploaded);
+  }
+
+  private updateProduct(productInfoId: string, tokenId: number) {
+    const ingredientsValue = this.ingredients();
+
+    const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
+      const ingredient = this.allIngredientsRes.find(item => item.name === ingredientName);
+      return ingredient ? { ingredientId: ingredient.id }: null;
+    }).filter((ingredient): ingredient is ProductIngredient => ingredient !== null);
+
+    const datepipe: DatePipe = new DatePipe('en-US')
+    let formattedDate = datepipe.transform(this.newProductForm.value.date!, 'YYYY-MM-dd');
+
+    const newProduct: ProductInfo = {
+      id: productInfoId,
+      name: this.newProductForm.value.name!,
+      productId: this.newProductForm.value.product!,
+      expirationDate: formattedDate!,
+      ingredients: productIngredients,
+      tokenId: tokenId.toString(),
+    }
+
+    this.productService.updateProductInfo(newProduct).subscribe();
   }
 
   reset(){

@@ -153,7 +153,7 @@ namespace CochainAPI.Data.Sql.Repositories
             Log log;
             var tempPw = await dbContext.UserTemporaryPassword.Include(x => x.User).Where(x => x.User.UserName!.ToLower().Equals(model.Username.ToLower()) &&
                 x.ExpirationDate >= DateTime.UtcNow &&
-                !x.IsUsed).FirstOrDefaultAsync();
+                !x.IsUsed).OrderBy(x => x.ExpirationDate).LastOrDefaultAsync();
             if (tempPw != null)
             {                
                 tempPw.Attempts++;
