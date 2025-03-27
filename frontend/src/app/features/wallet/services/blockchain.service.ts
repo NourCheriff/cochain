@@ -7,6 +7,7 @@ import CarbonCreditsDeployed from 'frontend/deployments/docker/CarbonCredits.jso
 import { Transaction } from '../models/transaction.model';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { BaseHttpService } from 'src/app/core/services/api.service';
+import { environment } from 'src/environments/environment';
 
 declare const window: any; // window object provided by the browser API
 
@@ -367,7 +368,7 @@ export class BlockchainService {
           chainId: "0x539",
           chainName: "COCHAIN",
           rpcUrls: [
-            "http://127.0.0.1:8545"
+            environment.rpcUrl
           ],
           nativeCurrency: {
             name: "ETH",
