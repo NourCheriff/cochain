@@ -22,11 +22,11 @@ export class NavbarComponent {
   private pagePermissions: { [key: string]: Role[] } = {
     wallet: [Role.SysAdmin, Role.AdminCA, Role.UserCA, Role.AdminSCP, Role.UserSCP],
     products: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
-    certificates: [Role.AdminCA, Role.UserCA, Role.AdminSCP, Role.UserSCP],
+    certificates: [Role.SysAdmin, Role.AdminCA, Role.UserCA, Role.AdminSCP, Role.UserSCP],
     contracts: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
     companies: [Role.SysAdmin],
     logs: [Role.SysAdmin],
-    offsettingActions: [Role.SysAdmin, Role.AdminCA, Role.UserCA],
+    offsettingActions: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
   };
 
   hasAccess(page: string): boolean {
