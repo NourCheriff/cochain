@@ -42,6 +42,11 @@ export class BaseHttpService {
     );
   }
 
+  get<T>(endpoint: string) : Observable<T>{
+    return this.http.get<T>(`${this.API_BASE_URL}/${endpoint}`,{
+      headers: this.header,
+    });
+  }
 
   getById<T>(endpoint: string, id: string) : Observable<T>{
     return this.http.get<T>(`${this.API_BASE_URL}/${endpoint}/${id}`,{
