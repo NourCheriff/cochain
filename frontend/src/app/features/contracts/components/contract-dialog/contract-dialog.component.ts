@@ -55,7 +55,7 @@ export class ContractDialogComponent implements OnInit {
   constructor(private contractService: ContractService) {}
 
   ngOnInit(): void {
-    this.getAllSupplyChainPartner()
+    this.getAllSupplyChainPartners()
   }
 
   getAllProductLifeCycleCategories(){
@@ -67,10 +67,10 @@ export class ContractDialogComponent implements OnInit {
     });
   }
 
-  getAllSupplyChainPartner(){
+  getAllSupplyChainPartners(){
     this.contractService.getAllSupplyChainPartner().subscribe({
       next: (response) => {
-        this.supplyChainPartners = response
+        this.supplyChainPartners = response.items || [],
         this.getAllProductLifeCycleCategories()
        },
       error: (error) => console.error('Error fetching supply chain partners:', error)

@@ -39,8 +39,16 @@ export class ContractService {
     return this.apiService.getAll('api/ProductLifeCycle')
   }
 
-  getAllSupplyChainPartner(): Observable<SupplyChainPartner[]> {
-    return this.apiService.getAll('api/SupplyChainPartner');
+  getAllSupplyChainPartner(): Observable<PaginationResponse<SupplyChainPartner>> {
+    return this.apiService.getAll('api/SupplyChainPartner').pipe(
+      map((response: any) => {
+        const paginationResponse: PaginationResponse<SupplyChainPartner> = {
+          items: response[0].items || [],
+          totalSize: response[0].totalSize || 0,
+        }
+        return paginationResponse;
+      })
+    );
   }
 
   deleteContract(id: string, type: string): Observable<Contract>{
