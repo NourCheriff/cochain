@@ -1,5 +1,6 @@
 using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Model.CompanyEntities;
+using CochainAPI.Model.Documents;
 using Microsoft.AspNetCore.Http;
 using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
