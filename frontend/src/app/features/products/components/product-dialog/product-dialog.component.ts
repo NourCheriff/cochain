@@ -144,8 +144,8 @@ export class ProductDialogComponent implements OnInit {
           this.dialogRef.close({ newProduct: response });
           this.blockchainService.createProduct(response.id!, response.expirationDate).then((item) => {
             const tokenId = Number(item!.logs[0].topics[3]);
-            this.updateProduct(response.id!, tokenId)
-            console.log("Prodott added correctly", item)
+            this.updateProduct(response!, tokenId)
+            console.log("Product added correctly", item)
           });
         },
         error: (error) => console.error(error),
@@ -233,27 +233,9 @@ export class ProductDialogComponent implements OnInit {
     reader.readAsDataURL(this.fileUploaded);
   }
 
-  private updateProduct(productInfoId: string, tokenId: number) {
-    const ingredientsValue = this.ingredients();
-
-    const productIngredients: ProductIngredient[] = ingredientsValue.map(ingredientName => {
-      const ingredient = this.allIngredientsRes.find(item => item.name === ingredientName);
-      return ingredient ? { ingredientId: ingredient.id }: null;
-    }).filter((ingredient): ingredient is ProductIngredient => ingredient !== null);
-
-    const datepipe: DatePipe = new DatePipe('en-US')
-    let formattedDate = datepipe.transform(this.newProductForm.value.date!, 'YYYY-MM-dd');
-
-    const newProduct: ProductInfo = {
-      id: productInfoId,
-      name: this.newProductForm.value.name!,
-      productId: this.newProductForm.value.product!,
-      expirationDate: formattedDate!,
-      ingredients: productIngredients,
-      tokenId: tokenId.toString(),
-    }
-
-    this.productService.updateProductInfo(newProduct).subscribe();
+  private updateProduct(productInfo: ProductInfo, tokenId: number) {
+    productInfo.tokenId = tokenId.toString();
+    this.productService.updateProductInfo(productInfo).subscribe();
   }
 
   reset(){
