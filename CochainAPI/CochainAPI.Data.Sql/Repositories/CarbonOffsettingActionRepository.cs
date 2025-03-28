@@ -59,7 +59,7 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<List<CarbonOffsettingAction>> GetOffsettingActionsToBeProcessed()
         {
-            return await dbContext.CarbonOffsettingAction.Where(s => !s.IsProcessed).ToListAsync();
+            return await dbContext.CarbonOffsettingAction.Where(s => !s.IsProcessed).Include(x => x.SupplyChainPartner).ToListAsync();
         }
 
         public async Task<bool> SaveCarbonOffsettingAction(CarbonOffsettingAction carbonOffsettingAction)
