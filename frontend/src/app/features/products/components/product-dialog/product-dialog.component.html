@@ -31,7 +31,7 @@
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
     </mat-form-field>
-
+    @if(data.ingredientsNumber > 0){
     <p><mat-slide-toggle labelPosition="before" formControlName="hasIngredients" (click)="loadIngredientsOnce()"> Has ingredients </mat-slide-toggle></p>
       <div [class.hidden]="!newProductForm.value.hasIngredients">
         <mat-form-field appearance="outline">
@@ -60,6 +60,7 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
+    }
       <div>
         <label for="originUp">Upload origin certificate</label>
         <input class="file_button" #fileInput type="file" id="originUp" (change)="onSelectFile($event)"/>
