@@ -311,7 +311,7 @@ export class BlockchainService {
   }
 
   public async getTransactions(): Promise<Transaction[] | null> {
-    const besuProvider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
+    const besuProvider = new ethers.JsonRpcProvider(environment.rpcUrl);
 
     try {
       if (!this.account || !this.provider) {
