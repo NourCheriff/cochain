@@ -18,7 +18,6 @@ import { MatTable } from '@angular/material/table'
 import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/types/roles.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/models/auth/user.model';
 
@@ -57,8 +56,8 @@ export class ProductDetailsComponent implements OnInit {
   currentUser!: User;
 
   ngOnInit(): void {
-    this.productService.getUser().subscribe({
-      next: (response) => { this.currentUser = response },
+    this.authService.getUser().subscribe({
+      next: (response) => this.currentUser = response,
       error: (error) => console.error(error)
     })
 
@@ -144,12 +143,8 @@ export class ProductDetailsComponent implements OnInit {
     }
 
     const requiredRoles = [Role.SCPTransformator, Role.SCPRawMaterial];
-    if (this.authService.userRoles!.some(role => requiredRoles.includes(role))) {
-      if(this.currentUser.supplyChainPartnerId === this.productInfo.supplyChainPartnerId){
-        return true;
-      }
-    }
 
-    return false;
+    return this.authService.userRoles!.some(role => requiredRoles.includes(role)) &&
+            this.currentUser.supplyChainPartnerId === this.productInfo.supplyChainPartnerId;
   }
 }

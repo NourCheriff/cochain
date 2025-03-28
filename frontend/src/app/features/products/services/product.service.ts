@@ -111,8 +111,4 @@ export class ProductService {
 
     return this.apiService.add(url, lifeCycleDocument);
   }
-
-  getUser(): Observable<User> {
-    return this.apiService.get(`api/Users/getCurrentUser`);
-  }
 }
