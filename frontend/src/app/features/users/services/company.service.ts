@@ -34,7 +34,7 @@ export class CompanyService {
     );
   }
 
-  getAllSupplyChainPartners(pageSize: string, pageNumber: string): Observable<PaginationResponse<SupplyChainPartner>> {
+  getAllSupplyChainPartners(pageSize?: string, pageNumber?: string): Observable<PaginationResponse<SupplyChainPartner>> {
     return this.apiService.getAll('api/SupplyChainPartner', { params: { pageNumber, pageSize} }).pipe(
       map((response: any) => {
         const paginationResponse: PaginationResponse<SupplyChainPartner> = {

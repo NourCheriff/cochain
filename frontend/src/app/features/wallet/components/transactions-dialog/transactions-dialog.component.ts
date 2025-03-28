@@ -1,11 +1,5 @@
-import { Component, inject } from '@angular/core';
-import {
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { Component, inject, OnInit } from '@angular/core';
+import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -13,7 +7,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatButtonModule } from '@angular/material/button';
 import { BlockchainService } from '../../services/blockchain.service';
 import { BaseHttpService } from 'src/app/core/services/api.service';
-
+import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
+import { CompanyService } from 'src/app/features/users/services/company.service';
 @Component({
   selector: 'app-transactions-dialog',
   imports: [
@@ -30,7 +25,9 @@ import { BaseHttpService } from 'src/app/core/services/api.service';
   templateUrl: './transactions-dialog.component.html',
   styleUrl: './transactions-dialog.component.css'
 })
-export class TransactionsDialogComponent {
+export class TransactionsDialogComponent implements OnInit{
+
+  constructor(private companyService: CompanyService) {}
 
   readonly dialogRed = inject(MatDialogRef<TransactionsDialogComponent>);
   transactionForm = new FormGroup({
@@ -40,22 +37,18 @@ export class TransactionsDialogComponent {
 
   private blockchainService = inject(BlockchainService);
   private apiService = inject(BaseHttpService);
+  supplyChainPartners: SupplyChainPartner[] = [];
 
-  // inject and get from a service
-  options: Option[] = [
-    { value: 'SCP1 Address', displayValue: 'SCP1 ADDRESS - SCP Name'},
-    { value: 'SCP2 Address', displayValue: 'SCP2 ADDRESS - SCP Name'},
-    { value: 'SCP3 Address', displayValue: 'SCP3 ADDRESS - SCP Name'},
-    { value: 'SCP4 Address', displayValue: 'SCP4 ADDRESS - SCP Name'},
-    { value: 'SCP5 Address', displayValue: 'SCP5 ADDRESS - SCP Name'},
-    { value: 'SCP6 Address', displayValue: 'SCP6 ADDRESS - SCP Name'},
-    { value: 'SCP7 Address', displayValue: 'SCP7 ADDRESS - SCP Name'},
-    { value: 'SCP8 Address', displayValue: 'SCP8 ADDRESS - SCP Name'},
-    { value: 'SCP9 Address', displayValue: 'SCP9 ADDRESS - SCP Name'},
-    { value: 'SCP10 Address', displayValue: 'SCP10 ADDRESS - SCP Name'},
-    { value: 'SCP11 Address', displayValue: 'SCP11 ADDRESS - SCP Name' },
-    { value: '0xb95348283a9714737059b4fdf50926924bdb4655', displayValue: 'Samuele'}
-  ]
+  ngOnInit(): void {
+    this.getAllSupplyChainPartners();
+  }
+
+  getAllSupplyChainPartners(){
+    this.companyService.getAllSupplyChainPartners().subscribe({
+      next: (response) => this.supplyChainPartners = response.items || [] ,
+      error: (error) => console.error('Error fetching supply chain partners.', error)
+    });
+  }
 
   async onSubmit() {
     if (this.transactionForm.valid) {
@@ -78,9 +71,4 @@ export class TransactionsDialogComponent {
     }
   }
 
-}
-
-interface Option {
-  value: string;
-  displayValue: string;
 }
