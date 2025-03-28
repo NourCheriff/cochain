@@ -106,15 +106,13 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   loadProductIngredients(){
-    const ingredientIds: string[] = this.productInfo.ingredients!.map(ingredient => ingredient.ingredientId);
-
     this.ingredients = [];
 
     if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
-      this.productService.getProductsInfoByIds(ingredientIds).subscribe({
-        next: (response) => this.ingredients = response,
-        error: (error) => console.error(error)
-      })
+        this.productService.getIngredientsByProductInfoId(this.productInfo.id!).subscribe({
+          next: (response) => this.ingredients = response,
+          error: (error) => console.log(error)
+        })
     }
   }
 
