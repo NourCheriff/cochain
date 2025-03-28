@@ -5,8 +5,8 @@
       <mat-form-field appearance="outline" class="receiver">
         <mat-label> Send To </mat-label>
         <mat-select formControlName="receiver">
-          @for (option of options; track $index) {
-            <mat-option [value]="option.value"> {{ option.displayValue }} </mat-option>
+          @for (scp of supplyChainPartners; track $index) {
+            <mat-option [value]="scp.walletId"> {{ scp.name }} </mat-option>
           }
         </mat-select>
       </mat-form-field>
