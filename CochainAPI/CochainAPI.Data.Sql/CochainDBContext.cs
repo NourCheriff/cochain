@@ -324,65 +324,64 @@ namespace CochainAPI.Data.Sql
                 }
             );
 
-
             modelBuilder.Entity<ProductCategory>().HasData(
                 new ProductCategory
                 {
-                    Id = new Guid("a1b2c3d4-e5f6-7890-ab12-cd34ef56gh78"),
+                    Id = new Guid("a1b2c3d4-e5f6-7890-ab12-cd34ef567890"),
                     Name = "Meat",
                     Description = "Fresh and processed meat including beef, pork, chicken, and more."
                 },
                 new ProductCategory
                 {
-                    Id = new Guid("b2c3d4e5-f678-9012-abcd-34ef56gh7890"),
+                    Id = new Guid("b2c3d4e5-f678-9012-abcd-34ef56789012"),
                     Name = "Fish",
                     Description = "Fresh, frozen, and processed seafood products."
                 },
                 new ProductCategory
                 {
-                    Id = new Guid("c3d4e5f6-7890-1234-abcd-56ef78gh9012"),
+                    Id = new Guid("c3d4e5f6-7890-1234-abcd-56ef78901234"),
                     Name = "Vegetables",
                     Description = "Fresh, organic, and frozen vegetables."
                 },
                 new ProductCategory
                 {
-                    Id = new Guid("d4e5f678-9012-3456-abcd-78gh90ef1234"),
+                    Id = new Guid("d4e5f678-9012-3456-abcd-78ef90123456"),
                     Name = "Fruits",
                     Description = "Fresh, dried, and packaged fruits."
                 },
                 new ProductCategory
                 {
-                    Id = new Guid("e5f67890-1234-5678-abcd-90gh12ef3456"),
+                    Id = new Guid("e5f67890-1234-5678-abcd-90ef12345678"),
                     Name = "Dairy",
                     Description = "Milk, cheese, yogurt, and other dairy products."
                 },
                 new ProductCategory
                 {
-                    Id = new Guid("f6789012-3456-7890-abcd-12gh34ef5678"),
+                    Id = new Guid("f6789012-3456-7890-abcd-12ef34567890"),
                     Name = "Bakery Products",
                     Description = "Fresh bread, biscuits, breadsticks, and other baked goods."
                 },
                 new ProductCategory
                 {
-                    Id = new Guid("78901234-5678-9012-abcd-34gh56ef7890"),
+                    Id = new Guid("78901234-5678-9012-abcd-34ef56789012"),
                     Name = "Pasta & Rice",
                     Description = "Dry, fresh, whole wheat pasta, and different types of rice."
                 },
                 new ProductCategory
                 {
-                    Id = new Guid("89012345-6789-0123-abcd-56gh78ef9012"),
+                    Id = new Guid("89012345-6789-0123-abcd-56ef78901234"),
                     Name = "Beverages",
                     Description = "Soft drinks, fruit juices, water, and alcoholic beverages."
                 },
                 new ProductCategory
                 {
-                    Id = new Guid("90123456-7890-1234-abcd-78gh90ef1234"),
+                    Id = new Guid("90123456-7890-1234-abcd-78ef90123456"),
                     Name = "Sweets & Snacks",
                     Description = "Chocolate, candies, chips, and other sweet and salty snacks."
                 },
                 new ProductCategory
                 {
-                    Id = new Guid("12345678-9012-3456-abcd-90gh12ef3456"),
+                    Id = new Guid("12345678-9012-3456-abcd-90ef12345678"),
                     Name = "Condiments & Spices",
                     Description = "Oil, vinegar, salt, pepper, and other spices."
                 }
