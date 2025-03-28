@@ -10,6 +10,7 @@ import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycle-document.model';
 import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
+import { User } from 'src/models/auth/user.model';
 
 
 @Injectable({

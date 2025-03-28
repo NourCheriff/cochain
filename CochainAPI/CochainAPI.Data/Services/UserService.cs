@@ -5,6 +5,8 @@ using CochainAPI.Data.Sql.Repositories.Interfaces;
 using CochainAPI.Data.Helpers;
 using Microsoft.AspNetCore.Identity;
 using CochainAPI.Model.CompanyEntities;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 using System.Text;
 
 namespace CochainAPI.Data.Services
@@ -14,6 +16,7 @@ namespace CochainAPI.Data.Services
         private readonly AppSettings _appSettings;
         private readonly IEmailService _emailService;
         private readonly IUserRepository _userRepository;
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly ISupplyChainPartnerRepository _supplyChainPartnerRepository;
         private readonly ICertificationAuthorityRepository _certificationAuthorityRepository;
         private readonly UserManager<User> _userManager;
@@ -26,11 +29,12 @@ namespace CochainAPI.Data.Services
         private readonly string SUPPLY_CHAIN_PARTNER = "scp";
         private readonly string CERTIFICATION_AUTHORITY = "ca";
 
-        public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository, ISupplyChainPartnerRepository supplyChainPartnerRepository, ICertificationAuthorityRepository certificationAuthorityRepository, UserManager<User> userManager)
+        public UserService(IOptions<AppSettings> appSettings, IEmailService emailService, IUserRepository userRepository,  IHttpContextAccessor contextAccessor, ISupplyChainPartnerRepository supplyChainPartnerRepository, ICertificationAuthorityRepository certificationAuthorityRepository, UserManager<User> userManager)
         {
             _appSettings = appSettings.Value;
             _emailService = emailService;
             _userRepository = userRepository;
+            _contextAccessor = contextAccessor;
             _supplyChainPartnerRepository = supplyChainPartnerRepository;
             _certificationAuthorityRepository = certificationAuthorityRepository;
             _userManager = userManager;
@@ -59,6 +63,12 @@ namespace CochainAPI.Data.Services
                 return null;
             
             return await _userRepository.GetUsersByCompanyId(id, companyType);
+        }
+
+        public async Task<User?> GetCurrentUser()
+        {
+            var userId = _contextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            return await _userRepository.GetById(userId);
         }
 
         public async Task<User?> AddUser(User userObj)

@@ -9,6 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Jwt, ROLES_KEY } from 'src/models/auth/jwt-payload.model';
 import { Router } from '@angular/router';
 import { Role } from 'src/types/roles.enum';
+import { User } from 'src/models/auth/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -85,6 +86,10 @@ export class AuthService {
     } catch (err) {
       return null;
     }
+  }
+
+  public getUser(): Observable<User> {
+    return this.http.get<User>(`api/Users/getCurrentUser`);
   }
 
   public onResponse(response: BaseResponse<AuthResponse>): void {
