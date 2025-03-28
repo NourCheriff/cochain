@@ -289,131 +289,185 @@ namespace CochainAPI.Data.Sql
                 new SupplyChainPartnerType
                 {
                     Id = new Guid("e1117db4-760e-4515-9aa0-11a3fa766e87"),
-                    Name = "Materia Prima",
+                    Name = "Raw Material Supplier",
                     Baseline = 1000.0f
-                });
-
-            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                },
                 new SupplyChainPartnerType
                 {
                     Id = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
-                    Name = "Trasportatore",
+                    Name = "Transporter",
                     Baseline = 1000.0f
-                });
-
-            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                },
                 new SupplyChainPartnerType
                 {
                     Id = new Guid("ef01b3b4-760e-4515-9aa0-bdab7c766e87"),
-                    Name = "Trasformazione",
+                    Name = "Processing",
                     Baseline = 1000.0f
-                });
-
-            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                },
                 new SupplyChainPartnerType
                 {
                     Id = new Guid("ab2e7db4-760e-4515-9aa0-bda314266e87"),
-                    Name = "Stoccaggio",
+                    Name = "Storage",
                     Baseline = 1000.0f
-                });
-
-
-            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                },
                 new SupplyChainPartnerType
                 {
                     Id = new Guid("ef0e7124-744e-1115-9ba0-bda3fc766e87"),
-                    Name = "Rivenditore Dettaglio",
+                    Name = "Retailer",
                     Baseline = 1000.0f
-                });
-
-            modelBuilder.Entity<SupplyChainPartnerType>().HasData(
+                },
                 new SupplyChainPartnerType
                 {
                     Id = new Guid("eaae7124-761e-4515-9aa0-bda3fc7aee87"),
-                    Name = "Grossista",
+                    Name = "Wholesaler",
                     Baseline = 1000.0f
-                });
+                }
+            );
+
+
+            modelBuilder.Entity<ProductCategory>().HasData(
+                new ProductCategory
+                {
+                    Id = new Guid("a1b2c3d4-e5f6-7890-ab12-cd34ef56gh78"),
+                    Name = "Meat",
+                    Description = "Fresh and processed meat including beef, pork, chicken, and more."
+                },
+                new ProductCategory
+                {
+                    Id = new Guid("b2c3d4e5-f678-9012-abcd-34ef56gh7890"),
+                    Name = "Fish",
+                    Description = "Fresh, frozen, and processed seafood products."
+                },
+                new ProductCategory
+                {
+                    Id = new Guid("c3d4e5f6-7890-1234-abcd-56ef78gh9012"),
+                    Name = "Vegetables",
+                    Description = "Fresh, organic, and frozen vegetables."
+                },
+                new ProductCategory
+                {
+                    Id = new Guid("d4e5f678-9012-3456-abcd-78gh90ef1234"),
+                    Name = "Fruits",
+                    Description = "Fresh, dried, and packaged fruits."
+                },
+                new ProductCategory
+                {
+                    Id = new Guid("e5f67890-1234-5678-abcd-90gh12ef3456"),
+                    Name = "Dairy",
+                    Description = "Milk, cheese, yogurt, and other dairy products."
+                },
+                new ProductCategory
+                {
+                    Id = new Guid("f6789012-3456-7890-abcd-12gh34ef5678"),
+                    Name = "Bakery Products",
+                    Description = "Fresh bread, biscuits, breadsticks, and other baked goods."
+                },
+                new ProductCategory
+                {
+                    Id = new Guid("78901234-5678-9012-abcd-34gh56ef7890"),
+                    Name = "Pasta & Rice",
+                    Description = "Dry, fresh, whole wheat pasta, and different types of rice."
+                },
+                new ProductCategory
+                {
+                    Id = new Guid("89012345-6789-0123-abcd-56gh78ef9012"),
+                    Name = "Beverages",
+                    Description = "Soft drinks, fruit juices, water, and alcoholic beverages."
+                },
+                new ProductCategory
+                {
+                    Id = new Guid("90123456-7890-1234-abcd-78gh90ef1234"),
+                    Name = "Sweets & Snacks",
+                    Description = "Chocolate, candies, chips, and other sweet and salty snacks."
+                },
+                new ProductCategory
+                {
+                    Id = new Guid("12345678-9012-3456-abcd-90gh12ef3456"),
+                    Name = "Condiments & Spices",
+                    Description = "Oil, vinegar, salt, pepper, and other spices."
+                }
+            );
+
 
             modelBuilder.Entity<ProductLifeCycleCategory>().HasData(
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("ef94c672-c755-449b-8ee8-327a12bed7ef"),
-                    Name = "Trasporto",
-                    Description = "Trasporto del prodotto."
+                    Name = "Transport",
+                    Description = "Product transportation."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("a9d12b5f-1e2d-45c9-bb5d-3d8a7c2b4a33"),
-                    Name = "Produzione",
-                    Description = "Attività di produzione del prodotto."
+                    Name = "Production",
+                    Description = "Product manufacturing activities."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("b1e2d3f4-5678-90ab-cdef-1234567890ab"),
-                    Name = "Lavorazione",
-                    Description = "Attività di lavorazione della materia prima."
+                    Name = "Processing",
+                    Description = "Raw material processing activities."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("c1d2e3f4-6789-0abc-def1-234567890abc"),
-                    Name = "Vendita",
-                    Description = "Attività di vendita del prodotto."
+                    Name = "Sales",
+                    Description = "Product sales activities."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("d2e3f4a5-7890-1bcd-ef12-34567890abcd"),
-                    Name = "Assistenza",
-                    Description = "Attività di assistenza post vendita."
+                    Name = "Customer Support",
+                    Description = "Post-sales customer assistance."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("e3a18178-8db7-48f2-a76b-9ad329bba5f2"),
-                    Name = "Preparazione del Terreno",
-                    Description = "Attività di aratura e lavorazione del suolo, con tecniche volte a minimizzare l'uso di macchinari pesanti per ridurre le emissioni."
+                    Name = "Soil Preparation",
+                    Description = "Plowing and soil preparation activities using techniques aimed at minimizing the use of heavy machinery to reduce emissions."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("f3b19128-0edc-4f59-8a27-6a8d3509876c"),
-                    Name = "Semina",
-                    Description = "Attività di semina utilizzando metodi di precisione per ottimizzare l'utilizzo di risorse e ridurre l'impatto ambientale."
+                    Name = "Seeding",
+                    Description = "Precision seeding activities to optimize resource use and reduce environmental impact."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("a4c2d7e6-6f5e-42f9-b7c1-1234567890ef"),
-                    Name = "Irrigazione Sostenibile",
-                    Description = "Implementazione di sistemi di irrigazione efficienti per ridurre il consumo idrico e l'energia necessaria."
+                    Name = "Sustainable Irrigation",
+                    Description = "Implementation of efficient irrigation systems to reduce water and energy consumption."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("b5d3e8f7-7e6f-43d0-c8d2-0987654321ba"),
-                    Name = "Fertilizzazione a Basso Impatto",
-                    Description = "Utilizzo di fertilizzanti naturali o a rilascio controllato per minimizzare le emissioni di gas serra."
+                    Name = "Low-Impact Fertilization",
+                    Description = "Use of natural or slow-release fertilizers to minimize greenhouse gas emissions."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("c6e4f9a8-8f70-44e1-d9e3-1029384756cd"),
-                    Name = "Gestione dei Parassiti",
-                    Description = "Adozione di pratiche integrate per il controllo dei parassiti, riducendo l'uso di pesticidi chimici e l'impatto ambientale."
+                    Name = "Pest Management",
+                    Description = "Adoption of integrated pest control practices, reducing chemical pesticide use and environmental impact."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("d7f50ab9-9a81-45f2-eaf4-5647382910ef"),
-                    Name = "Raccolta",
-                    Description = "Processi di raccolta ottimizzati per minimizzare il consumo energetico e le emissioni dovute al trasporto interno."
+                    Name = "Harvesting",
+                    Description = "Optimized harvesting processes to minimize energy consumption and emissions from internal transport."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("e8a61bca-ab92-46f3-fb05-6758493021f0"),
-                    Name = "Post-Raccolta e Conservazione",
-                    Description = "Attività di selezione, lavaggio e conservazione con tecniche a basso impatto energetico per mantenere la qualità del prodotto."
+                    Name = "Post-Harvest & Storage",
+                    Description = "Selection, washing, and storage activities using low-energy impact techniques to maintain product quality."
                 },
                 new ProductLifeCycleCategory
                 {
                     Id = new Guid("f9b72cdb-bc03-47f4-0c16-78695a4132f1"),
-                    Name = "Imballaggio Eco-Sostenibile",
-                    Description = "Utilizzo di materiali riciclabili e processi a basso impatto per ridurre la carbon footprint del packaging."
+                    Name = "Eco-Friendly Packaging",
+                    Description = "Use of recyclable materials and low-impact processes to reduce the carbon footprint of packaging."
                 });
         }
-
     }
 }
