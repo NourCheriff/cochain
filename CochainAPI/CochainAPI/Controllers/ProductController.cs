@@ -76,11 +76,11 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("products")]
+        [HttpGet("ingredients/{id}")]
         [Authorize(Policy = "ReadProducts")]
-        public async Task<IActionResult> GetProductsByIds(Guid[] ids)
+        public async Task<IActionResult> GetIngredientsByProductInfoId(Guid id)
         {
-            var response = await _productService.GetProductsByIds(ids);
+            var response = await _productService.GetIngredientsByProductInfoId(id);
             if (response == null)
             {
                 return BadRequest(new { message = "Products infos not found" });

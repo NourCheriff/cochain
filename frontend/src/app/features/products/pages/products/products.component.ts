@@ -114,7 +114,7 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-    let currentDialog = this.dialog.open(ProductDialogComponent);
+    let currentDialog = this.dialog.open(ProductDialogComponent, {data: {ingredientsNumber: this.totalRecords}});
     currentDialog.afterClosed().subscribe(result => {
       if (result !== undefined) {
        const pageEvent: PageEvent = {

@@ -47,11 +47,13 @@ namespace CochainAPI.Data.Services
             return null;
         }
 
-        public async Task<List<ProductInfo>?> GetProductsByIds(Guid[] ids)
+        public async Task<List<ProductInfo>?> GetIngredientsByProductInfoId(Guid id)
         {
-            if (ids != null && ids.Any())
-            {
-                return await _productRepository.GetProductsByIds(ids);
+            var productInfo = await GetProductById(id);
+            
+            if(productInfo != null){
+                Guid[] ingredientIds = productInfo.Ingredients.Select(ingredient => ingredient.IngredientId).ToArray();
+                return await _productRepository.GetProductsByIds(ingredientIds);
             }
 
             return null;
