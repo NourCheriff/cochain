@@ -86,8 +86,8 @@ export class ProductService {
     return this.apiService.getById('api/Product', productId)
   }
 
-  getProductsInfoByIds(ids: string[]): Observable<ProductInfo[]> {
-    return this.apiService.getByIds('api/Product/products', ids);
+  getIngredientsByProductInfoId(productId: string): Observable<ProductInfo[]> {
+    return this.apiService.getAll('api/Product/ingredients', { id :productId });
   }
 
   uploadOriginDocument(originDocument: ProductDocument): Observable<ProductDocument>{
