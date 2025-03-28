@@ -111,8 +111,9 @@ namespace CochainAPI.Data.Sql.Repositories
             return await dbContext.ProductInfo.Where(x => ids.Contains(x.Id))
                     .Include(x => x.Ingredients)
                     .Include(x => x.Product)
-                    .Include(x => x.ProductLifeCycles)
                     .Include(x => x.ProductDocuments)
+                    .Include(x => x.ProductLifeCycles!.AsQueryable())
+                             .ThenInclude(y => y.ProductLifeCycleCategory)
                     .ToListAsync();
         }
 

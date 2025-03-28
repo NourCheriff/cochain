@@ -10,6 +10,7 @@ import { ProductLifeCycle } from 'src/models/product/product-life-cycle.model';
 import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycle-document.model';
 import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
+import { User } from 'src/models/auth/user.model';
 
 
 @Injectable({
@@ -86,8 +87,8 @@ export class ProductService {
     return this.apiService.getById('api/Product', productId)
   }
 
-  getProductsInfoByIds(ids: string[]): Observable<ProductInfo[]> {
-    return this.apiService.getByIds('api/Product/products', ids);
+  getIngredientsByProductInfoId(productId: string): Observable<ProductInfo[]> {
+    return this.apiService.getAll('api/Product/ingredients', { id :productId });
   }
 
   uploadOriginDocument(originDocument: ProductDocument): Observable<ProductDocument>{

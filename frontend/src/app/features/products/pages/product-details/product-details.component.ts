@@ -18,8 +18,8 @@ import { MatTable } from '@angular/material/table'
 import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/types/roles.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/models/auth/user.model';
 
 @Component({
   selector: 'app-product-details',
@@ -53,8 +53,14 @@ export class ProductDetailsComponent implements OnInit {
   ingredients:ProductInfo[] = [];
   lifeCycleSource = new MatTableDataSource<ProductLifeCycle>([]);
   lifeCyclesList: ProductLifeCycle[] = [];
+  currentUser!: User;
 
   ngOnInit(): void {
+    this.authService.getUser().subscribe({
+      next: (response) => this.currentUser = response,
+      error: (error) => console.error(error)
+    })
+
     this.productService.selectedProduct.subscribe((data) => this.loadDetails(data));
 
     if(this.productInfo == null){
@@ -106,15 +112,13 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   loadProductIngredients(){
-    const ingredientIds: string[] = this.productInfo.ingredients!.map(ingredient => ingredient.ingredientId);
-
     this.ingredients = [];
 
     if(this.productInfo?.ingredients && this.productInfo.ingredients.length > 0){
-      this.productService.getProductsInfoByIds(ingredientIds).subscribe({
-        next: (response) => this.ingredients = response,
-        error: (error) => console.error(error)
-      })
+        this.productService.getIngredientsByProductInfoId(this.productInfo.id!).subscribe({
+          next: (response) => this.ingredients = response,
+          error: (error) => console.log(error)
+        })
     }
   }
 
@@ -132,6 +136,13 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   isMyProduct(): boolean {
-    return this.authService.userId === this.productInfo.supplyChainPartnerId
+    if(this.authService.userRoles!.includes(Role.SysAdmin)) {
+      return true;
+    }
+
+    const requiredRoles = [Role.SCPTransformator, Role.SCPRawMaterial];
+
+    return this.authService.userRoles!.some(role => requiredRoles.includes(role)) &&
+            this.currentUser.supplyChainPartnerId === this.productInfo.supplyChainPartnerId;
   }
 }
