@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, model, OnInit, signal, ViewChild } from '@angular/core';
-import { MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, Inject, model, OnInit, signal, ViewChild } from '@angular/core';
+import { MatDialogContent, MatDialogRef, MatDialogTitle, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -49,9 +49,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ProductDialogComponent implements OnInit {
 
-  constructor(private productService: ProductService, private blockchainService: BlockchainService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {ingredientsNumber: any}, private productService: ProductService, private blockchainService: BlockchainService) {}
 
-  }
   private authService = inject(AuthService);
   private toasterService = inject(ToastrService);
 
