@@ -69,7 +69,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("WriteProducts", policy => policy.RequireRole("SystemAdmin", "SCPRawMaterial", "SCPTransformator"));
     options.AddPolicy("WriteProductLifeCycle", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("ReadProducts", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "AdminCA", "UserSCP", "UserCA"));
-    options.AddPolicy("WriteReadCarbonOffsett", policy => policy.RequireRole("SystemAdmin", "AdminCA", "UserCA"));
+    options.AddPolicy("WriteReadCarbonOffsett", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("ReadTransactions", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
     options.AddPolicy("WriteTransaction", policy => policy.RequireRole("SystemAdmin", "AdminSCP", "UserSCP"));
 });
