@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { BlockchainService } from '../../services/blockchain.service';
 import { BaseHttpService } from 'src/app/core/services/api.service';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
-import { ContractService } from 'src/app/features/contracts/service/contract.service';
+import { CompanyService } from 'src/app/features/users/services/company.service';
 @Component({
   selector: 'app-transactions-dialog',
   imports: [
@@ -27,7 +27,7 @@ import { ContractService } from 'src/app/features/contracts/service/contract.ser
 })
 export class TransactionsDialogComponent implements OnInit{
 
-  constructor(private contractService: ContractService) {}
+  constructor(private companyService: CompanyService) {}
 
   readonly dialogRed = inject(MatDialogRef<TransactionsDialogComponent>);
   transactionForm = new FormGroup({
@@ -44,8 +44,8 @@ export class TransactionsDialogComponent implements OnInit{
   }
 
   getAllSupplyChainPartners(){
-    this.contractService.getAllSupplyChainPartner().subscribe({
-      next: (response) => { this.supplyChainPartners = response.items || [] },
+    this.companyService.getAllSupplyChainPartners().subscribe({
+      next: (response) => this.supplyChainPartners = response.items || [] ,
       error: (error) => console.error('Error fetching supply chain partners.', error)
     });
   }
