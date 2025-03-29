@@ -324,6 +324,79 @@ namespace CochainAPI.Data.Sql
                 }
             );
 
+            modelBuilder.Entity<Product>().HasData(
+                new Product
+                {
+                    Id = new Guid("111aaa22-bb33-cc44-dd55-ee66ff778899"),
+                    Name = "Chicken Breast",
+                    Description = "Boneless, skinless chicken breast.",
+                    CategoryId = new Guid("a1b2c3d4-e5f6-7890-ab12-cd34ef567890") // Meat
+                },
+                new Product
+                {
+                    Id = new Guid("222bbb33-cc44-dd55-ee66-ff778899aabb"),
+                    Name = "Salmon Fillet",
+                    Description = "Fresh Atlantic salmon fillet.",
+                    CategoryId = new Guid("b2c3d4e5-f678-9012-abcd-34ef56789012") // Fish
+                },
+                new Product
+                {
+                    Id = new Guid("333ccc44-dd55-ee66-ff77-8899aabbccdd"),
+                    Name = "Carrots",
+                    Description = "Organic fresh carrots.",
+                    CategoryId = new Guid("c3d4e5f6-7890-1234-abcd-56ef78901234") // Vegetables
+                },
+                new Product
+                {
+                    Id = new Guid("444ddd55-ee66-ff77-8899-aabbccddeeff"),
+                    Name = "Bananas",
+                    Description = "Sweet and ripe bananas.",
+                    CategoryId = new Guid("d4e5f678-9012-3456-abcd-78ef90123456") // Fruits
+                },
+                new Product
+                {
+                    Id = new Guid("555eee66-ff77-8899-aabb-ccddeeff0011"),
+                    Name = "Whole Milk",
+                    Description = "Pasteurized whole milk.",
+                    CategoryId = new Guid("e5f67890-1234-5678-abcd-90ef12345678") // Dairy
+                },
+                new Product
+                {
+                    Id = new Guid("666fff77-8899-aabb-ccdd-eeff00112233"),
+                    Name = "Baguette",
+                    Description = "Traditional French bread.",
+                    CategoryId = new Guid("f6789012-3456-7890-abcd-12ef34567890") // Bakery Products
+                },
+                new Product
+                {
+                    Id = new Guid("77711188-999a-bbcc-ddee-ff0011223344"),
+                    Name = "Spaghetti",
+                    Description = "Italian durum wheat spaghetti.",
+                    CategoryId = new Guid("78901234-5678-9012-abcd-34ef56789012") // Pasta & Rice
+                },
+                new Product
+                {
+                    Id = new Guid("88822299-aabb-ccdd-eeff-001122334455"),
+                    Name = "Orange Juice",
+                    Description = "100% fresh squeezed orange juice.",
+                    CategoryId = new Guid("89012345-6789-0123-abcd-56ef78901234") // Beverages
+                },
+                new Product
+                {
+                    Id = new Guid("999333aa-bbcc-ddee-ff00-112233445566"),
+                    Name = "Milk Chocolate Bar",
+                    Description = "Creamy milk chocolate bar.",
+                    CategoryId = new Guid("90123456-7890-1234-abcd-78ef90123456") // Sweets & Snacks
+                },
+                new Product
+                {
+                    Id = new Guid("aaa444bb-ccdd-eeff-0011-223344556677"),
+                    Name = "Olive Oil",
+                    Description = "Extra virgin olive oil.",
+                    CategoryId = new Guid("12345678-9012-3456-abcd-90ef12345678") // Condiments & Spices
+                }
+            );
+
             modelBuilder.Entity<ProductCategory>().HasData(
                 new ProductCategory
                 {

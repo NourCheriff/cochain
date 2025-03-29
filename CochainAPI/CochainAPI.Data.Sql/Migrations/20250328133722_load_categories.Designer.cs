@@ -3,6 +3,7 @@ using System;
 using CochainAPI.Data.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CochainAPI.Data.Sql.Migrations
 {
     [DbContext(typeof(CochainDBContext))]
-    partial class CochainDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250328133722_load_categories")]
+    partial class load_categories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,14 +111,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "ad00648b-a031-432d-b007-6a0829cf5292",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "529dfb39-677c-44d5-b79a-c00f8e46e105",
+                            ConcurrencyStamp = "cf37881c-5f29-45b4-a479-4f1ef8f44ae3",
                             EmailConfirmed = false,
                             FirstName = "System",
                             IsActive = true,
                             LastName = "System",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "77b76eb3-6192-4dbc-a87b-9a0030113a57",
+                            SecurityStamp = "0c995831-81fa-4451-8ecb-73341dba50e4",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "admin@cochain.com"
@@ -124,14 +127,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "5e4b0ca8-aa85-417a-af23-035ac1b555cd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0c88b83e-7337-423f-9962-2b91561da18b",
+                            ConcurrencyStamp = "be5f762d-ce5d-4a78-af91-acb1986d9dab",
                             EmailConfirmed = false,
                             FirstName = "Paolo",
                             IsActive = true,
                             LastName = "Roselli",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2fbe9e94-0541-40f2-ba3c-42bec2cc3239",
+                            SecurityStamp = "e79710b5-038c-4cd9-b672-5ddfcc6e3902",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "paolo.roselli02@gmail.com"
@@ -140,14 +143,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "0a317b04-2f87-4b08-8ad8-597103527584",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "55e9bde7-31b8-47bc-832b-acde6638cbb9",
+                            ConcurrencyStamp = "03d0508b-8c51-4fe2-8d8c-5151b25e702a",
                             EmailConfirmed = false,
                             FirstName = "Matteo",
                             IsActive = true,
                             LastName = "Spiga",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bef6ede0-94ec-422f-a46a-9ae7ae77c416",
+                            SecurityStamp = "8a239603-6acb-442e-9f77-e3a68f219b2d",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "matteospiga2002@gmail.com"
@@ -156,14 +159,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "a12c3708-0486-4603-b1a5-46d252e79082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e5d3c406-14bf-47cc-b2d2-e6a0a1be1f9c",
+                            ConcurrencyStamp = "3fda29f1-81bc-4473-a232-71fcaf96e4a1",
                             EmailConfirmed = false,
                             FirstName = "Cherif",
                             IsActive = true,
                             LastName = "Nour",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "00f3c321-cc17-4402-a101-8292956b46b3",
+                            SecurityStamp = "04cd7d49-106b-41d2-a7b3-6744b144015e",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "nourcherif.pitos25@gmail.com"
@@ -172,14 +175,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "3542da56-0de3-4797-a059-effff257f63d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e8cd186c-afa8-42b7-ba91-9d2806011508",
+                            ConcurrencyStamp = "bfb91710-780f-477c-81b9-3af0cdcddcaa",
                             EmailConfirmed = false,
                             FirstName = "Mattia",
                             IsActive = true,
                             LastName = "Mandorlini",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "23a00c64-cf84-40c1-a60a-efd69748aaf1",
+                            SecurityStamp = "185c1747-ab0f-4e54-957f-51d17c3574ce",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "mando3228@gmail.com"
@@ -188,14 +191,14 @@ namespace CochainAPI.Data.Sql.Migrations
                         {
                             Id = "f4242b5f-4b39-45fc-802e-391293414546",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "eccedfa3-6bca-433d-b21c-acea13ebc8ce",
+                            ConcurrencyStamp = "d68fd0ac-0425-42fe-bca6-3550a11b0f5c",
                             EmailConfirmed = false,
                             FirstName = "Samuele",
                             IsActive = true,
                             LastName = "Sacchetti",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f555eede-1f29-404c-9fd4-f600cc657bc8",
+                            SecurityStamp = "c86e4389-e859-404e-aa46-2efc742d91d6",
                             SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
                             TwoFactorEnabled = false,
                             UserName = "sacchettisamuele@gmail.com"
@@ -586,78 +589,6 @@ namespace CochainAPI.Data.Sql.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Product");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("111aaa22-bb33-cc44-dd55-ee66ff778899"),
-                            CategoryId = new Guid("a1b2c3d4-e5f6-7890-ab12-cd34ef567890"),
-                            Description = "Boneless, skinless chicken breast.",
-                            Name = "Chicken Breast"
-                        },
-                        new
-                        {
-                            Id = new Guid("222bbb33-cc44-dd55-ee66-ff778899aabb"),
-                            CategoryId = new Guid("b2c3d4e5-f678-9012-abcd-34ef56789012"),
-                            Description = "Fresh Atlantic salmon fillet.",
-                            Name = "Salmon Fillet"
-                        },
-                        new
-                        {
-                            Id = new Guid("333ccc44-dd55-ee66-ff77-8899aabbccdd"),
-                            CategoryId = new Guid("c3d4e5f6-7890-1234-abcd-56ef78901234"),
-                            Description = "Organic fresh carrots.",
-                            Name = "Carrots"
-                        },
-                        new
-                        {
-                            Id = new Guid("444ddd55-ee66-ff77-8899-aabbccddeeff"),
-                            CategoryId = new Guid("d4e5f678-9012-3456-abcd-78ef90123456"),
-                            Description = "Sweet and ripe bananas.",
-                            Name = "Bananas"
-                        },
-                        new
-                        {
-                            Id = new Guid("555eee66-ff77-8899-aabb-ccddeeff0011"),
-                            CategoryId = new Guid("e5f67890-1234-5678-abcd-90ef12345678"),
-                            Description = "Pasteurized whole milk.",
-                            Name = "Whole Milk"
-                        },
-                        new
-                        {
-                            Id = new Guid("666fff77-8899-aabb-ccdd-eeff00112233"),
-                            CategoryId = new Guid("f6789012-3456-7890-abcd-12ef34567890"),
-                            Description = "Traditional French bread.",
-                            Name = "Baguette"
-                        },
-                        new
-                        {
-                            Id = new Guid("77711188-999a-bbcc-ddee-ff0011223344"),
-                            CategoryId = new Guid("78901234-5678-9012-abcd-34ef56789012"),
-                            Description = "Italian durum wheat spaghetti.",
-                            Name = "Spaghetti"
-                        },
-                        new
-                        {
-                            Id = new Guid("88822299-aabb-ccdd-eeff-001122334455"),
-                            CategoryId = new Guid("89012345-6789-0123-abcd-56ef78901234"),
-                            Description = "100% fresh squeezed orange juice.",
-                            Name = "Orange Juice"
-                        },
-                        new
-                        {
-                            Id = new Guid("999333aa-bbcc-ddee-ff00-112233445566"),
-                            CategoryId = new Guid("90123456-7890-1234-abcd-78ef90123456"),
-                            Description = "Creamy milk chocolate bar.",
-                            Name = "Milk Chocolate Bar"
-                        },
-                        new
-                        {
-                            Id = new Guid("aaa444bb-ccdd-eeff-0011-223344556677"),
-                            CategoryId = new Guid("12345678-9012-3456-abcd-90ef12345678"),
-                            Description = "Extra virgin olive oil.",
-                            Name = "Olive Oil"
-                        });
                 });
 
             modelBuilder.Entity("CochainAPI.Model.Product.ProductCategory", b =>
