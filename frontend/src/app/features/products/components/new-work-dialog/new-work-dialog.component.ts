@@ -107,7 +107,9 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
             this.uploadFile(response.id!, false);
             this.dialogRef.close({ newWork: response });
             this.blockchainService.addActivity(Number(newProductLifeCycle.productInfo?.tokenId), response.id!, response.emissions).then((item) => {
-              console.log("Activity added to the product", item)
+              if (item) {
+                console.log("Activity added to the product", item);
+              }
             })
           },
           error: (error) => console.error(error),
@@ -119,7 +121,9 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
             this.uploadFile(response.id!, false);
             this.dialogRef.close({ newWork: response });
             this.blockchainService.addActivity(Number(newProductLifeCycle.productInfo?.tokenId), response.id!, response.emissions).then((item) => {
-              console.log("Activity added to the product", item)
+              if (item) {
+                console.log("Activity added to the product", item);
+              }
             })
           },
           error: (error) => console.error(error),

@@ -2,13 +2,11 @@ using CochainAPI.Data.Services.Interfaces;
 using Quartz;
 using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
-using CochainAPI.Data.Sql.Repositories.Interfaces;
 
 namespace CochainAPI.Jobs
 {
     public class TokenProcessor : IJob
     {
-        private readonly ILogRepository _logRepository;
         private readonly IProductLifeCycleService _lifeCycleService;
         private readonly ISupplyChainPartnerService _supplyChainPartnerService;
         private readonly ICarbonOffsettingActionService _actionService;
@@ -19,14 +17,12 @@ namespace CochainAPI.Jobs
             IProductLifeCycleService lifeCycleService,
             ISupplyChainPartnerService supplyChainPartnerService,
             ICarbonOffsettingActionService actionService,
-            IConfiguration config,
-            ILogRepository logRepository)
+            IConfiguration config)
         {
             _config = config;
             _lifeCycleService = lifeCycleService;
             _supplyChainPartnerService = supplyChainPartnerService;
             _actionService = actionService;
-            _logRepository = logRepository;
             _blockchainURL = _config.GetValue<string>("BlockchainSettings:localhostURL")!;
         }
 

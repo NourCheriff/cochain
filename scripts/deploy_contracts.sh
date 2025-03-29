@@ -8,6 +8,7 @@ echo ""
 
 cd $PWD/frontend
 npx -y hardhat clean
+rm -rf ./artifacts
 rm -rf ./cache
 rm -rf ./deployments
 

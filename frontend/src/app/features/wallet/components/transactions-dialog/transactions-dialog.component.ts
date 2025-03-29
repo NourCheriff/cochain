@@ -63,8 +63,10 @@ export class TransactionsDialogComponent implements OnInit{
           walletIdReceiver: receiver.toLowerCase(),
         }
 
-        this.apiService.add('api/Transaction/AddTransaction', newTransaction).subscribe({
-
+        this.apiService.add('api/Transaction/AddTransaction', newTransaction).subscribe((item) => {
+          if (item) {
+            console.log("Transaction added: ", item)
+          }
         });
 
       }
