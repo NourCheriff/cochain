@@ -14,7 +14,7 @@ export class CertificatesService {
   private apiService = inject(BaseHttpService)
 
   getScpProducts(scpId: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<ProductInfo>>{
-    return this.apiService.getAll('api/Product/scp', { params: { pageNumber, pageSize}, id: scpId }).pipe(
+    return this.apiService.getAll(`api/Product/scp/${scpId}`, { params: { pageNumber, pageSize} }).pipe(
       map((response: any) => {
         const paginationResponse: PaginationResponse<ProductInfo> = {
           items: response[0].items || [],
