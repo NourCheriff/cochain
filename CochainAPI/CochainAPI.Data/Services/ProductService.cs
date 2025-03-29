@@ -66,9 +66,9 @@ namespace CochainAPI.Data.Services
 
         public async Task<Page<ProductInfo>?> GetProductsOfSCP(Guid id, string? queryParam, int? pageNumber, int? pageSize)
         {
-            if (Guid.TryParse(id.ToString(), out Guid userId))
+            if (Guid.TryParse(id.ToString(), out Guid scpId))
             {
-                return await _productRepository.GetProductsOfSCP(userId, queryParam, pageNumber, pageSize);
+                return await _productRepository.GetProductsOfSCP(scpId, queryParam, pageNumber, pageSize);
             }
             return null;
         }
