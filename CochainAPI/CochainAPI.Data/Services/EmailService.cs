@@ -12,7 +12,7 @@ namespace CochainAPI.Data.Services
             _config = config;
         }
 
-        public void SendEmail(string testo, string email, string oggetto)
+        public void SendEmail(string body, string email, string subject)
         {
             try
             {
@@ -40,9 +40,9 @@ namespace CochainAPI.Data.Services
                 }
 
                 mail.To.Add("info@cochain.eu");
-                mail.Subject = oggetto;
+                mail.Subject = subject;
                 mail.IsBodyHtml = true;
-                mail.Body = testo;
+                mail.Body = body;
 
                 SmtpServer.Send(mail);
             }
@@ -51,17 +51,16 @@ namespace CochainAPI.Data.Services
                 Console.WriteLine(ex.Message);
             }
         }
-        public void EmailPasswordTemporanea(string email, string tempPassword)
+        public void SendTemporaryPassword(string email, string tempPassword)
         {
-            string oggetto = "La tua password temporanea";
-            string testo = "<html><body style=\"max-width: 605px;\"><table><tr><td style=\"text-align: center;\">";
-            testo += "<img style=\"width: 50%; height: 66px; display: block; margin-left: auto; margin-right: auto;\" src=\"https://www.cochain.com/logo.png\"></img></td></tr>";
-            testo += "<tr><td><p>Gentile utente,</p></td></tr>";
-            testo += "<tr><td><p>Di seguito è riportata la tua password temporanea per accedere al nostro sistema:</p></td></tr>";
-            testo += "<tr><td><h2 style=\"text-align: center;\">" + tempPassword + "</h2></td></tr>";
-            testo += "<tr><td><br></td></tr><tr><td>Cordiali saluti,</td></tr><tr><td>Il Team di Cochain</td></tr></table></body></html>";
+            string subject = "La tua password temporanea";
+            string body = "<html><body style=\"max-width: 605px;\"><table><tr><td style=\"text-align: center;\">";
+            body += "<tr><td><p>Gentile utente,</p></td></tr>";
+            body += "<tr><td><p>Di seguito è riportata la tua password temporanea per accedere al nostro sistema:</p></td></tr>";
+            body += "<tr><td><h2 style=\"text-align: center;\">" + tempPassword + "</h2></td></tr>";
+            body += "<tr><td><br></td></tr><tr><td>Cordiali saluti,</td></tr><tr><td>Il Team di Cochain</td></tr></table></body></html>";
 
-            SendEmail(testo, email, oggetto);
+            SendEmail(body, email, subject);
         }
 
     }
