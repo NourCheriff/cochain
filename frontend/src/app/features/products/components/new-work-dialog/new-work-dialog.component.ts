@@ -190,7 +190,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     }
     const selectedCategory = this.productLifeCycleCategories.find(category => category.id === this.selectedWorkType);
 
-    return selectedCategory!.name === "transport" ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
+    return selectedCategory!.name?.toLowerCase() === "transport" ? !!this.billFileUploaded && !!this.transportFileUploaded : !!this.billFileUploaded;
   }
 
   onSelectionChange(value: string) {
