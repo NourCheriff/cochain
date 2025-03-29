@@ -41,8 +41,8 @@ export class CertificatesService {
     return this.apiService.add('api/Document/AddCertificationDocument', certificate)
   }
 
-  deleteCertificate(id: string): Observable<SupplyChainPartnerCertificate>{
-    return this.apiService.delete('api/Document/RemoveCertificate', id)
+  deleteCertificate(id: string, fileName: string, type: string): Observable<SupplyChainPartnerCertificate>{
+    return this.apiService.deleteDocument(`api/Document/RemoveCertificate`, id, fileName, type)
   }
 
 }

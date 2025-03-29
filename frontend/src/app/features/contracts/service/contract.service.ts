@@ -19,12 +19,12 @@ export class ContractService {
   }
 
   getContracts(scpId: string, type: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<Contract>> {
-    const queryParam = {'text': 'sjfjsd'}
+
     const endpoint = type === "received_contracts"
       ? 'api/Document/ReceivedContracts'
       : 'api/Document/EmittedContracts';
 
-    return this.apiService.getAll(endpoint, { params: { pageNumber, pageSize, scpId, queryParam } }).pipe(
+    return this.apiService.getAll(endpoint, { params: { pageNumber, pageSize, scpId } }).pipe(
       map((response: any) => {
         const paginationResponse: PaginationResponse<Contract> = {
           items: response[0].items || [],
@@ -52,6 +52,7 @@ export class ContractService {
   }
 
   deleteContract(id: string, type: string): Observable<Contract>{
-    return this.apiService.delete('api/Document',id, type)
+    const fileName = id.split('/').pop() || id;
+    return this.apiService.deleteDocument('api/Document/RemoveDocuments', id, fileName, type)
   }
 }
