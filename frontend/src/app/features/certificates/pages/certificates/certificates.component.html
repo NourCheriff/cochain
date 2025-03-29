@@ -17,15 +17,17 @@
           <td mat-cell *matCellDef="let element"> {{element.supplyChainPartnerType.name}} </td>
         </ng-container>
 
+
         <ng-container matColumnDef="attachments">
           <th mat-header-cell *matHeaderCellDef class="attachment_th"> Attachment </th>
           <td mat-cell *matCellDef="let element">
-            <div [ngClass]="{'attachment-container': isCertificationAuthority()}">
+            <div [ngClass]="{'attachment-container': isAuthorizated()}">
 
-              <button *ngIf="isCertificationAuthority()" mat-icon-button class="attachment_button" (click)="attachCertificate(element.id)" matTooltip="Upload">
-                <mat-icon>upload_file</mat-icon>
-              </button>
-
+              @if(isAuthorizated()){
+                <button mat-icon-button class="attachment_button" (click)="attachCertificate(element.id)" matTooltip="Upload">
+                  <mat-icon>upload_file</mat-icon>
+                </button>
+              }
               <ng-container *ngIf="getSustainabilityCertificate(element.receivedSupplyChainPartnerCertificate) as certificate">
 
                 <a target="_blank" [href]="certificate.path">
@@ -34,7 +36,7 @@
                   </button>
                 </a>
 
-                <button *ngIf="isCertificationAuthority()"
+                <button *ngIf="isAuthorizated()"
                         mat-icon-button
                         (click)="deleteCertificate(certificate.id!)"
                         class="attachment_button delete"
