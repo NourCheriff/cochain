@@ -68,9 +68,7 @@ namespace CochainAPI.Data.Services
         {
             if (Guid.TryParse(id.ToString(), out Guid userId))
             {
-                var user = await _userRepository.GetById(userId.ToString());
-                var scpId = user!.SupplyChainPartnerId.GetValueOrDefault();
-                return await _productRepository.GetProductsOfSCP(scpId, queryParam, pageNumber, pageSize);
+                return await _productRepository.GetProductsOfSCP(userId, queryParam, pageNumber, pageSize);
             }
             return null;
         }
