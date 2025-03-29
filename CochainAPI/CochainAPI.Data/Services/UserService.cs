@@ -203,7 +203,7 @@ namespace CochainAPI.Data.Services
                     Attempts = 0
                 };
                 await _userRepository.AddTemporaryPassword(temporaryPassword);
-                _emailService.EmailPasswordTemporanea(user.UserName!, randomPassword);
+                _emailService.SendTemporaryPassword(user.UserName!, randomPassword);
                 return true;
             }
             return false;
