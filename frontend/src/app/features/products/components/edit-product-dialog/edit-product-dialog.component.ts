@@ -160,15 +160,17 @@ export class EditProductDialogComponent implements OnInit{
 
     this.productService.updateProductInfo(modifiedProduct).subscribe({
       next: (response) => {
-        let originDocument = response.productDocuments!.find(x => x.type === DocumentType.Origin);
+        let originDocument: ProductDocument | undefined = response.productDocuments?.find(x => x.type === DocumentType.Origin);
 
-        this.productService.deleteDocument(originDocument!.id!, DocumentType.Origin).subscribe({
-          next: (response) => {},
-          error: (error) => console.error(error),
-        })
+        if (originDocument?.id) {
+          this.productService.deleteDocument(originDocument.id, DocumentType.Origin).subscribe({
+            error: (error) => console.error(error),
+          });
+        }
 
         this.uploadFile(response.id!);
-        this.dialogRef.close({ modifiedProduct: modifiedProduct });},
+        this.dialogRef.close({ modifiedProduct: modifiedProduct });
+      },
       error: (error) => console.error(error),
     })
   }

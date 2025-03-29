@@ -57,9 +57,11 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getUser().subscribe({
-      next: (response) => this.currentUser = response,
+      next: (response) => {
+        this.currentUser = response
+      },
       error: (error) => console.error(error)
-    })
+    });
 
     this.productService.selectedProduct.subscribe((data) => this.loadDetails(data));
 
@@ -76,7 +78,7 @@ export class ProductDetailsComponent implements OnInit {
     this.productInfo = data;
 
     if (this.lifeCycleSource != null) {
-      this.lifeCyclesList = this.productInfo.productLifeCycles!;
+      this.lifeCyclesList = this.productInfo.productLifeCycles ? this.productInfo.productLifeCycles : [];
       this.lifeCycleSource.data = this.lifeCyclesList;
       this.lifeCycleSource.paginator = this.paginator;
     }
