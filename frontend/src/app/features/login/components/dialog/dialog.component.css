@@ -4,6 +4,16 @@ mat-form-field {
   min-width: 400px;
 }
 
+.title{
+  margin-bottom: 10px;
+}
+.lockout-message{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: red;
+  text-decoration: underline;
+}
+
 .resend {
   cursor: pointer;
   color: var(--href-secondary);

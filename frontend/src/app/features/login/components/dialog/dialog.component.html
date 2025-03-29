@@ -1,15 +1,28 @@
 <h2 mat-dialog-title>OTP</h2>
 <mat-dialog-content>
-  <p>Enter the OTP sent to your email address.</p>
+  <p class="title">Enter the OTP sent to your email address.</p>
+
+  @if (isLocked) {
+    <div class="lockout-message">
+      Too many failed attempts. Please wait <b>{{ remainingTime }}</b> seconds.
+    </div>
+  }
+
   <mat-form-field appearance="outline">
     <mat-label>OTP</mat-label>
-    <input matInput [formControl]="otp"/>
+    <input matInput [formControl]="otp" [disabled]="isLocked"/>
   </mat-form-field>
-  <p>
-    Didn't receive the OTP?
-    <b class="resend" (click)="resendOtp()">RESEND</b>
-  </p>
+
+  @if(!isLocked) {
+    <p>
+      Didn't receive the OTP?
+      <b class="resend" (click)="resendOtp()">RESEND</b>
+    </p>
+  }
 </mat-dialog-content>
+
 <mat-dialog-actions>
-  <button mat-button tabindex="-1" [disabled]="!otp.valid || isLoginRequestSent" (click)="login()">Send</button>
+  <button mat-button tabindex="-1" [disabled]="!otp.valid || isLoginRequestSent || isLocked" (click)="login()">
+    Send
+  </button>
 </mat-dialog-actions>
