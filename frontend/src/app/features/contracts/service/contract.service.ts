@@ -18,13 +18,13 @@ export class ContractService {
     return this.apiService.add('api/Document/AddContractDocument', conctact)
   }
 
-  getContracts(scpId: string, type: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<Contract>> {
+  getContracts(userId: string, type: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<Contract>> {
 
     const endpoint = type === "received_contracts"
       ? 'api/Document/ReceivedContracts'
       : 'api/Document/EmittedContracts';
 
-    return this.apiService.getAll(endpoint, { params: { pageNumber, pageSize, scpId } }).pipe(
+    return this.apiService.getAll(endpoint, { params: { pageNumber, pageSize, userId } }).pipe(
       map((response: any) => {
         const paginationResponse: PaginationResponse<Contract> = {
           items: response[0].items || [],
