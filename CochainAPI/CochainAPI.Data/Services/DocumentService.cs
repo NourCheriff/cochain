@@ -14,13 +14,15 @@ namespace CochainAPI.Data.Services
         private readonly ISupplyChainPartnerCertificateRepository _supplyChainPartnerCertificate;
         private readonly IProductLifeCycleDocumentRepository _productLifeCycleRepository;
         private readonly IProductDocumentRepository _productDocumentRepository;
+        private readonly IUserRepository _userRepository;
 
-        public DocumentService(IContractRepository contractRepository, ISupplyChainPartnerCertificateRepository supplyChainPartnerCertificateRepository, IProductLifeCycleDocumentRepository productLifeCycleDocumentRepository, IProductDocumentRepository productDocumentRepository)
+        public DocumentService(IContractRepository contractRepository, ISupplyChainPartnerCertificateRepository supplyChainPartnerCertificateRepository, IProductLifeCycleDocumentRepository productLifeCycleDocumentRepository, IProductDocumentRepository productDocumentRepository, IUserRepository userRepository)
         {
             _contractRepository = contractRepository;
             _productLifeCycleRepository = productLifeCycleDocumentRepository;
             _supplyChainPartnerCertificate = supplyChainPartnerCertificateRepository;
             _productDocumentRepository = productDocumentRepository;
+            _userRepository = userRepository;
             //string blobAccountUrl = "https://teststoragedocum.blob.core.windows.net";
             //_blobServiceClient = new BlobServiceClient(new Uri(blobAccountUrl), new DefaultAzureCredential());
             _blobServiceClient = new BlobServiceClient(Environment.GetEnvironmentVariable("BLOB_STORAGE_SECRET"));
@@ -232,11 +234,17 @@ namespace CochainAPI.Data.Services
             return null;
         }
 
-        public async Task<Page<Contract>?> GetReceivedContracts(string scpId, string? queryParam, int? pageNumber, int? pageSize)
+        public async Task<Page<Contract>?> GetReceivedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
         {
-            if (Guid.TryParse(scpId, out var id))
+            if (Guid.TryParse(userId, out var id))
             {
-                return await _contractRepository.GetReceivedContracts(id, queryParam, pageNumber, pageSize);
+                var user = await _userRepository.GetById(id.ToString());
+                var scpId = user!.SupplyChainPartnerId.GetValueOrDefault();
+                if (string.IsNullOrEmpty(scpId.ToString()))
+                {
+                    return null;
+                }
+                return await _contractRepository.GetReceivedContracts(scpId, queryParam, pageNumber, pageSize);
             }
 
             return null;
