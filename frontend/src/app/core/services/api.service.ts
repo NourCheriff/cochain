@@ -68,7 +68,7 @@ export class BaseHttpService {
       url += `/${documentType}/${id}`;
     } else {
       url += `/${id}`;
-      body.documentType = documentType;
+      body.type = documentType;
     }
 
     return this.http.post<T>(url, body, {
