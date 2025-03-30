@@ -12,11 +12,15 @@
   },
   "nonce": "0x0",
   "timestamp": "0x0",
-  "extraData": "${EXTRA_DATA}",
+  "extraData": "0xf87ea00000000000000000000000000000000000000000000000000000000000000000f854942462ba08267ce844b0ee8c4edefbfac6e353a0d49499997dcec5428a33ffbd63c16071cd46efa75ccf947c80761af6d505791aafe290ce90ca29a23758db94635833cbc7f53d0bd3c5a8d887815c5e5b89123e808400000000c0",
   "gasLimit": "0x1fffffffffffff",
   "difficulty": "0x1",
   "mixHash": "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",
   "coinbase": "0x0000000000000000000000000000000000000000",
   "baseFeePerGas": "0x0",
-  "alloc": {}
+  "alloc": {
+    "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266":{
+      "balance" : "0xffffffffffffffffffffffffffffff"
+    }
+  }
 }
