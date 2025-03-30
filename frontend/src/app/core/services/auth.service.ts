@@ -89,11 +89,10 @@ export class AuthService {
   }
 
   public getUser(): Observable<User> {
-    return this.http.get<User>(`api/Users/getCurrentUser`, {
+    return this.http.get<User>(`${this.API_BASE_URL}/Users/getCurrentUser`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      responseType: 'json'
     });
   }
 

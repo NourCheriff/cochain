@@ -20,6 +20,7 @@ import { Role } from 'src/types/roles.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/models/auth/user.model';
+import { tap, switchMap, of } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -49,29 +50,33 @@ export class ProductDetailsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['workType', 'emissions', 'workDate', 'attachments'];
-  productInfo!: ProductInfo;
+  productInfo: ProductInfo = {
+    productId: '',
+    expirationDate: ''
+  };
   ingredients:ProductInfo[] = [];
   lifeCycleSource = new MatTableDataSource<ProductLifeCycle>([]);
   lifeCyclesList: ProductLifeCycle[] = [];
   currentUser!: User;
 
   ngOnInit(): void {
-    this.authService.getUser().subscribe({
-      next: (response) => {
-        this.currentUser = response
-      },
+    this.authService.getUser().pipe(
+      tap(response => this.currentUser = response),
+      switchMap(() => this.productService.selectedProduct.pipe(
+        tap(data => this.loadDetails(data))
+      )),
+      switchMap(() => {
+        if (this.productInfo == null) {
+          let productId = this.route.snapshot.paramMap.get('id')!;
+          return this.productService.getProductInfoById(productId).pipe(
+            tap(response => this.loadDetails(response))
+          );
+        }
+        return of(null);
+      })
+    ).subscribe({
       error: (error) => console.error(error)
     });
-
-    this.productService.selectedProduct.subscribe((data) => this.loadDetails(data));
-
-    if(this.productInfo == null){
-      let productId = this.route.snapshot.paramMap.get('id')!;
-      this.productService.getProductInfoById(productId).subscribe({
-        next: (response) => this.loadDetails(response),
-        error: (error) => console.log(error)
-      })
-    }
   }
 
   loadDetails(data: ProductInfo){
