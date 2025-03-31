@@ -39,9 +39,9 @@ Inoltre, è fondamentale avere un account attivo su [Metamask](https://portfolio
     SOLIDITY_VERSION="0.8.28"
     CLOUD_BLOCKCHAIN_URL="http://<ip>:<port>"
     CLOUD_CHAIN_ID=1337
-    PRIVATE_KEY_DEPLOYER="<CHIAVE PRIVATA DELL'ACCOUNT METAMASK>"
     LOCAL_BLOCKCHAIN_URL="http://127.0.0.1:8545"
     LOCAL_CHAIN_ID=1337
+    PRIVATE_KEY_DEPLOYER="<CHIAVE PRIVATA DELL'ACCOUNT DEPLOYER>"
 ```
 
 Queste variabili saranno utilizzate successivamente dal file `hardhat.config.js`.
@@ -59,11 +59,41 @@ Queste variabili saranno utilizzate successivamente dal file `hardhat.config.js`
     Spostati nella directory `CochainAPI` e installa le dipendenze richieste:
 
 ```bash
-    cd CochainAPI/
+    cd CochainAPI
     dotnet restore
 ```
 
-### 5. Esegui lo script `install.sh`
+### 5. Imposta la stringa di connessione al database
+    Per consentire all'applicazione backend di interagire con il database, è necessario configurare la stringa di connessione.
+    
+    1. Apri il file `appsettings.json`, presente nella directory `CochainAPI/CochainAPI`
+
+    2. Trova la sezione relativa alla connessione con il database:
+```
+    "ConnectionStrings": {
+        "CochainDB": "Host=localhost;Port=<PORTA_DB>;Database=<NOME_DATABASE>;Username=<USERNAME_DB>;Password=<PASSWORD_DB>"
+    },
+```
+
+    3. Sostituisci i seguenti segnaposto con i valori corretti:
+    - `<PORTA_DB>` con la porta del database, solitamente è `5432`.
+    - `<USERNAME_DB>` con il nome utente del database.
+    - `<PASSWORD_DB>` con la password del database.
+
+    Dopo aver aggiornato il file, il backend potrà connettersi correttamente al database.
+    
+
+### 6. Crea il database dell'applicazione
+   Per inizializzare il database, esegui il seguente comando nella directory `CochainAPI`
+
+```bash
+    dotnet ef database update \
+        --project CochainAPI.Data.Sql \
+        --startup-project CochainAPI
+```
+
+
+### 7. Esegui lo script `install.sh`
    Nella directory principale del progetto, esegui lo script `install.sh` specificando il flag `-n` per creare una blockchain locale. Per far ciò, devi prima rendere eseguibile questo file con il comando `chmod`.
 
 ```bash
@@ -72,16 +102,6 @@ Queste variabili saranno utilizzate successivamente dal file `hardhat.config.js`
 ```
 
 Lo script configura i container Docker necessari per il funzionamento dei nodi della blockchain.
-
-### 6. Crea il database dell'applicazione
-   Per inizializzare il database, esegui il seguente comando nella directory `CochainAPI`
-
-```bash
-    cd CochainAPI
-    dotnet ef database update \
-            --project CochainAPI.Data.Sql \
-            --startup-project CochainAPI
-```
 
 ## Utilizzo
 
@@ -115,8 +135,8 @@ Per avviare l'applicazione, segui questi passaggi:
 L'output di questo comando sarà nel seguente formato:
 
 ```bash
-    Activity deployed to: <smart-contract-address>
-    CarbonCredits deployed to: <smart-contract-address>
+    Activity deployed to: <SMART_CONTRACT_ADDRESS>
+    CarbonCredits deployed to: <SMART_CONTRACT_ADDRESS>
 ```
 
 ### 4. Verifica lo stato degli smart contracts deployati
@@ -127,22 +147,41 @@ L'output di questo comando sarà nel seguente formato:
          -H "Content-Type: application/json" \
          -d '{
             "jsonrpc": "2.0",
-             "method": "eth_getCode",
-             "params": [<Indirizzo dello smart contract>, "latest"],
-             "id": 1
-           }'
+            "method": "eth_getCode",
+            "params": [<SMART_CONTRACT_ADDRESS>, "latest"],
+            "id": 1
+            }'
 ```
 
+    Sostituendo il segnaposto <SMART_CONTRACT_ADDRESS> con l'indirizzo ottenuto nel passaggio precedente.
+
 ### 5. Avvia il backend
-   In un nuovo terminale, avvia il backend dell'applicazione:
+    Per avviare l'applicazione backend, segui questi passaggi:
+
+    1. Apri un nuovo terminale e spostati nella directory `CochainAPI/CochainAPI`:
 
 ```bash
     cd <path>/cochain/CochainAPI/CochainAPI
+```
+
+    2. Prima di eseguire l'applicazione, imposta la password della mail per l'invio dell'OTP con il seguente comando:
+
+```bash
+    export emailinapppassword=<PASSWORD_EMAIL>
+```
+    Sostituendo `PASSWORD_EMAIL` con la password attuale della mail utilizzata per l'invio dell'OTP.
+
+    3. Avvia l'applicazione backend eseguendo:
+
+```bash
     dotnet run
 ```
 
+> [!IMPORTANT]  
+> È importante eseguire tutti questi comandi nello stesso terminale aperto, altrimenti la variabile di ambiente contenente la password della mail non sarà disponibile quando si avvia il backend. 
+
 ### 6. Avvia l'applicazione frontend
-   In un nuovo terminale, vai nella directory `frontend` e avvia l'applicazione web con il comando:
+   In un nuovo terminale, spostati nella directory `frontend` e avvia l'applicazione web con il comando:
 
 ```bash
     cd <path>/cochain/frontend
