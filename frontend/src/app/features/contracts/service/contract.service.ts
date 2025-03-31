@@ -59,7 +59,6 @@ export class ContractService {
   }
 
   deleteContract(id: string, type: string): Observable<Contract>{
-    const fileName = id.split('/').pop() || id;
-    return this.apiService.deleteDocument('api/Document/RemoveDocuments', id, fileName, type)
+    return this.apiService.deleteDocument('api/Document/RemoveDocuments', id, type)
   }
 }

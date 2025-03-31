@@ -64,8 +64,7 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
   }
 
   deleteCertificate(id: string){
-    const fileName = id +".pdf";
-    this.certificateService.deleteSustainabilityCertificate(id,fileName).subscribe({
+    this.certificateService.deleteSustainabilityCertificate(id).subscribe({
       next: () => {
         this.toastrService.info(`Removed Sustainability certificate`, 'info')
         this.getSupplyChainPartners();

@@ -47,11 +47,11 @@ export class CertificatesService {
     return this.apiService.add('api/Document/AddQualityDocument', certificate);
   }
 
-  deleteSustainabilityCertificate(id: string, fileName: string): Observable<SupplyChainPartnerCertificate>{
-    return this.apiService.deleteDocument('api/Document/RemoveCertificate', id, fileName);
+  deleteSustainabilityCertificate(id: string): Observable<SupplyChainPartnerCertificate>{
+    return this.apiService.deleteDocument('api/Document/RemoveCertificate', id);
   }
 
-  deleteQualityCertificate(id: string, fileName: string): Observable<ProductDocument>{
-    return this.apiService.deleteDocument('api/Document', id, fileName, DocumentType.Quality);
+  deleteQualityCertificate(id: string): Observable<ProductDocument>{
+    return this.apiService.deleteDocument('api/Document', id, DocumentType.Quality);
   }
 }

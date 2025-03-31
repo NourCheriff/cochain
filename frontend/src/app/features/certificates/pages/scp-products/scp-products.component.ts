@@ -65,8 +65,7 @@ export class ScpProductsComponent implements OnInit, AfterViewInit {
   }
 
   deleteCertificate(id: string){
-    const fileName = id +".pdf";
-    this.certificateService.deleteQualityCertificate(id, fileName).subscribe({
+    this.certificateService.deleteQualityCertificate(id).subscribe({
       next: () => {
         this.toastrService.info(`Removed Quality certificate`, 'info')
         this.getScpProducts();
