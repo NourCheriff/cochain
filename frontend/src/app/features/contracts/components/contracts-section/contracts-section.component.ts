@@ -49,14 +49,14 @@ export class ContractsSectionComponent implements OnInit {
   }
 
   getContracts(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
-    const currentSCPId = this.authService.userId!
-    this.contractService.getContracts(currentSCPId,this.selected,pageSize.toString(),pageNumber.toString()).subscribe({
+    const currentUserId = this.authService.userId!;
+    this.contractService.getContracts(currentUserId,this.selected,pageSize.toString(),pageNumber.toString()).subscribe({
       next: (response) => {
         this.dataSource = new MatTableDataSource<Contract>(response.items!);
         this.totalRecords = response.totalSize;
       },
       error: (error) => console.log(error)
-    })
+    });
   }
 
   updateSelected(event: any){
