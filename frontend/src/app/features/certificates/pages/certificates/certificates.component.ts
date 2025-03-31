@@ -64,11 +64,11 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
   }
 
   deleteCertificate(id: string){
-    const fileName = id.split('/').pop() || id;
-    this.certificateService.deleteCertificate(id,fileName).subscribe({
-      next: (response) => {
-
-        this.toastrService.info(`Removed certificate ${response.name}`, 'info')
+    const fileName = id +".pdf";
+    this.certificateService.deleteSustainabilityCertificate(id,fileName).subscribe({
+      next: () => {
+        this.toastrService.info(`Removed Sustainability certificate`, 'info')
+        this.getSupplyChainPartners();
       },
       error: (error) => { console.log(error) }
     })

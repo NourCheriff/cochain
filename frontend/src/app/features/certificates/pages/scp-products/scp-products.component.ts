@@ -19,6 +19,7 @@ import { DocumentType } from 'src/types/document.enum';
 import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
 import { Role } from 'src/types/roles.enum';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ProductDocument } from 'src/models/documents/product-document.model';
 @Component({
   selector: 'app-scp-products',
   imports: [CommonModule,MatSortModule,MatInputModule,MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule],
@@ -64,20 +65,22 @@ export class ScpProductsComponent implements OnInit, AfterViewInit {
   }
 
   deleteCertificate(id: string){
-    const fileName = id.split('/').pop() || id;
-    this.certificateService.deleteCertificate(id, fileName, DocumentType.Quality).subscribe({
-      next: (response) => {
-        this.toastrService.info(`Removed certificate ${response.name}`, 'info')
+    const fileName = id +".pdf";
+    this.certificateService.deleteQualityCertificate(id, fileName).subscribe({
+      next: () => {
+        this.toastrService.info(`Removed Quality certificate`, 'info')
+        this.getScpProducts();
       },
       error: (error) => { console.log(error) }
     })
   }
 
-  attachCertificate(scpReceiverId: string) {
+  attachCertificate(product: ProductInfo) {
     const dialogRef = this.dialog.open(FileInputComponent,{
       data: {
-        scpReceiverId: scpReceiverId,
-        documentType: DocumentType.Quality
+        scpReceiverId: product.supplyChainPartnerId,
+        documentType: DocumentType.Quality,
+        productInfoId: product.id
       }
     });
 
@@ -93,10 +96,10 @@ export class ScpProductsComponent implements OnInit, AfterViewInit {
     return this.authService.userRoles?.some(role => roles.includes(role)) ?? false;
   }
 
-  getQualityCertificate(receivedSupplyChainPartnerCertificates: SupplyChainPartnerCertificate[]): SupplyChainPartnerCertificate | null {
-    if (!receivedSupplyChainPartnerCertificates?.length) return null;
+  getQualityCertificate(productDocuments: ProductDocument[]): ProductDocument | null {
+    if (!productDocuments?.length) return null;
 
-    return receivedSupplyChainPartnerCertificates.find(doc => doc.type === DocumentType.Sustainability) || null;
+    return productDocuments.find(doc => doc.type === DocumentType.Quality) || null;
   }
 
   onPageChange(event: PageEvent){

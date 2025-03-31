@@ -16,6 +16,7 @@ import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain
 import { CertificatesService } from '../../service/certificates.service';
 import { sha256 } from 'js-sha256';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ProductDocument } from 'src/models/documents/product-document.model';
 
 @Component({
   selector: 'app-file-input',
@@ -41,7 +42,7 @@ export class FileInputComponent {
   readonly dialogRef = inject(MatDialogRef<FileInputComponent>);
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { documentType: string, scpReceiverId: string }
+    @Inject(MAT_DIALOG_DATA) public data: { scpReceiverId: string, documentType: string, productInfoId: string },
   ){}
 
   fileUploaded!: File;
@@ -67,23 +68,43 @@ export class FileInputComponent {
       const base64String = reader.result?.toString().split(',')[1]!;
       const hashedBase64Contract = sha256(base64String!)
 
-      let certificate: SupplyChainPartnerCertificate = {
-        hash: hashedBase64Contract,
-        fileString: base64String,
-        supplyChainPartnerReceiverId: this.data.scpReceiverId,
-        userEmitterId: this.authService.userId!,
-        type: this.data?.documentType!,
-      };
+      if(this.data.documentType === 'sustainability') {
+        let certificate: SupplyChainPartnerCertificate = {
+          hash: hashedBase64Contract,
+          fileString: base64String,
+          supplyChainPartnerReceiverId: this.data.scpReceiverId,
+          userEmitterId: this.authService.userId!,
+          type: this.data?.documentType!,
+        };
 
-      this.certificatesService.uploadCertificate(certificate).subscribe({
-        next: () => {
-          this.dialogRef.close(true);
-        },
-        error: (error) => {
-          this.dialogRef.close(false);
-          console.error('File upload failed', error)
-        },
-      });
+        this.certificatesService.uploadSustainabilityCertificate(certificate).subscribe({
+          next: () => {
+            this.dialogRef.close(true);
+          },
+          error: (error) => {
+            this.dialogRef.close(false);
+            console.error('File upload failed', error)
+          },
+        });
+      }else{
+        console.log(this.data.productInfoId)
+        let certificate: ProductDocument = {
+           hash: hashedBase64Contract,
+           fileString: base64String,
+           userEmitterId: this.authService.userId!,
+           type: this.data?.documentType!,
+           productInfoId: this.data.productInfoId
+        };
+        this.certificatesService.uploadQualityCertificate(certificate).subscribe({
+          next: () => {
+            this.dialogRef.close(true);
+          },
+          error: (error) => {
+            this.dialogRef.close(false);
+            console.error('File upload failed', error)
+          },
+        });
+      }
     };
 
     reader.readAsDataURL(this.fileUploaded);
