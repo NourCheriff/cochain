@@ -35,6 +35,9 @@ export class BlockchainService {
   private connectionStatusSubject = new BehaviorSubject<boolean>(false);
   public connectionStatus$ = this.connectionStatusSubject.asObservable();
 
+  private readonly CHAIN_ID = '0x539';
+  private readonly CHAIN_NAME = 'COCHAIN';
+
   errorEvent = new EventEmitter<string>();
   transactionEvent = new EventEmitter<{ hash: string, status: string }>();
   transferEvent = new EventEmitter<{ from: string, to: string, amount: number }>();
@@ -192,7 +195,7 @@ export class BlockchainService {
 
     try {
       if (!documentHash.startsWith("0x")) {
-        documentHash = "0x" + documentHash;
+        documentHash = `0x${documentHash}`;
       }
       const tx = await this.activityContract['addDocument'](tokenId, documentHash);
       this.transactionEvent.emit({ hash: tx.hash, status: 'pending' });
@@ -326,19 +329,25 @@ export class BlockchainService {
       const transactions: Transaction[] = (await Promise.all(
         res.map(async (tx: any) => {
           try {
-            const txHash = await besuProvider.getTransaction(tx.transactionHash);
-            if (!txHash) return null;
+            const receipt = await besuProvider.getTransactionReceipt(tx.transactionHash);
+            if (!receipt) return null;
 
-            const block = await besuProvider.getBlock(txHash.blockNumber!);
+            const block = await besuProvider.getBlock(receipt.blockNumber!);
             if (!block) return null;
 
+            const iface = new ethers.Interface([
+              "event Transfer(address indexed from, address indexed to, uint256 value)"
+            ]);
+            const transferLog = iface.parseLog(receipt.logs[0]);
+
             return {
-              id: txHash.hash,
-              sender: tx.supplyChainPartnerEmitterName ?? '',
-              receiver: tx.supplyChainPartnerReceiverName ?? '',
-              amount: Number(txHash.value),
+              id: receipt.hash,
+              sender: tx.supplyChainPartnerEmitterName ?? transferLog?.args.getValue('from'),
+              receiver: tx.supplyChainPartnerReceiverName ?? transferLog?.args.getValue('to'),
+              amount: Number(transferLog?.args.getValue('value')),
               date: new Date(block.timestamp * 1000).toISOString(),
             } as Transaction;
+
           } catch (error) {
             console.error("Error while parsing transactions:", error);
             return null;
@@ -365,8 +374,8 @@ export class BlockchainService {
       "method": "wallet_addEthereumChain",
       "params": [
         {
-          chainId: "0x539",
-          chainName: "COCHAIN",
+          chainId: this.CHAIN_ID,
+          chainName: this.CHAIN_NAME,
           rpcUrls: [
             environment.rpcUrl
           ],
@@ -383,7 +392,7 @@ export class BlockchainService {
         "method": "wallet_switchEthereumChain",
         "params": [
           {
-            chainId: "0x539"
+            chainId: this.CHAIN_ID
           },
         ]
       });
@@ -425,7 +434,7 @@ export class BlockchainService {
 
   private async checkConnection(): Promise<void> {
     const accounts = await  window.ethereum.request({ method: 'eth_accounts' });
-    this.connectionStatusSubject.next(accounts.length !== 0)
+    this.connectionStatusSubject.next(accounts.length !== 0);
     if (accounts.length !== 0)
       this.account = accounts[0];
   }

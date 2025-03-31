@@ -3,8 +3,8 @@ import { TransactionsComponent } from '../transactions/transactions.component';
 import { ConnectWalletComponent } from '../connect-wallet/connect-wallet.component';
 import { BlockchainService } from '../../services/blockchain.service';
 import { NgZone } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-wallet',
@@ -15,8 +15,9 @@ import { Subscription } from 'rxjs';
 export class WalletComponent implements OnInit, OnDestroy {
   isConnected: boolean = false;  // flag to display the connection page or the transactions page
   private blockchainService = inject(BlockchainService);
+  private toasterService = inject(ToastrService);
+
   private ngZone = inject(NgZone);
-  private snackBar = inject(MatSnackBar);
   private subscriptions: Subscription[] = []
 
   constructor() { }
@@ -30,13 +31,13 @@ export class WalletComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.blockchainService.errorEvent.subscribe((message: string) => {
-        this.ngZone.run(() => this.showMessage(message));
+        this.ngZone.run(() => this._showToast(message, 'error'));
       })
     );
 
     this.subscriptions.push(
       this.blockchainService.transferEvent.subscribe(event => {
-        this.ngZone.run(() => this.showMessage("Transaction completed"));
+        this.ngZone.run(() => this._showToast("Transaction successfully executed on the blockchain.", 'success'));
       })
     )
   }
@@ -51,7 +52,16 @@ export class WalletComponent implements OnInit, OnDestroy {
     await this.blockchainService.connectWallet();
   }
 
-  showMessage(message: string) {
-    this.snackBar.open(message, undefined, { duration: 3000 });
+  private _showToast(message: string, severity: string = 'info') {
+    switch(severity) {
+      case 'success':
+        this.toasterService.success(message, 'Success');
+        break;
+      case 'error':
+        this.toasterService.error(message, 'Error');
+        break;
+      default:
+        this.toasterService.info(message, 'Info');
+    }
   }
 }
