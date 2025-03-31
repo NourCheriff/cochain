@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit{
   userRoles: Role[] = this.authService.userRoles!;
 
   private pagePermissions: { [key: string]: Role[] } = {
-    wallet: [Role.SysAdmin, Role.AdminCA, Role.UserCA, Role.AdminSCP, Role.UserSCP],
+    wallet: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
     products: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],
     certificates: [Role.SysAdmin, Role.AdminCA, Role.UserCA, Role.AdminSCP, Role.UserSCP],
     contracts: [Role.SysAdmin, Role.AdminSCP, Role.UserSCP],

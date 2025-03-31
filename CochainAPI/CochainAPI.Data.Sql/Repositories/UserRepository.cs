@@ -41,6 +41,7 @@ namespace CochainAPI.Data.Sql.Repositories
             var savedUser = await dbContext.Users.AddAsync(userObj);
             await dbContext.SaveChangesAsync();
             userObj.Id = savedUser.Entity.Id;
+            userObj.IsActive = true;
             var log = new Log()
             {
                 Name = "Add User",
@@ -232,7 +233,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
-            return await dbContext.SaveChangesAsync() > 0;
+            return await dbContext.SaveChangesAsync() == 0;
         }
     }
 }

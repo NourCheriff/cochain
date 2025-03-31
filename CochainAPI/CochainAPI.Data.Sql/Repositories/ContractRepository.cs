@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using CochainAPI.Model.Helper;
 using Microsoft.EntityFrameworkCore;
 using CochainAPI.Model.Utils;
+using CochainAPI.Model.CompanyEntities;
 using System.Security.Claims;
+using CochainAPI.Model.Product;
 
 namespace CochainAPI.Data.Sql.Repositories
 {
@@ -86,7 +88,25 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<Page<Contract>> GetEmittedContracts(string userId, string? queryParam, int? pageNumber, int? pageSize)
         {
-            var query = dbContext.Contract.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)) && x.UserEmitterId == userId);
+            var query = dbContext.Contract.Where(x => x.UserEmitterId == userId)
+                .Include(x => x.SupplyChainPartnerReceiver)
+                .Include(x => x.UserEmitter)
+                .Select(x => new  Contract
+                {
+                    SupplyChainPartnerReceiverName = x.SupplyChainPartnerReceiver.Name,
+                    UserEmitterName = x.UserEmitter.SupplyChainPartner.Name,
+                    Id = x.Id,
+                    Path = x.Path,
+                    Hash = x.Hash,
+                    Type = x.Type,
+                    ProductLifeCycleCategory = new  ProductLifeCycleCategory
+                    {
+                        Id = x.ProductLifeCycleCategory.Id,
+                        Name = x.ProductLifeCycleCategory.Name,
+                        Description = x.ProductLifeCycleCategory.Description,
+                    },
+
+                });
 
             var totalSize = await query.CountAsync();
 
@@ -95,6 +115,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 query = query.Skip(pageSize.Value * pageNumber.Value)
                 .Take(pageSize.Value);
             }
+
 
             return new Page<Contract>
             {
@@ -105,7 +126,25 @@ namespace CochainAPI.Data.Sql.Repositories
 
         public async Task<Page<Contract>> GetReceivedContracts(Guid scpId, string? queryParam, int? pageNumber, int? pageSize)
         {
-            var query = dbContext.Contract.Where(x => x.Name != null && (queryParam == null || x.Name.Contains(queryParam)) && x.SupplyChainPartnerReceiverId == scpId);
+            var query = dbContext.Contract.Where(x => x.SupplyChainPartnerReceiverId == scpId)
+                .Include(x => x.SupplyChainPartnerReceiver)
+                .Include(x => x.UserEmitter)
+                .Select(x => new Contract
+                {
+                    SupplyChainPartnerReceiverName = x.SupplyChainPartnerReceiver.Name,
+                    UserEmitterName = x.UserEmitter.SupplyChainPartner.Name,
+                    Id = x.Id,
+                    Path = x.Path,
+                    Hash = x.Hash,
+                    Type = x.Type,
+                    ProductLifeCycleCategory = new ProductLifeCycleCategory
+                    {
+                        Id = x.ProductLifeCycleCategory.Id,
+                        Name = x.ProductLifeCycleCategory.Name,
+                        Description = x.ProductLifeCycleCategory.Description,
+                    },
+
+                });
 
             var totalSize = await query.CountAsync();
 

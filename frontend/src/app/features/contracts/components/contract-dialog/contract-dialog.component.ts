@@ -70,8 +70,12 @@ export class ContractDialogComponent implements OnInit {
   getAllSupplyChainPartners(){
     this.contractService.getAllSupplyChainPartner().subscribe({
       next: (response) => {
-        this.supplyChainPartners = response.items || [],
-        this.getAllProductLifeCycleCategories()
+        this.authService.getUser().subscribe({
+          next: (user) => {
+            this.supplyChainPartners = response.items?.filter(x => x.name !== user.supplyChainPartner?.name) || [];
+            this.getAllProductLifeCycleCategories();
+          }
+        })
        },
       error: (error) => console.error('Error fetching supply chain partners:', error)
     });
@@ -108,8 +112,8 @@ export class ContractDialogComponent implements OnInit {
       };
 
       this.contractService.addContract(contract).subscribe({
-        next: (response) => console.log('Contract uploaded successfully', response),
-        error: (error) => console.error('Contract upload failed', error),
+        next: () =>  this.dialogRef.close(true),
+        error: () =>  this.dialogRef.close(false),
       });
 
     };
