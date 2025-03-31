@@ -15,3 +15,14 @@ mat-form-field {
 .container {
   padding: 18px;
 }
+
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:host ::ng-deep .mat-progress-spinner circle,
+:host ::ng-deep .mat-spinner circle {
+  stroke: red !important;
+}
