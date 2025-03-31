@@ -59,6 +59,6 @@ export class ContractService {
   }
 
   deleteContract(id: string, type: string): Observable<Contract>{
-    return this.apiService.deleteDocument('api/Document/RemoveDocuments', id, type)
+    return this.apiService.deleteDocument('api/Document', id, type)
   }
 }

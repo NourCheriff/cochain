@@ -33,7 +33,7 @@ export class BaseHttpService {
     if (options?.id) {
       url += `/${encodeURIComponent(options.id)}`;
     }
-
+   
     return this.http.get<T | T[]>(url, {
       headers: this.header,
       params: this.createParams(options?.params),

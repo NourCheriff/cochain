@@ -41,6 +41,7 @@ namespace CochainAPI.Data.Sql.Repositories
             var savedUser = await dbContext.Users.AddAsync(userObj);
             await dbContext.SaveChangesAsync();
             userObj.Id = savedUser.Entity.Id;
+            userObj.IsActive = true;
             var log = new Log()
             {
                 Name = "Add User",
