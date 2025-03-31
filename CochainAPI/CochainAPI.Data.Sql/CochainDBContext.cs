@@ -260,6 +260,15 @@ namespace CochainAPI.Data.Sql
                     UserName = "sacchettisamuele@gmail.com",
                     SupplyChainPartnerId = new Guid("81124c04-840a-49c1-8929-073af4cee139"),
                     IsActive = true
+                },
+                new User
+                {
+                    Id = Guid.Parse("5a6c9915-bdca-4a68-b452-da1f4e8b422f").ToString(),
+                    FirstName = "Luca",
+                    LastName = "Spalazzi",
+                    UserName = "l.spalazzi@staff.univpm.it",
+                    SupplyChainPartnerId = new Guid("81124c04-840a-49c1-8929-073af4cee139"),
+                    IsActive = true
                 }
             );
 
