@@ -30,12 +30,7 @@
             <li><a routerLink="offsetting-actions" routerLinkActive="active" class="nav-item">Offsetting Actions</a></li>
           }
           @if(hasAccess('users')) {
-            @if(this.selected === "scp"){
-              <li><a [routerLink]="['companies', this.currentUser.supplyChainPartnerId, 'users']" [queryParams]="{ type: this.selected }" routerLinkActive="active" class="nav-item">Users</a></li>
-            }
-            @else{
-              <li><a [routerLink]="['companies', this.currentUser.certificationAuthorityId, 'users']" [queryParams]="{ type: this.selected }" routerLinkActive="active" class="nav-item">Users</a></li>
-            }
+            <li><a [routerLink]="['companies', this.url, 'users']" [queryParams]="{ type: this.selected }" routerLinkActive="active" class="nav-item">Users</a></li>
           }
         </ul>
       </nav>
