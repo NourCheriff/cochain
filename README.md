@@ -35,7 +35,7 @@ Inoltre, è fondamentale avere un account attivo su [Metamask](https://portfolio
 ### 2. Crea il file `.env`
    All'interno della directory `frontend/`, crea un file denominato `.env` con la seguente struttura:
 
-```
+```env
     SOLIDITY_VERSION="0.8.28"
     CLOUD_BLOCKCHAIN_URL="http://<ip>:<port>"
     CLOUD_CHAIN_ID=1337
@@ -56,7 +56,7 @@ Queste variabili saranno utilizzate successivamente dal file `hardhat.config.js`
 ```
 
 ### 4. Installa le dipendenze backend
-    Spostati nella directory `CochainAPI` e installa le dipendenze richieste:
+   Spostati nella directory `CochainAPI` e installa le dipendenze richieste:
 
 ```bash
     cd CochainAPI
@@ -64,23 +64,23 @@ Queste variabili saranno utilizzate successivamente dal file `hardhat.config.js`
 ```
 
 ### 5. Imposta la stringa di connessione al database
-    Per consentire all'applicazione backend di interagire con il database, è necessario configurare la stringa di connessione.
+   Per consentire all'applicazione backend di interagire con il database, è necessario configurare la stringa di connessione.
     
-    1. Apri il file `appsettings.json`, presente nella directory `CochainAPI/CochainAPI`
+   1. Apri il file `appsettings.json`, presente nella directory `CochainAPI/CochainAPI`
 
-    2. Trova la sezione relativa alla connessione con il database:
-```
+   2. Trova la sezione relativa alla connessione con il database:
+```json
     "ConnectionStrings": {
         "CochainDB": "Host=localhost;Port=<PORTA_DB>;Database=<NOME_DATABASE>;Username=<USERNAME_DB>;Password=<PASSWORD_DB>"
     },
 ```
 
-    3. Sostituisci i seguenti segnaposto con i valori corretti:
+   3. Sostituisci i seguenti segnaposto con i valori corretti:
     - `<PORTA_DB>` con la porta del database, solitamente è `5432`.
     - `<USERNAME_DB>` con il nome utente del database.
     - `<PASSWORD_DB>` con la password del database.
 
-    Dopo aver aggiornato il file, il backend potrà connettersi correttamente al database.
+   Dopo aver aggiornato il file, il backend potrà connettersi correttamente al database.
     
 
 ### 6. Crea il database dell'applicazione
@@ -140,7 +140,7 @@ L'output di questo comando sarà nel seguente formato:
 ```
 
 ### 4. Verifica lo stato degli smart contracts deployati
-    Assicurati che gli smart contracts siano stato deployati correttamente nella blockchain eseguendo il comando:
+   Assicurati che gli smart contracts siano stato deployati correttamente nella blockchain eseguendo il comando:
 
 ```bash
     curl -X POST http://localhost:8545 \
@@ -153,25 +153,25 @@ L'output di questo comando sarà nel seguente formato:
             }'
 ```
 
-    Sostituendo il segnaposto <SMART_CONTRACT_ADDRESS> con l'indirizzo ottenuto nel passaggio precedente.
+   Sostituendo il segnaposto <SMART_CONTRACT_ADDRESS> con l'indirizzo ottenuto nel passaggio precedente.
 
 ### 5. Avvia il backend
-    Per avviare l'applicazione backend, segui questi passaggi:
+   Per avviare l'applicazione backend, segui questi passaggi:
 
-    1. Apri un nuovo terminale e spostati nella directory `CochainAPI/CochainAPI`:
+   1. Apri un nuovo terminale e spostati nella directory `CochainAPI/CochainAPI`:
 
 ```bash
     cd <path>/cochain/CochainAPI/CochainAPI
 ```
 
-    2. Prima di eseguire l'applicazione, imposta la password della mail per l'invio dell'OTP con il seguente comando:
+   2. Prima di eseguire l'applicazione, imposta la password della mail per l'invio dell'OTP con il seguente comando:
 
 ```bash
     export emailinapppassword=<PASSWORD_EMAIL>
 ```
-    Sostituendo `PASSWORD_EMAIL` con la password attuale della mail utilizzata per l'invio dell'OTP.
+   Sostituendo `PASSWORD_EMAIL` con la password attuale della mail utilizzata per l'invio dell'OTP.
 
-    3. Avvia l'applicazione backend eseguendo:
+   3. Avvia l'applicazione backend eseguendo:
 
 ```bash
     dotnet run
