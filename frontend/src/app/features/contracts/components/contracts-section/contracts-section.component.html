@@ -18,19 +18,19 @@
     <!-- Emitter Column -->
     <ng-container matColumnDef="emitter">
       <th mat-header-cell *matHeaderCellDef> Emitter </th>
-      <td mat-cell *matCellDef="let element"> {{element.userEmitter}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.userEmitterName}} </td>
     </ng-container>
 
     <!-- Receiver Column -->
     <ng-container matColumnDef="receiver">
       <th mat-header-cell *matHeaderCellDef> Receiver </th>
-      <td mat-cell *matCellDef="let element"> {{element.supplyChainPartnerReceiver}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.supplyChainPartnerReceiverName}} </td>
     </ng-container>
 
     <!-- WorkType Column -->
     <ng-container matColumnDef="workType">
       <th mat-header-cell *matHeaderCellDef> WorkType </th>
-      <td mat-cell *matCellDef="let element"> {{element.productLifeCycleCategory.description}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.productLifeCycleCategory.name}} </td>
     </ng-container>
 
     <!-- Button Column -->

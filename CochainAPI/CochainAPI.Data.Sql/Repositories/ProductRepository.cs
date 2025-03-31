@@ -85,7 +85,9 @@ namespace CochainAPI.Data.Sql.Repositories
                         .Include(x => x.Product!.Category)
                         .Include(x => x.ProductDocuments)
                         .Include(x => x.ProductLifeCycles!.AsQueryable())
-                             .ThenInclude(y => y.ProductLifeCycleCategory);
+                             .ThenInclude(y => y.ProductLifeCycleCategory)
+                         .Include(x => x.ProductLifeCycles!.AsQueryable())
+                             .ThenInclude(y => y.ProductLifeCycleDocuments);
 
             return new Page<ProductInfo>
             {
@@ -102,7 +104,9 @@ namespace CochainAPI.Data.Sql.Repositories
                     .Include(x => x.Product!.Category)
                     .Include(x => x.ProductDocuments)
                     .Include(x => x.ProductLifeCycles!.AsQueryable())
-                             .ThenInclude(y => y.ProductLifeCycleCategory)
+                        .ThenInclude(y => y.ProductLifeCycleCategory)
+                    .Include(x => x.ProductLifeCycles!.AsQueryable())
+                        .ThenInclude(y => y.ProductLifeCycleDocuments)
                     .FirstOrDefaultAsync();
         }
 
@@ -113,7 +117,9 @@ namespace CochainAPI.Data.Sql.Repositories
                     .Include(x => x.Product)
                     .Include(x => x.ProductDocuments)
                     .Include(x => x.ProductLifeCycles!.AsQueryable())
-                             .ThenInclude(y => y.ProductLifeCycleCategory)
+                        .ThenInclude(y => y.ProductLifeCycleCategory)
+                    .Include(x => x.ProductLifeCycles!.AsQueryable())
+                        .ThenInclude(y => y.ProductLifeCycleDocuments)
                     .ToListAsync();
         }
 

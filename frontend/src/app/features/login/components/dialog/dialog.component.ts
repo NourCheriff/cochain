@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Role } from 'src/types/roles.enum';
 
 @Component({
   selector: 'app-login-dialog',
@@ -82,7 +83,12 @@ export class LoginDialogComponent {
       this.isLocked = false;
       this._showToast('Logged in successfully!', 'success');
       this.dialogRef.close(true);
-      this.router.navigate(['']);
+      if (this.authService!.userRoles!.some(role => role === Role.UserCA || role === Role.AdminCA)) {
+        this.router.navigate(['/certificates']);
+      }else{
+        this.router.navigate(['']);
+      }
+
     });
   }
 

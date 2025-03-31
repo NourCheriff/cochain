@@ -11,6 +11,7 @@ import { ProductDocument } from 'src/models/documents/product-document.model';
 import { ProductLifeCycleDocument } from 'src/models/documents/product-life-cycle-document.model';
 import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
 import { User } from 'src/models/auth/user.model';
+import { DocumentType } from 'src/types/document.enum';
 
 
 @Injectable({
@@ -96,8 +97,7 @@ export class ProductService {
   }
 
   deleteDocument(documentId: string, documentType: string): Observable<ProductDocument>{
-    const fileName = documentId.split('/').pop() || documentId;
-    return this.apiService.deleteDocument(`api/Document`, documentId, fileName, documentType);
+    return this.apiService.deleteDocument(`api/Document`, documentId, documentType);
   }
 
   uploadLifeCycleDocument(lifeCycleDocument: ProductLifeCycleDocument): Observable<ProductLifeCycleDocument>{

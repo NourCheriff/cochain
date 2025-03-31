@@ -33,7 +33,7 @@ export class BaseHttpService {
     if (options?.id) {
       url += `/${encodeURIComponent(options.id)}`;
     }
-
+   
     return this.http.get<T | T[]>(url, {
       headers: this.header,
       params: this.createParams(options?.params),
@@ -59,7 +59,7 @@ export class BaseHttpService {
       headers: this.header
     });
   }
-  deleteDocument<T>(endpoint: string, id: string, fileName: string, documentType?: string): Observable<T> {
+  deleteDocument<T>(endpoint: string, id: string, documentType?: string): Observable<T> {
       let url = `${this.API_BASE_URL}/${endpoint}`;;
 
       if (endpoint === 'api/Document' && documentType) {

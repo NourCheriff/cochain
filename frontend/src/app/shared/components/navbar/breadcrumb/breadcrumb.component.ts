@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter, distinctUntilChanged } from 'rxjs/operators';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import "primeicons/primeicons.css";
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Role } from 'src/types/roles.enum';
 @Component({
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.component.html',
@@ -12,25 +14,33 @@ import "primeicons/primeicons.css";
   imports: [BreadcrumbModule]
 })
 export class BreadcrumbComponent implements OnInit {
+
+  private authService = inject(AuthService)
+
   items: MenuItem[] = [];
+  userRoles = this.authService.userRoles!;
+
   home: MenuItem = {
-      label: 'Wallet',
-      icon: 'pi pi-home',
-      separator: true,
-      iconStyle:{
-        'margin-right':'5px'
-      },
-      routerLink: '/',
-      style:{
-        'color':'var(--breadcrumb-link)',
-        'margin-right':'5px'
-      }
+    label: 'Wallet',
+    icon: 'pi pi-home',
+    separator: true,
+    iconStyle:{
+      'margin-right':'5px'
+    },
+    routerLink: '/',
+    style:{
+      'color':'var(--breadcrumb-link)',
+      'margin-right':'5px'
+    }
   }
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // Aggiorna i breadcrumb ad ogni navigazione (NavigationEnd)
+    if (this.userRoles.some(role => role === Role.UserCA || role === Role.AdminCA)) {
+      this.home.routerLink = '/certificates';
+      this.home.label = 'Certificates';
+    }
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
@@ -54,13 +64,13 @@ export class BreadcrumbComponent implements OnInit {
     }
 
     for (const child of children) {
-      // Ottieni la parte dell'URL per questo segmento
+
       const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
       if (routeURL) {
         url += `/${routeURL}`;
       }
 
-      // Se il dato 'breadcrumb' è definito nella rotta, lo aggiungiamo
+
       const label = child.snapshot.data['breadcrumb'];
       if (label) {
         let id = child.snapshot.paramMap.get('id');

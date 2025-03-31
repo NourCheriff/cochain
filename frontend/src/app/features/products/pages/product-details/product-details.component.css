@@ -69,9 +69,10 @@ mat-paginator{
 
 .info_row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
 }
+
 
 .label {
   font-weight: bold;
@@ -100,6 +101,7 @@ mat-paginator{
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap:5px
 }
 

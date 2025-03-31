@@ -67,6 +67,8 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
   productLifeCycleCategories: ProductLifeCycleCategory[] = [];
   emissionsValue: number = 0;
 
+  newLifeCycle!: ProductLifeCycle;
+
   ngOnInit(): void {
     this.getAllProductLifeCycleCategories()
   }
@@ -103,9 +105,9 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
       if (this.isTransportDocument) {
         this.productService.addProductLifeCycleTransport(newProductLifeCycle).subscribe({
           next: (response) => {
-            this.uploadFile(response.id!, true);
-            this.uploadFile(response.id!, false);
-            this.dialogRef.close({ newWork: response });
+            this.newLifeCycle = response;
+            this.uploadFile(true);
+            this.uploadFile(false);
             this.blockchainService.addActivity(Number(newProductLifeCycle.productInfo?.tokenId), response.id!, response.emissions).then((item) => {
               if (item) {
                 console.log("Activity added to the product", item);
@@ -118,8 +120,8 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
       else {
         this.productService.addProductLifeCycleGeneric(newProductLifeCycle).subscribe({
           next: (response) => {
-            this.uploadFile(response.id!, false);
-            this.dialogRef.close({ newWork: response });
+            this.newLifeCycle = response;
+            this.uploadFile(false);
             this.blockchainService.addActivity(Number(newProductLifeCycle.productInfo?.tokenId), response.id!, response.emissions).then((item) => {
               if (item) {
                 console.log("Activity added to the product", item);
@@ -149,7 +151,7 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
     }
   }
 
-  uploadFile(newWorkId: string, isTransportDocument: boolean): void {
+  uploadFile(isTransportDocument: boolean): void {
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result?.toString().split(',')[1]!;
@@ -158,14 +160,24 @@ export class NewWorkDialogComponent implements OnInit, AfterViewInit {
       let lifeCycleDocument: ProductLifeCycleDocument = {
         hash: hashedBase64Document,
         fileString: base64String,
-        productLifeCycleId: newWorkId,
+        productLifeCycleId: this.newLifeCycle.id!,
         supplyChainPartnerReceiverId: this.data.product.supplyChainPartnerId!,
         userEmitterId: this.authService.userId!,
         type: (isTransportDocument) ? DocumentType.Transport : DocumentType.Invoice,
       };
 
       this.productService.uploadLifeCycleDocument(lifeCycleDocument).subscribe({
-        next: (response) => console.log('File uploaded successfully', response),
+        next: (response) => {
+          if (!this.newLifeCycle.productLifeCycleDocuments) {
+            this.newLifeCycle.productLifeCycleDocuments = [];
+          }
+
+          this.newLifeCycle.productLifeCycleDocuments!.push(response);
+
+          if(!isTransportDocument){
+            this.dialogRef.close({ newWork:  this.newLifeCycle});
+          }
+        },
         error: (error) => console.error('File upload failed', error),
       });
 

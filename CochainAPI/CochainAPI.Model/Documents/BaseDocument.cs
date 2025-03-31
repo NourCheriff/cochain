@@ -32,6 +32,10 @@ namespace CochainAPI.Model.Documents
                 return Convert.FromBase64String(FileString);
             }
         }
+        [NotMapped]
+        public string? UserEmitterName { get; set; }
+        [NotMapped]
+        public string? SupplyChainPartnerReceiverName { get; set; }
         //IFormFile File { get; set; }
     }
 }

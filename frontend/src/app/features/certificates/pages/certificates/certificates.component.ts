@@ -48,9 +48,7 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
   }
 
    ngAfterViewInit(): void {
-    if(this.isAuthorizated()){
-      this.displayedColumns.splice(2,0,'attachments')
-    }
+    this.displayedColumns.splice(2,0,'attachments')
   }
 
   getSupplyChainPartners(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
@@ -64,8 +62,7 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
   }
 
   deleteCertificate(id: string){
-    const fileName = id +".pdf";
-    this.certificateService.deleteSustainabilityCertificate(id,fileName).subscribe({
+    this.certificateService.deleteSustainabilityCertificate(id).subscribe({
       next: () => {
         this.toastrService.info(`Removed Sustainability certificate`, 'info')
         this.getSupplyChainPartners();
