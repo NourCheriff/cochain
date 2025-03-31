@@ -13,7 +13,8 @@ import { UserService } from '../../services/user.service';
 import { User } from 'src/models/auth/user.model';
 import { CompanyType } from 'src/types/company.enum';
 import { ToastrService } from 'ngx-toastr';
-
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Role } from 'src/types/roles.enum';
 @Component({
   selector: 'app-users',
   imports: [
@@ -36,13 +37,15 @@ export class UsersComponent implements OnInit {
     private toasterService: ToastrService
   ) {}
 
+  private authService = inject(AuthService)
+
   readonly dialog = inject(MatDialog);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   userSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   companyId: string | null = null;
   companyType: CompanyType | null = null;
-  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'phone', 'role', 'action'];
+  displayedColumns: string[] = [];
 
   ngOnInit(): void {
     this.companyId = this.route.snapshot.paramMap.get('id');
@@ -52,6 +55,12 @@ export class UsersComponent implements OnInit {
 
     this.getUsers();
 
+    if(this.isAdmin()){
+      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'role', 'action'];
+    }
+    else{
+      this.displayedColumns = ['firstName', 'lastName', 'email', 'phone', 'role'];
+    }
   }
 
   addUser(): void {
@@ -106,6 +115,10 @@ export class UsersComponent implements OnInit {
       },
       error: (error) => console.error(error)
     })
+  }
+
+  isAdmin(): boolean {
+    return this.authService.userRoles!.includes(Role.SysAdmin);
   }
 }
 
