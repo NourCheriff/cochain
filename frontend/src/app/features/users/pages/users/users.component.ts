@@ -39,7 +39,7 @@ export class UsersComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  userSource: any;
+  userSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   companyId: string | null = null;
   companyType: CompanyType | null = null;
   displayedColumns: string[] = ['firstName', 'lastName', 'email', 'phone', 'role', 'action'];
@@ -51,6 +51,7 @@ export class UsersComponent implements OnInit {
       return;
 
     this.getUsers();
+
   }
 
   addUser(): void {
@@ -93,8 +94,8 @@ export class UsersComponent implements OnInit {
   private getUsers(): void {
     this.userService.getUsersByCompanyId(this.companyId!, this.companyType!).subscribe({
       next: (users) => {
-        this.userSource = new MatTableDataSource<User>(users);
-        this.userSource.paginator = this.paginator;
+        this.userSource.data = users;
+      this.userSource.paginator = this.paginator;
       },
       error: (error) => console.error(error)
     })

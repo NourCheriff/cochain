@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild,inject} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild,inject} from '@angular/core';
 import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
@@ -25,7 +25,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
   templateUrl: './scp-products.component.html',
   styleUrl: './scp-products.component.css'
 })
-export class ScpProductsComponent implements OnInit {
+export class ScpProductsComponent implements OnInit, AfterViewInit {
 
   readonly dialog = inject(MatDialog);
 
@@ -34,7 +34,7 @@ export class ScpProductsComponent implements OnInit {
   private certificateService = inject(CertificatesService);
   private toastrService =  inject(ToastrService);
 
-  displayedColumns: string[] = ['name', 'category', 'expirationDate', 'attachments'];
+  displayedColumns: string[] = ['name', 'category', 'expirationDate'];
   dataSource = new MatTableDataSource<ProductInfo>([]);
   totalRecord = 0;
 
@@ -44,6 +44,11 @@ export class ScpProductsComponent implements OnInit {
   ngOnInit(): void {
     this.getScpProducts()
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngAfterViewInit(): void {
+    if(this.isAuthorizated())
+      this.displayedColumns.push('attachments')
   }
 
   getScpProducts(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
@@ -59,7 +64,8 @@ export class ScpProductsComponent implements OnInit {
   }
 
   deleteCertificate(id: string){
-    this.certificateService.deleteCertificate(id).subscribe({
+    const fileName = id.split('/').pop() || id;
+    this.certificateService.deleteCertificate(id, fileName, DocumentType.Quality).subscribe({
       next: (response) => {
         console.log(response)
         this.toastrService.info(`Removed certificate ${response.name}`, 'info')
@@ -77,8 +83,10 @@ export class ScpProductsComponent implements OnInit {
     });
   }
 
-  isCertificationAuthority(): boolean {
-    return this.authService.userRoles!.includes(Role.AdminCA) || this.authService.userRoles!.includes(Role.UserCA)
+
+  isAuthorizated(): boolean {
+    const roles = [Role.SysAdmin, Role.UserCA, Role.AdminCA];
+    return this.authService.userRoles?.some(role => roles.includes(role)) ?? false;
   }
 
   getQualityCertificate(receivedSupplyChainPartnerCertificates: SupplyChainPartnerCertificate[]): SupplyChainPartnerCertificate | null {

@@ -76,8 +76,13 @@ export class FileInputComponent {
       };
 
       this.certificatesService.uploadCertificate(certificate).subscribe({
-        next: (response) => console.log('File uploaded successfully', response),
-        error: (error) => console.error('File upload failed', error),
+        next: () => {
+          this.dialogRef.close({ reload: true });
+        },
+        error: (error) => {
+          this.dialogRef.close({ reload: false });
+          console.error('File upload failed', error)
+        },
       });
     };
 

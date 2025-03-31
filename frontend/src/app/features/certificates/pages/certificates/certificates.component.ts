@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, inject, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
@@ -26,7 +26,8 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './certificates.component.html',
   styleUrl: './certificates.component.css',
 })
-export class CertificatesComponent implements OnInit {
+export class CertificatesComponent implements OnInit, AfterViewInit {
+
   readonly dialog = inject(MatDialog);
 
   private certificateService = inject(CertificatesService);
@@ -34,7 +35,7 @@ export class CertificatesComponent implements OnInit {
   private toastrService =  inject(ToastrService)
 
   totalRecords = 0;
-  displayedColumns: string[] = ['receiver', 'scpType', 'attachments', 'actions'];
+  displayedColumns: string[] = ['receiver', 'scpType', 'actions'];
   dataSource = new MatTableDataSource<SupplyChainPartner>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -44,6 +45,12 @@ export class CertificatesComponent implements OnInit {
     this.getSupplyChainPartners()
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+   ngAfterViewInit(): void {
+    if(this.isAuthorizated()){
+      this.displayedColumns.splice(2,0,'attachments')
+    }
   }
 
   getSupplyChainPartners(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
@@ -57,9 +64,10 @@ export class CertificatesComponent implements OnInit {
   }
 
   deleteCertificate(id: string){
-    this.certificateService.deleteCertificate(id).subscribe({
+    const fileName = id.split('/').pop() || id;
+    this.certificateService.deleteCertificate(id,fileName,DocumentType.Sustainability).subscribe({
       next: (response) => {
-        console.log(response)
+
         this.toastrService.info(`Removed certificate ${response.name}`, 'info')
       },
       error: (error) => { console.log(error) }
@@ -67,11 +75,16 @@ export class CertificatesComponent implements OnInit {
   }
 
   attachCertificate(scpReceiverId: string) {
-    this.dialog.open(FileInputComponent,{
+    const dialogRef = this.dialog.open(FileInputComponent,{
       data: {
         scpReceiverId: scpReceiverId,
         documentType: DocumentType.Sustainability
       }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.reload)
+       this.getSupplyChainPartners()
     });
   }
 
@@ -79,13 +92,13 @@ export class CertificatesComponent implements OnInit {
     this.getSupplyChainPartners(event.pageSize, event.pageIndex)
   }
 
-  isCertificationAuthority(): boolean {
-    return this.authService.userRoles!.includes(Role.AdminCA) || this.authService.userRoles!.includes(Role.UserCA)
+  isAuthorizated(): boolean {
+    const roles = [Role.SysAdmin, Role.UserCA, Role.AdminCA];
+    return this.authService.userRoles?.some(role => roles.includes(role)) ?? false;
   }
 
   getSustainabilityCertificate(receivedSupplyChainPartnerCertificates: SupplyChainPartnerCertificate[]): SupplyChainPartnerCertificate | null {
     if (!receivedSupplyChainPartnerCertificates?.length) return null;
-
     return receivedSupplyChainPartnerCertificates.find(doc => doc.type === DocumentType.Sustainability) || null;
   }
 

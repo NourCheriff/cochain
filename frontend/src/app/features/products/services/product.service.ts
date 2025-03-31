@@ -96,7 +96,8 @@ export class ProductService {
   }
 
   deleteDocument(documentId: string, documentType: string): Observable<ProductDocument>{
-    return this.apiService.delete('api/Document', documentId, documentType);
+    const fileName = documentId.split('/').pop() || documentId;
+    return this.apiService.deleteDocument('api/Document/RemoveDocuments', documentId, fileName, documentType);
   }
 
   uploadLifeCycleDocument(lifeCycleDocument: ProductLifeCycleDocument): Observable<ProductLifeCycleDocument>{

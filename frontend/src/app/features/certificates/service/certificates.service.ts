@@ -14,7 +14,7 @@ export class CertificatesService {
   private apiService = inject(BaseHttpService)
 
   getScpProducts(scpId: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<ProductInfo>>{
-    return this.apiService.getAll('api/Product/scp', { params: { pageNumber, pageSize}, id: scpId }).pipe(
+    return this.apiService.getAll(`api/Product/scp/${scpId}`, { params: { pageNumber, pageSize} }).pipe(
       map((response: any) => {
         const paginationResponse: PaginationResponse<ProductInfo> = {
           items: response[0].items || [],
@@ -41,8 +41,8 @@ export class CertificatesService {
     return this.apiService.add('api/Document/AddCertificationDocument', certificate)
   }
 
-  deleteCertificate(id: string): Observable<SupplyChainPartnerCertificate>{
-    return this.apiService.delete('api/Document/RemoveCertificate', id)
+  deleteCertificate(id: string, fileName: string, type: string): Observable<SupplyChainPartnerCertificate>{
+    return this.apiService.deleteDocument(`api/Document/RemoveCertificate`, id, fileName, type)
   }
 
 }

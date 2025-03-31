@@ -14,7 +14,7 @@ namespace CochainAPI.Data.Services
 
         public async Task<ProductLifeCycle?> AddProductLifeCycle(ProductLifeCycle productLifeCycle)
         {
-            var transportCategory = await _productLifeCycleRepository.GetCategoryByName("Trasporto");
+            var transportCategory = await _productLifeCycleRepository.GetCategoryByName("Transport");
             if (transportCategory != null && transportCategory.Id.ToString().Equals(productLifeCycle.ProductLifeCycleCategoryId.ToString()))
                 return null;
 
@@ -24,7 +24,7 @@ namespace CochainAPI.Data.Services
 
         public async Task<ProductLifeCycle?> AddProductLifeCycleTransport(ProductLifeCycle productLifeCycle)
         {
-            var transportCategory = await _productLifeCycleRepository.GetCategoryByName("Trasporto");
+            var transportCategory = await _productLifeCycleRepository.GetCategoryByName("Transport");
             if (transportCategory == null || !transportCategory.Id.ToString().Equals(productLifeCycle.ProductLifeCycleCategoryId.ToString()))
                 return null;
 
