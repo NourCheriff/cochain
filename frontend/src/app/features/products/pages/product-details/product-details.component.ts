@@ -100,7 +100,8 @@ export class ProductDetailsComponent implements OnInit {
 
     currentDialog.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        this.lifeCycleSource.data = (this.lifeCycleSource != null) ? [result.newWork, ...this.lifeCycleSource.data] : result.newWork;
+        this.productInfo.productLifeCycles?.push(result.newWork)
+        this.lifeCycleSource.data = this.productInfo.productLifeCycles!;
         this.lifeCycleSource.paginator = this.paginator;
         this.table.renderRows();
       }
