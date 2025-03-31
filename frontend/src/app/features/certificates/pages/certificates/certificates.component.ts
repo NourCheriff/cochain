@@ -48,9 +48,7 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
   }
 
    ngAfterViewInit(): void {
-    if(this.isAuthorizated()){
-      this.displayedColumns.splice(2,0,'attachments')
-    }
+    this.displayedColumns.splice(2,0,'attachments')
   }
 
   getSupplyChainPartners(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){

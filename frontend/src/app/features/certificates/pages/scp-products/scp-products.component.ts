@@ -48,8 +48,7 @@ export class ScpProductsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if(this.isAuthorizated())
-      this.displayedColumns.push('attachments')
+    this.displayedColumns.push('attachments')
   }
 
   getScpProducts(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber){
@@ -96,6 +95,7 @@ export class ScpProductsComponent implements OnInit, AfterViewInit {
   }
 
   getQualityCertificate(productDocuments: ProductDocument[]): ProductDocument | null {
+    console.log(productDocuments)
     if (!productDocuments?.length) return null;
 
     return productDocuments.find(doc => doc.type === DocumentType.Quality) || null;
