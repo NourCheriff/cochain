@@ -39,8 +39,7 @@
           }
           <div class="row">
             <a target="_blank" [href]="document.path" class="row">
-              <mat-icon class="icon download">picture_as_pdf</mat-icon>
-              <p class="file">{{document.name}}</p>
+              <mat-icon class="icon download">file_open</mat-icon>
             </a>
             @if(document.type === "origin" && isAdmin()){
             <button mat-icon-button class="deleteIcon" (click)="deleteDocument(document.id!, 'origin')">
@@ -98,7 +97,6 @@
                 @for (document of element.productLifeCycleDocuments; track $index) {
                   <a target="_blank" [href]="document.path" class="row">
                     <mat-icon>picture_as_pdf</mat-icon>
-                    <p class="file">{{document.name}}</p>
                   </a>
                    @if(isAdmin()){
                     <button mat-icon-button class="deleteIcon" (click)="deleteDocument(document.id!, document.type)">
