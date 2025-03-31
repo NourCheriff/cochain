@@ -48,7 +48,7 @@ namespace CochainAPI.Data.Sql
                 entity.HasKey(r => new { r.Value, r.UserId });
             });
 
-            modelBuilder.Entity<User>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId);
+            modelBuilder.Entity<User>().HasOne(x => x.SupplyChainPartner).WithMany().HasForeignKey(x => x.SupplyChainPartnerId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<User>().HasOne(x => x.CertificationAuthority).WithMany().HasForeignKey(x => x.CertificationAuthorityId);
             modelBuilder.Entity<User>().HasMany(x => x.TemporaryPasswords).WithOne(x => x.User).HasForeignKey(x => x.UserId);
             modelBuilder.Entity<User>().HasMany(x => x.UserRoles).WithOne().HasForeignKey(x => x.UserId);
@@ -176,23 +176,33 @@ namespace CochainAPI.Data.Sql
             modelBuilder.Entity<SupplyChainPartner>().HasData(
                 new SupplyChainPartner
                 {
-                    Id = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
-                    Name = "Prova company",
-                    Email = "company@prova.com",
+                    Id = new Guid("81124c04-840a-49c1-8929-073af4cee139"),
+                    Name = "Test Company",
+                    Email = "company@test.com",
                     Phone = "33309090909",
-                    Credits = 0,
+                    Credits = 100,
                     SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
-                    WalletId = "0x3a9f1b7c5d2e8a4f6c0e7d3b5a2f9c1"
+                    WalletId = "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73"
                 },
                 new SupplyChainPartner
                 {
                     Id = new Guid("3a9f1b7c-5d2e-4a4f-8a6c-0e7d3b5a2f9c"),
-                    Name = "Prova company2",
-                    Email = "company2@prova.com",
+                    Name = "Raw Material Supplier",
+                    Email = "raw.material.supplier@test.com",
                     Phone = "3669045897",
-                    Credits = 0,
-                    SupplyChainPartnerTypeId = new Guid("ef0e7db4-760e-4515-9aa0-bda3fc766e87"),
-                    WalletId = "0x7c5d1a3f9b2e6f0d8c4a7e3b5c2f9d1"
+                    Credits = 40,
+                    SupplyChainPartnerTypeId = new Guid("e1117db4-760e-4515-9aa0-11a3fa766e87"),
+                    WalletId = "0x627306090abab3a6e1400e9345bc60c78a8bef57"
+                },
+                new SupplyChainPartner
+                {
+                    Id = new Guid("db2c2af0-5227-4d3c-b3eb-daf45118aeff"),
+                    Name = "Retailer",
+                    Email = "retailer@test.com",
+                    Phone = "3669045897",
+                    Credits = 20,
+                    SupplyChainPartnerTypeId = new Guid("eaae7124-761e-4515-9aa0-bda3fc7aee87"),
+                    WalletId = "0xf17f52151ebef6c7334fad080c5704d77216b732"
                 }
             );
 
@@ -203,7 +213,7 @@ namespace CochainAPI.Data.Sql
                     FirstName = "System",
                     LastName = "System",
                     UserName = "admin@cochain.com",
-                    SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                    SupplyChainPartnerId = new Guid("81124c04-840a-49c1-8929-073af4cee139"),
                     IsActive = true
                 },
                 new User
@@ -212,7 +222,7 @@ namespace CochainAPI.Data.Sql
                     FirstName = "Paolo",
                     LastName = "Roselli",
                     UserName = "paolo.roselli02@gmail.com",
-                    SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                    SupplyChainPartnerId = new Guid("81124c04-840a-49c1-8929-073af4cee139"),
                     IsActive = true
                 },
                 new User
@@ -221,7 +231,7 @@ namespace CochainAPI.Data.Sql
                     FirstName = "Matteo",
                     LastName = "Spiga",
                     UserName = "matteospiga2002@gmail.com",
-                    SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                    SupplyChainPartnerId = new Guid("81124c04-840a-49c1-8929-073af4cee139"),
                     IsActive = true
                 },
                 new User
@@ -230,7 +240,7 @@ namespace CochainAPI.Data.Sql
                     FirstName = "Cherif",
                     LastName = "Nour",
                     UserName = "nourcherif.pitos25@gmail.com",
-                    SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                    SupplyChainPartnerId = new Guid("81124c04-840a-49c1-8929-073af4cee139"),
                     IsActive = true
                 },
                 new User
@@ -239,7 +249,7 @@ namespace CochainAPI.Data.Sql
                     FirstName = "Mattia",
                     LastName = "Mandorlini",
                     UserName = "mando3228@gmail.com",
-                    SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                    SupplyChainPartnerId = new Guid("81124c04-840a-49c1-8929-073af4cee139"),
                     IsActive = true
                 },
                 new User
@@ -248,7 +258,7 @@ namespace CochainAPI.Data.Sql
                     FirstName = "Samuele",
                     LastName = "Sacchetti",
                     UserName = "sacchettisamuele@gmail.com",
-                    SupplyChainPartnerId = new Guid("d65e685f-8bdd-470b-a6b8-c9a62e39f095"),
+                    SupplyChainPartnerId = new Guid("81124c04-840a-49c1-8929-073af4cee139"),
                     IsActive = true
                 }
             );
