@@ -88,10 +88,15 @@ export class ProductsComponent implements OnInit {
 
   updateTable(pageSize: number = DefaultPagination.defaultPageSize, pageNumber: number = DefaultPagination.defaultPageNumber) {
     if (this.isChecked) {
-      this.productService.getMyProductsInfo(this.authService.userId!, pageSize.toString(), pageNumber.toString()).subscribe({
-        next: (response) => {
-          this.totalRecords = response.totalSize;
-          this.setDataSource(response.items!);
+      this.authService.getUser().subscribe({
+        next: (user) => {
+          this.productService.getMyProductsInfo(user.id!, pageSize.toString(), pageNumber.toString()).subscribe({
+            next: (response) => {
+              this.totalRecords = response.totalSize;
+              this.setDataSource(response.items!);
+            },
+            error: (error) => console.error(error)
+          });
         },
         error: (error) => console.error(error)
       });

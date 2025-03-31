@@ -62,20 +62,27 @@ export class UsersComponent implements OnInit {
 
     const dialogRef = this.dialog.open(UserDialogComponent, { data: dialogData });
     dialogRef.afterClosed().subscribe(result => {
-      if(result && result.reloadContent)
+      if(result)
         this.getUsers()
     });
   }
 
   deleteUser(id: string): void {
-    this.userService.deleteUser(id).subscribe((response) => {
-      if (!response) {
+    this.userService.deleteUser(id).subscribe({
+      next: (response) => {
+        if (!response) {
+          this.showToast('Error in removing user', 'error');
+          return;
+        }
+        this.showToast('User deleted successfully!', 'success');
+        this.getUsers();
+      },
+      error: (error) => {
+        console.error(error);
         this.showToast('Error in removing user', 'error');
-        return;
       }
-      this.showToast('User deleted successfully!', 'success');
-      this.getUsers();
-    });
+    }
+  );
   }
 
   private showToast(message: string, severity: string | undefined) {

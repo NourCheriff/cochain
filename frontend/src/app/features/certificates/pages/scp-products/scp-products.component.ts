@@ -67,7 +67,6 @@ export class ScpProductsComponent implements OnInit, AfterViewInit {
     const fileName = id.split('/').pop() || id;
     this.certificateService.deleteCertificate(id, fileName, DocumentType.Quality).subscribe({
       next: (response) => {
-        console.log(response)
         this.toastrService.info(`Removed certificate ${response.name}`, 'info')
       },
       error: (error) => { console.log(error) }
@@ -75,11 +74,16 @@ export class ScpProductsComponent implements OnInit, AfterViewInit {
   }
 
   attachCertificate(scpReceiverId: string) {
-    this.dialog.open(FileInputComponent,{
+    const dialogRef = this.dialog.open(FileInputComponent,{
       data: {
         scpReceiverId: scpReceiverId,
         documentType: DocumentType.Quality
       }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result)
+       this.getScpProducts()
     });
   }
 

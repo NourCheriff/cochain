@@ -59,25 +59,24 @@ export class BaseHttpService {
       headers: this.header
     });
   }
+  deleteDocument<T>(endpoint: string, id: string, fileName: string, documentType?: string): Observable<T> {
+      let url = `${this.API_BASE_URL}/${endpoint}`;
+      //let body: any = { fileName };
 
-  deleteDocument<T>(endpoint: string, id: string, fileName: string, documentType: string): Observable<T> {
-    let url = `${this.API_BASE_URL}/${endpoint}`;
-    let body: any = { fileName };
+      if (endpoint === 'api/Document' && documentType) {
+        url += `/${documentType}/${id}`;
+      } else {
+        url += `/${id}`;
+      }
 
-    if (endpoint === 'api/Document/RemoveDocuments') {
-      url += `/${documentType}/${id}`;
-    } else {
-      url += `/${id}`;
-      body.type = documentType;
-    }
-
-    return this.http.post<T>(url, body, {
-      headers: this.header
-    });
+      return this.http.post<T>(url, {
+        headers: this.header,
+        params: this.createParams({ fileName })
+      });
   }
 
   delete<T>(endpoint: string, id: string) : Observable<T>{
-    return this.http.delete<T>(`${this.API_BASE_URL}/${endpoint}/${id}`, {
+    return this.http.post<T>(`${this.API_BASE_URL}/${endpoint}/${id}`, {
       headers: this.header
     });
   }

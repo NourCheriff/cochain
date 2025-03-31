@@ -5,6 +5,7 @@ import { PaginationResponse } from 'src/app/core/utilities/pagination-response';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { SupplyChainPartnerCertificate } from 'src/models/documents/supply-chain-partner-certificate.model';
 import { ProductInfo } from 'src/models/product/product-info.model';
+import { DocumentType } from 'src/types/document.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -41,8 +42,16 @@ export class CertificatesService {
     return this.apiService.add('api/Document/AddCertificationDocument', certificate)
   }
 
-  deleteCertificate(id: string, fileName: string, type: string): Observable<SupplyChainPartnerCertificate>{
-    return this.apiService.deleteDocument(`api/Document/RemoveCertificate`, id, fileName, type)
+  deleteCertificate(id: string, fileName: string, type?: string): Observable<SupplyChainPartnerCertificate>{
+    type ??= DocumentType.Sustainability;
+
+    const endpoint = type === DocumentType.Sustainability
+      ? 'api/Document/RemoveCertificate'
+      : 'api/Document';
+
+    return type
+      ? this.apiService.deleteDocument(endpoint, id, fileName, type)
+      : this.apiService.deleteDocument(endpoint, id, fileName);
   }
 
 }

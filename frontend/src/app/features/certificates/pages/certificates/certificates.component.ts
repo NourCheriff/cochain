@@ -65,7 +65,7 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
 
   deleteCertificate(id: string){
     const fileName = id.split('/').pop() || id;
-    this.certificateService.deleteCertificate(id,fileName,DocumentType.Sustainability).subscribe({
+    this.certificateService.deleteCertificate(id,fileName).subscribe({
       next: (response) => {
 
         this.toastrService.info(`Removed certificate ${response.name}`, 'info')
@@ -83,7 +83,7 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.reload)
+      if(result)
        this.getSupplyChainPartners()
     });
   }

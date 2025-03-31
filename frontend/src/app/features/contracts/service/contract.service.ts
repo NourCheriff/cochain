@@ -21,16 +21,23 @@ export class ContractService {
   getContracts(userId: string, type: string, pageSize: string, pageNumber: string): Observable<PaginationResponse<Contract>> {
 
     const endpoint = type === "received_contracts"
-      ? 'api/Document/ReceivedContracts'
-      : 'api/Document/EmittedContracts';
+    ? "api/Document/ReceivedContracts"
+    : "api/Document/EmittedContracts";
 
-    return this.apiService.getAll(endpoint, { params: { pageNumber, pageSize, userId } }).pipe(
+    const params: any = { pageNumber, pageSize };
+
+    if (type === "received_contracts") {
+      params.scpId = userId;
+    } else {
+      params.userId = userId;
+    }
+
+    return this.apiService.getAll(endpoint, { params }).pipe(
       map((response: any) => {
-        const paginationResponse: PaginationResponse<Contract> = {
-          items: response[0].items || [],
-          totalSize: response[0].totalSize || 0
-        };
-        return paginationResponse;
+        return {
+          items: response[0]?.items || [],
+          totalSize: response[0]?.totalSize || 0,
+        } as PaginationResponse<Contract>;
       })
     );
   }
