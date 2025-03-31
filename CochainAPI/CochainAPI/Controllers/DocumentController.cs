@@ -90,7 +90,7 @@ namespace CochainAPI.Controllers
 
         [HttpPost("{type}/{id}")]
         [Authorize(Policy = "RemoveDocuments")]
-        public async Task<IActionResult> DeleteDocumentById(Guid id, string fileName, string type)
+        public async Task<IActionResult> DeleteDocumentById(Guid id, [FromBody]string fileName, string type)
         {
             var response = await _documentService.DeleteById(id, fileName, type);
             if (!response)
@@ -102,9 +102,9 @@ namespace CochainAPI.Controllers
 
         [HttpPost("RemoveCertificate/{id}")]
         [Authorize(Policy = "RemoveCertificationDocument")]
-        public async Task<IActionResult> DeleteCertificateById(Guid id, string fileName, string type)
+        public async Task<IActionResult> DeleteCertificateById(Guid id, [FromBody]string fileName)
         {
-            var response = await _documentService.DeleteCertificateById(id, fileName, type);
+            var response = await _documentService.DeleteCertificateById(id, fileName, "sustainability");
             if (!response)
             {
                 return BadRequest(new { message = "Document not found" });
