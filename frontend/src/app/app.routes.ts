@@ -65,7 +65,7 @@ export const routes: Routes = [
     title: 'Users',
     component: UsersComponent,
     data: { breadcrumb: 'Companies Users' },
-    canActivate: [AuthGuard, RoleGuard],
+    canActivate: [AuthGuard],
   },
   {
     path:'products/details/:id',
