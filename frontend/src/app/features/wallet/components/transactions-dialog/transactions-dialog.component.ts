@@ -9,6 +9,9 @@ import { BlockchainService } from '../../services/blockchain.service';
 import { BaseHttpService } from 'src/app/core/services/api.service';
 import { SupplyChainPartner } from 'src/models/company-entities/supply-chain-partner.model';
 import { CompanyService } from 'src/app/features/users/services/company.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SanitizerUtil } from 'src/app/core/utilities/sanitizer';
+
 @Component({
   selector: 'app-transactions-dialog',
   imports: [
@@ -20,14 +23,15 @@ import { CompanyService } from 'src/app/features/users/services/company.service'
     MatButtonModule,
     MatDialogTitle,
     MatDialogClose,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './transactions-dialog.component.html',
   styleUrl: './transactions-dialog.component.css'
 })
 export class TransactionsDialogComponent implements OnInit{
 
-  constructor(private companyService: CompanyService) {}
+  constructor(private companyService: CompanyService, private sanitizer: SanitizerUtil) {}
 
   readonly dialogRed = inject(MatDialogRef<TransactionsDialogComponent>);
   transactionForm = new FormGroup({
@@ -38,39 +42,48 @@ export class TransactionsDialogComponent implements OnInit{
   private blockchainService = inject(BlockchainService);
   private apiService = inject(BaseHttpService);
   supplyChainPartners: SupplyChainPartner[] = [];
+  isLoading = false;
 
   ngOnInit(): void {
     this.getAllSupplyChainPartners();
   }
 
-  getAllSupplyChainPartners(){
+  getAllSupplyChainPartners() {
     this.companyService.getAllSupplyChainPartners().subscribe({
       next: (response) => this.supplyChainPartners = response.items || [] ,
       error: (error) => console.error('Error fetching supply chain partners.', error)
     });
   }
 
-  async onSubmit() {
-    if (this.transactionForm.valid) {
-      let receiver = this.transactionForm.value.receiver as string;
-      let amount = this.transactionForm.value.amount as number;
-      let receipt = await this.blockchainService.sendCarbonCredits(receiver, amount);
+  async onSubmit(): Promise<void> {
+    if (!this.transactionForm.valid)
+        return;
 
-      if (receipt) {
-        const newTransaction = {
-          transactionHash: receipt.hash!.toLowerCase(),
-          walletIdEmitter: receipt.from!.toLowerCase(),
-          walletIdReceiver: receiver.toLowerCase(),
-        }
+    this.isLoading = true;
 
-        this.apiService.add('api/Transaction/AddTransaction', newTransaction).subscribe((item) => {
-          if (item) {
-            console.log("Transaction added: ", item)
-          }
-        });
+    const sanitizedForm = this.sanitizer.sanitizeForm(this.transactionForm);
 
-      }
+    const receiver = sanitizedForm.receiver as string;
+    const amount = sanitizedForm.amount as number;
+    const receipt = await this.blockchainService.sendCarbonCredits(receiver, amount);
+
+    if (!receipt) {
+      this.isLoading= false;
+      return;
     }
-  }
 
+    const newTransaction = {
+      transactionHash: receipt.hash!.toLowerCase(),
+      walletIdEmitter: receipt.from!.toLowerCase(),
+      walletIdReceiver: receiver.toLowerCase(),
+    }
+
+    this.apiService.add('api/Transaction/AddTransaction', newTransaction).subscribe((item) => {
+      if (item) {
+        console.log("Transaction added: ", item)
+      }
+    });
+
+    this.isLoading = false;
+  }
 }
