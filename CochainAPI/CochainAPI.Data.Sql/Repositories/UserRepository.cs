@@ -233,7 +233,7 @@ namespace CochainAPI.Data.Sql.Repositories
                 QueryString = httpContextAccessor.HttpContext?.Request.QueryString.ToString(),
             };
             await logRepository.AddLog(log);
-            return await dbContext.SaveChangesAsync() > 0;
+            return await dbContext.SaveChangesAsync() == 0;
         }
     }
 }
