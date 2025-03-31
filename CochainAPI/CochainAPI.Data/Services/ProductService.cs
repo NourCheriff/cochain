@@ -50,8 +50,9 @@ namespace CochainAPI.Data.Services
         public async Task<List<ProductInfo>?> GetIngredientsByProductInfoId(Guid id)
         {
             var productInfo = await GetProductById(id);
-            
-            if(productInfo != null){
+
+            if (productInfo != null)
+            {
                 Guid[] ingredientIds = productInfo.Ingredients.Select(ingredient => ingredient.IngredientId).ToArray();
                 return await _productRepository.GetProductsByIds(ingredientIds);
             }
@@ -77,13 +78,15 @@ namespace CochainAPI.Data.Services
         {
             var userId = _contextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var user = await _userRepository.GetById(userId);
+            ProductInfo obj = productObj;
+
             if (productObj.SupplyChainPartnerId != user!.SupplyChainPartnerId.GetValueOrDefault())
                 return null;
 
             bool isSuccess = false;
             if (!string.IsNullOrEmpty(productObj.Id.ToString()))
             {
-                var obj = await _productRepository.GetProductById(productObj.Id);
+                obj = await _productRepository.GetProductById(productObj.Id);
                 if (obj != null)
                 {
                     obj.Name = productObj.Name;
@@ -95,7 +98,7 @@ namespace CochainAPI.Data.Services
                 }
             }
 
-            return isSuccess ? productObj : null;
+            return isSuccess ? obj : null;
         }
     }
 }
