@@ -132,8 +132,19 @@ export class ProductDetailsComponent implements OnInit {
   deleteDocument(id: string, documentType: string) {
     this.productService.deleteDocument(id, documentType).subscribe({
       next: (response) => {
-        this.toastrService.info(`Removed Origin certificate`, 'Info')
-        this.productInfo.productDocuments = this.productInfo.productDocuments?.filter(doc => doc.id !== id);
+
+        this.toastrService.info(`Removed ` + documentType + ` certificate`, 'Info');
+        if(documentType === 'origin'){
+          this.productInfo.productDocuments = this.productInfo.productDocuments?.filter(doc => doc.id !== id);
+        }
+        else{
+          this.productInfo.productLifeCycles!.forEach(cycle => {
+            if (cycle.productLifeCycleDocuments) {
+                cycle.productLifeCycleDocuments = cycle.productLifeCycleDocuments.filter(doc => doc.id !== id);
+            }
+        });
+        }
+
       },
       error: (error) => console.error(error)
     })
