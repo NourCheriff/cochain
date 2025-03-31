@@ -54,7 +54,7 @@ namespace CochainAPI.Controllers
 
         [HttpPost("AddOriginDocument")]
         [Authorize(Policy = "WriteOriginDocument")]
-        public async Task<IActionResult> AddOriginDocument([FromBody] ProductLifeCycleDocument documentObj)
+        public async Task<IActionResult> AddOriginDocument([FromBody] ProductDocument documentObj)
         {
             var response = await _documentService.AddDocument(documentObj);
             if (response == null)
