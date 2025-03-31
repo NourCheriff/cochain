@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon'
 import { TransactionsDialogComponent } from '../transactions-dialog/transactions-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wallet-info-card',
@@ -18,5 +19,6 @@ export class WalletInfoCardComponent {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(TransactionsDialogComponent);
+    dialogRef.afterClosed().subscribe(() => window.location.reload());
   }
 }

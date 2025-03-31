@@ -33,7 +33,7 @@ export class TransactionsDialogComponent implements OnInit{
 
   constructor(private companyService: CompanyService, private sanitizer: SanitizerUtil) {}
 
-  readonly dialogRed = inject(MatDialogRef<TransactionsDialogComponent>);
+  readonly dialogRef = inject(MatDialogRef<TransactionsDialogComponent>);
   transactionForm = new FormGroup({
     receiver: new FormControl('', [Validators.required,]),
     amount: new FormControl(0, [Validators.required, Validators.min(0),]),
@@ -85,5 +85,6 @@ export class TransactionsDialogComponent implements OnInit{
     });
 
     this.isLoading = false;
+    this.dialogRef.close();
   }
 }

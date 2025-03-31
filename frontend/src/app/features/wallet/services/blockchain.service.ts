@@ -129,7 +129,7 @@ export class BlockchainService {
       return receipt;
     } catch (error) {
       console.error('Error while sending carbon credits:', error);
-      this.errorEvent.emit('Failed transaction: ' + (error instanceof Error ? error.message : String(error)));
+      this.errorEvent.emit('Failed transaction: ' + (error instanceof Error ? error.message : 'Insufficient balance'));
       return null;
     }
   }
@@ -355,6 +355,7 @@ export class BlockchainService {
         })
       )).filter(Boolean) as Transaction[];
 
+      transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       return transactions.length ? transactions : null;
 
     } catch (error) {
