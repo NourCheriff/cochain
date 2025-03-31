@@ -24,12 +24,14 @@ export class NavbarComponent implements OnInit{
   ngOnInit(): void {
     this.authService.getUser().subscribe(result => {
       this.currentUser = result;
-      this.url = "companies/" + this.currentUser.supplyChainPartnerId + "/users";
+
       if(this.authService.userRoles!.includes(Role.AdminSCP)){
         this.selected = CompanyType.SupplyChainPartner;
+        this.url = this.currentUser.supplyChainPartnerId!;
       }
       else{
         this.selected = CompanyType.CertificationAuthority;
+        this.url = this.currentUser.certificationAuthorityId!;
       }
     });
   }
