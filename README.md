@@ -76,9 +76,9 @@ Queste variabili saranno utilizzate successivamente dal file `hardhat.config.js`
 ```
 
    3. Sostituisci i seguenti segnaposto con i valori corretti:
-    - `<PORTA_DB>` con la porta del database, solitamente è `5432`.
-    - `<USERNAME_DB>` con il nome utente del database.
-    - `<PASSWORD_DB>` con la password del database.
+   - `<PORTA_DB>` con la porta del database, solitamente è `5432`.
+   - `<USERNAME_DB>` con il nome utente del database.
+   - `<PASSWORD_DB>` con la password del database.
 
    Dopo aver aggiornato il file, il backend potrà connettersi correttamente al database.
     
