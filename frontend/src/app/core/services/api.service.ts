@@ -60,8 +60,7 @@ export class BaseHttpService {
     });
   }
   deleteDocument<T>(endpoint: string, id: string, fileName: string, documentType?: string): Observable<T> {
-      let url = `${this.API_BASE_URL}/${endpoint}`;
-      //let body: any = { fileName };
+      let url = `${this.API_BASE_URL}/${endpoint}`;;
 
       if (endpoint === 'api/Document' && documentType) {
         url += `/${documentType}/${id}`;
@@ -71,7 +70,6 @@ export class BaseHttpService {
 
       return this.http.post<T>(url, {
         headers: this.header,
-        params: this.createParams({ fileName })
       });
   }
 
