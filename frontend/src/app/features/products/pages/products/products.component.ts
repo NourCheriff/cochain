@@ -90,7 +90,7 @@ export class ProductsComponent implements OnInit {
     if (this.isChecked) {
       this.authService.getUser().subscribe({
         next: (user) => {
-          this.productService.getMyProductsInfo(user.id!, pageSize.toString(), pageNumber.toString()).subscribe({
+          this.productService.getMyProductsInfo(user.supplyChainPartnerId!, pageSize.toString(), pageNumber.toString()).subscribe({
             next: (response) => {
               this.totalRecords = response.totalSize;
               this.setDataSource(response.items!);
