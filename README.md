@@ -194,28 +194,34 @@ L'output di questo comando sarà nel seguente formato:
 
 ### 8. Imposta MetaMask per effettuare le transazioni
    1. Accedi all'estensione di MetaMask.
-   ![wallet-1](./img/wallet-connection/wallet-1.jpg)
-
    2. Clicca sull'icona in alto a sinistra per cambiare il network
-   ![wallet-2](./img/wallet-connection/wallet-2.jpg)
+   
+   ![wallet-1](./img/wallet-connection/wallet-1.jpg)
    
    3. Abilita i network di testing (`Show test networks`) e seleziona il network `COCHAIN`.
-   ![wallet-3](./img/wallet-connection/wallet-3.jpg)
+
+   ![wallet-2](./img/wallet-connection/wallet-2.jpg)
 
    4. Torna alla schermata principale dell'estensione MetaMask.
-   ![wallet-4](./img/wallet-connection/wallet-4.jpg)
+      
+   ![wallet-3](./img/wallet-connection/wallet-3.jpg)
    
    5. Premi su `Add account or hardware wallet` per aggiungere l'accout di testing
-   ![wallet-5](./img/wallet-connection/wallet-5.jpg)
+       
+   ![wallet-4](./img/wallet-connection/wallet-4.jpg)
 
    6. Seleziona `Import account`
-   ![wallet-6](./img/wallet-connection/wallet-6.jpg)
+       
+   ![wallet-5](./img/wallet-connection/wallet-5.jpg)
 
    7. Inserisci la chiave privata dell'account di prova: `0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63`
-   ![wallet-7](./img/wallet-connection/wallet-7.jpg)
+       
+   ![wallet-6](./img/wallet-connection/wallet-6.jpg)
 
    8. Clicca su **Connect account**
-   ![wallet-8](./img/wallet-connection/wallet-8.jpg)
+       
+   ![wallet-7](./img/wallet-connection/wallet-7.jpg)
 
    9. Seleziona l'account appena inserito per poter interagire con la blockchain ed effettuare le transazioni.
-   ![wallet-9](./img/wallet-connection/wallet-9.jpg)
+       
+   ![wallet-8](./img/wallet-connection/wallet-8.jpg)
