@@ -79,7 +79,11 @@ export class ContractsSectionComponent implements OnInit {
   }
 
   addContractDialog() {
-    this.dialog.open(ContractDialogComponent);
+    const dialogRef = this.dialog.open(ContractDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result)
+        this.getContracts()
+    });
   }
 
 }
