@@ -43,7 +43,7 @@ namespace CochainAPI.Data.Services
             documentObj.Id = Guid.NewGuid();
             return documentObj switch
             {
-                SupplyChainPartnerCertificate scpCertificate => await AddCertificate(scpCertificate),               
+                SupplyChainPartnerCertificate scpCertificate => await AddCertificate(scpCertificate),
                 _ => null,
             };
         }
@@ -64,12 +64,12 @@ namespace CochainAPI.Data.Services
             return await _contractRepository.AddDocument(contract);
         }
 
-        public async Task<bool> DeleteContract(Guid id, string fileName)
+        public async Task<bool> DeleteContract(Guid id)
         {
             if (Guid.TryParse(id.ToString(), out var docId))
             {
                 var containerClient = _blobServiceClient.GetBlobContainerClient("contracts");
-                var blobClient = containerClient.GetBlobClient(fileName);
+                var blobClient = containerClient.GetBlobClient(id.ToString() + ".pdf");
 
                 if (!await blobClient.ExistsAsync())
                 {
@@ -134,12 +134,12 @@ namespace CochainAPI.Data.Services
             return await _productLifeCycleRepository.AddDocument(productDocument);
         }
 
-        public async Task<bool> DeleteProductLifeDocument(Guid id, string fileName)
+        public async Task<bool> DeleteProductLifeDocument(Guid id)
         {
             if (Guid.TryParse(id.ToString(), out var docId))
             {
                 var containerClient = _blobServiceClient.GetBlobContainerClient("prodlifecycle");
-                var blobClient = containerClient.GetBlobClient(fileName);
+                var blobClient = containerClient.GetBlobClient(id.ToString() + ".pdf");
 
                 if (!await blobClient.ExistsAsync())
                 {
@@ -168,12 +168,13 @@ namespace CochainAPI.Data.Services
             productDocument.Path = blobClient.Uri.ToString();
             return await _productDocumentRepository.AddDocument(productDocument);
         }
-        public async Task<bool> DeleteProductDocument(Guid id, string fileName)
+
+        public async Task<bool> DeleteProductDocument(Guid id)
         {
             if (Guid.TryParse(id.ToString(), out var docId))
             {
                 var containerClient = _blobServiceClient.GetBlobContainerClient("prodlifecycle");
-                var blobClient = containerClient.GetBlobClient(fileName);
+                var blobClient = containerClient.GetBlobClient(id.ToString() + ".pdf");
 
                 if (!await blobClient.ExistsAsync())
                 {
@@ -199,22 +200,22 @@ namespace CochainAPI.Data.Services
             };
         }
 
-        public async Task<bool> DeleteById(Guid id, string filename, string Type)
+        public async Task<bool> DeleteById(Guid id, string Type)
         {
             return Type switch
             {
-                "contract" => await DeleteContract(id, filename),
-                "invoice" or "transport" => await DeleteProductLifeDocument(id, filename),
-                "origin" or "quality" => await DeleteProductDocument(id, filename),
+                "contract" => await DeleteContract(id),
+                "invoice" or "transport" => await DeleteProductLifeDocument(id),
+                "origin" or "quality" => await DeleteProductDocument(id),
                 _ => false,
             };
         }
 
-        public async Task<bool> DeleteCertificateById(Guid id, string filename, string Type)
+        public async Task<bool> DeleteCertificateById(Guid id, string Type)
         {
             return Type switch
             {
-                "sustainability" => await DeleteCertificate(id, filename),
+                "sustainability" => await DeleteCertificate(id, id + ".pdf"),
                 _ => false,
             };
         }

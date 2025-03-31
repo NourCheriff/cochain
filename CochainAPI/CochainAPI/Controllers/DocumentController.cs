@@ -52,6 +52,18 @@ namespace CochainAPI.Controllers
             return Ok(response);
         }
 
+        [HttpPost("AddQualityDocument")]
+        [Authorize(Policy = "WriteCertificationDocument")]
+        public async Task<IActionResult> AddCertificationDocument([FromBody] ProductDocument documentObj)
+        {
+            var response = await _documentService.AddDocument(documentObj);
+            if (response == null)
+            {
+                return BadRequest(new { message = "Document not found" });
+            }
+            return Ok(response);
+        }
+
         [HttpPost("AddOriginDocument")]
         [Authorize(Policy = "WriteOriginDocument")]
         public async Task<IActionResult> AddOriginDocument([FromBody] ProductDocument documentObj)
@@ -90,9 +102,9 @@ namespace CochainAPI.Controllers
 
         [HttpPost("{type}/{id}")]
         [Authorize(Policy = "RemoveDocuments")]
-        public async Task<IActionResult> DeleteDocumentById(Guid id, [FromBody]string fileName, string type)
+        public async Task<IActionResult> DeleteDocumentById(Guid id, string type)
         {
-            var response = await _documentService.DeleteById(id, fileName, type);
+            var response = await _documentService.DeleteById(id, type);
             if (!response)
             {
                 return BadRequest(new { message = "Document not found" });
@@ -102,9 +114,9 @@ namespace CochainAPI.Controllers
 
         [HttpPost("RemoveCertificate/{id}")]
         [Authorize(Policy = "RemoveCertificationDocument")]
-        public async Task<IActionResult> DeleteCertificateById(Guid id, [FromBody]string fileName)
+        public async Task<IActionResult> DeleteCertificateById(Guid id)
         {
-            var response = await _documentService.DeleteCertificateById(id, fileName, "sustainability");
+            var response = await _documentService.DeleteCertificateById(id, "sustainability");
             if (!response)
             {
                 return BadRequest(new { message = "Document not found" });
