@@ -139,8 +139,7 @@ export class ProductDialogComponent implements OnInit {
     if(this.blockchainService.isWalletConnected()) {
       this.productService.addProductInfo(newProduct).subscribe({
         next: (response) => {
-          this.uploadFile(response.id!);
-          this.dialogRef.close({ newProduct: response });
+          this.uploadFile(response!);
           this.blockchainService.createProduct(response.id!, response.expirationDate).then((item) => {
             const tokenId = Number(item!.logs[0].topics[3]);
             this.updateProduct(response!, tokenId)
@@ -209,7 +208,7 @@ export class ProductDialogComponent implements OnInit {
     }
   }
 
-  uploadFile(productInfoId: string): void {
+  uploadFile(productInfo: ProductInfo): void {
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result?.toString().split(',')[1]!;
@@ -218,13 +217,17 @@ export class ProductDialogComponent implements OnInit {
       let originDocument: ProductDocument = {
         hash: hashedBase64Contract,
         fileString: base64String,
-        productInfoId: productInfoId,
+        productInfoId: productInfo.id!,
         userEmitterId: this.authService.userId!,
         type: DocumentType.Origin,
       };
 
       this.productService.uploadOriginDocument(originDocument).subscribe({
-        next: (response) => console.log('File uploaded successfully', response),
+        next: (response) =>{
+          productInfo.productDocuments?.push(response!);
+          this.dialogRef.close({ newProduct: productInfo });
+          console.log('File uploaded successfully', response);
+        },
         error: (error) => console.error('File upload failed', error),
       });
     };

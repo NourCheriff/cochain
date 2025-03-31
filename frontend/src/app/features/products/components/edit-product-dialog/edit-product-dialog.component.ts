@@ -160,6 +160,7 @@ export class EditProductDialogComponent implements OnInit{
 
     this.productService.updateProductInfo(modifiedProduct).subscribe({
       next: (response) => {
+
         let originDocument: ProductDocument | undefined = response.productDocuments?.find(x => x.type === DocumentType.Origin);
 
         if (originDocument?.id) {
@@ -168,8 +169,7 @@ export class EditProductDialogComponent implements OnInit{
           });
         }
 
-        this.uploadFile(response.id!);
-        this.dialogRef.close({ modifiedProduct: modifiedProduct });
+        this.uploadFile(response);
       },
       error: (error) => console.error(error),
     })
@@ -228,7 +228,7 @@ export class EditProductDialogComponent implements OnInit{
     }
   }
 
-  uploadFile(productInfoId: string): void {
+  uploadFile(productInfo: ProductInfo): void {
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result?.toString().split(',')[1]!;
@@ -237,14 +237,24 @@ export class EditProductDialogComponent implements OnInit{
       let originDocument: ProductDocument = {
         hash: hashedBase64Document,
         fileString: base64String,
-        productInfoId: productInfoId,
+        productInfoId: productInfo.id!,
         userEmitterId: this.authService.userId!,
         supplyChainPartnerReceiverId: this.data.product.supplyChainPartnerId!,
         type: DocumentType.Origin,
       };
 
       this.productService.uploadOriginDocument(originDocument).subscribe({
-        next: (response) => console.log('File uploaded successfully', response),
+        next: (response) =>{
+          const index = productInfo.productDocuments!.findIndex(doc => doc.type === DocumentType.Origin);
+
+          if (index !== -1) {
+            productInfo.productDocuments![index] = response;
+          }
+          else {
+            productInfo.productDocuments!.push(response);
+          }
+          this.dialogRef.close({ modifiedProduct: productInfo });
+        },
         error: (error) => console.error('File upload failed', error),
       });
     };
