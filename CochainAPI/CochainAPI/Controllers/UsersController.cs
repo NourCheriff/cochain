@@ -65,7 +65,7 @@ namespace CochainAPI.Controllers
         }
 
         [HttpGet("company/{companyId}")]
-        [Authorize(Roles = "SystemAdmin")]
+        [Authorize(Policy = "ReadUser")]
         public async Task<IActionResult> GetUsersByCompanyId(Guid companyId, [FromQuery] string? companyType)
         {
             var response = await _userService.GetUsersByCompanyId(companyId, companyType);
